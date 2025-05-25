@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@ngguide/ui": ["libs/ui/src/index.ts"],
+      "@ngguide/ui/button": ["libs/ui/button/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
