@@ -64,31 +64,46 @@
 :host([data-size='xs'][data-shape='square']) {
   border-radius: var(--md-sys-shape-corner-medium);
 }
-:host([data-size='xs'][data-shape='square']:active) {
+:host([data-size='xs'][data-shape='round']) {
+  border-radius: 16px;
+}
+:host([data-size='xs']:active) {
   border-radius: var(--md-sys-shape-corner-small);
 }
 :host([data-size='sm'][data-shape='square']) {
   border-radius: var(--md-sys-shape-corner-medium);
 }
-:host([data-size='sm'][data-shape='square']:active) {
+:host([data-size='sm'][data-shape='round']) {
+  border-radius: 20px;
+}
+:host([data-size='sm']:active) {
   border-radius: var(--md-sys-shape-corner-small);
 }
 :host([data-size='md'][data-shape='square']) {
   border-radius: var(--md-sys-shape-corner-large);
 }
-:host([data-size='md'][data-shape='square']:active) {
+:host([data-size='md'][data-shape='round']) {
+  border-radius: 28px;
+}
+:host([data-size='md']:active){
   border-radius: var(--md-sys-shape-corner-medium);
 }
 :host([data-size='lg'][data-shape='square']) {
   border-radius: var(--md-sys-shape-corner-extra-large);
 }
-:host([data-size='lg'][data-shape='square']:active) {
+:host([data-size='lg'][data-shape='round']) {
+  border-radius: 48px;
+}
+:host([data-size='lg']:active) {
   border-radius: var(--md-sys-shape-corner-large);
 }
 :host([data-size='xl'][data-shape='square']) {
   border-radius: var(--md-sys-shape-corner-extra-large);
 }
-:host([data-size='xl'][data-shape='square']:active) {
+:host([data-size='xl'][data-shape='round']) {
+  border-radius: 68px;
+}
+:host([data-size='xl']:active) {
   border-radius: var(--md-sys-shape-corner-large);
 }
 
