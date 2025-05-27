@@ -1,0 +1,69 @@
+:root {
+  --md-sys-color-primary: #6750a4;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-secondary: #625b71;
+  --md-sys-color-on-surface: #1d1b20;
+  --md-sys-color-on-surface-variant: #49454f;
+  --md-sys-color-surface-container-low: #f7f2fa;
+  --md-sys-color-secondary-container: #e8def8;
+  --md-sys-color-on-secondary-container: #4a4458;
+  --md-sys-color-outline-variant: #cac4d0;
+  --md-sys-color-shadow: #000000;
+
+  --md-ref-typeface-plain: 'Roboto', sans-serif;
+  --md-ref-typeface-brand: 'Roboto', sans-serif;
+  --md-ref-typeface-weight-medium: 500;
+  --md-ref-typeface-weight-regular: 400;
+
+  --md-sys-state-focus-indicator-thickness: 3px;
+  --md-sys-state-focus-indicator-outer-offset: 2px;
+
+  --md-sys-shape-corner-full: 999px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-small: 8px;
+
+  --md-sys-elevation-level0:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 0px 0px
+      0px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 0px 0px
+      0px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 0px 0px
+      0px;
+  --md-sys-elevation-level1:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 2px
+      1px -1px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 1px 1px
+      0px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 1px 3px
+      0px;
+  --md-sys-elevation-level2:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 3px
+      3px -2px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 3px 4px
+      0px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 1px 8px
+      0px;
+  --md-sys-elevation-level3:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 3px
+      5px -1px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 6px 10px
+      0px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 1px 18px
+      0px;
+  --md-sys-elevation-level4:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 5px
+      5px -3px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 8px 10px
+      1px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 3px 14px
+      2px;
+  --md-sys-elevation-level5:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 7px
+      8px -4px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 12px
+      17px 2px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 5px 22px
+      4px;
+}

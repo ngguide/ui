@@ -1,0 +1,9 @@
+.bg-lines {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    white,
+    rgba(128, 128, 128, 0.232) 1px,
+    white 1px,
+    white 8px
+  );
+}

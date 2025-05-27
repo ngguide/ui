@@ -1,15 +1,22 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { GuiSize } from '@ngguide/ui';
 
-import { UiComponent } from '@ngguide/ui';
-import { greeting } from '@ngguide/ui/button';
+import { ButtonComponent, GuiButtonVariant } from '@ngguide/ui/button';
 
 @Component({
-  imports: [RouterModule, UiComponent],
+  imports: [RouterModule, ButtonComponent],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = greeting;
+  sizes: GuiSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
+  variants: GuiButtonVariant[] = [
+    'filled',
+    'elevated',
+    'tonal',
+    'outlined',
+    'text',
+  ];
 }
