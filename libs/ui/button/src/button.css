@@ -1,132 +1,95 @@
 :host {
   font-family: var(--md-ref-typeface-plain);
   font-weight: var(--md-ref-typeface-weight-medium);
-
   border-radius: var(--md-sys-shape-corner-full);
-
   gap: 8px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   transition:
     background-color 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out,
     border-radius 0.2s ease-in-out;
-
   cursor: pointer;
 }
 
-:host[data-size='xs'] {
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-
+/* Sizes */
+:host([data-size]) {
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.1px;
-
-  &[data-shape='square'] {
-    border-radius: var(--md-sys-shape-corner-medium);
-  }
-
-  &[data-shape='square']:active {
-    border-radius: var(--md-sys-shape-corner-small);
-  }
+  padding: 6px 12px;
 }
 
-:host[data-size='sm'] {
-  padding-left: 24px;
-  padding-right: 24px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.1px;
-
-  &[data-shape='square'] {
-    border-radius: var(--md-sys-shape-corner-medium);
-  }
-
-  &[data-shape='square']:active {
-    border-radius: var(--md-sys-shape-corner-small);
-  }
+:host([data-size='sm']) {
+  padding: 10px 24px;
 }
 
-:host[data-size='md'] {
-  padding-left: 24px;
-  padding-right: 24px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-
+:host([data-size='md']) {
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
-
-  &[data-shape='square'] {
-    border-radius: var(--md-sys-shape-corner-large);
-  }
-
-  &[data-shape='square']:active {
-    border-radius: var(--md-sys-shape-corner-medium);
-  }
+  padding: 16px 24px;
 }
 
-:host[data-size='lg'] {
-  padding-left: 48px;
-  padding-right: 48px;
-  padding-top: 32px;
-  padding-bottom: 32px;
-
+:host([data-size='lg']) {
   font-family: var(--md-ref-typeface-brand);
   font-weight: var(--md-ref-typeface-weight-regular);
   font-size: 24px;
   line-height: 32px;
   letter-spacing: 0px;
-
+  padding: 32px 48px;
   gap: 16px;
-
-  &[data-shape='square'] {
-    border-radius: var(--md-sys-shape-corner-extra-large);
-  }
-
-  &[data-shape='square']:active {
-    border-radius: var(--md-sys-shape-corner-large);
-  }
 }
 
-:host[data-size='xl'] {
-  padding-left: 64px;
-  padding-right: 64px;
-  padding-top: 48px;
-  padding-bottom: 48px;
-
+:host([data-size='xl']) {
   font-family: var(--md-ref-typeface-brand);
   font-weight: var(--md-ref-typeface-weight-regular);
   font-size: 32px;
   line-height: 40px;
   letter-spacing: 0px;
-
+  padding: 48px 64px;
   gap: 16px;
-
-  &[data-shape='square'] {
-    border-radius: var(--md-sys-shape-corner-extra-large);
-  }
-
-  &[data-shape='square']:active {
-    border-radius: var(--md-sys-shape-corner-large);
-  }
 }
 
-:host[data-shape='round'] {
+/* Shapes */
+:host([data-shape='round']) {
   border-radius: var(--md-sys-shape-corner-full);
 }
 
-:host[data-shape='square'] {
+:host([data-shape='square']) {
   border-radius: var(--md-sys-shape-corner-medium);
+}
+
+:host([data-size='xs'][data-shape='square']) {
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+:host([data-size='xs'][data-shape='square']:active) {
+  border-radius: var(--md-sys-shape-corner-small);
+}
+:host([data-size='sm'][data-shape='square']) {
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+:host([data-size='sm'][data-shape='square']:active) {
+  border-radius: var(--md-sys-shape-corner-small);
+}
+:host([data-size='md'][data-shape='square']) {
+  border-radius: var(--md-sys-shape-corner-large);
+}
+:host([data-size='md'][data-shape='square']:active) {
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+:host([data-size='lg'][data-shape='square']) {
+  border-radius: var(--md-sys-shape-corner-extra-large);
+}
+:host([data-size='lg'][data-shape='square']:active) {
+  border-radius: var(--md-sys-shape-corner-large);
+}
+:host([data-size='xl'][data-shape='square']) {
+  border-radius: var(--md-sys-shape-corner-extra-large);
+}
+:host([data-size='xl'][data-shape='square']:active) {
+  border-radius: var(--md-sys-shape-corner-large);
 }
 
 :host(:focus-visible) {
@@ -139,51 +102,36 @@
   pointer-events: none;
 }
 
-
 /* Filled */
-:host[data-variant='filled'] {
+:host([data-variant='filled']) {
   background-color: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
   box-shadow: var(--md-sys-elevation-level0);
-
-  &:hover {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-primary),
-      var(--md-sys-color-on-primary) 8%
-    );
-
-    box-shadow: var(--md-sys-elevation-level1);
-  }
-
-  &:focus-visible {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-primary),
-      var(--md-sys-color-on-primary) 8%
-    );
-  }
-
-  &:active {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-primary),
-      var(--md-sys-color-on-primary) 10%
-    );
-
-    box-shadow: var(--md-sys-elevation-level0);
-  }
-
-  &:disabled {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-on-surface),
-      transparent 90%
-    );
-    color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
-
-    pointer-events: none;
-  }
+}
+:host([data-variant='filled']:hover),
+:host([data-variant='filled']:focus-visible) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-primary),
+    var(--md-sys-color-on-primary) 8%
+  );
+  box-shadow: var(--md-sys-elevation-level1);
+}
+:host([data-variant='filled']:active) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-primary),
+    var(--md-sys-color-on-primary) 10%
+  );
+  box-shadow: var(--md-sys-elevation-level0);
+}
+:host([data-variant='filled']:disabled) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 90%
+  );
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
 }
 
 /* Elevated */
@@ -191,153 +139,98 @@
   background-color: var(--md-sys-color-surface-container-low);
   box-shadow: var(--md-sys-elevation-level1);
   color: var(--md-sys-color-primary);
-
-  &:hover {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-surface-container-low),
-      var(--md-sys-color-primary) 8%
-    );
-
-    box-shadow: var(--md-sys-elevation-level2);
-  }
-
-  &:focus-visible {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-surface-container-low),
-      var(--md-sys-color-primary) 10%
-    );
-  }
-
-  &:active {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-surface-container-low),
-      var(--md-sys-color-primary) 10%
-    );
-
-    box-shadow: var(--md-sys-elevation-level1);
-  }
+}
+:host([data-variant='elevated']:hover),
+:host([data-variant='elevated']:focus-visible),
+:host([data-variant='elevated']:active) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-surface-container-low),
+    var(--md-sys-color-primary) 10%
+  );
+}
+:host([data-variant='elevated']:hover) {
+  box-shadow: var(--md-sys-elevation-level2);
+}
+:host([data-variant='elevated']:active) {
+  box-shadow: var(--md-sys-elevation-level1);
 }
 
+/* Tonal */
 :host([data-variant='tonal']) {
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
-
-  &:disabled {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-on-surface),
-      transparent 90%
-    );
-    color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
-  }
-
-  &:hover {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-secondary-container),
-      var(--md-sys-color-on-secondary-container) 8%
-    );
-  }
-
-  &:focus-visible {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-secondary-container),
-      var(--md-sys-color-on-secondary-container) 10%
-    );
-  }
-
-  &:active {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-secondary-container),
-      var(--md-sys-color-on-secondary-container) 10%
-    );
-  }
-
+}
+:host([data-variant='tonal']:hover),
+:host([data-variant='tonal']:focus-visible),
+:host([data-variant='tonal']:active) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-secondary-container),
+    var(--md-sys-color-on-secondary-container) 10%
+  );
+}
+:host([data-variant='tonal']:disabled) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 90%
+  );
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
 }
 
+/* Outlined */
 :host([data-variant='outlined']) {
   background-color: transparent;
   border-color: var(--md-sys-color-outline-variant);
   border-style: solid;
   border-width: 1px;
-
-  &[data-size='lg'] {
-    border-width: 2px;
-  }
-
-  &[data-size='xl'] {
-    border-width: 3px;
-  }
-
   color: var(--md-sys-color-on-surface-variant);
-
-  &:disabled {
-
-    border-color: color-mix(
-      in srgb,
-      var(--md-sys-color-outline-variant),
-      transparent 90%
-    );
-
-    color: color-mix(
-      in srgb,
-      var(--md-sys-color-on-surface-variant),
-      transparent 62%
-    );
-  }
-
-  &:hover {
-    background-color: color-mix(
-      in srgb,
-      transparent,
-      var(--md-sys-color-on-surface-variant) 8%
-    );
-  }
-
-  &:focus-visible {
-    background-color: color-mix(
-      in srgb,
-      transparent,
-      var(--md-sys-color-on-surface-variant) 10%
-    );
-  }
-
-  &:active {
-    background-color: color-mix(
-      in srgb,
-      transparent,
-      var(--md-sys-color-on-surface-variant) 10%
-    );
-  }
+}
+:host([data-variant='outlined'][data-size='lg']) {
+  border-width: 2px;
+}
+:host([data-variant='outlined'][data-size='xl']) {
+  border-width: 3px;
+}
+:host([data-variant='outlined']:hover),
+:host([data-variant='outlined']:focus-visible),
+:host([data-variant='outlined']:active) {
+  background-color: color-mix(
+    in srgb,
+    transparent,
+    var(--md-sys-color-on-surface-variant) 10%
+  );
+}
+:host([data-variant='outlined']:disabled) {
+  border-color: color-mix(
+    in srgb,
+    var(--md-sys-color-outline-variant),
+    transparent 90%
+  );
+  color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface-variant),
+    transparent 62%
+  );
 }
 
+/* Text */
 :host([data-variant='text']) {
   color: var(--md-sys-color-primary);
-
-  &:disabled {
-    background-color: color-mix(
-      in srgb,
-      var(--md-sys-color-on-surface),
-      transparent 90%
-    );
-
-    color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
-  }
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-  }
-
-  &:focus-visible {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  &:active {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
+}
+:host([data-variant='text']:hover) {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+:host([data-variant='text']:focus-visible),
+:host([data-variant='text']:active) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+:host([data-variant='text']:disabled) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 90%
+  );
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
 }
