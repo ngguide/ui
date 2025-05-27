@@ -1,5 +1,89 @@
-<gui-ui />
+<div class="w-full h-lvh flex justify-center items-center bg-lines">
+  <div class="flex flex-col gap-2 w-max">
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          1
+        </div>
+      </div>
+      <div>
+        <button gui-button size="xs" variant="tonal">Extra small</button>
+      </div>
+      <div>
+        <button gui-button size="sm" variant="tonal">Small</button>
+      </div>
+      <div>
+        <button gui-button size="md" variant="tonal">Medium</button>
+      </div>
+      <div>
+        <button gui-button size="lg" variant="tonal">Large</button>
+      </div>
+      <div>
+        <button gui-button size="xl" variant="tonal">Extra large</button>
+      </div>
+    </div>
 
-{{ title }}
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          2
+        </div>
+      </div>
+      <div>
+        <button gui-button size="md" shape="round" variant="outlined">
+          Round
+        </button>
+      </div>
+      <div>
+        <button gui-button size="md" shape="square" variant="outlined">
+          Square
+        </button>
+      </div>
+    </div>
 
-<router-outlet></router-outlet>
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          3
+        </div>
+      </div>
+      <div>
+        <button gui-button size="md" variant="elevated">Elevated</button>
+      </div>
+      <div>
+        <button gui-button size="md" variant="filled">Filled</button>
+      </div>
+      <div>
+        <button gui-button size="md" variant="tonal">Tonal</button>
+      </div>
+      <div>
+        <button gui-button size="md" variant="outlined">Outlined</button>
+      </div>
+      <div>
+        <button gui-button size="md" variant="text">Text</button>
+      </div>
+    </div>
+
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          4
+        </div>
+      </div>
+      <div>
+        <button gui-button size="md" variant="tonal" disabled>Disabled</button>
+      </div>
+      <div>
+        <button gui-button size="md" variant="tonal">Enabled</button>
+      </div>
+    </div>
+  </div>
+</div>
