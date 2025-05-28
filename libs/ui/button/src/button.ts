@@ -1,9 +1,13 @@
-import { Component, input } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+} from '@angular/core';
 import { GuiSize } from '@ngguide/ui';
 
 // todo: icon
 // todo: toggled
-// todo: morph
 
 export type GuiButtonVariant =
   | 'elevated'
@@ -11,6 +15,8 @@ export type GuiButtonVariant =
   | 'tonal'
   | 'outlined'
   | 'text';
+
+export type GuiButtonShape = 'square' | 'round';
 
 @Component({
   selector:
@@ -22,13 +28,16 @@ export type GuiButtonVariant =
     '[attr.data-variant]': 'variant()',
     '[attr.data-size]': 'size()',
     '[attr.data-shape]': 'shape()',
+    '[class.disabled]': 'disabled()',
   },
+  exportAs: 'guiButton',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent {
-  // elevated, filled, tonal, outlined, and text
   variant = input<GuiButtonVariant>('filled');
-  // extra small, small, medium, large, and extra large
   size = input<GuiSize>('sm');
-  // round and square
-  shape = input<'square' | 'round'>('round');
+  shape = input<GuiButtonShape>('round');
+  disabled = input(false, {
+    transform: booleanAttribute,
+  });
 }

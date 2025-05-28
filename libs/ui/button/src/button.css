@@ -113,7 +113,7 @@
   outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
 }
 
-:host(:disabled) {
+:host(.disabled) {
   pointer-events: none;
 }
 
@@ -140,7 +140,7 @@
   );
   box-shadow: var(--md-sys-elevation-level0);
 }
-:host([data-variant='filled']:disabled) {
+:host([data-variant='filled'].disabled) {
   background-color: color-mix(
     in srgb,
     var(--md-sys-color-on-surface),
@@ -185,7 +185,7 @@
     var(--md-sys-color-on-secondary-container) 10%
   );
 }
-:host([data-variant='tonal']:disabled) {
+:host([data-variant='tonal'].disabled) {
   background-color: color-mix(
     in srgb,
     var(--md-sys-color-on-surface),
@@ -217,7 +217,7 @@
     var(--md-sys-color-on-surface-variant) 10%
   );
 }
-:host([data-variant='outlined']:disabled) {
+:host([data-variant='outlined'].disabled) {
   border-color: color-mix(
     in srgb,
     var(--md-sys-color-outline-variant),
@@ -241,7 +241,7 @@
 :host([data-variant='text']:active) {
   background-color: rgba(255, 255, 255, 0.1);
 }
-:host([data-variant='text']:disabled) {
+:host([data-variant='text'].disabled) {
   background-color: color-mix(
     in srgb,
     var(--md-sys-color-on-surface),
