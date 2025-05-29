@@ -35,7 +35,6 @@ Statuses:
 
 | Component           | Status |
 | ------------------- | ------ |
-| Components overview | ⏳     |
 | App bars            | ⏳     |
 | Badges              | ⏳     |
 | Buttons             | 🔧     |
