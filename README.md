@@ -23,6 +23,56 @@ UI Kit is being built **in public**, component by component, as part of the Angu
 
 ---
 
+## Components
+
+Statuses:
+
+- ✅ done
+- 🛠 in progress
+- ⏳ planned
+- ❌ cancelled
+- 🔧 needs revision
+
+| Component           | Status |
+| ------------------- | ------ |
+| Components overview | ⏳     |
+| App bars            | ⏳     |
+| Badges              | ⏳     |
+| Buttons             | 🔧     |
+| Button groups       | ⏳     |
+| Extended FAB        | ⏳     |
+| FAB                 | ⏳     |
+| FAB menu            | ⏳     |
+| Icon buttons        | ⏳     |
+| Segmented buttons   | ⏳     |
+| Split button        | ⏳     |
+| Cards               | ⏳     |
+| Carousel            | ⏳     |
+| Checkbox            | ⏳     |
+| Chips               | ⏳     |
+| Date pickers        | ⏳     |
+| Time pickers        | ⏳     |
+| Dialogs             | ⏳     |
+| Divider             | ⏳     |
+| Lists               | ⏳     |
+| Loading indicator   | ⏳     |
+| Progress indicators | ⏳     |
+| Menus               | ⏳     |
+| Navigation bar      | ⏳     |
+| Navigation drawer   | ⏳     |
+| Navigation rail     | ⏳     |
+| Radio button        | ⏳     |
+| Search              | ⏳     |
+| Bottom sheets       | ⏳     |
+| Side sheets         | ⏳     |
+| Sliders             | ⏳     |
+| Snackbar            | ⏳     |
+| Switch              | ⏳     |
+| Tabs                | ⏳     |
+| Text fields         | ⏳     |
+| Toolbars            | ⏳     |
+| Tooltips            | ⏳     |
+
 ## 🧭 Course Roadmap (Aligned with the Course)
 
 | Module | Focus                               | Status     |
