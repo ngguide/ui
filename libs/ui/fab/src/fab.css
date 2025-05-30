@@ -1,0 +1,269 @@
+:host {
+  font-family: var(--md-ref-typeface-plain);
+  font-weight: var(--md-ref-typeface-weight-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+  cursor: pointer;
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+/* Sizes */
+:host([data-size='sm']) {
+  --gui-comp-icon-size: 24px;
+
+  width: 56px;
+  height: 56px;
+  font-size: 14px;
+  line-height: 20px;
+
+  border-radius: var(--md-sys-shape-corner-large);
+}
+
+:host([data-size='md']) {
+  --gui-comp-icon-size: 28px;
+
+  width: 80px;
+  height: 80px;
+  font-size: 16px;
+  line-height: 24px;
+
+  border-radius: var(--md-sys-shape-corner-large-increased);
+}
+
+:host([data-size='lg']) {
+  --gui-comp-icon-size: 36px;
+
+  width: 96px;
+  height: 96px;
+  font-size: 24px;
+  line-height: 32px;
+
+  border-radius: var(--md-sys-shape-corner-extra-large);
+}
+
+/* Extended FAB */
+:host([data-extended='true']) {
+  padding: 0 20px;
+  gap: 12px;
+  width: auto;
+  min-height: 56px;
+}
+
+:host([data-extended='true'][data-size='sm']) {
+  padding: 0 16px;
+  gap: 8px;
+  min-height: 40px;
+}
+
+:host([data-extended='true'][data-size='lg']) {
+  padding: 0 28px;
+  gap: 16px;
+  min-height: 96px;
+}
+
+/* Focus outline */
+:host(:focus-visible) {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid
+    var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+
+
+/* Primary variant */
+:host([data-color='tonal-primary']) {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+:host([data-color='tonal-primary']:hover) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-primary),
+    var(--md-sys-color-on-primary) 8%
+  );
+  box-shadow: var(--md-sys-elevation-level4);
+}
+
+:host([data-color='tonal-primary']:focus-visible) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-primary),
+    var(--md-sys-color-on-primary) 10%
+  );
+}
+
+:host([data-color='tonal-primary']:active) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-primary),
+    var(--md-sys-color-on-primary) 10%
+  );
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+/* Secondary variant */
+:host([data-color='tonal-secondary']) {
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+}
+
+:host([data-color='tonal-secondary']:hover) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-secondary),
+    var(--md-sys-color-on-secondary) 8%
+  );
+  box-shadow: var(--md-sys-elevation-level4);
+}
+
+:host([data-color='tonal-secondary']:focus-visible) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-secondary),
+    var(--md-sys-color-on-secondary) 10%
+  );
+}
+
+:host([data-color='tonal-secondary']:active) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-secondary),
+    var(--md-sys-color-on-secondary) 10%
+  );
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+/* Tertiary variant */
+:host([data-color='tonal-tertiary']) {
+  background-color: var(--md-sys-color-tertiary);
+  color: var(--md-sys-color-on-tertiary);
+}
+
+:host([data-color='tonal-tertiary']:hover) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-tertiary),
+    var(--md-sys-color-on-tertiary) 8%
+  );
+  box-shadow: var(--md-sys-elevation-level4);
+}
+
+:host([data-color='tonal-tertiary']:focus-visible) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-tertiary),
+    var(--md-sys-color-on-tertiary) 10%
+  );
+}
+
+:host([data-color='tonal-tertiary']:active) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-tertiary),
+    var(--md-sys-color-on-tertiary) 10%
+  );
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+/* tonal */
+
+/* Primary variant */
+:host([data-color='primary']) {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+:host([data-color='primary']:hover) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-primary-container),
+    var(--md-sys-color-on-primary-container) 8%
+  );
+  box-shadow: var(--md-sys-elevation-level4);
+}
+
+:host([data-color='primary']:focus-visible) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-primary-container),
+    var(--md-sys-color-on-primary-container) 10%
+  );
+}
+
+:host([data-color='primary']:active) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-primary-container),
+    var(--md-sys-color-on-primary-container) 10%
+  );
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+/* Secondary variant */
+:host([data-color='secondary']) {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+:host([data-color='secondary']:hover) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-secondary-container),
+    var(--md-sys-color-on-secondary-container) 8%
+  );
+  box-shadow: var(--md-sys-elevation-level4);
+}
+
+:host([data-color='secondary']:focus-visible) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-secondary-container),
+    var(--md-sys-color-on-secondary-container) 10%
+  );
+}
+
+:host([data-color='secondary']:active) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-secondary-container),
+    var(--md-sys-color-on-secondary-container) 10%
+  );
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+/* Tertiary variant */
+:host([data-color='tertiary']) {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+:host([data-color='tertiary']:hover) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-tertiary-container),
+    var(--md-sys-color-on-tertiary-container) 8%
+  );
+  box-shadow: var(--md-sys-elevation-level4);
+}
+
+:host([data-color='tertiary']:focus-visible) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-tertiary-container),
+    var(--md-sys-color-on-tertiary-container) 10%
+  );
+}
+
+:host([data-color='tertiary']:active) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-tertiary-container),
+    var(--md-sys-color-on-tertiary-container) 10%
+  );
+  box-shadow: var(--md-sys-elevation-level3);
+}
+

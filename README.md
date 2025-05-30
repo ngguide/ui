@@ -40,7 +40,7 @@ Statuses:
 | Buttons             | 🔧     |
 | Button groups       | ⏳     |
 | Extended FAB        | ⏳     |
-| FAB                 | ⏳     |
+| FAB                 | ✅     |
 | FAB menu            | ⏳     |
 | Icon buttons        | ⏳     |
 | Segmented buttons   | ⏳     |
@@ -114,6 +114,7 @@ UI Kit is **community-first**. If you're following the course or just want to co
 
 > Every component is developed **with public feedback** — PRs, suggestions, and code reviews are encouraged.
 
+To create a new component, run `nx g @nx/angular:library-secondary-entry-point --library=ui --name=<component-name> --skipModule`.
 ---
 
 ## 📚 Learn as You Build
