@@ -2,6 +2,7 @@
   --md-sys-color-primary: #6750a4;
   --md-sys-color-on-primary: #ffffff;
   --md-sys-color-secondary: #625b71;
+  --md-sys-color-on-secondary: #ffffff;
   --md-sys-color-on-surface: #1d1b20;
   --md-sys-color-on-surface-variant: #49454f;
   --md-sys-color-surface-container-low: #f7f2fa;
@@ -9,6 +10,14 @@
   --md-sys-color-on-secondary-container: #4a4458;
   --md-sys-color-outline-variant: #cac4d0;
   --md-sys-color-shadow: #000000;
+
+  --md-sys-color-primary-container: #eaddff;
+  --md-sys-color-on-primary-container: #4F378B;
+
+  --md-sys-color-tertiary: #7D5260;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #FFD8E4;
+  --md-sys-color-on-tertiary-container: #633B48;
 
   --md-ref-typeface-plain: 'Roboto', sans-serif;
   --md-ref-typeface-brand: 'Roboto', sans-serif;
@@ -20,6 +29,7 @@
 
   --md-sys-shape-corner-full: 999px;
   --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-large-increased: 20px;
   --md-sys-shape-corner-large: 16px;
   --md-sys-shape-corner-medium: 12px;
   --md-sys-shape-corner-small: 8px;
