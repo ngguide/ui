@@ -40,7 +40,7 @@ Statuses:
 | Buttons             | 🔧     |
 | Button groups       | ⏳     |
 | Extended FAB        | ⏳     |
-| FAB                 | ✅     |
+| FAB                 | 🔧     |
 | FAB menu            | ⏳     |
 | Icon buttons        | ⏳     |
 | Segmented buttons   | ⏳     |
