@@ -1,6 +1,6 @@
-# Angular UI Kit by [ng.guide](https://ng.guide/ui-kit)
+# Angular UI Kit by [ng.guide](https://ng.guide/ui-kit?utm_source=github&utm_medium=readme&utm_campaign=ui-kit)
 
-UI Kit is a modern, modular UI component library for Angular — built **from scratch**, guided by the course [ng.guide](https://ng.guide/ui-kit).  
+UI Kit is a modern, modular UI component library for Angular — built **from scratch**, guided by the course [ng.guide](https://ng.guide/ui-kit?utm_source=github&utm_medium=readme&utm_campaign=ui-kit).  
 This is not a wrapper around Angular Material — it’s a fresh implementation of Material Design principles with full transparency, customizability, and learning in mind.
 
 ## 🚧 Work in Progress
@@ -119,7 +119,7 @@ To create a new component, run `nx g @nx/angular:library-secondary-entry-point -
 
 ## 📚 Learn as You Build
 
-This library is the backbone of the course **Angular UI Kit** on [ng.guide](https://ng.guide/ui-kit) — where you learn to build your own UI system, not just use one.
+This library is the backbone of the course **Angular UI Kit** on [ng.guide](https://ng.guide/ui-kit?utm_source=github&utm_medium=readme&utm_campaign=ui-kit) — where you learn to build your own UI system, not just use one.
 
 ---
 

@@ -139,4 +139,4 @@ The component automatically adapts its border-radius, padding and gap according 
 ## 📚 Further reading
 
 * [Material Design 3 – Floating Action Button](https://m3.material.io/components/floating-action-button/overview)
-* [Angular UI Kit documentation](https://ng.guide/ui-kit) – course & full library docs.
+* [Angular UI Kit documentation](https://ng.guide/ui-kit?utm_source=github&utm_medium=readme&utm_campaign=ui-kit) – course & full library docs.
