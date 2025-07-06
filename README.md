@@ -92,7 +92,7 @@ Statuses:
 
 ## 🛠 Tech Stack
 
-- Angular 19
+- Angular 20
 - Standalone components
 - Signals-based state
 - Tailwind CSS
