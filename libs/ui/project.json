@@ -35,10 +35,14 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "executor": "@nx/angular:unit-test",
       "options": {
-        "reportsDirectory": "../../coverage/libs/ui"
+        "tsConfig": "libs/ui/tsconfig.spec.json",
+        "include": [
+          "../button/src/button.spec.ts",
+          "../fab/src/fab.spec.ts",
+          "../icon/src/icon.spec.ts"
+        ]
       }
     },
     "lint": {
