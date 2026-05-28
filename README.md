@@ -108,7 +108,7 @@ Statuses:
 UI Kit is **community-first**. If you're following the course or just want to contribute:
 
 1. Clone the repo
-2. Run `npm install`
+2. Run `pnpm install`
 3. Use `nx serve [project]` / `nx test [project]` / `nx build [project]` etc.
 4. Check open issues or suggest improvements
 

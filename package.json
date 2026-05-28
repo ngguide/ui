@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
+  "packageManager": "pnpm@10.33.4",
   "dependencies": {
     "@angular/common": "20.1.4",
     "@angular/compiler": "20.1.4",
@@ -63,5 +64,17 @@
   },
   "nx": {
     "includedScripts": []
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@swc/core",
+      "@tailwindcss/oxide",
+      "core-js",
+      "esbuild",
+      "lmdb",
+      "msgpackr-extract",
+      "nx"
+    ]
   }
 }
