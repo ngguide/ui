@@ -47,6 +47,12 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "generate-tokens": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "jiti libs/ui/tooling/generate-color-tokens.mts"
+      }
     }
   }
 }
