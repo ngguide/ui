@@ -19,7 +19,7 @@ export class IconComponent {
     transform: numberAttribute,
   });
 
-  private _size = computed(() =>
+  protected _size = computed(() =>
     this.size() ? `${this.size()}px` : undefined,
   );
 }
