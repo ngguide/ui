@@ -11,7 +11,7 @@ import { Component, computed, input, numberAttribute } from '@angular/core';
     }
   `,
   host: {
-    '[style.--gui-comp-icon-size]': '_size()',
+    '[style.--gui-comp-icon-size]': 'sizeValue()',
   },
 })
 export class IconComponent {
@@ -19,7 +19,7 @@ export class IconComponent {
     transform: numberAttribute,
   });
 
-  private _size = computed(() =>
+  protected sizeValue = computed(() =>
     this.size() ? `${this.size()}px` : undefined,
   );
 }

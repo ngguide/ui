@@ -18,15 +18,14 @@
       "executor": "@nx/angular:package",
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/ui/ng-package.json"
+        "project": "libs/ui/ng-package.json",
+        "tsConfig": "libs/ui/tsconfig.lib.json"
       },
       "configurations": {
         "production": {
           "tsConfig": "libs/ui/tsconfig.lib.prod.json"
         },
-        "development": {
-          "tsConfig": "libs/ui/tsconfig.lib.json"
-        }
+        "development": {}
       },
       "defaultConfiguration": "production"
     },
@@ -36,10 +35,14 @@
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "executor": "@nx/angular:unit-test",
       "options": {
-        "reportsDirectory": "../../coverage/libs/ui"
+        "tsConfig": "libs/ui/tsconfig.spec.json",
+        "include": [
+          "../button/src/button.spec.ts",
+          "../fab/src/fab.spec.ts",
+          "../icon/src/icon.spec.ts"
+        ]
       }
     },
     "lint": {
