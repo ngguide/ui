@@ -14,6 +14,7 @@ export default [
             '{projectRoot}/src/test-setup.ts',
             '{projectRoot}/tailwind.config.js',
             '{projectRoot}/src/**/*.spec.ts',
+            '{projectRoot}/tooling/**',
             '{projectRoot}/vite.config.mts',
           ],
         },

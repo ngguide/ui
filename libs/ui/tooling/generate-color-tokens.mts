@@ -116,7 +116,6 @@ function main(): void {
   const here = dirname(fileURLToPath(import.meta.url));
   const outPath = join(here, '../src/styles/tokens/_color.generated.css');
   writeFileSync(outPath, emitCss(M3_BASELINE_SEED), 'utf8');
-  // eslint-disable-next-line no-console
   console.log(`Wrote ${outPath}`);
 }
 
