@@ -2,6 +2,7 @@
 status: APPROVED
 created: 2026-05-28
 updated: 2026-05-28
+post-implementation-corrections: 2026-05-28
 ---
 
 # Requirements Document
@@ -216,3 +217,8 @@ rendering correctly after the token system is expanded so that the upgrade is no
 - Partial, light-only token set in the current `theme.css` (incomplete color roles, no dark scheme,
   no type scale, no state/motion tokens) → REPLACED BY Requirements 1–10 (complete M3 token set,
   light + dark, all contrast levels). Existing token names are retained per Requirement 12.
+- 2021 M3 baseline color hex values (e.g. `--md-sys-color-primary: #6750a4`) → REPLACED BY the 2025 M3
+  color-spec values produced by `@material/material-color-utilities` 0.4.0 (e.g. standard-light
+  `primary` = `#65558f`). This resolves the tension between Requirement 12.2 ("same intended
+  appearance") and the project's strict-M3 directive: **Requirement 12.2 guarantees token *names* and
+  semantic roles are preserved, NOT exact hex values** — values track the current published M3 spec.

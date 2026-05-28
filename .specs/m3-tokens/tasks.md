@@ -2,6 +2,7 @@
 status: APPROVED
 created: 2026-05-28
 updated: 2026-05-28
+post-implementation-corrections: 2026-05-28
 ---
 
 # Implementation Plan: M3 Design Tokens
@@ -48,7 +49,7 @@ existing file changes behaviour yet (the generated CSS isn't imported until Grou
 - [x] 4. Generate and commit the color partial
   - Run `pnpm exec nx run ui:generate-tokens`.
   - Commit the resulting `libs/ui/src/styles/tokens/_color.generated.css`.
-  - Spot-check: `--md-sys-color-primary` standard scope ≈ `light-dark(#6750a4, #d0bcff)` and all three `[data-contrast]` scopes are present.
+  - Spot-check: `--md-sys-color-primary` standard scope = `light-dark(#65558f, #cfbdfe)` (MCU 0.4.0 / 2025 M3 color spec — NOT the older 2021 `#6750a4`) and all three `[data-contrast]` scopes are present.
   - _Requirements: 1, 2, 3, 4_
 
 - [x] 5. Add the generator-output spec
@@ -98,7 +99,8 @@ external consumers can `@import '@ngguide/ui/styles/theme.css'`. Blast radius: *
 `apps/web` continues to use its in-repo relative import.
 
 - [x] 11. Configure ng-packagr asset + export
-  - Edit `libs/ui/ng-package.json`: add `assets: [{ "input": "src/styles", "output": "styles", "glob": "**/*.css" }]` and an `exports` entry mapping `./styles/theme.css` (per design §"Packaging").
+  - Edit `libs/ui/ng-package.json`: add `assets: [{ "input": "src/styles", "output": "styles", "glob": "**/*.css" }]`.
+  - Add the `exports` subpath to `libs/ui/package.json` (NOT `ng-package.json` — its schema rejects `exports`): `"exports": { "./styles/theme.css": { "style": "./styles/theme.css", "default": "./styles/theme.css" } }`. ng-packagr merges this into the generated dist `package.json` (per design §"Packaging").
   - _Requirements: 11_
 
 - [x] 12. Verify the published output
@@ -132,3 +134,11 @@ external consumers can `@import '@ngguide/ui/styles/theme.css'`. Blast radius: *
 - No `tooling/`, `scripts/`, or `tools/` directory exists yet — Task 2 creates `libs/ui/tooling/`.
 - Current `theme.css` is imported only via relative path in `apps/web/src/styles.css` (line 7); ng-packagr ships no assets today — Group C adds that capability.
 - Existing token names to preserve (Req 12): button uses 19, fab uses 14, icon uses 0 `--md-*` tokens.
+
+### Implementation deviations (recorded post-implementation)
+
+- **Loader = `jiti`.** Native `node` and `node --import @swc-node/register/esm-register` fail on MCU 0.4.0's extensionless ESM imports; the `generate-tokens` target runs `jiti libs/ui/tooling/generate-color-tokens.mts`.
+- **Color values follow the 2025 M3 color spec.** MCU 0.4.0 resolves the `#6750A4` seed with the 2025 spec → standard-light `primary` is `#65558f` (not the 2021 `#6750a4`). This is the current m3.material.io baseline and is the strict-M3-correct value; it slightly changes existing component colors. See the Superseded Behaviors entry in `requirements.md`.
+- **`exports` lives in `libs/ui/package.json`, not `ng-package.json`** (the latter's schema rejects it); ng-packagr merges it into the dist `package.json`.
+- **`*PaletteKeyColor` roles excluded** from the generated tokens — they are internal to the dynamic-color algorithm and not part of the published `--md-sys-color-*` contract (Req 1.4). Result: 49 canonical sys-color roles.
+- **Build-time `tooling/` excluded from `@nx/dependency-checks`** so MCU is not forced into `peerDependencies` (the published package stays CSS-only).

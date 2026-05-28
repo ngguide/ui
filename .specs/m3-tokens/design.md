@@ -2,6 +2,7 @@
 status: APPROVED
 created: 2026-05-28
 updated: 2026-05-28
+post-implementation-corrections: 2026-05-28
 ---
 
 # Design Document: M3 Design Tokens
@@ -114,7 +115,9 @@ import {
   DynamicColor,
 } from '@material/material-color-utilities';
 
-// M3 baseline source color (matches current --md-sys-color-primary #6750a4)
+// M3 baseline source color. MCU 0.4.0 resolves this seed with the 2025 M3
+// color spec, so the standard-light primary is #65558f (the current m3.material.io
+// baseline), NOT the older 2021 value #6750a4.
 const M3_BASELINE_SEED = '#6750A4';
 
 type ContrastLevel = { name: 'standard' | 'medium' | 'high'; value: 0 | 0.5 | 1 };
@@ -158,16 +161,16 @@ Generated output shape (`libs/ui/src/styles/tokens/_color.generated.css`):
 :root,
 [data-contrast='standard'] {
   color-scheme: light dark;
-  --md-sys-color-primary: light-dark(#6750a4, #d0bcff);
-  --md-sys-color-on-primary: light-dark(#ffffff, #381e72);
-  /* ...all roles... */
+  --md-sys-color-primary: light-dark(#65558f, #cfbdfe);
+  --md-sys-color-on-primary: light-dark(#ffffff, #36275d);
+  /* ...all roles (2025 M3 color spec values from MCU 0.4.0)... */
 }
 [data-contrast='medium'] {
-  --md-sys-color-primary: light-dark(#5e4790, #d6c4fe);
+  --md-sys-color-primary: light-dark(/* medium-contrast pair */);
   /* ...all roles... */
 }
 [data-contrast='high'] {
-  --md-sys-color-primary: light-dark(#372074, #eaddff);
+  --md-sys-color-primary: light-dark(/* high-contrast pair */);
   /* ...all roles... */
 }
 ```
@@ -207,25 +210,38 @@ libs/ui/src/styles/tokens/_motion.css      # --md-sys-motion-duration-*, --md-sy
 @import './tokens/_motion.css';
 ```
 
-### 5. Packaging (`libs/ui/ng-package.json`)
+### 5. Packaging
+
+ng-packagr's `ng-package.json` schema rejects an `exports` property, so the two concerns are split:
+`assets` goes in `ng-package.json`, and the custom subpath `exports` goes in the library
+`package.json` (which ng-packagr merges into the generated dist `package.json`).
 
 ```jsonc
+// libs/ui/ng-package.json
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/libs/ui",
   "lib": { "entryFile": "src/index.ts" },
   "assets": [
     { "input": "src/styles", "output": "styles", "glob": "**/*.css" }
-  ],
+  ]
+}
+```
+
+```jsonc
+// libs/ui/package.json
+{
+  "name": "@ngguide/ui",
   "exports": {
     "./styles/theme.css": { "style": "./styles/theme.css", "default": "./styles/theme.css" }
   }
 }
 ```
 
-ng-packagr copies `src/styles/**/*.css` to `dist/libs/ui/styles/**` and merges the manual `exports`
-entry into the generated `dist/libs/ui/package.json`, making `@ngguide/ui/styles/theme.css` importable
-by external consumers. Relative `@import`s inside the barrel resolve within the shipped `styles/` dir.
+ng-packagr copies `src/styles/**/*.css` to `dist/libs/ui/styles/**` and merges the `exports`
+entry (alongside the generated `.`/`./button`/`./fab`/`./icon` entry-point exports) into the generated
+`dist/libs/ui/package.json`, making `@ngguide/ui/styles/theme.css` importable by external consumers.
+Relative `@import`s inside the barrel resolve within the shipped `styles/` dir.
 
 ### 6. Nx target (`libs/ui/project.json`)
 
@@ -278,7 +294,7 @@ to `--md-ref-typeface-*`.
 |---|---|---|
 | Typeface refs | `--md-ref-typeface-{plain,brand,weight-regular,weight-medium}` | Hand-authored (Roboto default) |
 | Shape | `--md-sys-shape-corner-{none,extra-small,small,medium,large,large-increased,extra-large,full}` | Hand-authored |
-| Elevation | `--md-sys-elevation-level{0..5}` | Hand-authored (color-mix on shadow) |
+| Elevation | `--md-sys-elevation-level{0..5}` | Carried over from the pre-existing `theme.css` (color-mix on shadow); these box-shadows are an approximation NOT yet traced to the published M3 elevation values — flagged for a future strict-M3 verification pass |
 | State | `--md-sys-state-{hover,focus,pressed,dragged}-state-layer-opacity`, `--md-sys-state-focus-indicator-{thickness,outer-offset}` | Hand-authored |
 | Motion | `--md-sys-motion-duration-*`, `--md-sys-motion-easing-*` | Hand-authored |
 
@@ -321,11 +337,15 @@ test target `include` array (per CLAUDE.md, secondary/non-sourceRoot specs aren'
 ```typescript
 // Path: libs/ui/tooling/generate-color-tokens.spec.ts (added to ui test target `include`)
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+// Under the ESM/Vitest builder there is no __dirname — derive it from import.meta.
+const here = dirname(fileURLToPath(import.meta.url));
 
 describe('generated color tokens', () => {
   const css = readFileSync(
-    join(__dirname, '../src/styles/tokens/_color.generated.css'),
+    join(here, '../src/styles/tokens/_color.generated.css'),
     'utf8',
   );
 
