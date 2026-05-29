@@ -104,7 +104,7 @@ Adds the DOM/runtime layer: `<style>` applier, theme service, and the `provideM3
     Req 10.2)
   - _Requirements: 6.1, 6.3, 6.5, 10.2_
 
-- [ ] 10. Implement the theme service
+- [x] 10. Implement the theme service
   - Create `libs/ui/theme/src/theme.service.ts`: `M3ThemeService` (`providedIn:'root'`) with
     `init(config)`, `setTheme(config)` (validate → `generateScheme` → `buildCss` → `applier.apply`),
     `config` signal, and `resolve({mode?,contrast?})` returning flat role→hex incl. custom roles
