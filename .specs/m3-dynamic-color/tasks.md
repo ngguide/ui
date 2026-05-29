@@ -66,7 +66,7 @@ nothing imports yet; the static baseline and existing entry points are unchanged
     role (protects Req 5.5). No silent fallback.
   - _Requirements: 9.1, 9.2, 9.3, 5.5_
 
-- [ ] 6. Implement the CSS builder
+- [x] 6. Implement the CSS builder
   - Create `libs/ui/theme/src/css-builder.ts`: `buildCss(scheme, mode)` emitting
     `:root,[data-contrast='standard']{ color-scheme: <mode>; --md-sys-color-*: light-dark(L,D); }`
     plus `[data-contrast='medium'|'high']` blocks, identical in shape to `_color.generated.css`;
