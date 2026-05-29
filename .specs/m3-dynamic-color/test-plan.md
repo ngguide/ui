@@ -168,7 +168,7 @@ Where a generated value is asserted, the **M3 reference** is the committed stati
       and the colliding `--md-sys-color-*` role. No silent overwrite of a core role.
     - _Requirements: 5.5_
 
-- [!] 6. Global runtime application
+- [x] 6. Global runtime application
   - [x] 6.1 Applied scheme writes the token contract at document root
     - **Preconditions:** Demo app running with default config.
     - **Steps:**
@@ -183,7 +183,7 @@ Where a generated value is asserted, the **M3 reference** is the committed stati
       2. Observe the rendered buttons/fabs.
     - **Expected:** Component colors change to the new scheme immediately; no component code changed.
     - _Requirements: 6.2_
-  - [!] 6.3 Re-applying fully replaces prior dynamic values
+  - [x] 6.3 Re-applying fully replaces prior dynamic values
     - **Preconditions:** Demo app; DevTools.
     - **Steps:**
       1. Apply seed A, note `--md-sys-color-primary` and that exactly one `style[data-m3-dynamic]` exists.
@@ -191,7 +191,6 @@ Where a generated value is asserted, the **M3 reference** is the committed stati
     - **Expected:** Still exactly one `style[data-m3-dynamic]` element; its text is fully replaced
       (primary now reflects seed B; no stale seed-A values linger).
     - _Requirements: 6.3_
-    - **FAILED:** After SSR + client hydration there are **two** identical `style[data-m3-dynamic]` elements (SSR-serialized + client-injected), not one — the client `M3StyleApplier` does not adopt the server-serialized `<style>`, so it appends a duplicate. Re-applying at runtime correctly reuses the client element (count stays 2, never grows) and the last/winning element is fully replaced, so override and re-theme work and there is **no visual shift** (both elements are byte-identical). The defect is the duplicate element only — it violates the design's "single managed `<style>`". Suggested fix: have the applier query an existing `style[data-m3-dynamic]` on first `apply()` and adopt it.
   - [x] 6.4 No dynamic config → static baseline remains
     - **Preconditions:** A page/app that imports the baseline `theme.css` but does NOT call `provideM3Theme`.
     - **Steps:**
@@ -334,6 +333,8 @@ Where a generated value is asserted, the **M3 reference** is the committed stati
 
 ## Summary
 - Total: 30 tests
-- Passed: 29
-- Failed: 1 (6.3 — SSR/hydration duplicate `<style>`)
+- Passed: 30
+- Failed: 0
 - Skipped: 0
+
+_Note: 6.3 initially failed (SSR + client hydration produced two identical `<style data-m3-dynamic>` elements). Fixed — the applier now adopts the server-serialized `<style>` on first `apply()`; re-tested: single element after hydration, runtime re-theme reuses it, no visual shift._
