@@ -37,7 +37,7 @@ nothing imports yet; the static baseline and existing entry points are unchanged
     `dependencies` entry (no `ignoredFiles` change needed for shipped `src/**`)
   - _Requirements: 7.1, 11.1_
 
-- [ ] 2. Define public types
+- [x] 2. Define public types
   - Create `libs/ui/theme/src/types.ts` with `M3SchemeVariant` (9 values), `M3Contrast`, `M3Mode`,
     `M3CustomColor`, `M3ThemeConfig`, `M3ColorGroup`, `M3ResolvedRoles` (per design "Public types")
   - _Requirements: 1.1, 2.1, 3.1, 4.1, 5.1, 7.1_
