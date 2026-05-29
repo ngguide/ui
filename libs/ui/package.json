@@ -4,5 +4,11 @@
   "peerDependencies": {
     "@angular/core": "^21.0.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "exports": {
+    "./styles/theme.css": {
+      "style": "./styles/theme.css",
+      "default": "./styles/theme.css"
+    }
+  }
 }

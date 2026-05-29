@@ -1,0 +1,46 @@
+/* M3 elevation levels (0-5) as box-shadow values, tinted by the active scheme's
+   shadow color so they respond to light/dark mode. */
+:root {
+  --md-sys-elevation-level0:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 0px 0px
+      0px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 0px 0px
+      0px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 0px 0px
+      0px;
+  --md-sys-elevation-level1:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 2px
+      1px -1px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 1px 1px
+      0px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 1px 3px
+      0px;
+  --md-sys-elevation-level2:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 3px
+      3px -2px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 3px 4px
+      0px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 1px 8px
+      0px;
+  --md-sys-elevation-level3:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 3px
+      5px -1px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 6px 10px
+      0px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 1px 18px
+      0px;
+  --md-sys-elevation-level4:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 5px
+      5px -3px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 8px 10px
+      1px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 3px 14px
+      2px;
+  --md-sys-elevation-level5:
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 80%) 0px 7px
+      8px -4px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 86%) 0px 12px
+      17px 2px,
+    color-mix(in srgb, var(--md-sys-color-shadow), transparent 88%) 0px 5px 22px
+      4px;
+}

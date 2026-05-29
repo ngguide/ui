@@ -41,12 +41,19 @@
         "include": [
           "../button/src/button.spec.ts",
           "../fab/src/fab.spec.ts",
-          "../icon/src/icon.spec.ts"
+          "../icon/src/icon.spec.ts",
+          "../tooling/generate-color-tokens.spec.ts"
         ]
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "generate-tokens": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "jiti libs/ui/tooling/generate-color-tokens.mts"
+      }
     }
   }
 }

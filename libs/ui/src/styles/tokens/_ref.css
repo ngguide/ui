@@ -1,0 +1,9 @@
+/* M3 reference typeface tokens. Default to Roboto; override --md-ref-typeface-*
+   in consuming app styles to substitute a brand font (Req 6). */
+:root {
+  --md-ref-typeface-brand: 'Roboto', sans-serif;
+  --md-ref-typeface-plain: 'Roboto', sans-serif;
+  --md-ref-typeface-weight-regular: 400;
+  --md-ref-typeface-weight-medium: 500;
+  --md-ref-typeface-weight-bold: 700;
+}
