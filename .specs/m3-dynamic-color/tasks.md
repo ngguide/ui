@@ -142,25 +142,25 @@ Adds server-side rendering to the demo app and wires `provideM3Theme` to verify 
 Blast radius: *safe* — `apps/web` is the unpublished demo host; release/verdaccio config is untouched.
 Depends on Group B.
 
-- [ ] 15. Add SSR build wiring to `apps/web`
+- [x] 15. Add SSR build wiring to `apps/web`
   - Install `@angular/ssr` and `@angular/platform-server` (`^21`) at the workspace root
   - Add `server` / `ssr` / `outputMode: 'server'` options to the `@angular/build:application` build
     target in `apps/web/project.json`; create `apps/web/tsconfig.server.json`
   - _Requirements: 10.1, 10.2_
 
-- [ ] 16. Add the server bootstrap
+- [x] 16. Add the server bootstrap
   - Create `apps/web/src/main.server.ts` (Angular 21 form: `const bootstrap = (context) =>
     bootstrapApplication(App, serverConfig, context); export default bootstrap;` — NG0401) and
     `apps/web/src/app/app.config.server.ts` merging `provideServerRendering()` with `appConfig`
   - _Requirements: 10.1, 10.2, 10.3_
 
-- [ ] 17. Dogfood `provideM3Theme` in `apps/web`
+- [x] 17. Dogfood `provideM3Theme` in `apps/web`
   - Add `provideM3Theme({ sourceColor, variant, contrast, mode, customColors })` to
     `apps/web/src/app/app.config.ts`, plus a minimal demo control that calls
     `M3ThemeService.setTheme(...)` at runtime (Req 7.3) to exercise re-theming
   - _Requirements: 7.1, 7.2, 7.3_
 
-- [ ] 18. Verify SSR-safety end-to-end
+- [x] 18. Verify SSR-safety end-to-end
   - Build/serve the SSR target; confirm the server-rendered HTML `<head>` contains the dynamic
     `<style>` with `--md-sys-color-*: light-dark(...)` and that the client hydrates with no theme
     flash (identical CSS string) (Req 10.2, 10.3)

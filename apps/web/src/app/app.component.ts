@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { GuiSize } from '@ngguide/ui';
+import { M3ThemeService } from '@ngguide/ui/theme';
 
 import { ButtonComponent, GuiButtonVariant } from '@ngguide/ui/button';
 import { FabComponent, GuiFabColor } from '@ngguide/ui/fab';
@@ -13,6 +14,22 @@ import { IconComponent } from '@ngguide/ui/icon';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
+  private readonly theme = inject(M3ThemeService);
+
+  /** Demo brand seeds to exercise runtime re-theming (Req 7.3). */
+  readonly brandSeeds = ['#6750A4', '#00629D', '#B3261E'];
+
+  /** Re-theme the running app from a brand seed color. */
+  applyBrand(seed: string): void {
+    this.theme.setTheme({
+      sourceColor: seed,
+      variant: 'tonal-spot',
+      contrast: 'standard',
+      mode: 'auto',
+      customColors: [{ name: 'brand-success', value: '#2e7d32' }],
+    });
+  }
+
   sizes: GuiSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
   variants: GuiButtonVariant[] = [
     'filled',
