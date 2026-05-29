@@ -42,7 +42,7 @@ nothing imports yet; the static baseline and existing entry points are unchanged
     `M3CustomColor`, `M3ThemeConfig`, `M3ColorGroup`, `M3ResolvedRoles` (per design "Public types")
   - _Requirements: 1.1, 2.1, 3.1, 4.1, 5.1, 7.1_
 
-- [ ] 3. Implement the core scheme engine
+- [x] 3. Implement the core scheme engine
   - Create `libs/ui/theme/src/engine.ts`: `camelToKebab`, `coreRoles()` (enumerate
     `MaterialDynamicColors`, exclude `*PaletteKeyColor`), `VARIANT_MAP`, `CONTRAST_MAP`,
     `buildScheme()`, and `generateScheme()` producing `{standard,medium,high}` × role × `{light,dark}`
