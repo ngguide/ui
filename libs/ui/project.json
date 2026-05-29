@@ -46,6 +46,7 @@
           "../theme/src/engine.spec.ts",
           "../theme/src/css-builder.spec.ts",
           "../theme/src/validate.spec.ts",
+          "../theme/src/theme.service.spec.ts",
           "../tooling/generate-color-tokens.spec.ts"
         ]
       }

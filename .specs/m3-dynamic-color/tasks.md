@@ -124,14 +124,14 @@ Adds the DOM/runtime layer: `<style>` applier, theme service, and the `provideM3
     custom colors + harmonize, and the import path
   - _Requirements: 7.1, 7.3, 8.1_
 
-- [ ] 13. Test the Angular layer
+- [x] 13. Test the Angular layer
   - Create `libs/ui/theme/src/theme.service.spec.ts` (TestBed + real `DOCUMENT`): asserts a `<style>`
     is injected after baseline, `setTheme` replaces it, `resolve()` equals applied values, and
     `provideM3Theme` applies the configured scheme at init; invalid config throws
   - Register the spec in `libs/ui/project.json` `test.options.include`
   - _Requirements: 6.2, 6.3, 6.5, 7.2, 7.3, 8.2, 8.3, 9.1_
 
-- [ ] 14. Checkpoint — Group B verification
+- [x] 14. Checkpoint — Group B verification
   - Run `pnpm exec nx run-many -t lint test build -p ui`
   - Confirm `@ngguide/ui/theme` exports the full API and `dist/libs/ui` builds with the `theme` entry
     point and MCU declared; static baseline behaviour unchanged when `provideM3Theme` is unused
