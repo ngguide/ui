@@ -96,7 +96,7 @@ Adds the DOM/runtime layer: `<style>` applier, theme service, and the `provideM3
 `TestBed` tests, and finalizes the public barrel. Blast radius: *safe* — additive; no app calls
 `provideM3Theme` yet, so the static baseline still governs. Depends on Group A.
 
-- [ ] 9. Implement the SSR-safe style applier
+- [x] 9. Implement the SSR-safe style applier
   - Create `libs/ui/theme/src/style-applier.ts`: `M3StyleApplier` (`providedIn:'root'`) injecting
     `DOCUMENT` (from `@angular/core`) and `RendererFactory2.createRenderer(null,null)`; `apply(css)`
     creates-or-replaces a single managed `<style>` at the end of `<head>` (Decision 3A; overrides
