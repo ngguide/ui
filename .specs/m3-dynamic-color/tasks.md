@@ -50,7 +50,7 @@ nothing imports yet; the static baseline and existing entry points are unchanged
   - Ensure role-name enumeration matches the build-time generator so the contract holds (Req 11)
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 2.1, 2.2, 2.3, 2.4, 3.1, 3.2, 3.3, 11.1, 11.2_
 
-- [ ] 4. Implement contrast-aware custom-color generation
+- [x] 4. Implement contrast-aware custom-color generation
   - Extend `engine.ts`: for each `M3CustomColor`, optionally `Blend.harmonize(value, source)`, then
     seed a per-color `DynamicScheme` (same variant + contrast + mode) and map its primary family to
     `--md-sys-color-<name>` / `-on-<name>` / `-<name>-container` / `-on-<name>-container`

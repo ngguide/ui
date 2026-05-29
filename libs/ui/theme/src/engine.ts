@@ -15,9 +15,15 @@ import {
   DynamicScheme,
   Variant,
   MaterialDynamicColors,
+  Blend,
   type DynamicColor,
 } from '@material/material-color-utilities';
-import type { M3ThemeConfig, M3Contrast, M3SchemeVariant } from './types';
+import type {
+  M3ThemeConfig,
+  M3Contrast,
+  M3SchemeVariant,
+  M3CustomColor,
+} from './types';
 
 const VARIANT_MAP: Record<M3SchemeVariant, Variant> = {
   monochrome: Variant.MONOCHROME,
@@ -127,6 +133,58 @@ function coreScopeRoles(
 }
 
 /**
+ * The `primary` family of `MaterialDynamicColors`, used as the contrast-aware
+ * source of a custom color's four roles (Decision 5B). Resolved via the
+ * deprecated-but-present static `DynamicColor` properties — the same access the
+ * build-time generator relies on.
+ */
+const MDC_STATIC = MaterialDynamicColors as unknown as Record<string, DynamicColor>;
+const PRIMARY_FAMILY = {
+  /** custom `<name>`           ← primary */
+  color: 'primary',
+  /** custom `on-<name>`        ← onPrimary */
+  onColor: 'onPrimary',
+  /** custom `<name>-container` ← primaryContainer */
+  colorContainer: 'primaryContainer',
+  /** custom `on-<name>-container` ← onPrimaryContainer */
+  onColorContainer: 'onPrimaryContainer',
+} as const;
+
+/**
+ * The four custom-color roles for one contrast level (Decision 5B, the
+ * documented M3-gap resolution): the custom color seeds its own
+ * `DynamicScheme` (optionally harmonized toward the source), and its primary
+ * family becomes `<name>` / `on-<name>` / `<name>-container` /
+ * `on-<name>-container`. Contrast is applied exactly as for core roles (Req 5.4).
+ */
+function customColorRoles(
+  custom: M3CustomColor,
+  sourceArgb: number,
+  variant: M3SchemeVariant,
+  contrast: M3Contrast,
+): ScopeRoles {
+  const seed = argbFromHex(custom.value);
+  const harmonize = custom.harmonize ?? true;
+  const seedArgb = harmonize ? Blend.harmonize(seed, sourceArgb) : seed;
+
+  const light = buildScheme(seedArgb, variant, contrast, false);
+  const dark = buildScheme(seedArgb, variant, contrast, true);
+
+  const pair = (mdcKey: string): RolePair => ({
+    light: hexFromArgb(MDC_STATIC[mdcKey].getArgb(light)),
+    dark: hexFromArgb(MDC_STATIC[mdcKey].getArgb(dark)),
+  });
+
+  const name = custom.name;
+  return {
+    [name]: pair(PRIMARY_FAMILY.color),
+    [`on-${name}`]: pair(PRIMARY_FAMILY.onColor),
+    [`${name}-container`]: pair(PRIMARY_FAMILY.colorContainer),
+    [`on-${name}-container`]: pair(PRIMARY_FAMILY.onColorContainer),
+  };
+}
+
+/**
  * Pure generation: seed (+ custom colors) → all roles for all 3 contrasts,
  * light + dark. Assumes `config.sourceColor` / custom values are already valid
  * hex (validation lives in `validate.ts` and runs before this in the service).
@@ -134,10 +192,15 @@ function coreScopeRoles(
 export function generateScheme(config: M3ThemeConfig): GeneratedScheme {
   const variant = config.variant ?? 'tonal-spot';
   const sourceArgb = argbFromHex(config.sourceColor);
+  const customColors = config.customColors ?? [];
 
   const scheme = {} as GeneratedScheme;
   for (const contrast of CONTRAST_LEVELS) {
-    scheme[contrast] = coreScopeRoles(sourceArgb, variant, contrast);
+    const roles = coreScopeRoles(sourceArgb, variant, contrast);
+    for (const custom of customColors) {
+      Object.assign(roles, customColorRoles(custom, sourceArgb, variant, contrast));
+    }
+    scheme[contrast] = roles;
   }
   return scheme;
 }
