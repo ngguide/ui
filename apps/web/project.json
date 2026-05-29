@@ -77,7 +77,8 @@
     "test": {
       "executor": "@nx/angular:unit-test",
       "options": {
-        "tsConfig": "apps/web/tsconfig.spec.json"
+        "tsConfig": "apps/web/tsconfig.spec.json",
+        "runnerConfig": "apps/web/vitest.config.ts"
       }
     },
     "serve-static": {

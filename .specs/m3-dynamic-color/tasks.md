@@ -167,7 +167,7 @@ Depends on Group B.
   - Optionally add a server-render smoke spec if feasible in the harness
   - _Requirements: 10.1, 10.2, 10.3_
 
-- [ ] 19. Final checkpoint — everything green
+- [x] 19. Final checkpoint — everything green
   - `pnpm exec nx run-many -t lint test build` green for `ui` and `web`
   - All 11 requirements traceable to a shipped task (see Notes); static-only consumers unaffected
     (Req 6.4); `@ngguide/ui` root import (`GuiSize`) does not pull MCU
