@@ -23,10 +23,22 @@ export class M3StyleApplier {
       return;
     }
     if (!this.styleEl) {
-      const el = this.renderer.createElement('style') as HTMLStyleElement;
-      this.renderer.setAttribute(el, 'data-m3-dynamic', '');
-      this.renderer.appendChild(head, el);
-      this.styleEl = el;
+      // On the client, a server-serialized `<style data-m3-dynamic>` may already
+      // be in <head> (from SSR). Adopt it instead of appending a duplicate, so a
+      // single managed element survives hydration (Req 6.3, 10.3). Any extras are
+      // dropped to converge on exactly one.
+      const existing = head.querySelectorAll<HTMLStyleElement>('style[data-m3-dynamic]');
+      if (existing.length > 0) {
+        this.styleEl = existing[existing.length - 1];
+        for (let i = 0; i < existing.length - 1; i++) {
+          this.renderer.removeChild(head, existing[i]);
+        }
+      } else {
+        const el = this.renderer.createElement('style') as HTMLStyleElement;
+        this.renderer.setAttribute(el, 'data-m3-dynamic', '');
+        this.renderer.appendChild(head, el);
+        this.styleEl = el;
+      }
     }
     this.renderer.setProperty(this.styleEl, 'textContent', css);
   }

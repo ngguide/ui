@@ -59,6 +59,23 @@ describe('M3ThemeService (TestBed + DOCUMENT)', () => {
     doc = TestBed.inject(DOCUMENT);
     expect(() => svc.setTheme({ sourceColor: '#zzz' })).toThrow(/sourceColor/);
   });
+
+  it('adopts a pre-existing SSR <style> instead of duplicating it (Req 6.3 / hydration)', () => {
+    doc = TestBed.inject(DOCUMENT);
+    // Simulate the server-serialized dynamic style already present after SSR.
+    const ssr = doc.createElement('style');
+    ssr.setAttribute('data-m3-dynamic', '');
+    ssr.textContent = '/* serialized by SSR */';
+    doc.head.appendChild(ssr);
+
+    const svc = TestBed.inject(M3ThemeService);
+    svc.setTheme({ sourceColor: '#6750A4' });
+
+    const styles = dynamicStyles(doc);
+    expect(styles.length).toBe(1); // adopted, not duplicated
+    expect(styles[0]).toBe(ssr); // same node reused
+    expect(styles[0].textContent).toContain('--md-sys-color-primary');
+  });
 });
 
 describe('provideM3Theme', () => {
