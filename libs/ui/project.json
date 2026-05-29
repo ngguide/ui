@@ -38,10 +38,14 @@
       "executor": "@nx/angular:unit-test",
       "options": {
         "tsConfig": "libs/ui/tsconfig.spec.json",
+        "runnerConfig": "libs/ui/vitest.config.ts",
         "include": [
           "../button/src/button.spec.ts",
           "../fab/src/fab.spec.ts",
           "../icon/src/icon.spec.ts",
+          "../theme/src/engine.spec.ts",
+          "../theme/src/css-builder.spec.ts",
+          "../theme/src/validate.spec.ts",
           "../tooling/generate-color-tokens.spec.ts"
         ]
       }

@@ -488,3 +488,10 @@ describe('M3ThemeService (TestBed + DOCUMENT)', () => {
 4. **Custom name equal to a core role** — rejected by validation (Req 5.5).
 5. **Server render then hydrate** — identical CSS string both sides → no theme flash (Req 10.3).
 6. **`#RGB` shorthand / uppercase hex** — accepted; normalized before `argbFromHex`.
+
+## Deviations
+
+Tracked during implementation (per the deviation protocol). None change the architecture or the Decisions table.
+
+- **Minor — Vitest `runnerConfig` for MCU (Group A, task 7).** `@material/material-color-utilities` is ESM-only and ships some extensionless relative imports (e.g. `color_spec_2025.js` → `./dynamic_color`). The Angular Vitest builder externalizes packages, so the theme specs failed to import MCU through raw Node ESM. Resolution: a small `libs/ui/vitest.config.ts` wired via the builder's supported `runnerConfig` option, inlining MCU (`ssr.noExternal` + `deps.optimizer.ssr.include`) so Vite/esbuild resolves it. This is the first test-runner config in the repo (CLAUDE.md notes the builder is otherwise zero-config) and is test-only — production build/runtime are unaffected (apps bundle MCU via esbuild, which resolves the imports). `vitest.config.ts` is added to `@nx/dependency-checks` `ignoredFiles`.
+- **Minor — ng-packagr `allowedNonPeerDependencies` (Group A, task 1/8).** Decision 2A ships MCU in `dependencies` (not `peerDependencies`). ng-packagr blocks non-peer runtime deps unless allow-listed, so `libs/ui/ng-package.json` gains `"allowedNonPeerDependencies": ["@material/material-color-utilities"]`. This is the canonical ng-packagr mechanism for Decision 2A and keeps MCU externalized into `dist/libs/ui/package.json`.

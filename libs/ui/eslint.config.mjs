@@ -16,6 +16,7 @@ export default [
             '{projectRoot}/src/**/*.spec.ts',
             '{projectRoot}/tooling/**',
             '{projectRoot}/vite.config.mts',
+            '{projectRoot}/vitest.config.ts',
           ],
         },
       ],

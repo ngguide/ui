@@ -73,7 +73,7 @@ nothing imports yet; the static baseline and existing entry points are unchanged
     `mode` → `color-scheme` (`auto`→`light dark`, else forced) (Decision 3A, Req 4)
   - _Requirements: 3.1, 3.3, 4.1, 4.2, 4.3, 4.4, 6.1_
 
-- [ ] 7. Unit-test the pure core
+- [x] 7. Unit-test the pure core
   - Create `libs/ui/theme/src/engine.spec.ts`, `css-builder.spec.ts`, `validate.spec.ts`
   - Assert: role-name set equals the names in `libs/ui/src/styles/tokens/_color.generated.css`
     (Req 11.3); baseline seed `#6750A4` tonal-spot/standard yields `primary` `light #65558f` /
@@ -83,7 +83,7 @@ nothing imports yet; the static baseline and existing entry points are unchanged
   - Register all three specs in `libs/ui/project.json` `test.options.include`
   - _Requirements: 1.4, 2.3, 3.2, 4.2, 4.3, 5.2, 5.4, 9.1, 9.2, 11.3_
 
-- [ ] 8. Checkpoint — Group A verification
+- [x] 8. Checkpoint — Group A verification
   - Run new tests: `pnpm exec nx test ui`
   - Run `pnpm exec nx lint ui` and `pnpm exec nx build ui` (entry point builds; MCU externalized in
     `dist/libs/ui/package.json`)
