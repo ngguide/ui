@@ -117,7 +117,7 @@ Adds the DOM/runtime layer: `<style>` applier, theme service, and the `provideM3
     `inject(M3ThemeService).init(config)` (Decision 4A; applies on server and client, Req 7.2, 10.1)
   - _Requirements: 7.1, 7.2, 9.1, 9.2, 10.1_
 
-- [ ] 12. Finalize the public barrel and docs
+- [x] 12. Finalize the public barrel and docs
   - Update `libs/ui/theme/src/index.ts` to export `./types`, `provideM3Theme`, `M3ThemeService`,
     `generateScheme`/`GeneratedScheme`
   - Add `libs/ui/theme/README.md` documenting `provideM3Theme`, runtime `setTheme`, `resolve`,
