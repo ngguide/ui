@@ -59,7 +59,7 @@ nothing imports yet; the static baseline and existing entry points are unchanged
   - Apply the selected contrast level to custom roles like core roles (Req 5.4)
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 5. Implement input validation
+- [x] 5. Implement input validation
   - Create `libs/ui/theme/src/validate.ts`: `parseHex(input,label)` (accept `#RGB`/`#RRGGBB`,
     normalize, throw descriptive `Error` otherwise) and `validateConfig(config)` validating
     `sourceColor` + each `customColors[].value`, and rejecting custom names that collide with a core
