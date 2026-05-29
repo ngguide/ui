@@ -13,6 +13,11 @@
         "outputPath": "dist/apps/web",
         "index": "apps/web/src/index.html",
         "browser": "apps/web/src/main.ts",
+        "server": "apps/web/src/main.server.ts",
+        "outputMode": "server",
+        "ssr": {
+          "entry": "apps/web/src/server.ts"
+        },
         "tsConfig": "apps/web/tsconfig.app.json",
         "assets": [
           {
