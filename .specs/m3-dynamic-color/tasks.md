@@ -111,7 +111,7 @@ Adds the DOM/runtime layer: `<style>` applier, theme service, and the `provideM3
     equal to applied values (Req 8)
   - _Requirements: 6.2, 6.3, 7.3, 8.1, 8.2, 8.3_
 
-- [ ] 11. Implement `provideM3Theme`
+- [x] 11. Implement `provideM3Theme`
   - Create `libs/ui/theme/src/provide-theme.ts`: `provideM3Theme(config): EnvironmentProviders` via
     `makeEnvironmentProviders` + `provideEnvironmentInitializer` that calls `validateConfig` then
     `inject(M3ThemeService).init(config)` (Decision 4A; applies on server and client, Req 7.2, 10.1)
