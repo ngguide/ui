@@ -6,3 +6,4 @@ export {
   GuiStateLayerDirective,
   type GuiInteractionState,
 } from './state-layer.directive';
+export { GuiRippleDirective } from './ripple.directive';

@@ -97,7 +97,7 @@ Adds `[guiStateLayer]` and its `::before` overlay behavior. Blast radius: *safe*
 Adds `[guiRipple]` using the Web Animations API. Blast radius: *safe* — depends
 on Group A (`GuiReducedMotion`, `GuiInteractionStyles`).
 
-- [ ] 11. Implement `GuiRippleDirective`
+- [x] 11. Implement `GuiRippleDirective`
   - Create `libs/ui/interaction/src/ripple.directive.ts`: selector `[guiRipple]`, host `class: 'gui-ripple-host'`; `disabled = input(false, {transform: booleanAttribute})`; inject `ElementRef`, `Renderer2`, `GuiReducedMotion`, `GuiInteractionStyles`
   - Host listeners: `pointerdown` → `launch(event)` (origin at pointer, Req 2.1); `keydown.enter` / `keydown.space` → centered ripple (Req 2.2)
   - `fade(x, y)`: return early if disabled (Req 4.2) or `prefersReducedMotion()` (Req 5.1) or `typeof el.animate !== 'function'`; create a `.gui-ripple` span via `Renderer2`, position at `(x, y)`, size radius from `getBoundingClientRect`; `span.animate([{transform:'scale(0)',opacity:τ},{transform:'scale(1)',opacity:0}], {duration: <md-sys-motion-duration>, easing: <md-sys-motion-easing>, fill:'forwards'})`; `anim.finished.then(() => renderer.removeChild(host, span))` (Req 2.6, 2.7)
