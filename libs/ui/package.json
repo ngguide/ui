@@ -4,6 +4,9 @@
   "peerDependencies": {
     "@angular/core": "^21.0.0"
   },
+  "dependencies": {
+    "@material/material-color-utilities": "^0.4.0"
+  },
   "sideEffects": false,
   "exports": {
     "./styles/theme.css": {
