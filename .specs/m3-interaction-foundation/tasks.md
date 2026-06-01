@@ -46,7 +46,7 @@ Blast radius: *safe* — new entry point, new dependency, no existing code touch
   - Create `libs/ui/interaction/src/interaction-styles.ts`: `@Injectable({ providedIn: 'root' }) GuiInteractionStyles` mirroring `libs/ui/theme/src/style-applier.ts` — `inject(DOCUMENT)` + `RendererFactory2.createRenderer(null,null)`; `ensure()` is idempotent, adopts an existing `<style data-gui-interaction>` on hydration or creates one, and degrades silently if no `<head>`
   - _Requirements: 1.6, 1.7, 1.9, 7.3, 7.4_
 
-- [ ] 4. Implement `GuiReducedMotion` utility
+- [x] 4. Implement `GuiReducedMotion` utility
   - Create `libs/ui/interaction/src/reduced-motion.ts`: `@Injectable({ providedIn: 'root' }) GuiReducedMotion` using `inject(MediaMatcher).matchMedia('(prefers-reduced-motion: reduce)')` (from `@angular/cdk/layout`, SSR-safe); expose `prefersReducedMotion: Signal<boolean>`; subscribe to the MQL `change` event to update the signal at runtime
   - Export `GuiReducedMotion` from `libs/ui/interaction/src/index.ts`
   - _Requirements: 5.2, 5.3, 5.4_

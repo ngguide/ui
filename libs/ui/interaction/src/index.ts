@@ -1,4 +1,4 @@
 // Public barrel for @ngguide/ui/interaction.
 // Exports are added as each directive/utility lands (Groups A–E).
 // GuiInteractionStyles is an internal implementation detail and is NOT exported.
-export {};
+export { GuiReducedMotion } from './reduced-motion';
