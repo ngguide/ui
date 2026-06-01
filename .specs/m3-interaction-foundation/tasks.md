@@ -70,7 +70,7 @@ Blast radius: *safe* — new entry point, new dependency, no existing code touch
 Adds `[guiStateLayer]` and its `::before` overlay behavior. Blast radius: *safe*
 — depends on Group A's `GuiInteractionStyles`.
 
-- [ ] 7. Implement `GuiStateLayerDirective`
+- [x] 7. Implement `GuiStateLayerDirective`
   - Create `libs/ui/interaction/src/state-layer.directive.ts`: selector `[guiStateLayer]`, host `class: 'gui-state-layer'`; `disabled = input(false, {transform: booleanAttribute})`; computed `isDisabled` also reads the host's native `disabled` / `aria-disabled` (Req 4.4)
   - Host bindings: `[attr.data-gui-state]` (`'pressed' | 'dragged' | null`) and `[attr.data-gui-disabled]`; pointer listeners (`pointerenter/leave/down/up/cancel`) to track hover/pressed; drag listeners to set `dragged` (Req 1.5)
   - Call `inject(GuiInteractionStyles).ensure()` on init so the overlay CSS is present

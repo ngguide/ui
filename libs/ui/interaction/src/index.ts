@@ -2,3 +2,7 @@
 // Exports are added as each directive/utility lands (Groups A–E).
 // GuiInteractionStyles is an internal implementation detail and is NOT exported.
 export { GuiReducedMotion } from './reduced-motion';
+export {
+  GuiStateLayerDirective,
+  type GuiInteractionState,
+} from './state-layer.directive';
