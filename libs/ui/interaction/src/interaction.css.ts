@@ -70,13 +70,38 @@ export const INTERACTION_CSS = `
   opacity: 0;
 }
 
-/* --- Ripple base. Geometry/animation are supplied by GuiRippleDirective via the
-   Web Animations API; this only establishes paint + containment defaults. --- */
+/* --- Ripple host. Establishes the positioning context and clips ripples (and
+   the ::before overlay) to the host's shape via overflow. The host's own
+   box-shadow is NOT clipped by its own overflow, so elevated components keep
+   their elevation while the ripple stays inside the shape (Req 2.5). --- */
+.gui-ripple-host {
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- Ripple span. Geometry (size/position) and the scale+opacity animation are
+   supplied by GuiRippleDirective via the Web Animations API; this only
+   establishes paint defaults. It tints with the host content color and scales
+   from its own center (Req 2.4). --- */
 .gui-ripple {
   position: absolute;
   border-radius: 50%;
   background: currentColor;
   pointer-events: none;
+  transform-origin: center;
+}
+
+/* --- Reduced motion (Req 5.1, 5.2). The JS gate in GuiRippleDirective is the
+   primary guard (no ripple span is even created); these rules remove the
+   non-essential state-change transition and hide any ripple as a belt-and-
+   suspenders fallback. --- */
+@media (prefers-reduced-motion: reduce) {
+  .gui-state-layer::before {
+    transition: none;
+  }
+  .gui-ripple {
+    display: none;
+  }
 }
 
 /* --- Focus indicator. Hidden until the focus-ring directive marks keyboard

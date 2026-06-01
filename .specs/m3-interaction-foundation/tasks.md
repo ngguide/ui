@@ -105,7 +105,7 @@ on Group A (`GuiReducedMotion`, `GuiInteractionStyles`).
   - Call `GuiInteractionStyles.ensure()`; export from `index.ts`
   - _Requirements: 2.1–2.7, 4.2, 5.1_
 
-- [ ] 12. Ripple CSS base + reduced-motion guard
+- [x] 12. Ripple CSS base + reduced-motion guard
   - Ensure `.gui-ripple` base styles in `interaction.css.ts` clip to the host shape (host `overflow: hidden`, ripple `border-radius` / containment) without clipping the host's own `box-shadow` (design "State layering"; Req 2.3, 2.5)
   - Add a `@media (prefers-reduced-motion: reduce)` belt-and-suspenders rule that neutralizes any ripple transition (the JS gate in task 11 is primary; Req 5.1)
   - _Requirements: 2.3, 2.5, 5.1_
