@@ -124,24 +124,24 @@ on Group A (`GuiReducedMotion`, `GuiInteractionStyles`).
 Adds `[guiFocusRing]` via CDK `FocusMonitor`. Blast radius: *safe* — depends on
 Group A (`@angular/cdk`).
 
-- [ ] 15. Implement `GuiFocusRingDirective`
+- [x] 15. Implement `GuiFocusRingDirective`
   - Create `libs/ui/interaction/src/focus-ring.directive.ts`: selector `[guiFocusRing]`, host `class: 'gui-focus-ring'`; inject `FocusMonitor` (`@angular/cdk/a11y`, `providedIn:'root'`, SSR-safe) and `ElementRef`
   - In the constructor, `focusMonitor.monitor(el).subscribe(origin => el.classList.toggle('gui-focus-visible', origin === 'keyboard'))` (Req 3.1, 3.2); `ngOnDestroy` → `focusMonitor.stopMonitoring(el)` (cleanup)
   - Disabled / `[aria-disabled]` hosts get no ring (CSS + non-focusability, Req 4.3); `monitor()` returns an empty observable on the server (SSR-safe, Req 7.3)
   - Export from `index.ts`
   - _Requirements: 3.1, 3.2, 3.3, 4.3, 7.3_
 
-- [ ] 16. Focus-ring CSS
+- [x] 16. Focus-ring CSS
   - Ensure `.gui-focus-ring.gui-focus-visible` in `interaction.css.ts` draws an `outline` from `--md-sys-state-focus-indicator-thickness` + `--md-sys-state-focus-indicator-outer-offset` and a color role, visible in light + dark and unclipped by the host's `overflow` (Req 3.4, 3.5); `[disabled]`/`[aria-disabled]` → no ring (Req 4.3)
   - _Requirements: 3.4, 3.5, 4.3_
 
-- [ ] 17. Unit tests for the focus-ring directive
+- [x] 17. Unit tests for the focus-ring directive
   - `libs/ui/interaction/src/focus-ring.directive.spec.ts`: provide a `FocusMonitor` test double whose `monitor()` emits `'mouse'` then `'keyboard'`; assert `gui-focus-visible` is absent for mouse and present for keyboard (Req 3.1, 3.2); assert `stopMonitoring` is called on destroy
   - **Edge case** (design Edge Case 1): in a focused test, drive keyboard-then-programmatic focus and record the reported `FocusOrigin`; if keyboard-driven `focus()` reports `'program'` rather than `'keyboard'`, widen the ring condition accordingly and note it
   - Add spec path to `libs/ui/project.json` test `include`
   - _Requirements: 3.1, 3.2, 3.3_
 
-- [ ] 18. Checkpoint — Group D verification
+- [x] 18. Checkpoint — Group D verification
   - Run `pnpm exec nx test ui`, `pnpm exec nx lint ui`, `pnpm exec nx build ui`
   - Confirm `main` builds/passes with only Groups A–D applied
 

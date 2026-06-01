@@ -7,3 +7,4 @@ export {
   type GuiInteractionState,
 } from './state-layer.directive';
 export { GuiRippleDirective } from './ripple.directive';
+export { GuiFocusRingDirective } from './focus-ring.directive';
