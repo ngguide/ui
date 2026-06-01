@@ -1,5 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
+import { Subject } from 'rxjs';
 import { GuiStateLayerDirective } from './state-layer.directive';
 
 @Component({
@@ -69,5 +71,34 @@ describe('GuiStateLayerDirective', () => {
     host.disabled.set(false);
     fixture.detectChanges();
     expect(el.hasAttribute('data-gui-disabled')).toBe(false);
+  });
+
+  it('marks gui-focus-visible only for keyboard focus, via FocusMonitor (Req 1.3)', () => {
+    // Same keyboard-focus signal as the ring, so the focus tint never desyncs
+    // from the focus ring under programmatic / roving focus.
+    const origin$ = new Subject<FocusOrigin>();
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: FocusMonitor,
+          useValue: {
+            monitor: () => origin$.asObservable(),
+            stopMonitoring: () => undefined,
+          },
+        },
+      ],
+    });
+    const fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+    const el = fixture.nativeElement.querySelector('div') as HTMLElement;
+
+    origin$.next('mouse');
+    expect(el.classList.contains('gui-focus-visible')).toBe(false);
+
+    origin$.next('keyboard');
+    expect(el.classList.contains('gui-focus-visible')).toBe(true);
+
+    origin$.next(null);
+    expect(el.classList.contains('gui-focus-visible')).toBe(false);
   });
 });

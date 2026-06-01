@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  signal,
   viewChildren,
 } from '@angular/core';
 import {
@@ -61,8 +62,9 @@ import {
             guiStateLayer
             guiRipple
             guiFocusRing
-            [attr.tabindex]="i === 0 ? 0 : -1"
+            [attr.tabindex]="i === activeIndex() ? 0 : -1"
             (keydown)="onToolbarKeydown($event)"
+            (focus)="setActive(i)"
             class="px-3 py-2 rounded-md border text-primary"
           >
             {{ item }}
@@ -74,6 +76,10 @@ import {
 })
 export class InteractionDemoComponent implements AfterViewInit {
   readonly toolbarItems = ['One', 'Two', 'Three'];
+
+  /** Index of the single tab stop — kept in sync with the roving manager so the
+   * focused item is always the only `tabindex="0"` (WAI-ARIA roving pattern). */
+  readonly activeIndex = signal(0);
 
   private readonly rovingItems =
     viewChildren<ElementRef<HTMLButtonElement>>('rovingItem');
@@ -90,5 +96,19 @@ export class InteractionDemoComponent implements AfterViewInit {
 
   onToolbarKeydown(event: KeyboardEvent): void {
     this.manager?.onKeydown(event);
+    this.syncActiveIndex();
+  }
+
+  /** Sync the manager's active item to the item the user focused directly. */
+  setActive(index: number): void {
+    this.manager?.setActiveItem(index);
+    this.syncActiveIndex();
+  }
+
+  private syncActiveIndex(): void {
+    const index = this.manager?.activeItemIndex;
+    if (index != null && index >= 0) {
+      this.activeIndex.set(index);
+    }
   }
 }

@@ -1,12 +1,15 @@
 import {
   Directive,
   ElementRef,
+  OnDestroy,
   booleanAttribute,
   computed,
   inject,
   input,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
 import { GuiInteractionStyles } from './interaction-styles';
 import { isHostDisabled } from './disabled';
 
@@ -21,6 +24,12 @@ export type GuiInteractionState = 'pressed' | 'dragged' | null;
  * The overlay tints with the host content color and never affects layout
  * (Req 1.7, 1.9). Disabled hosts (input flag, native `disabled`, or
  * `aria-disabled`) produce no state layer (Req 4.1, 4.4).
+ *
+ * The *focus* state layer is driven by CDK {@link FocusMonitor} (the same
+ * keyboard-focus signal as {@link GuiFocusRingDirective}), toggling the shared
+ * `gui-focus-visible` class — NOT native `:focus-visible`. This keeps the focus
+ * tint and the focus ring in lock-step under programmatic / roving focus, where
+ * the two detectors would otherwise disagree (Req 1.3).
  */
 @Directive({
   selector: '[guiStateLayer]',
@@ -36,9 +45,11 @@ export type GuiInteractionState = 'pressed' | 'dragged' | null;
     '(dragend)': 'onDragged(false)',
   },
 })
-export class GuiStateLayerDirective {
+export class GuiStateLayerDirective implements OnDestroy {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly styles = inject(GuiInteractionStyles);
+  private readonly focusMonitor = inject(FocusMonitor);
+  private readonly el = this.host.nativeElement;
 
   /** Explicit disabled flag; native `disabled`/`aria-disabled` are also honored. */
   readonly disabled = input(false, { transform: booleanAttribute });
@@ -72,6 +83,17 @@ export class GuiStateLayerDirective {
   constructor() {
     // Ensure the shared interaction stylesheet is present on first use.
     this.styles.ensure();
+    // Drive the focus tint off the same keyboard-focus signal as the ring.
+    this.focusMonitor
+      .monitor(this.el)
+      .pipe(takeUntilDestroyed())
+      .subscribe((origin: FocusOrigin) =>
+        this.el.classList.toggle('gui-focus-visible', origin === 'keyboard'),
+      );
+  }
+
+  ngOnDestroy(): void {
+    this.focusMonitor.stopMonitoring(this.el);
   }
 
   protected onPressed(value: boolean): void {

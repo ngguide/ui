@@ -45,14 +45,18 @@ export const INTERACTION_CSS = `
      - pressed and dragged are mutually exclusive (the directive emits exactly
        one), and both yield to the disabled condition;
      - disabled (input flag, native :disabled, or aria-disabled) suppresses the
-       overlay entirely (Req 4.1). --- */
+       overlay entirely (Req 4.1).
+
+   The focus state uses the .gui-focus-visible class (set by the directive via
+   CDK FocusMonitor), NOT native :focus-visible, so the focus tint shares one
+   keyboard-focus signal with the focus ring and the two never desync. --- */
 .gui-state-layer:hover:not([data-gui-state]):not([data-gui-disabled])::before {
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
-.gui-state-layer:focus-visible:not([data-gui-state]):not([data-gui-disabled])::before {
+.gui-state-layer.gui-focus-visible:not([data-gui-state]):not([data-gui-disabled])::before {
   opacity: var(--md-sys-state-focus-state-layer-opacity);
 }
-.gui-state-layer:hover:focus-visible:not([data-gui-state]):not([data-gui-disabled])::before {
+.gui-state-layer:hover.gui-focus-visible:not([data-gui-state]):not([data-gui-disabled])::before {
   opacity: calc(
     var(--md-sys-state-hover-state-layer-opacity) +
       var(--md-sys-state-focus-state-layer-opacity)
