@@ -52,7 +52,8 @@
           "../interaction/src/interaction-styles.spec.ts",
           "../interaction/src/state-layer.directive.spec.ts",
           "../interaction/src/ripple.directive.spec.ts",
-          "../interaction/src/focus-ring.directive.spec.ts"
+          "../interaction/src/focus-ring.directive.spec.ts",
+          "../interaction/src/a11y.spec.ts"
         ]
       }
     },

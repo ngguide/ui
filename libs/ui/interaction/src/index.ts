@@ -8,3 +8,11 @@ export {
 } from './state-layer.directive';
 export { GuiRippleDirective } from './ripple.directive';
 export { GuiFocusRingDirective } from './focus-ring.directive';
+export {
+  FocusKeyManager,
+  ListKeyManager,
+  type FocusableOption,
+  type RovingOrientation,
+  type RovingFocusOptions,
+  createRovingFocus,
+} from './a11y';

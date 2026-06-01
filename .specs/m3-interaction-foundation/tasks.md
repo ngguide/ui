@@ -151,17 +151,17 @@ Re-exports + thin wrappers over CDK roving-tabindex / focus-management. Blast
 radius: *safe* — depends on Group A (`@angular/cdk`). Pattern wiring stays in the
 component specs (Req 6.5).
 
-- [ ] 19. Implement and export generic a11y helpers
+- [x] 19. Implement and export generic a11y helpers
   - Create `libs/ui/interaction/src/a11y.ts`: re-export `FocusKeyManager`, `ListKeyManager`, `type FocusableOption` from `@angular/cdk/a11y` (Req 6.2, 6.3); add a generic `createRovingFocus(...)` factory applying M3/APG defaults (wrap-around, type-ahead) over a caller-supplied item list + orientation (Req 6.1, 6.4) — pattern-agnostic, no listbox/menu/tabs/combobox binding (Req 6.5)
   - Export the helpers from `libs/ui/interaction/src/index.ts`
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5_
 
-- [ ] 20. Unit test for roving-focus helper
+- [x] 20. Unit test for roving-focus helper
   - `libs/ui/interaction/src/a11y.spec.ts`: build a small set of fake `FocusableOption` items, create a roving manager via `createRovingFocus`, simulate arrow `keydown`, assert focus/active index moves and exactly one item is the active tab stop at a time (Req 6.3), and that wrap-around behaves per the configured default
   - Add spec path to `libs/ui/project.json` test `include`
   - _Requirements: 6.1, 6.2, 6.3_
 
-- [ ] 21. Checkpoint — Group E verification
+- [x] 21. Checkpoint — Group E verification
   - Run `pnpm exec nx test ui`, `pnpm exec nx lint ui`, `pnpm exec nx build ui`
   - Confirm `main` builds/passes with only Groups A–E applied; the full public API (`index.ts`) exports all three directives, `GuiReducedMotion`, and the a11y helpers (Req 7.1)
 
