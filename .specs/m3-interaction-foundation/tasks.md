@@ -110,12 +110,12 @@ on Group A (`GuiReducedMotion`, `GuiInteractionStyles`).
   - Add a `@media (prefers-reduced-motion: reduce)` belt-and-suspenders rule that neutralizes any ripple transition (the JS gate in task 11 is primary; Req 5.1)
   - _Requirements: 2.3, 2.5, 5.1_
 
-- [ ] 13. Unit tests for the ripple directive
+- [x] 13. Unit tests for the ripple directive
   - `libs/ui/interaction/src/ripple.directive.spec.ts`: stub `Element.prototype.animate` to return `{ finished: Promise.resolve(), cancel(){} }`; on activation a `.gui-ripple` child is appended then removed after `finished` (Req 2.1, 2.7); `animate` is NOT called when `disabled` (Req 4.2) or when a `GuiReducedMotion` stub reports `true` (Req 5.1); keyboard activation produces a centered ripple (Req 2.2)
   - Add spec path to `libs/ui/project.json` test `include`
   - _Requirements: 2.1, 2.2, 2.7, 4.2, 5.1_
 
-- [ ] 14. Checkpoint — Group C verification
+- [x] 14. Checkpoint — Group C verification
   - Run `pnpm exec nx test ui`, `pnpm exec nx lint ui`, `pnpm exec nx build ui`
   - Confirm `main` builds/passes with only Groups A–C applied; note that jsdom can't verify ripple geometry — that's covered by the browser test plan (Group F + `spec:test`)
 
