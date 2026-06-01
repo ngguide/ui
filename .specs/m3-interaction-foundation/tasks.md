@@ -41,7 +41,7 @@ Blast radius: *safe* — new entry point, new dependency, no existing code touch
   - Do NOT add `@angular/cdk` to `libs/ui/ng-package.json` `allowedNonPeerDependencies` (that list is for non-peer deps only; CDK is a peer)
   - _Requirements: 3 (FocusMonitor), 6 (CDK a11y), 5 (MediaMatcher)_
 
-- [ ] 3. Implement `GuiInteractionStyles` (SSR-safe CSS loader) + base interaction CSS
+- [x] 3. Implement `GuiInteractionStyles` (SSR-safe CSS loader) + base interaction CSS
   - Create `libs/ui/interaction/src/interaction.css.ts` exporting the static CSS string: `.gui-state-layer` host setup (`position: relative` when static, `overflow: hidden`), `.gui-state-layer::before` overlay (`content`, `inset: 0`, `border-radius: inherit`, `background: currentColor`, opacity `0`, `pointer-events: none`), `.gui-ripple` base (absolute, `border-radius: 50%`, `pointer-events: none`), and `.gui-focus-ring.gui-focus-visible` outline. All opacities/colors/offsets read `--md-sys-state-*` / `--md-sys-shape-*` tokens — no literals (see design "State layering")
   - Create `libs/ui/interaction/src/interaction-styles.ts`: `@Injectable({ providedIn: 'root' }) GuiInteractionStyles` mirroring `libs/ui/theme/src/style-applier.ts` — `inject(DOCUMENT)` + `RendererFactory2.createRenderer(null,null)`; `ensure()` is idempotent, adopts an existing `<style data-gui-interaction>` on hydration or creates one, and degrades silently if no `<head>`
   - _Requirements: 1.6, 1.7, 1.9, 7.3, 7.4_
