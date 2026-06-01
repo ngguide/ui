@@ -83,12 +83,12 @@ Adds `[guiStateLayer]` and its `::before` overlay behavior. Blast radius: *safe*
   - Each opacity = the matching `--md-sys-state-*-state-layer-opacity` token (Req 1.6)
   - _Requirements: 1.2, 1.4, 1.5, 1.6, 1.8, 4.1_
 
-- [ ] 9. Unit tests for the state-layer directive
+- [x] 9. Unit tests for the state-layer directive
   - `libs/ui/interaction/src/state-layer.directive.spec.ts` on a host fixture: `data-gui-state` becomes `pressed` on pointerdown and clears on pointerup (Req 1.4); `data-gui-disabled` is set and overlay suppressed when `disabled` or `aria-disabled` (Req 4.1, 4.4); toggling `disabled` at runtime updates the attribute without re-creating the element (Req 4.5)
   - Add spec path to `libs/ui/project.json` test `include`
   - _Requirements: 1.4, 4.1, 4.4, 4.5_
 
-- [ ] 10. Checkpoint — Group B verification
+- [x] 10. Checkpoint — Group B verification
   - Run `pnpm exec nx test ui` (new + Group A specs), `pnpm exec nx lint ui`, `pnpm exec nx build ui`
   - Confirm `main` builds and passes with only Groups A–B applied; `[guiStateLayer]` is unreferenced by any existing component (additive)
 
