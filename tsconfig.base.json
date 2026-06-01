@@ -19,6 +19,7 @@
       "@ngguide/ui/button": ["libs/ui/button/src/index.ts"],
       "@ngguide/ui/fab": ["libs/ui/fab/src/index.ts"],
       "@ngguide/ui/icon": ["libs/ui/icon/src/index.ts"],
+      "@ngguide/ui/interaction": ["libs/ui/interaction/src/index.ts"],
       "@ngguide/ui/theme": ["libs/ui/theme/src/index.ts"]
     }
   },
