@@ -18,6 +18,10 @@ export default [
             '{projectRoot}/vite.config.mts',
             '{projectRoot}/vitest.config.ts',
           ],
+          // rxjs is an intentional peer: CDK's a11y APIs (e.g. FocusMonitor.monitor)
+          // return rxjs Observables that consumers subscribe to. The `ui` source
+          // never imports an rxjs symbol directly, so the checker can't see the use.
+          ignoredDependencies: ['rxjs'],
         },
       ],
     },

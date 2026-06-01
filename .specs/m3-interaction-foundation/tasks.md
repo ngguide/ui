@@ -57,7 +57,7 @@ Blast radius: *safe* — new entry point, new dependency, no existing code touch
   - Add both spec paths to `libs/ui/project.json` test `include`
   - _Requirements: 5.3, 7.4_
 
-- [ ] 6. Checkpoint — Group A verification
+- [x] 6. Checkpoint — Group A verification
   - Run new tests: `pnpm exec nx test ui`
   - Build the library to confirm the new entry point compiles via ng-packagr: `pnpm exec nx build ui`
   - Lint: `pnpm exec nx lint ui`
