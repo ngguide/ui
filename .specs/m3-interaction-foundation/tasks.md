@@ -35,7 +35,7 @@ Blast radius: *safe* — new entry point, new dependency, no existing code touch
   - Add path alias to `tsconfig.base.json` `paths`: `"@ngguide/ui/interaction": ["libs/ui/interaction/src/index.ts"]`
   - _Requirements: 7.5, 7.6_
 
-- [ ] 2. Add the `@angular/cdk` dependency and wire build/lint
+- [x] 2. Add the `@angular/cdk` dependency and wire build/lint
   - Install `@angular/cdk@21.2.13` (matches `@angular/core` 21.2.9) into root `package.json` and run `pnpm install`
   - Add to `libs/ui/package.json` `peerDependencies`: `"@angular/cdk": "^21.2.0"` and `"rxjs": "^7.4.0"` (FocusMonitor returns an `Observable`); `rxjs ~7.8.0` is already installed at the root
   - Do NOT add `@angular/cdk` to `libs/ui/ng-package.json` `allowedNonPeerDependencies` (that list is for non-peer deps only; CDK is a peer)
