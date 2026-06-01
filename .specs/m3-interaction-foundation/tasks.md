@@ -171,12 +171,12 @@ Adds a small playground to `apps/web` that applies all three directives so the
 manual/browser test plan (`spec:test` via `agent-browser`) has a target. Blast
 radius: *safe* — demo host only, not published.
 
-- [ ] 22. Wire an interaction-foundation demo into `apps/web`
+- [x] 22. Wire an interaction-foundation demo into `apps/web`
   - Import the directives from `@ngguide/ui/interaction` into a demo section of `apps/web/src/app/app.component.ts` / `.html` (e.g. a plain element with `guiStateLayer guiRipple guiFocusRing`, an `aria-disabled` variant, and a small roving-tabindex list)
   - Confirm the interaction CSS is present at runtime (the loader injects it on first directive use); verify in dev (`pnpm exec nx serve web`)
   - _Requirements: 7.1, 7.2_
 
-- [ ] 23. Final checkpoint — everything green
+- [x] 23. Final checkpoint — everything green
   - Full suite: `pnpm exec nx run-many -t lint test build` for `ui` and `web`
   - SSR-safety: build `web` (SSR is configured) and confirm there is exactly one `<style data-gui-interaction>` and no duplicated ripple nodes after hydration (Req 7.4)
   - Trace: every requirement (1–7) maps to a shipped task (see per-task `_Requirements:`)

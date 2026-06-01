@@ -6,9 +6,16 @@ import { M3ThemeService } from '@ngguide/ui/theme';
 import { ButtonComponent, GuiButtonVariant } from '@ngguide/ui/button';
 import { FabComponent, GuiFabColor } from '@ngguide/ui/fab';
 import { IconComponent } from '@ngguide/ui/icon';
+import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
-  imports: [RouterModule, ButtonComponent, FabComponent, IconComponent],
+  imports: [
+    RouterModule,
+    ButtonComponent,
+    FabComponent,
+    IconComponent,
+    InteractionDemoComponent,
+  ],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
