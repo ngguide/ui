@@ -78,7 +78,7 @@ Adds `[guiStateLayer]` and its `::before` overlay behavior. Blast radius: *safe*
   - Export from `index.ts`
   - _Requirements: 1.1–1.9, 4.1, 4.4, 4.5_
 
-- [ ] 8. State-layer CSS rules
+- [x] 8. State-layer CSS rules
   - Extend `interaction.css.ts` with the per-state `::before` opacity rules keyed off `:hover`, `:focus-visible`, `[data-gui-state~='pressed']`, `[data-gui-state~='dragged']`, and the combined `:hover:focus-visible` rule; `[data-gui-disabled]::before { opacity: 0 }`
   - Each opacity = the matching `--md-sys-state-*-state-layer-opacity` token (Req 1.6)
   - _Requirements: 1.2, 1.4, 1.5, 1.6, 1.8, 4.1_

@@ -36,6 +36,40 @@ export const INTERACTION_CSS = `
     var(--md-sys-motion-easing-standard);
 }
 
+/* --- Per-state opacities, each from its --md-sys-state-* token (Req 1.6).
+
+   Precedence is expressed by "yielding" rather than specificity hacks:
+     - hover / focus apply only while idle (no JS state) and enabled, so a
+       pressed or dragged interaction takes over cleanly;
+     - hover+focus is additive (the M3 combined state, Req 1.8);
+     - pressed and dragged are mutually exclusive (the directive emits exactly
+       one), and both yield to the disabled condition;
+     - disabled (input flag, native :disabled, or aria-disabled) suppresses the
+       overlay entirely (Req 4.1). --- */
+.gui-state-layer:hover:not([data-gui-state]):not([data-gui-disabled])::before {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+.gui-state-layer:focus-visible:not([data-gui-state]):not([data-gui-disabled])::before {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+.gui-state-layer:hover:focus-visible:not([data-gui-state]):not([data-gui-disabled])::before {
+  opacity: calc(
+    var(--md-sys-state-hover-state-layer-opacity) +
+      var(--md-sys-state-focus-state-layer-opacity)
+  );
+}
+.gui-state-layer[data-gui-state~='pressed']:not([data-gui-disabled])::before {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+.gui-state-layer[data-gui-state~='dragged']:not([data-gui-disabled])::before {
+  opacity: var(--md-sys-state-dragged-state-layer-opacity);
+}
+.gui-state-layer[data-gui-disabled]::before,
+.gui-state-layer:disabled::before,
+.gui-state-layer[aria-disabled='true']::before {
+  opacity: 0;
+}
+
 /* --- Ripple base. Geometry/animation are supplied by GuiRippleDirective via the
    Web Animations API; this only establishes paint + containment defaults. --- */
 .gui-ripple {
