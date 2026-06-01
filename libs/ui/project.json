@@ -47,7 +47,9 @@
           "../theme/src/css-builder.spec.ts",
           "../theme/src/validate.spec.ts",
           "../theme/src/theme.service.spec.ts",
-          "../tooling/generate-color-tokens.spec.ts"
+          "../tooling/generate-color-tokens.spec.ts",
+          "../interaction/src/reduced-motion.spec.ts",
+          "../interaction/src/interaction-styles.spec.ts"
         ]
       }
     },

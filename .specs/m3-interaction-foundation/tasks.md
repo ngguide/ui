@@ -51,7 +51,7 @@ Blast radius: *safe* — new entry point, new dependency, no existing code touch
   - Export `GuiReducedMotion` from `libs/ui/interaction/src/index.ts`
   - _Requirements: 5.2, 5.3, 5.4_
 
-- [ ] 5. Unit tests for Group A utilities
+- [x] 5. Unit tests for Group A utilities
   - `libs/ui/interaction/src/reduced-motion.spec.ts`: provide a fake `MediaMatcher` returning a controllable `MediaQueryList`; assert `prefersReducedMotion()` reflects `.matches` and updates when a `change` event fires (Req 5.3)
   - `libs/ui/interaction/src/interaction-styles.spec.ts`: assert `ensure()` injects exactly one `<style data-gui-interaction>`, is idempotent on repeat calls, and adopts a pre-existing element instead of duplicating (Req 7.4)
   - Add both spec paths to `libs/ui/project.json` test `include`
