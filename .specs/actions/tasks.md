@@ -80,7 +80,7 @@ Blast radius: *safe* — pre-release breaking change; spec + demo updated in thi
 
 New `@ngguide/ui/icon-button`. Blast radius: *safe* — additive.
 
-- [ ] 8. Icon-button entry point + component
+- [x] 8. Icon-button entry point + component
   - Create `libs/ui/icon-button/ng-package.json`, `libs/ui/icon-button/src/index.ts` (`export * from './icon-button';`); add the `@ngguide/ui/icon-button` path to `tsconfig.base.json`; add `../icon-button/src/icon-button.spec.ts` to `libs/ui/project.json` `test.include`.
   - Implement `IconButtonComponent` per `design.md`: variants standard/filled/tonal/outlined, `width` narrow/uniform/wide, `size`, `toggle` + `selected = model(false)`, `[guiSelectedIcon]` slot, `hostDirectives` trio, disabled handling as in the button.
   - _Requirements: 6, 1, 3, 13, 14, 18_

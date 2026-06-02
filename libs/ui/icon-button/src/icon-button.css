@@ -1,0 +1,11 @@
+/* M3 icon button. Full variant/width/size/selected styling lands in the next task. */
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+:host(.gui-disabled) { pointer-events: none; }
