@@ -228,21 +228,21 @@ Routes the `actions` FAB menu / split button through `@ngguide/ui/menu`. Public 
 stable (`gui-fab-menu-item` becomes an alias), so this is an internal swap. Blast radius: safe; depends on
 Group F. Revert = revert this group's commits.
 
-- [ ] 24. Re-base `fab-menu-item` on `gui-menu-item`
+- [x] 24. Re-base `fab-menu-item` on `gui-menu-item`
   - Update `libs/ui/fab-menu/src/fab-menu-item.ts` to re-export/alias `MenuItemComponent` from
     `@ngguide/ui/menu` under the `button[gui-fab-menu-item]` selector + `guiFabMenuItem` exportAs (keep the
     public API identical); add `@ngguide/ui/menu` to fab-menu's deps if needed
   - Confirm `libs/ui/fab-menu/src/index.ts` still exports the same symbol names
   - _Requirements: 8.7_
 
-- [ ] 25. Point split-button + demos at `gui-menu-item`
+- [x] 25. Point split-button + demos at `gui-menu-item`
   - Update the `split-button` demo and `apps/web` menus that used bare `cdkMenuItem` to use `gui-menu-item`
     for consistent M3 styling (non-breaking — `cdkMenuItem` still works)
   - Verify the Superseded Behavior (research.md / requirements.md): the `actions` menus now resolve to the
     single shared menu implementation
   - _Requirements: 8.7_
 
-- [ ] 26. Final checkpoint — everything green
+- [x] 26. Final checkpoint — everything green
   - `pnpm exec nx reset`, then `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build` (ui + web, full suite)
   - Existing `fab-menu`/`split-button` specs still pass with the aliased item; their demos render and open
     identically to before the migration

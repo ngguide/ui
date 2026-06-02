@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { CdkMenu, CdkMenuTrigger } from '@angular/cdk/menu';
 import { GuiSize } from '@ngguide/ui';
 import { M3ThemeService } from '@ngguide/ui/theme';
 
@@ -46,7 +46,6 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     FabMenuComponent,
     FabMenuItemComponent,
     CdkMenu,
-    CdkMenuItem,
     CdkMenuTrigger,
     MenuDirective,
     MenuItemComponent,

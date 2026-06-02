@@ -12,11 +12,15 @@ import {
  * slots. Disabled state is owned by `CdkMenuItem` — consumers set it on the host
  * via `disabled` / `cdkMenuItemDisabled`. The item also works when it carries a
  * `cdkMenuTriggerFor` for cascading submenus.
+ *
+ * Also matches the legacy `gui-fab-menu-item` selector / `guiFabMenuItem`
+ * exportAs so FAB menus route through this single shared M3 implementation
+ * (re-exported as `FabMenuItemComponent` from `@ngguide/ui/fab-menu`).
  */
 @Component({
   selector:
     // eslint-disable-next-line @angular-eslint/component-selector
-    'button[gui-menu-item], a[gui-menu-item]',
+    'button[gui-menu-item], a[gui-menu-item], button[gui-fab-menu-item], a[gui-fab-menu-item]',
   template: `<span class="gui-menu-item-leading"
       ><ng-content select="[guiMenuItemLeading]"
     /></span>
@@ -36,7 +40,7 @@ import {
     GuiRippleDirective,
     GuiFocusRingDirective,
   ],
-  exportAs: 'guiMenuItem',
+  exportAs: 'guiMenuItem, guiFabMenuItem',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuItemComponent {}
