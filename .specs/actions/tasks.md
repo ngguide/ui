@@ -116,7 +116,7 @@ Retrofits `@ngguide/ui/fab` and adds `ExtendedFabComponent` to the same entry po
   - Update `libs/ui/fab/src/fab.spec.ts` (size/color/lowered/disabled reflection); add `extended-fab.spec.ts` (expanded/collapsed label visibility); update the `apps/web` fab demo for the new size/color set + extended FAB.
   - _Requirements: 7, 8, 18_
 
-- [ ] 15. Checkpoint — Group D verification
+- [x] 15. Checkpoint — Group D verification
   - Run the fab + extended-fab specs and `nx run-many -t lint test build`; confirm both fab components build and the demo compiles with the new API.
 
 ### Group E — Segmented buttons (new entry point)
