@@ -45,7 +45,7 @@ Blast radius: *safe* — purely additive.
   - Extend `libs/ui/icon/src/icon.spec.ts` to assert the size custom-property is applied when `size` is set.
   - _Requirements: 5.3, 17_
 
-- [ ] 3. Checkpoint — Group A verification
+- [x] 3. Checkpoint — Group A verification
   - Run new tests: `pnpm exec nx test ui --include=src/lib/action-tokens.spec.ts` and the icon spec.
   - Run `pnpm exec nx run-many -t lint test build` for `ui` and `web` (after `pnpm exec nx reset` if `project.json` was touched).
   - Confirm the root `@ngguide/ui` build still emits and the new map is exported.
