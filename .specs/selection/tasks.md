@@ -198,7 +198,7 @@ scale. Blast radius: safe; depends on Group A.
 Shared M3 menu as a directive layer over `@angular/cdk/menu`, consumed via the consumer-`<ng-template>`
 pattern. Additive new entry; nothing migrated yet. Blast radius: safe; independent of A; required by Group G.
 
-- [ ] 21. Implement `[gui-menu]` + `gui-menu-item` + `gui-menu-divider`
+- [x] 21. Implement `[gui-menu]` + `gui-menu-item` + `gui-menu-divider`
   - Scaffold entry `@ngguide/ui/menu` (ng-package, index exporting all three, tsconfig path, project.json include)
   - `libs/ui/menu/src/menu.ts`: `[gui-menu]` directive (M3 surface styling on the consumer's `<div cdkMenu>`)
   - `libs/ui/menu/src/menu-item.ts`: `button[gui-menu-item], a[gui-menu-item]` composing `CdkMenuItem` +
@@ -208,7 +208,7 @@ pattern. Additive new entry; nothing migrated yet. Blast radius: safe; independe
   - `libs/ui/menu/src/menu.css`: M3 menu container + item (leading/trailing) + divider styling
   - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.6, 10.1, 12.1_
 
-- [ ] 22. Unit-test menu + demo (incl. cascading + disabled)
+- [x] 22. Unit-test menu + demo (incl. cascading + disabled)
   - `libs/ui/menu/src/menu.spec.ts`: `gui-menu-item` composes `CdkMenuItem` and renders leading/trailing
     slots; divider is `role="separator"`; disabled item carries the CDK disabled flag. Use the
     fab-menu/split-button try/catch fallback for any overlay-open assertion (jsdom/zoneless). Add to include
@@ -216,7 +216,7 @@ pattern. Additive new entry; nothing migrated yet. Blast radius: safe; independe
     a divider, a disabled item, and a cascading submenu (`gui-menu-item [cdkMenuTriggerFor]`)
   - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 11.6_
 
-- [ ] 23. Checkpoint — Group F verification
+- [x] 23. Checkpoint — Group F verification
   - `pnpm exec nx reset`, then `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build --projects=ui,web`
   - Menu specs pass; in `nx serve web` the menu opens anchored to the trigger, submenu opens, Escape returns
     focus, disabled item is skipped (manual smoke for the #28984/#30145/#26856 zoneless anchoring concern)

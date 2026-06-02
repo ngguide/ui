@@ -532,6 +532,49 @@
       </div>
     </div>
 
+    <!-- Menu -->
+    <div class="mt-8 mb-2 font-bold text-lg">Menu</div>
+
+    <div class="flex flex-row gap-2 items-center">
+      <button gui-button variant="tonal" [cdkMenuTriggerFor]="appMenu">
+        Actions ▾
+      </button>
+      <ng-template #appMenu>
+        <div gui-menu cdkMenu>
+          <button gui-menu-item>
+            <gui-icon guiMenuItemLeading>★</gui-icon>
+            New file
+          </button>
+          <button gui-menu-item>
+            <gui-icon guiMenuItemLeading>★</gui-icon>
+            Open…
+          </button>
+          <gui-menu-divider />
+          <button gui-menu-item>
+            Rename
+            <span guiMenuItemTrailing>⌘R</span>
+          </button>
+          <button gui-menu-item [cdkMenuTriggerFor]="shareMenu">
+            <gui-icon guiMenuItemLeading>★</gui-icon>
+            More…
+            <span guiMenuItemTrailing>▸</span>
+          </button>
+          <gui-menu-divider />
+          <button gui-menu-item [disabled]="true">Delete</button>
+        </div>
+      </ng-template>
+      <ng-template #shareMenu>
+        <div gui-menu cdkMenu>
+          <button gui-menu-item>Email</button>
+          <button gui-menu-item>Copy link</button>
+        </div>
+      </ng-template>
+      <div class="ml-4 text-sm text-gray-600">
+        Menu: surface + items, divider, disabled, trailing text, cascading
+        submenu
+      </div>
+    </div>
+
     <!-- Checkbox -->
     <div class="mt-8 mb-2 font-bold text-lg">Checkbox</div>
 

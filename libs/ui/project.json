@@ -44,6 +44,7 @@
           "../fab/src/fab.spec.ts",
           "../fab/src/extended-fab.spec.ts",
           "../fab-menu/src/fab-menu.spec.ts",
+          "../menu/src/menu.spec.ts",
           "../forms/src/form-control.directive.spec.ts",
           "../icon-button/src/icon-button.spec.ts",
           "../icon/src/icon.spec.ts",

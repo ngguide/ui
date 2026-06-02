@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { GuiSize } from '@ngguide/ui';
 import { M3ThemeService } from '@ngguide/ui/theme';
 
@@ -15,6 +15,11 @@ import {
 } from '@ngguide/ui/fab';
 import { FabMenuComponent, FabMenuItemComponent } from '@ngguide/ui/fab-menu';
 import { IconComponent } from '@ngguide/ui/icon';
+import {
+  MenuDirective,
+  MenuDividerComponent,
+  MenuItemComponent,
+} from '@ngguide/ui/menu';
 import {
   GuiIconButtonVariant,
   IconButtonComponent,
@@ -42,6 +47,10 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     FabMenuItemComponent,
     CdkMenu,
     CdkMenuItem,
+    CdkMenuTrigger,
+    MenuDirective,
+    MenuItemComponent,
+    MenuDividerComponent,
     SplitButtonComponent,
     IconComponent,
     IconButtonComponent,
