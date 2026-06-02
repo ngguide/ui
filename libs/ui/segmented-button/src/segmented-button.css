@@ -1,0 +1,10 @@
+/* M3 segmented buttons. Full styling lands in the next task. */
+:host { display: inline-flex; }
+button[gui-segmented-button] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: transparent;
+}

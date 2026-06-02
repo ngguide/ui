@@ -21,6 +21,7 @@
       "@ngguide/ui/icon": ["libs/ui/icon/src/index.ts"],
       "@ngguide/ui/icon-button": ["libs/ui/icon-button/src/index.ts"],
       "@ngguide/ui/interaction": ["libs/ui/interaction/src/index.ts"],
+      "@ngguide/ui/segmented-button": ["libs/ui/segmented-button/src/index.ts"],
       "@ngguide/ui/theme": ["libs/ui/theme/src/index.ts"]
     }
   },

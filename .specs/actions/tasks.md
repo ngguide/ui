@@ -123,7 +123,7 @@ Retrofits `@ngguide/ui/fab` and adds `ExtendedFabComponent` to the same entry po
 
 New `@ngguide/ui/segmented-button` (group + segment, native ARIA, no CDK menu). Blast radius: *safe*.
 
-- [ ] 16. Segmented entry point + components
+- [x] 16. Segmented entry point + components
   - Create `libs/ui/segmented-button/{ng-package.json, src/index.ts}`; tsconfig path; add the group + segment specs to `project.json` `include`.
   - `SegmentedButtonGroupComponent` (host `role="radiogroup"`, `multiple` input, `value = model<string|string[]|null>(null)`, `contentChildren` registry, `isSelected`/`toggleValue`, dev `console.warn` when <2 or >5 segments) and `SegmentedButtonComponent` (`role` radio|checkbox, `aria-checked`, `data-selected`, active checkmark, `(click)` → `group.toggleValue`, `hostDirectives` trio, `value` required input).
   - _Requirements: 10, 3, 13, 15, 18_
