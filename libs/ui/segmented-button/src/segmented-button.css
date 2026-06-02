@@ -1,15 +1,15 @@
-/* M3 segmented buttons — tokens only; the interaction host directives
-   (state layer, ripple, focus ring) own state/ripple/focus. */
+/* M3 segmented button (one segment) — tokens only; the interaction host
+   directives (state layer, ripple, focus ring) own state/ripple/focus.
 
-/* Group: a single connected row of segments. */
+   These rules use `:host` (not `button[gui-segmented-button]`): the segment is a
+   component whose host IS the button, and it is authored in the CONSUMER template,
+   so it carries the consumer's `_ngcontent` id. A content-scoped descendant rule
+   would never match the host — only `:host` (→ `[_nghost-…]`) does. */
+
+/* Interior-divider approach: every segment carries a full 1px outline; the left
+   border is stripped on all but the first segment so adjacent segments share a
+   single 1px divider (no doubling) and the outer shape is a pill. */
 :host {
-  display: inline-flex;
-}
-
-/* Interior-divider approach: every segment carries a full 1px outline; we
-   strip the left border on all but the first segment so adjacent segments
-   share a single 1px divider (no doubling) and the outer shape is a pill. */
-button[gui-segmented-button] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -34,29 +34,30 @@ button[gui-segmented-button] {
 }
 
 /* Collapse interior dividers to a single 1px line. */
-button[gui-segmented-button]:not(:first-of-type) {
+:host(:not(:first-of-type)) {
   border-left: none;
 }
 
 /* Pill outer shape: round the leading edge of the first segment… */
-button[gui-segmented-button]:first-of-type {
+:host(:first-of-type) {
   border-top-left-radius: var(--md-sys-shape-corner-full);
   border-bottom-left-radius: var(--md-sys-shape-corner-full);
 }
 
 /* …and the trailing edge of the last. */
-button[gui-segmented-button]:last-of-type {
+:host(:last-of-type) {
   border-top-right-radius: var(--md-sys-shape-corner-full);
   border-bottom-right-radius: var(--md-sys-shape-corner-full);
 }
 
 /* Selected appearance. */
-button[gui-segmented-button][data-selected] {
+:host([data-selected]) {
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
 }
 
-/* Leading checkmark (only rendered when selected). */
+/* Leading checkmark (only rendered when selected) and label live in the
+   segment's own template, so they are content-scoped and match normally. */
 .gui-segment-check {
   display: inline-flex;
 }

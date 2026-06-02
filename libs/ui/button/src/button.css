@@ -29,9 +29,9 @@
 }
 
 /* The selected-icon slot only shows in the selected (toggle) state. Projected
-   content lives in the host's light DOM, so a :host(...) descendant selector
-   reaches it without ::ng-deep. */
-:host(:not([data-selected])) [guiSelectedIcon] {
+   content carries the CONSUMER's encapsulation id, so a content-scoped descendant
+   selector would NOT match it — `::ng-deep` pierces the scoping. */
+:host(:not([data-selected])) ::ng-deep [guiSelectedIcon] {
   display: none;
 }
 

@@ -14,7 +14,11 @@ import { SegmentedButtonComponent } from './segmented-button';
 @Component({
   selector: 'gui-segmented-buttons',
   template: `<ng-content />`,
-  styleUrl: './segmented-button.css',
+  // The group is just a connected row; segment styling lives in the segment
+  // component's own `:host` CSS (a shared stylesheet's `button[...]` rules would
+  // be content-scoped and never match the segment host authored in the consumer
+  // template — see segmented-button.css).
+  styles: `:host { display: inline-flex; }`,
   host: {
     'role': 'radiogroup',
     '[attr.aria-multiselectable]': 'multiple() ? "true" : null',

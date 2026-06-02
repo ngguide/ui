@@ -10,15 +10,18 @@
 
 /* Connected corners: square the inner facing edges while the outer edges keep
    the gui-button round (pill) default. Leading keeps its left edge full,
-   trailing keeps its right edge full. */
+   trailing keeps its right edge full.
+   `!important` is required to win over each child gui-button's own
+   `:host([data-size][data-shape])` radius (higher specificity otherwise) — the
+   split context legitimately overrides the child's intrinsic pill shape. */
 .gui-split-leading {
-  border-top-right-radius: var(--md-sys-shape-corner-small);
-  border-bottom-right-radius: var(--md-sys-shape-corner-small);
+  border-top-right-radius: var(--md-sys-shape-corner-small) !important;
+  border-bottom-right-radius: var(--md-sys-shape-corner-small) !important;
 }
 
 .gui-split-trailing {
-  border-top-left-radius: var(--md-sys-shape-corner-small);
-  border-bottom-left-radius: var(--md-sys-shape-corner-small);
+  border-top-left-radius: var(--md-sys-shape-corner-small) !important;
+  border-bottom-left-radius: var(--md-sys-shape-corner-small) !important;
   transition: border-radius var(--md-sys-motion-duration-short2)
     var(--md-sys-motion-easing-standard);
 }
@@ -26,12 +29,12 @@
 /* Trailing pressed morph (inner-pressed): the state layer sets data-gui-state
    on pointerdown. */
 .gui-split-trailing[data-gui-state~='pressed'] {
-  border-radius: var(--md-sys-shape-corner-small);
+  border-radius: var(--md-sys-shape-corner-small) !important;
 }
 
 /* Trailing open morph: M3 checked/open trailing morphs to a full pill. */
 .gui-split-trailing[data-open] {
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: var(--md-sys-shape-corner-full) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
