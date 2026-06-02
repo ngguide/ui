@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CdkMenu } from '@angular/cdk/menu';
 import { GuiSize } from '@ngguide/ui';
 import { M3ThemeService } from '@ngguide/ui/theme';
 
@@ -11,6 +12,7 @@ import {
   GuiFabColor,
   GuiFabSize,
 } from '@ngguide/ui/fab';
+import { FabMenuComponent, FabMenuItemComponent } from '@ngguide/ui/fab-menu';
 import { IconComponent } from '@ngguide/ui/icon';
 import {
   GuiIconButtonVariant,
@@ -29,6 +31,9 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     ButtonGroupComponent,
     FabComponent,
     ExtendedFabComponent,
+    FabMenuComponent,
+    FabMenuItemComponent,
+    CdkMenu,
     IconComponent,
     IconButtonComponent,
     SegmentedButtonGroupComponent,

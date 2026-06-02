@@ -43,6 +43,7 @@
           "../button/src/button.spec.ts",
           "../fab/src/fab.spec.ts",
           "../fab/src/extended-fab.spec.ts",
+          "../fab-menu/src/fab-menu.spec.ts",
           "../icon-button/src/icon-button.spec.ts",
           "../icon/src/icon.spec.ts",
           "../segmented-button/src/segmented-button.spec.ts",

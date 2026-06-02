@@ -167,7 +167,7 @@ Groups C and D). Includes the zoneless overlay-positioning validation.
   - **Validate zoneless positioning (#28984):** confirm the opened overlay anchors to the trigger (not top-left) under this project's zoneless setup on CDK 21.2.13. If broken, stop and fall back to `research.md` §5 Variant C (internal `GuiMenuTrigger` contract + stub) and flag the deviation.
   - _Requirements: 9, 13, 15, 18_
 
-- [ ] 23. FAB-menu CSS + specs + demo
+- [x] 23. FAB-menu CSS + specs + demo
   - CSS: vertically stacked items above the FAB, 48dp targets, open/close animation with a reduced-motion end-state; the FAB→close icon swap.
   - Specs (jsdom): `aria-expanded` toggles and the label becomes "Toggle menu" on open; menu items render with the correct role. (Overlay geometry is covered by the browser test plan.)
   - Add a fab-menu demo.

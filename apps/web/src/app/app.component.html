@@ -231,6 +231,30 @@
       <div class="ml-4 text-sm text-gray-600">Disabled FAB examples</div>
     </div>
 
+    <!-- FAB Menu -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          8a
+        </div>
+      </div>
+      <gui-fab-menu ariaLabel="Create">
+        <span guiFabIcon>+</span>
+        <ng-template>
+          <div class="gui-fab-menu-list" cdkMenu>
+            <button gui-fab-menu-item>New doc</button>
+            <button gui-fab-menu-item>New folder</button>
+            <button gui-fab-menu-item>Upload</button>
+          </div>
+        </ng-template>
+      </gui-fab-menu>
+      <div class="ml-4 text-sm text-gray-600">
+        FAB menu: click to reveal related actions
+      </div>
+    </div>
+
     <!-- Icon Button Demonstrations -->
     <div class="mt-8 mb-2 font-bold text-lg">Icon Button</div>
 
