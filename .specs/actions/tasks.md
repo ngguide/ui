@@ -40,7 +40,7 @@ Blast radius: *safe* — purely additive.
   - Add `libs/ui/src/lib/action-tokens.spec.ts` asserting each size maps to the expected existing `--md-sys-shape-corner-*` var (string equality, proving no `m3-tokens` change is needed). This spec lives under `sourceRoot` (`libs/ui/src`) so it is auto-discovered — no `project.json` `include` entry needed.
   - _Requirements: 2, 4, 16_
 
-- [ ] 2. Icon retrofit (minor)
+- [x] 2. Icon retrofit (minor)
   - In `libs/ui/icon/src/icon.ts`, confirm the component sizes from `--gui-comp-icon-size` and is cleanly consumable inside button icon slots; no public API change.
   - Extend `libs/ui/icon/src/icon.spec.ts` to assert the size custom-property is applied when `size` is set.
   - _Requirements: 5.3, 17_

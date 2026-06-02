@@ -14,6 +14,10 @@ import { Component, computed, input, numberAttribute } from '@angular/core';
     '[style.--gui-comp-icon-size]': 'sizeValue()',
   },
 })
+/**
+ * Icon primitive. Consumed inside the icon slots of button / icon-button
+ * components and sizes via the `--gui-comp-icon-size` custom property.
+ */
 export class IconComponent {
   size = input(undefined, {
     transform: numberAttribute,
