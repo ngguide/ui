@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
 import { GuiSize } from '@ngguide/ui';
@@ -23,6 +24,8 @@ import {
   SegmentedButtonGroupComponent,
 } from '@ngguide/ui/segmented-button';
 import { SplitButtonComponent } from '@ngguide/ui/split-button';
+import { CheckboxComponent } from '@ngguide/ui/checkbox';
+import { SwitchComponent } from '@ngguide/ui/switch';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -41,6 +44,9 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     IconButtonComponent,
     SegmentedButtonGroupComponent,
     SegmentedButtonComponent,
+    CheckboxComponent,
+    SwitchComponent,
+    ReactiveFormsModule,
     InteractionDemoComponent,
   ],
   selector: 'app-root',
@@ -99,6 +105,20 @@ export class AppComponent {
 
   /** Multi-select segmented buttons demo. */
   weekdays: string[] = ['mon'];
+
+  /** Checkbox demo state. */
+  terms = false;
+  newsletter = true;
+  selectAll = false;
+
+  /** Switch demo state. */
+  wifi = false;
+  bluetooth = true;
+  darkMode = false;
+
+  /** Reactive-form example bound to a gui-checkbox and a gui-switch. */
+  acceptControl = new FormControl(false);
+  notifyControl = new FormControl(true);
 
   /** No-op handler for the split-button primary action demo. */
   onSave(): void {

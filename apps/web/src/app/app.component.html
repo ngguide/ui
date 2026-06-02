@@ -442,6 +442,42 @@
       </div>
     </div>
 
+    <!-- Checkbox -->
+    <div class="mt-8 mb-2 font-bold text-lg">Checkbox</div>
+
+    <div class="flex flex-row gap-6 items-center flex-wrap">
+      <gui-checkbox [(checked)]="terms">Unchecked</gui-checkbox>
+      <gui-checkbox [(checked)]="newsletter">Checked</gui-checkbox>
+      <gui-checkbox indeterminate>Indeterminate</gui-checkbox>
+      <gui-checkbox error>Error</gui-checkbox>
+      <gui-checkbox checked disabled>Disabled</gui-checkbox>
+    </div>
+
+    <!-- Switch -->
+    <div class="mt-8 mb-2 font-bold text-lg">Switch</div>
+
+    <div class="flex flex-row gap-6 items-center flex-wrap">
+      <gui-switch [(checked)]="wifi">Off</gui-switch>
+      <gui-switch [(checked)]="bluetooth">On</gui-switch>
+      <gui-switch [(checked)]="darkMode">
+        <gui-icon guiSwitchIcon>☾</gui-icon>
+        <gui-icon guiSwitchSelectedIcon>☀</gui-icon>
+        With icon
+      </gui-switch>
+      <gui-switch checked disabled>Disabled</gui-switch>
+    </div>
+
+    <!-- Reactive forms -->
+    <div class="mt-8 mb-2 font-bold text-lg">Toggles in a reactive form</div>
+
+    <div class="flex flex-row gap-6 items-center flex-wrap">
+      <gui-checkbox [formControl]="acceptControl">Accept terms</gui-checkbox>
+      <gui-switch [formControl]="notifyControl">Notifications</gui-switch>
+      <div class="ml-4 text-sm text-gray-600">
+        accept = {{ acceptControl.value }}, notify = {{ notifyControl.value }}
+      </div>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

@@ -1,0 +1,162 @@
+/* M3 switch container. Hover/focus/pressed state layers, the ripple and the
+   focus ring are drawn by the composed interaction foundation
+   (GuiStateLayer/GuiRipple/GuiFocusRing via hostDirectives) — never re-implement
+   them here. This file styles the resting track, handle morph and color roles
+   only. Values trace to --md-sys-* tokens. */
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  cursor: pointer;
+  /* M3 control content color for the label. */
+  color: var(--md-sys-color-on-surface);
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+.gui-switch-track {
+  box-sizing: border-box;
+  position: relative;
+  flex: 0 0 auto;
+  width: 52px;
+  height: 32px;
+  border: 2px solid var(--md-sys-color-outline);
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-surface-container-highest);
+  transition:
+    background-color var(--md-sys-motion-duration-short3)
+      var(--md-sys-motion-easing-standard),
+    border-color var(--md-sys-motion-duration-short3)
+      var(--md-sys-motion-easing-standard);
+}
+
+/* Visually-hidden native input covering the full track as the hit target. */
+input[type='checkbox'] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+/* Handle: a centered circle that morphs across states. */
+.gui-switch-handle {
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-outline);
+  color: var(--md-sys-color-surface-container-highest);
+  transform: translate(0, -50%);
+  transition:
+    width var(--md-sys-motion-duration-short3)
+      var(--md-sys-motion-easing-standard),
+    height var(--md-sys-motion-duration-short3)
+      var(--md-sys-motion-easing-standard),
+    left var(--md-sys-motion-duration-short3)
+      var(--md-sys-motion-easing-standard),
+    background-color var(--md-sys-motion-duration-short3)
+      var(--md-sys-motion-easing-standard);
+}
+
+/* Handle icon sizing for projected icon slots. */
+.gui-switch-handle ::ng-deep gui-icon,
+.gui-switch-handle ::ng-deep [guiSwitchIcon],
+.gui-switch-handle ::ng-deep [guiSwitchSelectedIcon] {
+  --gui-comp-icon-size: 16px;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+/* When unselected, hide the selected-icon slot. */
+:host(:not([data-checked])) ::ng-deep [guiSwitchSelectedIcon] {
+  display: none;
+}
+/* When selected, hide the unselected-icon slot. */
+:host([data-checked]) ::ng-deep [guiSwitchIcon] {
+  display: none;
+}
+
+/* Handle grows to 24px when it carries an icon. */
+.gui-switch-handle:has([guiSwitchIcon]),
+.gui-switch-handle:has([guiSwitchSelectedIcon]) {
+  width: 24px;
+  height: 24px;
+}
+
+/* Selected: filled track + larger handle pushed to the trailing edge. */
+:host([data-checked]) .gui-switch-track {
+  background-color: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+}
+:host([data-checked]) .gui-switch-handle {
+  width: 24px;
+  height: 24px;
+  /* track 52 - border 2*2 ... handle 24, trailing inset 4 from inner edge. */
+  left: 22px;
+  background-color: var(--md-sys-color-on-primary);
+}
+
+/* Pressed: handle expands to 28px. The state-layer directive sets data-gui-state
+   on the host. */
+:host([data-gui-state~='pressed']) .gui-switch-handle {
+  width: 28px;
+  height: 28px;
+}
+:host([data-gui-state~='pressed']:not([data-checked])) .gui-switch-handle {
+  left: 4px;
+}
+:host([data-gui-state~='pressed'][data-checked]) .gui-switch-handle {
+  left: 18px;
+}
+
+/* Disabled (M3 disabled treatment via tokens). The interaction layer already
+   suppresses the state layer for disabled hosts. */
+:host(.gui-disabled) {
+  pointer-events: none;
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+}
+:host(.gui-disabled) .gui-switch-track {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-surface-container-highest),
+    transparent 88%
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 88%
+  );
+}
+:host(.gui-disabled) .gui-switch-handle {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 62%
+  );
+}
+:host(.gui-disabled[data-checked]) .gui-switch-track {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 88%
+  );
+  border-color: transparent;
+}
+:host(.gui-disabled[data-checked]) .gui-switch-handle {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-surface),
+    transparent 0%
+  );
+}

@@ -30,14 +30,14 @@ pattern (so `CdkMenuItem` DI resolves `CdkMenu`).
 Delivers the shared `GuiFormControl<T>` host-directive that every selection control composes. Additive;
 nothing consumes it yet. Blast radius: safe; blocks Groups B–E.
 
-- [-] 1. Add `@angular/forms` peer dependency and scaffold the `forms` entry point
+- [x] 1. Add `@angular/forms` peer dependency and scaffold the `forms` entry point
   - Add `"@angular/forms": "^21.0.0"` to `libs/ui/package.json` `peerDependencies` (currently core/cdk/rxjs only)
   - Create `libs/ui/forms/ng-package.json` = `{ "lib": { "entryFile": "src/index.ts" } }`
   - Create `libs/ui/forms/src/index.ts` barrel
   - Add `"@ngguide/ui/forms": ["libs/ui/forms/src/index.ts"]` to `tsconfig.base.json` `paths`
   - _Requirements: 9.3, 12.1_
 
-- [ ] 2. Implement `GuiFormControl<T>` host-directive
+- [x] 2. Implement `GuiFormControl<T>` host-directive
   - Create `libs/ui/forms/src/form-control.directive.ts` per design: `value = model<T|null>()`,
     `disabled = input(booleanAttribute)`, private `formDisabled` signal, `effectiveDisabled` computed,
     `touched` signal, `ControlValueAccessor` (`writeValue` sets value WITHOUT calling onChange,
@@ -46,7 +46,7 @@ nothing consumes it yet. Blast radius: safe; blocks Groups B–E.
   - Export from `libs/ui/forms/src/index.ts`
   - _Requirements: 9.1, 9.2, 9.3, 9.4_
 
-- [ ] 3. Unit-test `GuiFormControl` and register the spec
+- [x] 3. Unit-test `GuiFormControl` and register the spec
   - Create `libs/ui/forms/src/form-control.directive.spec.ts`: assert `writeValue` sets value without
     emitting onChange; `emit` updates value AND calls onChange; `setDisabledState` flips
     `effectiveDisabled` while the `disabled` input also independently flips it (the two-signal merge);
@@ -54,7 +54,7 @@ nothing consumes it yet. Blast radius: safe; blocks Groups B–E.
   - Add `"../forms/src/form-control.directive.spec.ts"` to `libs/ui/project.json` `test.include`
   - _Requirements: 9.1, 9.2, 9.4_
 
-- [ ] 4. Checkpoint — Group A verification
+- [x] 4. Checkpoint — Group A verification
   - `pnpm exec nx reset` (project.json edited), then `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build --projects=ui`
   - Confirm the new spec runs and passes; confirm `nx build ui` emits the `forms` entry in `dist/libs/ui`
   - Confirm `main` builds with only Group A applied (no consumers yet)
@@ -64,7 +64,7 @@ nothing consumes it yet. Blast radius: safe; blocks Groups B–E.
 Two boolean controls sharing the wrapper-element-over-native-`<input>` pattern + `GuiFormControl`. Blast
 radius: safe; depends on Group A.
 
-- [ ] 5. Implement `gui-checkbox` (`@ngguide/ui/checkbox`)
+- [x] 5. Implement `gui-checkbox` (`@ngguide/ui/checkbox`)
   - Scaffold entry: `libs/ui/checkbox/{ng-package.json, src/index.ts}`, `tsconfig.base.json` path
     `@ngguide/ui/checkbox`, `libs/ui/project.json` `test.include` for `checkbox.spec.ts`
   - Create `libs/ui/checkbox/src/checkbox.ts`: `gui-checkbox` element wrapping hidden
@@ -76,7 +76,7 @@ radius: safe; depends on Group A.
     `.gui-disabled` token treatment; state layers come from the interaction foundation
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 10.1, 12.1_
 
-- [ ] 6. Implement `gui-switch` (`@ngguide/ui/switch`)
+- [x] 6. Implement `gui-switch` (`@ngguide/ui/switch`)
   - Scaffold entry (same five wiring points as task 5, for `switch`)
   - Create `libs/ui/switch/src/switch.ts`: `gui-switch` wrapping `<input type=checkbox role="switch">`;
     compose `GuiFormControl` (boolean `checked`) + interaction directives; optional handle icon slots
@@ -86,20 +86,20 @@ radius: safe; depends on Group A.
     must not change with state (APG)
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 10.1, 10.3, 12.1_
 
-- [ ] 7. Unit-test checkbox + switch
+- [x] 7. Unit-test checkbox + switch
   - `libs/ui/checkbox/src/checkbox.spec.ts`: toggle reflects `checked()` + `aria-checked`; indeterminate
     → `aria-checked="mixed"`; disabled blocks change; reactive-form `formControl` writeValue + disable
   - `libs/ui/switch/src/switch.spec.ts`: toggle on/off + `aria-checked`; `role="switch"`; disabled no-op
   - Add both spec paths to `libs/ui/project.json` `test.include`
   - _Requirements: 1.1, 1.3, 1.5, 3.1, 3.3, 3.4, 11.1, 11.3_
 
-- [ ] 8. Demo checkbox + switch in `apps/web`
+- [x] 8. Demo checkbox + switch in `apps/web`
   - Add demo sections to `apps/web/src/app/app.component.html` (+ state in `app.component.ts`):
     checkbox (checked / indeterminate / error / disabled), switch (on/off / with icon / disabled), and a
     reactive-form example binding one of each
   - _Requirements: 1.x, 3.x, 9.3_
 
-- [ ] 9. Checkpoint — Group B verification
+- [x] 9. Checkpoint — Group B verification
   - `pnpm exec nx reset`, then `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build --projects=ui,web`
   - New checkbox/switch specs pass; `nx serve web` boots and the new sections render; build emits both entries
 
