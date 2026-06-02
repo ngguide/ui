@@ -30,7 +30,7 @@ pattern (so `CdkMenuItem` DI resolves `CdkMenu`).
 Delivers the shared `GuiFormControl<T>` host-directive that every selection control composes. Additive;
 nothing consumes it yet. Blast radius: safe; blocks Groups B–E.
 
-- [ ] 1. Add `@angular/forms` peer dependency and scaffold the `forms` entry point
+- [-] 1. Add `@angular/forms` peer dependency and scaffold the `forms` entry point
   - Add `"@angular/forms": "^21.0.0"` to `libs/ui/package.json` `peerDependencies` (currently core/cdk/rxjs only)
   - Create `libs/ui/forms/ng-package.json` = `{ "lib": { "entryFile": "src/index.ts" } }`
   - Create `libs/ui/forms/src/index.ts` barrel

@@ -4,6 +4,7 @@
   "peerDependencies": {
     "@angular/core": "^21.0.0",
     "@angular/cdk": "^21.2.0",
+    "@angular/forms": "^21.0.0",
     "rxjs": "^7.4.0"
   },
   "dependencies": {

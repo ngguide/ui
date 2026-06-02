@@ -20,6 +20,7 @@
       "@ngguide/ui/button-group": ["libs/ui/button-group/src/index.ts"],
       "@ngguide/ui/fab": ["libs/ui/fab/src/index.ts"],
       "@ngguide/ui/fab-menu": ["libs/ui/fab-menu/src/index.ts"],
+      "@ngguide/ui/forms": ["libs/ui/forms/src/index.ts"],
       "@ngguide/ui/icon": ["libs/ui/icon/src/index.ts"],
       "@ngguide/ui/icon-button": ["libs/ui/icon-button/src/index.ts"],
       "@ngguide/ui/interaction": ["libs/ui/interaction/src/index.ts"],
