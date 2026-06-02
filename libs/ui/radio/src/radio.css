@@ -1,0 +1,104 @@
+/* M3 radio button. Hover/focus/pressed state layers, the ripple and the focus
+   ring are drawn by the composed interaction foundation
+   (GuiStateLayer/GuiRipple/GuiFocusRing via hostDirectives) — never re-implement
+   them here. This file styles the resting ring, selected dot and color roles
+   only. Values trace to --md-sys-* tokens. */
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  cursor: pointer;
+  /* M3 control content color for the label. */
+  color: var(--md-sys-color-on-surface);
+  /* The control region drives the state-layer/focus-ring shape. */
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+/* Resting 20px ring. */
+.gui-radio-circle {
+  box-sizing: border-box;
+  position: relative;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--md-sys-color-on-surface-variant);
+  border-radius: var(--md-sys-shape-corner-full);
+  background: transparent;
+  transition: border-color var(--md-sys-motion-duration-short2)
+    var(--md-sys-motion-easing-standard);
+}
+
+/* Centered 10px filled dot, revealed when selected. */
+.gui-radio-circle::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-primary);
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    opacity var(--md-sys-motion-duration-short2)
+      var(--md-sys-motion-easing-standard),
+    transform var(--md-sys-motion-duration-short2)
+      var(--md-sys-motion-easing-standard);
+}
+
+/* Visually-hidden native input. It still receives focus and sits over the ring
+   to provide the >=48px accessible hit target. */
+input[type='radio'] {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  /* Center the 48px hit target over the 20px ring. */
+  margin-left: -14px;
+  opacity: 0;
+  cursor: inherit;
+}
+
+/* Selected: primary ring + visible dot. */
+:host(:has(input:checked)) .gui-radio-circle {
+  border-color: var(--md-sys-color-primary);
+}
+:host(:has(input:checked)) .gui-radio-circle::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Error state uses the M3 error role for the ring and dot. */
+:host([data-error]) .gui-radio-circle {
+  border-color: var(--md-sys-color-error);
+}
+:host([data-error]) .gui-radio-circle::after {
+  background-color: var(--md-sys-color-error);
+}
+
+/* Disabled (M3 disabled treatment via tokens). The interaction layer already
+   suppresses the state layer for disabled hosts. */
+:host(.gui-disabled) {
+  pointer-events: none;
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+}
+:host(.gui-disabled) .gui-radio-circle {
+  border-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 62%
+  );
+}
+:host(.gui-disabled:has(input:checked)) .gui-radio-circle::after {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 62%
+  );
+}

@@ -51,6 +51,7 @@
           "../button-group/src/button-group.spec.ts",
           "../split-button/src/split-button.spec.ts",
           "../checkbox/src/checkbox.spec.ts",
+          "../radio/src/radio.spec.ts",
           "../switch/src/switch.spec.ts",
           "../theme/src/engine.spec.ts",
           "../theme/src/css-builder.spec.ts",

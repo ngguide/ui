@@ -25,6 +25,7 @@ import {
 } from '@ngguide/ui/segmented-button';
 import { SplitButtonComponent } from '@ngguide/ui/split-button';
 import { CheckboxComponent } from '@ngguide/ui/checkbox';
+import { RadioComponent, RadioGroupComponent } from '@ngguide/ui/radio';
 import { SwitchComponent } from '@ngguide/ui/switch';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
@@ -45,6 +46,8 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     SegmentedButtonGroupComponent,
     SegmentedButtonComponent,
     CheckboxComponent,
+    RadioGroupComponent,
+    RadioComponent,
     SwitchComponent,
     ReactiveFormsModule,
     InteractionDemoComponent,
@@ -116,9 +119,15 @@ export class AppComponent {
   bluetooth = true;
   darkMode = false;
 
+  /** Radio demo state. */
+  contact: string | null = 'email';
+
   /** Reactive-form example bound to a gui-checkbox and a gui-switch. */
   acceptControl = new FormControl(false);
   notifyControl = new FormControl(true);
+
+  /** Reactive-form example bound to a gui-radio-group. */
+  planControl = new FormControl<string | null>('pro');
 
   /** No-op handler for the split-button primary action demo. */
   onSave(): void {

@@ -25,6 +25,7 @@
       "@ngguide/ui/icon": ["libs/ui/icon/src/index.ts"],
       "@ngguide/ui/icon-button": ["libs/ui/icon-button/src/index.ts"],
       "@ngguide/ui/interaction": ["libs/ui/interaction/src/index.ts"],
+      "@ngguide/ui/radio": ["libs/ui/radio/src/index.ts"],
       "@ngguide/ui/segmented-button": ["libs/ui/segmented-button/src/index.ts"],
       "@ngguide/ui/split-button": ["libs/ui/split-button/src/index.ts"],
       "@ngguide/ui/switch": ["libs/ui/switch/src/index.ts"],

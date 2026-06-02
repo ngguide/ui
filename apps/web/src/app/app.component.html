@@ -467,6 +467,16 @@
       <gui-switch checked disabled>Disabled</gui-switch>
     </div>
 
+    <!-- Radio -->
+    <div class="mt-8 mb-2 font-bold text-lg">Radio</div>
+
+    <gui-radio-group [(value)]="contact" class="flex flex-row gap-6 flex-wrap">
+      <gui-radio value="email">Email</gui-radio>
+      <gui-radio value="phone">Phone</gui-radio>
+      <gui-radio value="sms">SMS</gui-radio>
+      <gui-radio value="mail" disabled>Mail (disabled)</gui-radio>
+    </gui-radio-group>
+
     <!-- Reactive forms -->
     <div class="mt-8 mb-2 font-bold text-lg">Toggles in a reactive form</div>
 
@@ -477,6 +487,16 @@
         accept = {{ acceptControl.value }}, notify = {{ notifyControl.value }}
       </div>
     </div>
+
+    <!-- Radio in a reactive form -->
+    <div class="mt-8 mb-2 font-bold text-lg">Radio in a reactive form</div>
+
+    <gui-radio-group [formControl]="planControl" class="flex flex-row gap-6 flex-wrap">
+      <gui-radio value="free">Free</gui-radio>
+      <gui-radio value="pro">Pro</gui-radio>
+      <gui-radio value="team">Team</gui-radio>
+    </gui-radio-group>
+    <div class="mt-2 text-sm text-gray-600">plan = {{ planControl.value }}</div>
 
     <app-interaction-demo />
   </div>

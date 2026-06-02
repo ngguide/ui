@@ -108,7 +108,7 @@ radius: safe; depends on Group A.
 Group/child radio coordination over native `<input type=radio>` (free APG keyboard) with the group
 carrying `GuiFormControl`. Blast radius: safe; depends on Group A.
 
-- [ ] 10. Implement `gui-radio-group` + `gui-radio`
+- [x] 10. Implement `gui-radio-group` + `gui-radio`
   - Scaffold entry `@ngguide/ui/radio` (ng-package, index barrel exporting both, tsconfig path,
     project.json include)
   - Create `libs/ui/radio/src/radio-group.ts`: `role="radiogroup"`, composes `GuiFormControl<string|null>`,
@@ -119,13 +119,13 @@ carrying `GuiFormControl`. Blast radius: safe; depends on Group A.
   - Create `libs/ui/radio/src/radio.css`: M3 ring + inner dot, selected/error/disabled token treatment
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 10.1, 11.2, 12.1_
 
-- [ ] 11. Unit-test radio + demo
+- [x] 11. Unit-test radio + demo
   - `libs/ui/radio/src/radio.spec.ts`: selecting one option deselects others; group `value()` updates;
     `radiogroup`/`radio` roles; disabled option no-op; reactive-form binding. Add to `test.include`
   - Demo a radio group (+ disabled option + reactive form) in `apps/web`
   - _Requirements: 2.1, 2.2, 2.3, 11.2, 9.3_
 
-- [ ] 12. Checkpoint — Group C verification
+- [x] 12. Checkpoint — Group C verification
   - `pnpm exec nx reset`, then `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build --projects=ui,web`
   - Radio specs pass; demo group enforces single-selection; build emits the `radio` entry
 
