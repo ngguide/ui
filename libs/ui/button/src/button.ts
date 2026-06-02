@@ -42,6 +42,7 @@ export type GuiButtonShape = 'round' | 'square';
     '[attr.data-size]': 'size()',
     '[attr.data-shape]': 'shape()',
     '[attr.data-selected]': 'isToggleSelected() ? "" : null',
+    '[attr.data-toggle]': 'toggle() ? "" : null',
     '[attr.aria-pressed]': 'toggle() ? selected() : null',
     '[attr.disabled]': 'isButton && disabled() ? "" : null',
     '[attr.aria-disabled]': '!isButton && disabled() ? "true" : null',

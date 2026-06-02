@@ -525,6 +525,13 @@ describe('FabMenuComponent', () => {
    nodes (mirrors the interaction-foundation SSR guarantee). Verified by prerender in the test plan.
 5. **Disabled toggle** — keeps and displays current selected state, disallows change (Req 14.4).
 
+## Deviations (logged during implementation)
+
+- **Minor (Group B, task 5):** `ButtonComponent` host gained `[attr.data-toggle]` (`toggle() ? "" : null`)
+  in addition to the bindings listed above. It is required so the CSS can distinguish the M3
+  toggle-*unselected* column (e.g. filled = `surface-container`) from the non-toggle *default*
+  column (filled = `primary`) — both lack `[data-selected]`. Same pattern will apply to icon buttons.
+
 ## Open items carried into implementation
 
 - **Zoneless CDK-menu positioning (#28984)** — validate early (first fab-menu task / test plan).

@@ -60,7 +60,7 @@ Blast radius: *safe* — pre-release breaking change; spec + demo updated in thi
   - Remove the old standalone-CSS reliance; the directives now own hover/focus/pressed.
   - _Requirements: 1, 2, 3, 4, 5, 13, 14, 17_
 
-- [ ] 5. Rewrite `button.css` onto tokens + shape morph
+- [x] 5. Rewrite `button.css` onto tokens + shape morph
   - In `libs/ui/button/src/button.css`: delete the `rgba(255,255,255,…)` literals, the `:hover`/`:focus-visible`/`:active` `color-mix()` state rules, the hardcoded radii (16/20/28/48/68px), and the hardcoded secondary-color focus outline — these are superseded by the interaction foundation.
   - Per-size measurements keyed by `[data-size]` from `research.md` §M3 reference (heights 32/40/56/96/136dp; leading/trailing padding 16/16/24/48/64; icon→label gap 8/8/8/12/16; outlined stroke 1/1/1/2/3).
   - Shape: `border-radius` from `GUI_BUTTON_SHAPES` per `[data-shape]`, morphing to the pressed value on `[data-gui-state~='pressed']` and to the selected (round↔square flip) shape on `[data-selected]`, with `transition: border-radius var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard)`.
