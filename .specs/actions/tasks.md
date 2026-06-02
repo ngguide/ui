@@ -34,7 +34,7 @@ so **no `m3-tokens` change is required**.
 Adds the framework-free size/shape→token maps every button consumes, and the minor icon retrofit.
 Blast radius: *safe* — purely additive.
 
-- [ ] 1. Shared action-token maps
+- [x] 1. Shared action-token maps
   - Create `libs/ui/src/lib/action-tokens.ts` with `GuiShapeSet` and `GUI_BUTTON_SHAPES: Record<GuiSize, GuiShapeSet>` exactly per `design.md` (round=`corner-full`; square=medium/medium/large/extra-large/extra-large; pressed=small/small/medium/large/large for xs/sm/md/lg/xl).
   - Re-export from the root barrel `libs/ui/src/index.ts` (`export * from './lib/action-tokens';`).
   - Add `libs/ui/src/lib/action-tokens.spec.ts` asserting each size maps to the expected existing `--md-sys-shape-corner-*` var (string equality, proving no `m3-tokens` change is needed). This spec lives under `sourceRoot` (`libs/ui/src`) so it is auto-discovered — no `project.json` `include` entry needed.
