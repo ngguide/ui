@@ -192,7 +192,7 @@ Group B for `gui-button`).
   - Add a split-button demo.
   - _Requirements: 11, 4, 15, 18_
 
-- [ ] 27. Final checkpoint — everything green
+- [x] 27. Final checkpoint — everything green
   - Run the full suite: `pnpm exec nx run-many -t lint test build` for `ui` and `web` (after `nx reset`).
   - Trace all 18 requirements to a shipped task (every entry point present, tested, and demoed).
   - SSR sanity: prerender `web` and confirm no orphan overlay/menu nodes are emitted at server render (mirrors the interaction-foundation SSR guarantee).
