@@ -153,7 +153,7 @@ New `@ngguide/ui/button-group`; projects `gui-button` / `gui-icon-button` childr
   - Add a button-group demo (connected + standard).
   - _Requirements: 12, 4, 15, 18_
 
-- [ ] 21. Checkpoint — Group F verification
+- [x] 21. Checkpoint — Group F verification
   - Run the button-group spec and `nx run-many -t lint test build`; confirm Tab moves between grouped buttons and the press expansion respects reduced motion.
 
 ### Group G — FAB menu (new entry point, CDK menu)
