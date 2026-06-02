@@ -545,8 +545,9 @@ describe('FabMenuComponent', () => {
 
 ## Open items carried into implementation
 
-- **Zoneless CDK-menu positioning (#28984)** — validate early (first fab-menu task / test plan).
-  Fallback path documented (research §5C).
+- **Zoneless CDK-menu positioning (#28984)** — ✅ VALIDATED 2026-06-02 in the browser on CDK 21.2.13:
+  the FAB-menu overlay anchored to the trigger (overlay x=191/y=329 == trigger x=191/bottom=329), not
+  pinned top-left. No fallback needed. Same overlay path is reused by the split button (Group H).
 - **Per-size label typography & exact dp** for icon-button S/L/XL and split/group — confirm against
   m3.material.io per component while building (research open questions); values go in component CSS.
 - **`aria-expanded` auto-reflection by `CdkMenuTrigger`** — verify in DOM; if not auto-set, the

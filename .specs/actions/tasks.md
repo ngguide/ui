@@ -173,7 +173,7 @@ Groups C and D). Includes the zoneless overlay-positioning validation.
   - Add a fab-menu demo.
   - _Requirements: 9, 15, 18_
 
-- [ ] 24. Checkpoint — Group G verification
+- [x] 24. Checkpoint — Group G verification
   - Run the fab-menu specs and `nx run-many -t lint test build`; in `nx serve web`, confirm the menu opens positioned at the FAB (the #28984 check), keyboard-dismisses, and exposes expanded/collapsed state.
 
 ### Group H — Split button (new entry point, CDK menu)
