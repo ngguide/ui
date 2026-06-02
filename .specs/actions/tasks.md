@@ -112,7 +112,7 @@ Retrofits `@ngguide/ui/fab` and adds `ExtendedFabComponent` to the same entry po
   - Icon slot + label; `expanded` input collapses to icon-only and expands, animated via motion tokens with a reduced-motion end-state fallback.
   - _Requirements: 8, 13, 16, 18_
 
-- [ ] 14. FAB specs + demo
+- [x] 14. FAB specs + demo
   - Update `libs/ui/fab/src/fab.spec.ts` (size/color/lowered/disabled reflection); add `extended-fab.spec.ts` (expanded/collapsed label visibility); update the `apps/web` fab demo for the new size/color set + extended FAB.
   - _Requirements: 7, 8, 18_
 

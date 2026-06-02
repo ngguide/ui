@@ -4,7 +4,12 @@ import { GuiSize } from '@ngguide/ui';
 import { M3ThemeService } from '@ngguide/ui/theme';
 
 import { ButtonComponent, GuiButtonVariant } from '@ngguide/ui/button';
-import { FabComponent, GuiFabColor } from '@ngguide/ui/fab';
+import {
+  ExtendedFabComponent,
+  FabComponent,
+  GuiFabColor,
+  GuiFabSize,
+} from '@ngguide/ui/fab';
 import { IconComponent } from '@ngguide/ui/icon';
 import {
   GuiIconButtonVariant,
@@ -17,6 +22,7 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     RouterModule,
     ButtonComponent,
     FabComponent,
+    ExtendedFabComponent,
     IconComponent,
     IconButtonComponent,
     InteractionDemoComponent,
@@ -55,8 +61,12 @@ export class AppComponent {
   bold = false;
   italic = false;
   underline = false;
-  fabColors: GuiFabColor[] = ['primary', 'secondary', 'tertiary'];
-  fabSizes: GuiSize[] = ['sm', 'md', 'lg'];
+  fabColors: GuiFabColor[] = [
+    'primary-container',
+    'secondary-container',
+    'tertiary-container',
+  ];
+  fabSizes: GuiFabSize[] = ['sm', 'md', 'lg'];
 
   iconButtonVariants: GuiIconButtonVariant[] = [
     'standard',

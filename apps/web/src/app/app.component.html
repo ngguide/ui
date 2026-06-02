@@ -143,16 +143,23 @@
         </div>
       </div>
       <div>
-        <button gui-fab color="primary" aria-label="Add">+</button>
+        <button gui-fab color="primary-container" aria-label="Add">+</button>
       </div>
       <div>
-        <button gui-fab color="secondary" aria-label="Edit">-</button>
+        <button gui-fab color="secondary-container" aria-label="Edit">-</button>
       </div>
       <div>
-        <button gui-fab color="tertiary" aria-label="Share">↗</button>
+        <button gui-fab color="tertiary-container" aria-label="Share">↗</button>
+      </div>
+      <div>
+        <button gui-fab color="primary" aria-label="Primary">+</button>
+      </div>
+      <div>
+        <button gui-fab color="tertiary" lowered aria-label="Lowered">+</button>
       </div>
       <div class="ml-4 text-sm text-gray-600">
-        FAB Colors: primary, secondary, tertiary
+        FAB Colors: primary-container, secondary-container,
+        tertiary-container, primary, plus lowered
       </div>
     </div>
 
@@ -189,22 +196,19 @@
         </div>
       </div>
       <div>
-        <button gui-fab extended color="primary" aria-label="Create">
-          + Create
+        <button gui-extended-fab color="primary-container" [expanded]="true">
+          <gui-icon guiIcon>★</gui-icon> Create
         </button>
       </div>
       <div>
-        <button gui-fab extended color="secondary" aria-label="Edit">
-          ✏️ Edit
-        </button>
-      </div>
-      <div>
-        <button gui-fab extended size="sm" color="tertiary" aria-label="Share">
-          ↗️ Share
+        <button gui-extended-fab color="secondary-container" [expanded]="false">
+          <gui-icon guiIcon>★</gui-icon> Edit
         </button>
       </div>
 
-      <div class="ml-4 text-sm text-gray-600">Extended FAB with text</div>
+      <div class="ml-4 text-sm text-gray-600">
+        Extended FAB: expanded and collapsed
+      </div>
     </div>
 
     <!-- Disabled FAB -->
@@ -220,8 +224,8 @@
         <button gui-fab disabled aria-label="Disabled FAB">+</button>
       </div>
       <div>
-        <button gui-fab extended disabled aria-label="Disabled Extended FAB">
-          + Disabled
+        <button gui-extended-fab disabled [expanded]="true">
+          <gui-icon guiIcon>★</gui-icon> Disabled
         </button>
       </div>
       <div class="ml-4 text-sm text-gray-600">Disabled FAB examples</div>
