@@ -134,7 +134,7 @@ New `@ngguide/ui/segmented-button` (group + segment, native ARIA, no CDK menu). 
   - Add a segmented-buttons section to the demo.
   - _Requirements: 10, 15, 18_
 
-- [ ] 18. Checkpoint — Group E verification
+- [x] 18. Checkpoint — Group E verification
   - Run the segmented specs and `nx run-many -t lint test build`; confirm single/multi selection and roles in the demo.
 
 ### Group F — Button group (new entry point)
