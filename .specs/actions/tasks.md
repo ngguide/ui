@@ -91,7 +91,7 @@ New `@ngguide/ui/icon-button`. Blast radius: *safe* — additive.
   - Add an icon-button section to the `apps/web` demo.
   - _Requirements: 6, 15, 18_
 
-- [ ] 10. Checkpoint — Group C verification
+- [x] 10. Checkpoint — Group C verification
   - Run the icon-button spec and `nx run-many -t lint test build`; confirm the new entry point builds (ng-packagr auto-discovery) and is importable.
 
 ### Group D — FAB retrofit + Extended FAB
