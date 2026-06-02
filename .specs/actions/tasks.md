@@ -103,7 +103,7 @@ Retrofits `@ngguide/ui/fab` and adds `ExtendedFabComponent` to the same entry po
   - Rewrite `libs/ui/fab/src/fab.ts`: replace `GuiFabColor`/`GuiFabVariant` with `GuiFabSize` (`sm`|`md`|`lg`) and the M3 `GuiFabColor` (`primary-container` default, secondary-container, tertiary-container, primary, secondary, tertiary); add `lowered` and `disabled` inputs; `hostDirectives` trio; host `data-color`/`data-size`/`data-lowered`. (Drops the old `Exclude<GuiSize,'xs'|'xl'>` size and the tonal-* color enum — pre-release breaking.)
   - _Requirements: 7, 13, 14, 16, 17_
 
-- [ ] 12. Rewrite `fab.css` onto tokens (sizes, elevation, states)
+- [x] 12. Rewrite `fab.css` onto tokens (sizes, elevation, states)
   - Replace hardcoded widths (56/80/96px) with M3 40/56/96dp; radii via tokens (12=medium / 16=large / 28=extra-large per sm/md/lg); resting elevation level 3, hovered level 4 (`--md-sys-elevation-*`); `[data-lowered]` → `surface-container-low`; the 6 color mappings; transitions via motion tokens; remove the hand-rolled focus outline.
   - _Requirements: 7, 13, 16_
 
