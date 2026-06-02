@@ -1,30 +1,52 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { GuiSize } from '@ngguide/ui';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  input,
+} from '@angular/core';
+import {
+  GuiFocusRingDirective,
+  GuiRippleDirective,
+  GuiStateLayerDirective,
+} from '@ngguide/ui/interaction';
 
+/** M3 FAB sizes: small (40), baseline/regular (56), large (96). */
+export type GuiFabSize = 'sm' | 'md' | 'lg';
+/** M3 FAB color mappings (default = primary-container; surface FABs are deprecated in M3). */
 export type GuiFabColor =
+  | 'primary-container'
+  | 'secondary-container'
+  | 'tertiary-container'
   | 'primary'
   | 'secondary'
-  | 'tertiary'
-  | 'tonal-primary'
-  | 'tonal-secondary'
-  | 'tonal-tertiary';
-export type GuiFabVariant = 'default' | 'tonal';
+  | 'tertiary';
 
-// todo: add extended variant
 @Component({
   selector:
     // eslint-disable-next-line @angular-eslint/component-selector
-    'button[gui-fab], button[guiFab]',
-  template: ` <ng-content /> `,
+    'button[gui-fab], button[guiFab], a[gui-fab], a[guiFab]',
+  template: `<ng-content />`,
   styleUrl: './fab.css',
+  hostDirectives: [GuiStateLayerDirective, GuiRippleDirective, GuiFocusRingDirective],
   host: {
     '[attr.data-color]': 'color()',
     '[attr.data-size]': 'size()',
+    '[attr.data-lowered]': 'lowered() ? "" : null',
+    '[attr.disabled]': 'isButton && disabled() ? "" : null',
+    '[attr.aria-disabled]': '!isButton && disabled() ? "true" : null',
+    '[class.gui-disabled]': 'disabled()',
   },
   exportAs: 'guiFab',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FabComponent {
-  color = input<GuiFabColor>('tonal-primary');
-  size = input<Exclude<GuiSize, 'xs' | 'xl'>>('md');
+  color = input<GuiFabColor>('primary-container');
+  size = input<GuiFabSize>('md');
+  lowered = input(false, { transform: booleanAttribute });
+  disabled = input(false, { transform: booleanAttribute });
+
+  protected readonly isButton =
+    inject<ElementRef<HTMLElement>>(ElementRef).nativeElement.tagName === 'BUTTON';
 }

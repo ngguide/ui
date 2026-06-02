@@ -99,7 +99,7 @@ New `@ngguide/ui/icon-button`. Blast radius: *safe* — additive.
 Retrofits `@ngguide/ui/fab` and adds `ExtendedFabComponent` to the same entry point (resolves
 `// todo: add extended variant`). Blast radius: *safe* — pre-release breaking change to the fab API.
 
-- [ ] 11. Retrofit `FabComponent`
+- [x] 11. Retrofit `FabComponent`
   - Rewrite `libs/ui/fab/src/fab.ts`: replace `GuiFabColor`/`GuiFabVariant` with `GuiFabSize` (`sm`|`md`|`lg`) and the M3 `GuiFabColor` (`primary-container` default, secondary-container, tertiary-container, primary, secondary, tertiary); add `lowered` and `disabled` inputs; `hostDirectives` trio; host `data-color`/`data-size`/`data-lowered`. (Drops the old `Exclude<GuiSize,'xs'|'xl'>` size and the tonal-* color enum — pre-release breaking.)
   - _Requirements: 7, 13, 14, 16, 17_
 
