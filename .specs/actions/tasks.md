@@ -107,7 +107,7 @@ Retrofits `@ngguide/ui/fab` and adds `ExtendedFabComponent` to the same entry po
   - Replace hardcoded widths (56/80/96px) with M3 40/56/96dp; radii via tokens (12=medium / 16=large / 28=extra-large per sm/md/lg); resting elevation level 3, hovered level 4 (`--md-sys-elevation-*`); `[data-lowered]` → `surface-container-low`; the 6 color mappings; transitions via motion tokens; remove the hand-rolled focus outline.
   - _Requirements: 7, 13, 16_
 
-- [ ] 13. Extended FAB
+- [x] 13. Extended FAB
   - Create `libs/ui/fab/src/extended-fab.ts` + `extended-fab.css`; export from `libs/ui/fab/src/index.ts`; add `../fab/src/extended-fab.spec.ts` to `project.json` `include`.
   - Icon slot + label; `expanded` input collapses to icon-only and expands, animated via motion tokens with a reduced-motion end-state fallback.
   - _Requirements: 8, 13, 16, 18_
