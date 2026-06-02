@@ -1,0 +1,6 @@
+/* M3 split button. Full styling (connected shape + trailing morph) lands in the next task. */
+:host {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 2px;
+}

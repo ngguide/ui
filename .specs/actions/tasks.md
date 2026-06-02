@@ -181,7 +181,7 @@ Groups C and D). Includes the zoneless overlay-positioning validation.
 New `@ngguide/ui/split-button` using `@angular/cdk/menu`. Blast radius: *safe* — additive (depends on
 Group B for `gui-button`).
 
-- [ ] 25. Split-button entry point + component
+- [x] 25. Split-button entry point + component
   - Create `libs/ui/split-button/{ng-package.json, src/index.ts}`; tsconfig path; add spec to `include`.
   - `SplitButtonComponent` per `design.md`: leading `gui-button` (emits `action`) + trailing `gui-button` `[cdkMenuTriggerFor]` with `aria-expanded` and `data-open`; `ng-template` `cdkMenu` for the projected items.
   - _Requirements: 11, 13, 15, 18_
