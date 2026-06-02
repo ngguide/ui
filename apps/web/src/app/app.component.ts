@@ -45,6 +45,11 @@ export class AppComponent {
     'outlined',
     'text',
   ];
+
+  /** Selected state for the toggle button demo. */
+  bold = false;
+  italic = false;
+  underline = false;
   fabColors: GuiFabColor[] = ['primary', 'secondary', 'tertiary'];
   fabSizes: GuiSize[] = ['sm', 'md', 'lg'];
 }

@@ -67,7 +67,7 @@ Blast radius: *safe* — pre-release breaking change; spec + demo updated in thi
   - Toggle color roles per variant × Default/Unselected/Selected from the `design.md` table; disabled uses M3 disabled opacities from tokens.
   - _Requirements: 1, 2, 4, 13, 14, 16_
 
-- [ ] 6. Button specs + demo
+- [x] 6. Button specs + demo
   - Rewrite `libs/ui/button/src/button.spec.ts`: `data-*` reflection; `toggle` click flips `selected` and sets `aria-pressed`; disabled blocks toggle and emits nothing; `[data-selected]` shows the `guiSelectedIcon` slot; `a[gui-button]` uses `aria-disabled`.
   - Update `apps/web/src/app/app.component.{ts,html}` to exercise the 5 variants × sizes × round/square × toggle × icon.
   - _Requirements: 1, 2, 3, 5, 18_
