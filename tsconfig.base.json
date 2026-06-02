@@ -19,6 +19,7 @@
       "@ngguide/ui/button": ["libs/ui/button/src/index.ts"],
       "@ngguide/ui/button-group": ["libs/ui/button-group/src/index.ts"],
       "@ngguide/ui/checkbox": ["libs/ui/checkbox/src/index.ts"],
+      "@ngguide/ui/chip": ["libs/ui/chip/src/index.ts"],
       "@ngguide/ui/fab": ["libs/ui/fab/src/index.ts"],
       "@ngguide/ui/fab-menu": ["libs/ui/fab-menu/src/index.ts"],
       "@ngguide/ui/forms": ["libs/ui/forms/src/index.ts"],

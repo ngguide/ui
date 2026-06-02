@@ -377,6 +377,96 @@
       </div>
     </div>
 
+    <!-- Chips -->
+    <div class="mt-8 mb-2 font-bold text-lg">Chips</div>
+
+    <!-- Assist chips (display-only) -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          C1
+        </div>
+      </div>
+      <gui-chip-set>
+        <gui-chip type="assist" value="share" label="Share">
+          <gui-icon guiChipLeading>↗</gui-icon> Share
+        </gui-chip>
+        <gui-chip type="assist" value="open" label="Open in maps">
+          Open in maps
+        </gui-chip>
+      </gui-chip-set>
+      <div class="ml-4 text-sm text-gray-600">Assist chips</div>
+    </div>
+
+    <!-- Filter chips (multiple) -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          C2
+        </div>
+      </div>
+      <gui-chip-set select="multiple" [(value)]="filters">
+        <gui-chip type="filter" value="new" label="New">New</gui-chip>
+        <gui-chip type="filter" value="popular" label="Popular">Popular</gui-chip>
+        <gui-chip type="filter" value="cheap" label="Cheap">Cheap</gui-chip>
+      </gui-chip-set>
+      <div class="ml-4 text-sm text-gray-600">
+        Filter (multiple): {{ filters().join(', ') || 'none' }}
+      </div>
+    </div>
+
+    <!-- Input chips (removable) -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          C3
+        </div>
+      </div>
+      <gui-chip-set>
+        @for (name of recipients(); track name) {
+          <gui-chip
+            type="input"
+            [value]="name"
+            [label]="name"
+            removable
+            (remove)="removeRecipient(name)"
+          >
+            {{ name }}
+            <span guiChipRemove aria-hidden="true">×</span>
+          </gui-chip>
+        }
+      </gui-chip-set>
+      <div class="ml-4 text-sm text-gray-600">
+        Input (removable): {{ recipients().join(', ') || 'empty' }}
+      </div>
+    </div>
+
+    <!-- Suggestion chips -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          C4
+        </div>
+      </div>
+      <gui-chip-set>
+        <gui-chip type="suggestion" value="yes" label="Yes please">
+          Yes please
+        </gui-chip>
+        <gui-chip type="suggestion" value="no" label="No thanks">
+          No thanks
+        </gui-chip>
+      </gui-chip-set>
+      <div class="ml-4 text-sm text-gray-600">Suggestion chips</div>
+    </div>
+
     <!-- Button Group -->
     <div class="mt-8 mb-2 font-bold text-lg">Button Group</div>
 

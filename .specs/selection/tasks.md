@@ -134,7 +134,7 @@ carrying `GuiFormControl`. Blast radius: safe; depends on Group A.
 Strict-M3 grid: `gui-chip-set` (`role=grid`/`row`) of `gui-chip` (`role=gridcell`), 1-D roving +
 Delete/Backspace removal, four types + elevated + filter selection. Blast radius: safe; depends on Group A.
 
-- [ ] 13. Implement `gui-chip-set`
+- [x] 13. Implement `gui-chip-set`
   - Scaffold entry `@ngguide/ui/chip` (ng-package, index exporting set + chip, tsconfig path, project.json include)
   - Create `libs/ui/chip/src/chip-set.ts`: `role="grid"` host + inner `role="row"`; `select` input
     (`'none'|'single'|'multiple'`); composes `GuiFormControl<string|string[]|null>` for selectable sets;
@@ -142,7 +142,7 @@ Delete/Backspace removal, four types + elevated + filter selection. Blast radius
     to host keydown; `isSelected`/`toggle`; on children change move focus to an adjacent chip
   - _Requirements: 6.1, 6.2, 6.3, 4.3, 11.5, 10.1, 12.1_
 
-- [ ] 14. Implement `gui-chip` (four types, removable, slots, elevated)
+- [x] 14. Implement `gui-chip` (four types, removable, slots, elevated)
   - Create `libs/ui/chip/src/chip.ts`: `role="gridcell"`, `tabindex=-1`, `type` (assist/filter/input/
     suggestion), `value`/`label`, `removable`/`elevated`/`disabled` inputs, `remove` output; primary
     `button` (role button or checkbox+aria-checked for filter), leading slot `[guiChipLeading]`, optional
@@ -152,13 +152,13 @@ Delete/Backspace removal, four types + elevated + filter selection. Blast radius
     elevated (elevation) + disabled token treatment
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 5.1, 5.2, 5.3, 5.4, 10.1_
 
-- [ ] 15. Unit-test chips + demo
+- [x] 15. Unit-test chips + demo
   - `libs/ui/chip/src/chip.spec.ts`: `grid`/`row`/`gridcell` roles; filter chip toggles selected +
     `aria-checked`; Delete on a removable chip emits `remove`; elevated sets `data-elevated`. Add to include
   - Demo a chip set per type (assist, filter multi-select, input removable, suggestion) in `apps/web`
   - _Requirements: 4.1, 4.3, 5.3, 6.2, 11.5_
 
-- [ ] 16. Checkpoint — Group D verification
+- [x] 16. Checkpoint — Group D verification
   - `pnpm exec nx reset`, then `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build --projects=ui,web`
   - Chip specs pass; demo set navigates with arrows and removes with Delete; build emits the `chip` entry
 

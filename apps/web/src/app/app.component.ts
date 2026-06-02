@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
@@ -25,6 +25,7 @@ import {
 } from '@ngguide/ui/segmented-button';
 import { SplitButtonComponent } from '@ngguide/ui/split-button';
 import { CheckboxComponent } from '@ngguide/ui/checkbox';
+import { ChipComponent, ChipSetComponent } from '@ngguide/ui/chip';
 import { RadioComponent, RadioGroupComponent } from '@ngguide/ui/radio';
 import { SwitchComponent } from '@ngguide/ui/switch';
 import { InteractionDemoComponent } from './interaction-demo.component';
@@ -46,6 +47,8 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     SegmentedButtonGroupComponent,
     SegmentedButtonComponent,
     CheckboxComponent,
+    ChipSetComponent,
+    ChipComponent,
     RadioGroupComponent,
     RadioComponent,
     SwitchComponent,
@@ -121,6 +124,16 @@ export class AppComponent {
 
   /** Radio demo state. */
   contact: string | null = 'email';
+
+  /** Filter chip set (multiple) demo state. */
+  filters = signal<string[]>(['new']);
+
+  /** Input chip set demo state — removable chips splice this array. */
+  recipients = signal<string[]>(['alice', 'bob', 'carol']);
+
+  removeRecipient(name: string): void {
+    this.recipients.update((list) => list.filter((x) => x !== name));
+  }
 
   /** Reactive-form example bound to a gui-checkbox and a gui-switch. */
   acceptControl = new FormControl(false);
