@@ -1,14 +1,48 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
 import { GuiSize } from '@ngguide/ui';
 import { M3ThemeService } from '@ngguide/ui/theme';
 
 import { ButtonComponent, GuiButtonVariant } from '@ngguide/ui/button';
-import { FabComponent, GuiFabColor } from '@ngguide/ui/fab';
+import { ButtonGroupComponent } from '@ngguide/ui/button-group';
+import {
+  ExtendedFabComponent,
+  FabComponent,
+  GuiFabColor,
+  GuiFabSize,
+} from '@ngguide/ui/fab';
+import { FabMenuComponent, FabMenuItemComponent } from '@ngguide/ui/fab-menu';
 import { IconComponent } from '@ngguide/ui/icon';
+import {
+  GuiIconButtonVariant,
+  IconButtonComponent,
+} from '@ngguide/ui/icon-button';
+import {
+  SegmentedButtonComponent,
+  SegmentedButtonGroupComponent,
+} from '@ngguide/ui/segmented-button';
+import { SplitButtonComponent } from '@ngguide/ui/split-button';
+import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
-  imports: [RouterModule, ButtonComponent, FabComponent, IconComponent],
+  imports: [
+    RouterModule,
+    ButtonComponent,
+    ButtonGroupComponent,
+    FabComponent,
+    ExtendedFabComponent,
+    FabMenuComponent,
+    FabMenuItemComponent,
+    CdkMenu,
+    CdkMenuItem,
+    SplitButtonComponent,
+    IconComponent,
+    IconButtonComponent,
+    SegmentedButtonGroupComponent,
+    SegmentedButtonComponent,
+    InteractionDemoComponent,
+  ],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -38,6 +72,36 @@ export class AppComponent {
     'outlined',
     'text',
   ];
-  fabColors: GuiFabColor[] = ['primary', 'secondary', 'tertiary'];
-  fabSizes: GuiSize[] = ['sm', 'md', 'lg'];
+
+  /** Selected state for the toggle button demo. */
+  bold = false;
+  italic = false;
+  underline = false;
+  fabColors: GuiFabColor[] = [
+    'primary-container',
+    'secondary-container',
+    'tertiary-container',
+  ];
+  fabSizes: GuiFabSize[] = ['sm', 'md', 'lg'];
+
+  iconButtonVariants: GuiIconButtonVariant[] = [
+    'standard',
+    'filled',
+    'tonal',
+    'outlined',
+  ];
+
+  /** Selected state for the toggle icon button demo. */
+  favorite = false;
+
+  /** Single-select segmented buttons demo. */
+  alignment: string | null = 'center';
+
+  /** Multi-select segmented buttons demo. */
+  weekdays: string[] = ['mon'];
+
+  /** No-op handler for the split-button primary action demo. */
+  onSave(): void {
+    // no-op demo handler
+  }
 }

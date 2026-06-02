@@ -1,0 +1,123 @@
+/* Resting container styling only. Hover/focus/pressed tints, the ripple and the
+   focus ring are drawn by the composed interaction foundation
+   (GuiStateLayer/GuiRipple/GuiFocusRing via hostDirectives) — never re-implement
+   them here. This file sets per-color/size container background, color,
+   elevation, shape and the expand/collapse layout only. */
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-sizing: border-box;
+  cursor: pointer;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  color: var(--md-sys-color-primary);
+  box-shadow: var(--md-sys-elevation-level3);
+
+  --gui-comp-icon-size: 24px;
+
+  transition:
+    background-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    box-shadow var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    width var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard);
+}
+
+/* --- Sizes (M3 extended FAB heights mirror FAB; pill shape). Exact per-size
+   horizontal paddings are an M3 detail kept reasonable here. --- */
+:host([data-size='sm']) {
+  height: 56px;
+  padding: 0 16px;
+  border-radius: var(--md-sys-shape-corner-large);
+
+  --gui-comp-icon-size: 24px;
+}
+
+:host,
+:host([data-size='md']) {
+  height: 56px;
+  padding: 0 16px;
+  border-radius: var(--md-sys-shape-corner-large);
+
+  --gui-comp-icon-size: 24px;
+}
+
+:host([data-size='lg']) {
+  height: 96px;
+  padding: 0 26px;
+  border-radius: var(--md-sys-shape-corner-extra-large);
+
+  --gui-comp-icon-size: 32px;
+}
+
+/* --- Collapsed (icon-only): shrink to a square FAB when not expanded. The
+   label span is display:none via its [hidden] attribute. --- */
+:host(:not([data-expanded])) {
+  min-width: 56px;
+  padding-inline: 0;
+  justify-content: center;
+}
+
+:host([data-size='lg']:not([data-expanded])) {
+  min-width: 96px;
+}
+
+.gui-extended-fab-label {
+  white-space: nowrap;
+}
+
+/* --- Colors (container + on-color). Default = primary-container. --- */
+:host,
+:host([data-color='primary-container']) {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+:host([data-color='secondary-container']) {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+:host([data-color='tertiary-container']) {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+:host([data-color='primary']) {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+:host([data-color='secondary']) {
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+}
+
+:host([data-color='tertiary']) {
+  background-color: var(--md-sys-color-tertiary);
+  color: var(--md-sys-color-on-tertiary);
+}
+
+/* --- Disabled (M3 disabled treatment via tokens). The interaction layer
+   already suppresses the state layer for disabled hosts. --- */
+:host(.gui-disabled) {
+  pointer-events: none;
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 88%
+  );
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+  box-shadow: var(--md-sys-elevation-level0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    transition: none;
+  }
+}

@@ -9,6 +9,7 @@
       }
     </div>
 
+    <!-- (a) All 5 variants at default size -->
     <div class="flex flex-row gap-2 items-center">
       <div>
         <div
@@ -17,36 +18,36 @@
           1
         </div>
       </div>
-      <div>
-        <a
-          href="https://www.google.com"
-          gui-button
-          size="xs"
-          variant="tonal"
-          disabled
-          >Extra small</a
-        >
-      </div>
-      <div>
-        <button gui-button size="sm" variant="tonal">Small</button>
-      </div>
-      <div>
-        <button gui-button size="md" variant="tonal">Medium</button>
-      </div>
-      <div>
-        <button gui-button size="lg" variant="tonal">Large</button>
-      </div>
-      <div>
-        <button gui-button size="xl" variant="tonal">Extra large</button>
-      </div>
+      @for (variant of variants; track variant) {
+        <div>
+          <button gui-button size="md" [variant]="variant">{{ variant }}</button>
+        </div>
+      }
     </div>
 
+    <!-- (b) Size scale xs..xl for one variant -->
     <div class="flex flex-row gap-2 items-center">
       <div>
         <div
           class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
         >
           2
+        </div>
+      </div>
+      @for (size of sizes; track size) {
+        <div>
+          <button gui-button [size]="size" variant="tonal">{{ size }}</button>
+        </div>
+      }
+    </div>
+
+    <!-- (c) Round vs square shape -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          3
         </div>
       </div>
       <div>
@@ -61,31 +62,7 @@
       </div>
     </div>
 
-    <div class="flex flex-row gap-2 items-center">
-      <div>
-        <div
-          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
-        >
-          3
-        </div>
-      </div>
-      <div>
-        <button gui-button size="md" variant="elevated">Elevated</button>
-      </div>
-      <div>
-        <button gui-button size="md" variant="filled">Filled</button>
-      </div>
-      <div>
-        <button gui-button size="md" variant="tonal">Tonal</button>
-      </div>
-      <div>
-        <button gui-button size="md" variant="outlined">Outlined</button>
-      </div>
-      <div>
-        <button gui-button size="md" variant="text">Text</button>
-      </div>
-    </div>
-
+    <!-- (d) Toggle button group showing selected state -->
     <div class="flex flex-row gap-2 items-center">
       <div>
         <div
@@ -95,10 +72,61 @@
         </div>
       </div>
       <div>
-        <button gui-button size="md" variant="tonal" disabled>Disabled</button>
+        <button gui-button size="md" variant="tonal" toggle [(selected)]="bold">
+          Bold
+        </button>
       </div>
       <div>
-        <button gui-button size="md" variant="tonal">Enabled</button>
+        <button
+          gui-button
+          size="md"
+          variant="tonal"
+          toggle
+          [(selected)]="italic"
+        >
+          Italic
+        </button>
+      </div>
+      <div>
+        <button
+          gui-button
+          size="md"
+          variant="tonal"
+          toggle
+          [(selected)]="underline"
+        >
+          Underline
+        </button>
+      </div>
+      <div class="ml-4 text-sm text-gray-600">
+        Selected: {{ bold ? 'B' : '' }}{{ italic ? 'I' : ''
+        }}{{ underline ? 'U' : '' }}
+      </div>
+    </div>
+
+    <!-- (e) Button with an icon in the guiIcon slot -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          5
+        </div>
+      </div>
+      <div>
+        <button gui-button size="md" variant="filled">
+          <gui-icon guiIcon>★</gui-icon> Favorite
+        </button>
+      </div>
+      <div>
+        <button gui-button size="md" variant="outlined" disabled>
+          Disabled
+        </button>
+      </div>
+      <div>
+        <a href="https://www.google.com" gui-button size="md" variant="text"
+          >Link</a
+        >
       </div>
     </div>
 
@@ -115,16 +143,23 @@
         </div>
       </div>
       <div>
-        <button gui-fab color="primary" aria-label="Add">+</button>
+        <button gui-fab color="primary-container" aria-label="Add">+</button>
       </div>
       <div>
-        <button gui-fab color="secondary" aria-label="Edit">-</button>
+        <button gui-fab color="secondary-container" aria-label="Edit">-</button>
       </div>
       <div>
-        <button gui-fab color="tertiary" aria-label="Share">↗</button>
+        <button gui-fab color="tertiary-container" aria-label="Share">↗</button>
+      </div>
+      <div>
+        <button gui-fab color="primary" aria-label="Primary">+</button>
+      </div>
+      <div>
+        <button gui-fab color="tertiary" lowered aria-label="Lowered">+</button>
       </div>
       <div class="ml-4 text-sm text-gray-600">
-        FAB Colors: primary, secondary, tertiary
+        FAB Colors: primary-container, secondary-container,
+        tertiary-container, primary, plus lowered
       </div>
     </div>
 
@@ -161,22 +196,19 @@
         </div>
       </div>
       <div>
-        <button gui-fab extended color="primary" aria-label="Create">
-          + Create
+        <button gui-extended-fab color="primary-container" [expanded]="true">
+          <gui-icon guiIcon>★</gui-icon> Create
         </button>
       </div>
       <div>
-        <button gui-fab extended color="secondary" aria-label="Edit">
-          ✏️ Edit
-        </button>
-      </div>
-      <div>
-        <button gui-fab extended size="sm" color="tertiary" aria-label="Share">
-          ↗️ Share
+        <button gui-extended-fab color="secondary-container" [expanded]="false">
+          <gui-icon guiIcon>★</gui-icon> Edit
         </button>
       </div>
 
-      <div class="ml-4 text-sm text-gray-600">Extended FAB with text</div>
+      <div class="ml-4 text-sm text-gray-600">
+        Extended FAB: expanded and collapsed
+      </div>
     </div>
 
     <!-- Disabled FAB -->
@@ -192,11 +224,224 @@
         <button gui-fab disabled aria-label="Disabled FAB">+</button>
       </div>
       <div>
-        <button gui-fab extended disabled aria-label="Disabled Extended FAB">
-          + Disabled
+        <button gui-extended-fab disabled [expanded]="true">
+          <gui-icon guiIcon>★</gui-icon> Disabled
         </button>
       </div>
       <div class="ml-4 text-sm text-gray-600">Disabled FAB examples</div>
     </div>
+
+    <!-- FAB Menu -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          8a
+        </div>
+      </div>
+      <gui-fab-menu ariaLabel="Create">
+        <span guiFabIcon>+</span>
+        <ng-template>
+          <div class="gui-fab-menu-list" cdkMenu>
+            <button gui-fab-menu-item>New doc</button>
+            <button gui-fab-menu-item>New folder</button>
+            <button gui-fab-menu-item>Upload</button>
+          </div>
+        </ng-template>
+      </gui-fab-menu>
+      <div class="ml-4 text-sm text-gray-600">
+        FAB menu: click to reveal related actions
+      </div>
+    </div>
+
+    <!-- Icon Button Demonstrations -->
+    <div class="mt-8 mb-2 font-bold text-lg">Icon Button</div>
+
+    <!-- Icon Button Variants -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          9
+        </div>
+      </div>
+      @for (variant of iconButtonVariants; track variant) {
+        <div>
+          <button
+            gui-icon-button
+            size="md"
+            [variant]="variant"
+            [attr.aria-label]="variant"
+          >
+            <gui-icon>★</gui-icon>
+          </button>
+        </div>
+      }
+      <div class="ml-4 text-sm text-gray-600">
+        Variants: standard, filled, tonal, outlined
+      </div>
+    </div>
+
+    <!-- Toggle icon button with selected-icon swap -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          10
+        </div>
+      </div>
+      <div>
+        <button
+          gui-icon-button
+          size="md"
+          variant="tonal"
+          toggle
+          [(selected)]="favorite"
+          aria-label="Favorite"
+        >
+          <gui-icon>☆</gui-icon>
+          <gui-icon guiSelectedIcon>★</gui-icon>
+        </button>
+      </div>
+      <div class="ml-4 text-sm text-gray-600">
+        Toggle with selected-icon swap: {{ favorite ? 'Selected' : 'Unselected' }}
+      </div>
+    </div>
+
+    <!-- Icon Button size range -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          11
+        </div>
+      </div>
+      @for (size of sizes; track size) {
+        <div>
+          <button
+            gui-icon-button
+            [size]="size"
+            variant="filled"
+            [attr.aria-label]="size"
+          >
+            <gui-icon>★</gui-icon>
+          </button>
+        </div>
+      }
+      <div class="ml-4 text-sm text-gray-600">Sizes: xs, sm, md, lg, xl</div>
+    </div>
+
+    <!-- Segmented Buttons -->
+    <div class="mt-8 mb-2 font-bold text-lg">Segmented Buttons</div>
+
+    <!-- Single-select segmented buttons -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          12
+        </div>
+      </div>
+      <gui-segmented-buttons [(value)]="alignment">
+        <button gui-segmented-button value="left">Left</button>
+        <button gui-segmented-button value="center">Center</button>
+        <button gui-segmented-button value="right">Right</button>
+      </gui-segmented-buttons>
+      <div class="ml-4 text-sm text-gray-600">
+        Single-select: {{ alignment ?? 'none' }}
+      </div>
+    </div>
+
+    <!-- Multi-select segmented buttons -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          13
+        </div>
+      </div>
+      <gui-segmented-buttons multiple [(value)]="weekdays">
+        <button gui-segmented-button value="mon">Mon</button>
+        <button gui-segmented-button value="tue">Tue</button>
+        <button gui-segmented-button value="wed">Wed</button>
+        <button gui-segmented-button value="thu">Thu</button>
+      </gui-segmented-buttons>
+      <div class="ml-4 text-sm text-gray-600">
+        Multi-select: {{ weekdays.join(', ') || 'none' }}
+      </div>
+    </div>
+
+    <!-- Button Group -->
+    <div class="mt-8 mb-2 font-bold text-lg">Button Group</div>
+
+    <!-- Connected group: buttons share edges, expressive press on pointerdown -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          14
+        </div>
+      </div>
+      <gui-button-group connected>
+        <button gui-button size="md" variant="tonal">Left</button>
+        <button gui-button size="md" variant="tonal">Center</button>
+        <button gui-button size="md" variant="tonal">Right</button>
+      </gui-button-group>
+      <div class="ml-4 text-sm text-gray-600">
+        Connected: shared edges, press a button to see the expressive grow
+      </div>
+    </div>
+
+    <!-- Standard group: spaced buttons -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          15
+        </div>
+      </div>
+      <gui-button-group>
+        <button gui-button size="md" variant="filled">One</button>
+        <button gui-button size="md" variant="filled">Two</button>
+        <button gui-button size="md" variant="filled">Three</button>
+      </gui-button-group>
+      <div class="ml-4 text-sm text-gray-600">Standard: spaced buttons</div>
+    </div>
+
+    <!-- Split Button -->
+    <div class="mt-8 mb-2 font-bold text-lg">Split Button</div>
+
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          16
+        </div>
+      </div>
+      <gui-split-button (action)="onSave()">
+        <span guiLeading>Save</span>
+        <span guiTrailingIcon>▾</span>
+        <ng-template>
+          <div cdkMenu class="gui-fab-menu-list">
+            <button gui-button cdkMenuItem>Save as…</button>
+            <button gui-button cdkMenuItem>Save all</button>
+          </div>
+        </ng-template>
+      </gui-split-button>
+      <div class="ml-4 text-sm text-gray-600">
+        Split button: primary action + trailing menu of related choices
+      </div>
+    </div>
+
+    <app-interaction-demo />
   </div>
 </div>

@@ -1,0 +1,70 @@
+/* M3 button group: standard (spaced) or connected (shared-edge) arrangement,
+ * plus the M3 expressive press (the pressed button grows, neighbors compress).
+ *
+ * Note on selectors: the projected buttons are SEPARATE components (gui-button /
+ * gui-icon-button) authored in the consumer template, so they carry the consumer's
+ * `_ngcontent` id. A plain `:host > *` rule is content-scoped to THIS component and
+ * never matches them — `::ng-deep` is required to pierce the scoping. The corner
+ * overrides additionally use `!important` to win over each child button's own
+ * `:host([data-size][data-shape])` radius (a parent connected-context legitimately
+ * overrides the child's intrinsic pill shape). */
+:host {
+  display: inline-flex;
+  align-items: center;
+  /* Standard arrangement: M3 spacing between buttons. */
+  gap: 8px;
+}
+
+/* Connected arrangement: buttons sit edge-to-edge, no gap. */
+:host([data-connected]) {
+  gap: 0;
+}
+
+/* Connected: children share edges, so square off all corners, then round only
+ * the outer edges of the first/last button. `::ng-deep` reaches the projected
+ * child components; `!important` overrides their intrinsic `:host` radius. */
+:host([data-connected]) ::ng-deep > * {
+  border-radius: 0 !important;
+}
+
+:host([data-connected]) ::ng-deep > *:first-child {
+  border-start-start-radius: var(--md-sys-shape-corner-full) !important;
+  border-end-start-radius: var(--md-sys-shape-corner-full) !important;
+}
+
+:host([data-connected]) ::ng-deep > *:last-child {
+  border-start-end-radius: var(--md-sys-shape-corner-full) !important;
+  border-end-end-radius: var(--md-sys-shape-corner-full) !important;
+}
+
+/* M3 expressive press. The state-layer directive sets data-gui-state="pressed"
+ * on the active child; the pressed button grows and its siblings compress.
+ * M3 ButtonGroup uses an ExpandedRatio (~0.15) for the grow amount; the
+ * sibling compression here is an approximation of that behaviour. */
+:host ::ng-deep > * {
+  transform-origin: center;
+  transition: transform var(--md-sys-motion-duration-short4)
+    var(--md-sys-motion-easing-standard);
+}
+
+:host ::ng-deep > *[data-gui-state~='pressed'] {
+  transform: scaleX(1.15);
+}
+
+/* Approximate neighbor compression: when any child is pressed, slightly
+ * shrink its siblings (ExpandedRatio approximation). */
+:host:has(> *[data-gui-state~='pressed']) ::ng-deep > *:not([data-gui-state~='pressed']) {
+  transform: scaleX(0.95);
+}
+
+/* Respect reduced-motion: no transitions, no expressive transforms. */
+@media (prefers-reduced-motion: reduce) {
+  :host ::ng-deep > * {
+    transition: none;
+  }
+
+  :host ::ng-deep > *[data-gui-state~='pressed'],
+  :host:has(> *[data-gui-state~='pressed']) ::ng-deep > * {
+    transform: none;
+  }
+}

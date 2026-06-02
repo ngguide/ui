@@ -1,174 +1,180 @@
+/* Resting container styling only. Hover/focus/pressed tints, the ripple and the
+   focus ring are drawn by the composed interaction foundation
+   (GuiStateLayer/GuiRipple/GuiFocusRing via hostDirectives) — never re-implement
+   them here. This file sets per-variant/size container background, color, border,
+   elevation, shape and the expressive shape morph only. */
+
 :host {
-  font-family: var(--md-ref-typeface-plain);
-  font-weight: var(--md-ref-typeface-weight-medium);
-  border-radius: var(--md-sys-shape-corner-full);
-  gap: 8px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition:
-    background-color 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out,
-    border-radius 0.2s ease-in-out;
+  box-sizing: border-box;
   cursor: pointer;
+  font-family: var(--md-ref-typeface-plain);
+  font-weight: var(--md-ref-typeface-weight-medium);
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  transition:
+    background-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    box-shadow var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    border-radius var(--md-sys-motion-duration-short2)
+      var(--md-sys-motion-easing-standard);
 }
 
-/* Sizes */
-:host([data-size]) {
+.gui-button-label {
+  display: inline;
+}
+
+/* The selected-icon slot only shows in the selected (toggle) state. Projected
+   content carries the CONSUMER's encapsulation id, so a content-scoped descendant
+   selector would NOT match it — `::ng-deep` pierces the scoping. */
+:host(:not([data-selected])) ::ng-deep [guiSelectedIcon] {
+  display: none;
+}
+
+/* --- Sizes (height, leading/trailing padding, icon→label gap, label type) --- */
+:host([data-size='xs']) {
+  height: 32px;
+  padding: 0 16px;
+  gap: 8px;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.1px;
-  padding: 6px 12px;
 }
 
 :host([data-size='sm']) {
-  padding: 10px 24px;
+  height: 40px;
+  padding: 0 16px;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
 }
 
 :host([data-size='md']) {
+  height: 56px;
+  padding: 0 24px;
+  gap: 8px;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
-  padding: 16px 24px;
 }
 
 :host([data-size='lg']) {
+  height: 96px;
+  padding: 0 48px;
+  gap: 12px;
   font-family: var(--md-ref-typeface-brand);
   font-weight: var(--md-ref-typeface-weight-regular);
   font-size: 24px;
   line-height: 32px;
-  letter-spacing: 0px;
-  padding: 32px 48px;
-  gap: 16px;
+  letter-spacing: 0;
 }
 
 :host([data-size='xl']) {
+  height: 136px;
+  padding: 0 64px;
+  gap: 16px;
   font-family: var(--md-ref-typeface-brand);
   font-weight: var(--md-ref-typeface-weight-regular);
   font-size: 32px;
   line-height: 40px;
-  letter-spacing: 0px;
-  padding: 48px 64px;
-  gap: 16px;
+  letter-spacing: 0;
 }
 
-/* Shapes */
-:host([data-shape='round']) {
+/* --- Shape + expressive morph (per-size radii) ---
+   round = full; square = size-specific token; selected flips round<->square;
+   pressed overrides both with the size-specific pressed radius. --- */
+
+/* xs / sm */
+:host([data-size='xs'][data-shape='round']),
+:host([data-size='sm'][data-shape='round']) {
   border-radius: var(--md-sys-shape-corner-full);
 }
-
-:host([data-shape='square']) {
-  border-radius: var(--md-sys-shape-corner-medium);
-}
-
-:host([data-size='xs'][data-shape='square']) {
-  border-radius: var(--md-sys-shape-corner-medium);
-}
-:host([data-size='xs'][data-shape='round']) {
-  border-radius: 16px;
-}
-:host([data-size='xs']:active) {
-  border-radius: var(--md-sys-shape-corner-small);
-}
+:host([data-size='xs'][data-shape='square']),
 :host([data-size='sm'][data-shape='square']) {
   border-radius: var(--md-sys-shape-corner-medium);
 }
-:host([data-size='sm'][data-shape='round']) {
-  border-radius: 20px;
+:host([data-size='xs'][data-shape='round'][data-selected]),
+:host([data-size='sm'][data-shape='round'][data-selected]) {
+  border-radius: var(--md-sys-shape-corner-medium);
 }
-:host([data-size='sm']:active) {
+:host([data-size='xs'][data-shape='square'][data-selected]),
+:host([data-size='sm'][data-shape='square'][data-selected]) {
+  border-radius: var(--md-sys-shape-corner-full);
+}
+:host([data-size='xs'][data-gui-state~='pressed']),
+:host([data-size='sm'][data-gui-state~='pressed']) {
   border-radius: var(--md-sys-shape-corner-small);
+}
+
+/* md */
+:host([data-size='md'][data-shape='round']) {
+  border-radius: var(--md-sys-shape-corner-full);
 }
 :host([data-size='md'][data-shape='square']) {
   border-radius: var(--md-sys-shape-corner-large);
 }
-:host([data-size='md'][data-shape='round']) {
-  border-radius: 28px;
-}
-:host([data-size='md']:active){
-  border-radius: var(--md-sys-shape-corner-medium);
-}
-:host([data-size='lg'][data-shape='square']) {
-  border-radius: var(--md-sys-shape-corner-extra-large);
-}
-:host([data-size='lg'][data-shape='round']) {
-  border-radius: 48px;
-}
-:host([data-size='lg']:active) {
+:host([data-size='md'][data-shape='round'][data-selected]) {
   border-radius: var(--md-sys-shape-corner-large);
 }
+:host([data-size='md'][data-shape='square'][data-selected]) {
+  border-radius: var(--md-sys-shape-corner-full);
+}
+:host([data-size='md'][data-gui-state~='pressed']) {
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+
+/* lg / xl */
+:host([data-size='lg'][data-shape='round']),
+:host([data-size='xl'][data-shape='round']) {
+  border-radius: var(--md-sys-shape-corner-full);
+}
+:host([data-size='lg'][data-shape='square']),
 :host([data-size='xl'][data-shape='square']) {
   border-radius: var(--md-sys-shape-corner-extra-large);
 }
-:host([data-size='xl'][data-shape='round']) {
-  border-radius: 68px;
+:host([data-size='lg'][data-shape='round'][data-selected]),
+:host([data-size='xl'][data-shape='round'][data-selected]) {
+  border-radius: var(--md-sys-shape-corner-extra-large);
 }
-:host([data-size='xl']:active) {
+:host([data-size='lg'][data-shape='square'][data-selected]),
+:host([data-size='xl'][data-shape='square'][data-selected]) {
+  border-radius: var(--md-sys-shape-corner-full);
+}
+:host([data-size='lg'][data-gui-state~='pressed']),
+:host([data-size='xl'][data-gui-state~='pressed']) {
   border-radius: var(--md-sys-shape-corner-large);
 }
 
-:host(:focus-visible) {
-  outline: var(--md-sys-state-focus-indicator-thickness) solid
-    var(--md-sys-color-secondary);
-  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
-}
-
-:host(.disabled) {
-  pointer-events: none;
-}
+/* --- Variant colors (resting), with toggle color roles --- */
 
 /* Filled */
 :host([data-variant='filled']) {
   background-color: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
-  box-shadow: var(--md-sys-elevation-level0);
 }
-:host([data-variant='filled']:hover),
-:host([data-variant='filled']:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--md-sys-color-primary),
-    var(--md-sys-color-on-primary) 8%
-  );
-  box-shadow: var(--md-sys-elevation-level1);
+:host([data-variant='filled'][data-toggle]:not([data-selected])) {
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
 }
-:host([data-variant='filled']:active) {
-  background-color: color-mix(
-    in srgb,
-    var(--md-sys-color-primary),
-    var(--md-sys-color-on-primary) 10%
-  );
-  box-shadow: var(--md-sys-elevation-level0);
-}
-:host([data-variant='filled'].disabled) {
-  background-color: color-mix(
-    in srgb,
-    var(--md-sys-color-on-surface),
-    transparent 90%
-  );
-  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+:host([data-variant='filled'][data-toggle][data-selected]) {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
 }
 
 /* Elevated */
 :host([data-variant='elevated']) {
   background-color: var(--md-sys-color-surface-container-low);
-  box-shadow: var(--md-sys-elevation-level1);
   color: var(--md-sys-color-primary);
-}
-:host([data-variant='elevated']:hover),
-:host([data-variant='elevated']:focus-visible),
-:host([data-variant='elevated']:active) {
-  background-color: color-mix(
-    in srgb,
-    var(--md-sys-color-surface-container-low),
-    var(--md-sys-color-primary) 10%
-  );
-}
-:host([data-variant='elevated']:hover) {
-  box-shadow: var(--md-sys-elevation-level2);
-}
-:host([data-variant='elevated']:active) {
   box-shadow: var(--md-sys-elevation-level1);
+}
+:host([data-variant='elevated'][data-toggle][data-selected]) {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
 }
 
 /* Tonal */
@@ -176,31 +182,22 @@
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
 }
-:host([data-variant='tonal']:hover),
-:host([data-variant='tonal']:focus-visible),
-:host([data-variant='tonal']:active) {
-  background-color: color-mix(
-    in srgb,
-    var(--md-sys-color-secondary-container),
-    var(--md-sys-color-on-secondary-container) 10%
-  );
-}
-:host([data-variant='tonal'].disabled) {
-  background-color: color-mix(
-    in srgb,
-    var(--md-sys-color-on-surface),
-    transparent 90%
-  );
-  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+:host([data-variant='tonal'][data-toggle][data-selected]) {
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
 }
 
 /* Outlined */
 :host([data-variant='outlined']) {
-  background-color: transparent;
-  border-color: var(--md-sys-color-outline-variant);
-  border-style: solid;
-  border-width: 1px;
+  background: transparent;
   color: var(--md-sys-color-on-surface-variant);
+  border-style: solid;
+  border-color: var(--md-sys-color-outline-variant);
+}
+:host([data-variant='outlined'][data-size='xs']),
+:host([data-variant='outlined'][data-size='sm']),
+:host([data-variant='outlined'][data-size='md']) {
+  border-width: 1px;
 }
 :host([data-variant='outlined'][data-size='lg']) {
   border-width: 2px;
@@ -208,44 +205,43 @@
 :host([data-variant='outlined'][data-size='xl']) {
   border-width: 3px;
 }
-:host([data-variant='outlined']:hover),
-:host([data-variant='outlined']:focus-visible),
-:host([data-variant='outlined']:active) {
-  background-color: color-mix(
-    in srgb,
-    transparent,
-    var(--md-sys-color-on-surface-variant) 10%
-  );
-}
-:host([data-variant='outlined'].disabled) {
-  border-color: color-mix(
-    in srgb,
-    var(--md-sys-color-outline-variant),
-    transparent 90%
-  );
-  color: color-mix(
-    in srgb,
-    var(--md-sys-color-on-surface-variant),
-    transparent 62%
-  );
+:host([data-variant='outlined'][data-toggle][data-selected]) {
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  border-color: transparent;
 }
 
 /* Text */
 :host([data-variant='text']) {
+  background: transparent;
   color: var(--md-sys-color-primary);
 }
-:host([data-variant='text']:hover) {
-  background-color: rgba(255, 255, 255, 0.08);
+
+/* --- Disabled (M3 disabled treatment via tokens). The interaction layer
+   already suppresses the state layer for disabled hosts. --- */
+:host(.gui-disabled) {
+  pointer-events: none;
 }
-:host([data-variant='text']:focus-visible),
-:host([data-variant='text']:active) {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-:host([data-variant='text'].disabled) {
+:host([data-variant='filled'].gui-disabled),
+:host([data-variant='elevated'].gui-disabled),
+:host([data-variant='tonal'].gui-disabled) {
   background-color: color-mix(
     in srgb,
     var(--md-sys-color-on-surface),
-    transparent 90%
+    transparent 88%
   );
   color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+  box-shadow: none;
+}
+:host([data-variant='text'].gui-disabled),
+:host([data-variant='outlined'].gui-disabled) {
+  background: transparent;
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+}
+:host([data-variant='outlined'].gui-disabled) {
+  border-color: color-mix(
+    in srgb,
+    var(--md-sys-color-outline-variant),
+    transparent 88%
+  );
 }

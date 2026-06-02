@@ -42,12 +42,24 @@
         "include": [
           "../button/src/button.spec.ts",
           "../fab/src/fab.spec.ts",
+          "../fab/src/extended-fab.spec.ts",
+          "../fab-menu/src/fab-menu.spec.ts",
+          "../icon-button/src/icon-button.spec.ts",
           "../icon/src/icon.spec.ts",
+          "../segmented-button/src/segmented-button.spec.ts",
+          "../button-group/src/button-group.spec.ts",
+          "../split-button/src/split-button.spec.ts",
           "../theme/src/engine.spec.ts",
           "../theme/src/css-builder.spec.ts",
           "../theme/src/validate.spec.ts",
           "../theme/src/theme.service.spec.ts",
-          "../tooling/generate-color-tokens.spec.ts"
+          "../tooling/generate-color-tokens.spec.ts",
+          "../interaction/src/reduced-motion.spec.ts",
+          "../interaction/src/interaction-styles.spec.ts",
+          "../interaction/src/state-layer.directive.spec.ts",
+          "../interaction/src/ripple.directive.spec.ts",
+          "../interaction/src/focus-ring.directive.spec.ts",
+          "../interaction/src/a11y.spec.ts"
         ]
       }
     },
