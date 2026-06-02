@@ -48,6 +48,7 @@
           "../icon/src/icon.spec.ts",
           "../segmented-button/src/segmented-button.spec.ts",
           "../button-group/src/button-group.spec.ts",
+          "../split-button/src/split-button.spec.ts",
           "../theme/src/engine.spec.ts",
           "../theme/src/css-builder.spec.ts",
           "../theme/src/validate.spec.ts",

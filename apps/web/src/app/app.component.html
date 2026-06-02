@@ -416,6 +416,32 @@
       <div class="ml-4 text-sm text-gray-600">Standard: spaced buttons</div>
     </div>
 
+    <!-- Split Button -->
+    <div class="mt-8 mb-2 font-bold text-lg">Split Button</div>
+
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          16
+        </div>
+      </div>
+      <gui-split-button (action)="onSave()">
+        <span guiLeading>Save</span>
+        <span guiTrailingIcon>▾</span>
+        <ng-template>
+          <div cdkMenu class="gui-fab-menu-list">
+            <button gui-button cdkMenuItem>Save as…</button>
+            <button gui-button cdkMenuItem>Save all</button>
+          </div>
+        </ng-template>
+      </gui-split-button>
+      <div class="ml-4 text-sm text-gray-600">
+        Split button: primary action + trailing menu of related choices
+      </div>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

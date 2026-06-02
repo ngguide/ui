@@ -186,7 +186,7 @@ Group B for `gui-button`).
   - `SplitButtonComponent` per `design.md`: leading `gui-button` (emits `action`) + trailing `gui-button` `[cdkMenuTriggerFor]` with `aria-expanded` and `data-open`; `ng-template` `cdkMenu` for the projected items.
   - _Requirements: 11, 13, 15, 18_
 
-- [ ] 26. Split-button CSS (trailing morph) + specs + demo
+- [x] 26. Split-button CSS (trailing morph) + specs + demo
   - CSS: a single connected container (outer corners on leading-start/trailing-end, inner corners on the facing edges + a spacing gap); trailing button morphs to the inner-pressed radius on press and to full radius on `[data-open]`.
   - Specs: focus order leading→trailing; trailing reflects `aria-expanded`; the leading button emits `action`.
   - Add a split-button demo.

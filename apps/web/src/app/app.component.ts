@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CdkMenu } from '@angular/cdk/menu';
+import { CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
 import { GuiSize } from '@ngguide/ui';
 import { M3ThemeService } from '@ngguide/ui/theme';
 
@@ -22,6 +22,7 @@ import {
   SegmentedButtonComponent,
   SegmentedButtonGroupComponent,
 } from '@ngguide/ui/segmented-button';
+import { SplitButtonComponent } from '@ngguide/ui/split-button';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -34,6 +35,8 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     FabMenuComponent,
     FabMenuItemComponent,
     CdkMenu,
+    CdkMenuItem,
+    SplitButtonComponent,
     IconComponent,
     IconButtonComponent,
     SegmentedButtonGroupComponent,
@@ -96,4 +99,9 @@ export class AppComponent {
 
   /** Multi-select segmented buttons demo. */
   weekdays: string[] = ['mon'];
+
+  /** No-op handler for the split-button primary action demo. */
+  onSave(): void {
+    // no-op demo handler
+  }
 }
