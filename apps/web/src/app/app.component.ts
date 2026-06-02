@@ -28,6 +28,7 @@ import { CheckboxComponent } from '@ngguide/ui/checkbox';
 import { ChipComponent, ChipSetComponent } from '@ngguide/ui/chip';
 import { RadioComponent, RadioGroupComponent } from '@ngguide/ui/radio';
 import { SwitchComponent } from '@ngguide/ui/switch';
+import { SliderComponent } from '@ngguide/ui/slider';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -52,6 +53,7 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     RadioGroupComponent,
     RadioComponent,
     SwitchComponent,
+    SliderComponent,
     ReactiveFormsModule,
     InteractionDemoComponent,
   ],
@@ -141,6 +143,14 @@ export class AppComponent {
 
   /** Reactive-form example bound to a gui-radio-group. */
   planControl = new FormControl<string | null>('pro');
+
+  /** Slider demo state. */
+  volume = signal(40);
+  rating = signal(30);
+  priceRange = signal<[number, number]>([20, 80]);
+
+  /** Reactive-form example bound to a gui-slider. */
+  brightnessControl = new FormControl(60);
 
   /** No-op handler for the split-button primary action demo. */
   onSave(): void {

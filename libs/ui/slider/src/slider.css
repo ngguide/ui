@@ -1,0 +1,169 @@
+/* M3 slider visuals. Per-size dimensions trace to GUI_SLIDER_SIZES (track
+   height, handle height, track corner shape, inset icon). The interaction
+   foundation (state layer / ripple / focus ring) is composed onto each thumb
+   via the guiStateLayer/guiRipple/guiFocusRing directives — never re-implement
+   those tints/ring here. */
+
+:host {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  /* Per-size defaults (md); overridden by the data-size blocks below. */
+  --gui-slider-track-height: 40px;
+  --gui-slider-handle-height: 52px;
+  --gui-slider-track-shape: 12px;
+  padding-block: calc((var(--gui-slider-handle-height) - var(--gui-slider-track-height)) / 2);
+}
+
+.gui-slider-track {
+  position: relative;
+  width: 100%;
+  height: var(--gui-slider-track-height);
+  touch-action: none;
+  cursor: pointer;
+}
+
+/* Inactive track = full bar. Active track is overlaid on top of it. */
+.gui-slider-inactive,
+.gui-slider-active {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: var(--gui-slider-track-shape);
+}
+
+.gui-slider-inactive {
+  left: 0;
+  right: 0;
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.gui-slider-active {
+  background-color: var(--md-sys-color-primary);
+}
+
+/* Discrete stop indicators (small dots) on the track. */
+.gui-slider-tick {
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--md-sys-color-on-secondary-container);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Handle: a 4px-wide rounded bar centered on its value position. */
+.gui-slider-thumb {
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: var(--gui-slider-handle-height);
+  border-radius: var(--md-sys-shape-corner-full);
+  transform: translate(-50%, -50%);
+  background-color: var(--md-sys-color-primary);
+  cursor: grab;
+  transition:
+    width var(--md-sys-motion-duration-short2, 100ms)
+      var(--md-sys-motion-easing-standard, ease),
+    height var(--md-sys-motion-duration-short2, 100ms)
+      var(--md-sys-motion-easing-standard, ease);
+}
+
+/* Handle shrinks on press / while dragging. */
+:host([data-active]) .gui-slider-thumb:active,
+.gui-slider-thumb[data-gui-state~='pressed'],
+.gui-slider-thumb[data-gui-state~='dragged'] {
+  width: 2px;
+}
+
+/* Value indicator (label container), shown on press/drag/focus. */
+.gui-slider-value {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  transform-origin: bottom center;
+  min-width: 44px;
+  height: 48px;
+  padding-inline: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  font: var(--md-sys-typescale-label-large, 500 14px / 20px sans-serif);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity var(--md-sys-motion-duration-short2, 100ms)
+      var(--md-sys-motion-easing-standard, ease),
+    transform var(--md-sys-motion-duration-short2, 100ms)
+      var(--md-sys-motion-easing-standard, ease);
+}
+
+:host([data-active]) .gui-slider-value,
+.gui-slider-thumb:focus-within .gui-slider-value,
+.gui-slider-thumb:focus .gui-slider-value {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* --- Sizes (track height / handle height / track shape per GUI_SLIDER_SIZES) --- */
+:host([data-size='xs']) {
+  --gui-slider-track-height: 16px;
+  --gui-slider-handle-height: 44px;
+  --gui-slider-track-shape: 8px;
+}
+:host([data-size='sm']) {
+  --gui-slider-track-height: 24px;
+  --gui-slider-handle-height: 44px;
+  --gui-slider-track-shape: 8px;
+}
+:host([data-size='md']) {
+  --gui-slider-track-height: 40px;
+  --gui-slider-handle-height: 52px;
+  --gui-slider-track-shape: 12px;
+}
+:host([data-size='lg']) {
+  --gui-slider-track-height: 56px;
+  --gui-slider-handle-height: 68px;
+  --gui-slider-track-shape: 16px;
+}
+:host([data-size='xl']) {
+  --gui-slider-track-height: 96px;
+  --gui-slider-handle-height: 108px;
+  --gui-slider-track-shape: 28px;
+}
+
+/* --- Disabled (M3 disabled treatment via tokens). --- */
+:host(.gui-disabled) {
+  pointer-events: none;
+}
+:host(.gui-disabled) .gui-slider-active,
+:host(.gui-disabled) .gui-slider-thumb {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 62%
+  );
+}
+:host(.gui-disabled) .gui-slider-inactive {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 88%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gui-slider-thumb,
+  .gui-slider-value {
+    transition: none;
+  }
+}

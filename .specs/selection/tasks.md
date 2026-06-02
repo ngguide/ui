@@ -167,7 +167,7 @@ Delete/Backspace removal, four types + elevated + filter selection. Blast radius
 Custom track + thumb(s) on raw pointer events; continuous/discrete, single/range, value indicator, 5-size
 scale. Blast radius: safe; depends on Group A.
 
-- [ ] 17. Slider tokens + single-thumb slider
+- [x] 17. Slider tokens + single-thumb slider
   - Scaffold entry `@ngguide/ui/slider` (ng-package, index, tsconfig path, project.json include)
   - Create `libs/ui/slider/src/slider-tokens.ts`: `GUI_SLIDER_SIZES: Record<GuiSize, GuiSliderSizeSet>`
     (track 16/24/40/56/96dp; handle 44/44/52/68/108dp; track shape 8/8/12/16/28dp; inset icon —/—/24/24/32dp)
@@ -178,18 +178,18 @@ scale. Blast radius: safe; depends on Group A.
     press; discrete stop indicators
   - _Requirements: 7.1, 7.3, 7.4, 7.6, 7.7, 10.1, 10.3, 11.4, 12.1_
 
-- [ ] 18. Range (two-thumb) support
+- [x] 18. Range (two-thumb) support
   - Extend `slider.ts`: when `range`, render two thumbs each its own `role="slider"`, value `[number,number]`,
     each thumb's effective min/max clamped to the other so start ≤ end (no-cross); pointerdown picks nearest thumb
   - _Requirements: 7.2, 7.5, 11.4_
 
-- [ ] 19. Unit-test slider + demo
+- [x] 19. Unit-test slider + demo
   - `libs/ui/slider/src/slider.spec.ts`: arrow keys move value by step + clamp to min/max; Home/End →
     min/max; discrete snaps to step; range thumbs never cross; disabled no-op. Add to `test.include`
   - Demo continuous, discrete, and range sliders (+ reactive form) in `apps/web`
   - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 11.4_
 
-- [ ] 20. Checkpoint — Group E verification
+- [x] 20. Checkpoint — Group E verification
   - `pnpm exec nx reset`, then `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build --projects=ui,web`
   - Slider specs pass; demo sliders drag + keyboard-adjust and the range never crosses; build emits the `slider` entry
 

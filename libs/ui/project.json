@@ -48,6 +48,7 @@
           "../icon-button/src/icon-button.spec.ts",
           "../icon/src/icon.spec.ts",
           "../segmented-button/src/segmented-button.spec.ts",
+          "../slider/src/slider.spec.ts",
           "../button-group/src/button-group.spec.ts",
           "../split-button/src/split-button.spec.ts",
           "../checkbox/src/checkbox.spec.ts",

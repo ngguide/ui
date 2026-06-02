@@ -588,6 +588,39 @@
     </gui-radio-group>
     <div class="mt-2 text-sm text-gray-600">plan = {{ planControl.value }}</div>
 
+    <!-- Slider -->
+    <div class="mt-8 mb-2 font-bold text-lg">Slider</div>
+
+    <!-- Continuous single slider -->
+    <div class="flex flex-row gap-4 items-center w-96">
+      <gui-slider class="flex-1" [(value)]="volume"></gui-slider>
+      <div class="text-sm text-gray-600 w-28">Volume: {{ volume() }}</div>
+    </div>
+
+    <!-- Discrete single slider (ticks) -->
+    <div class="flex flex-row gap-4 items-center w-96">
+      <gui-slider class="flex-1" discrete [step]="10" [(value)]="rating"></gui-slider>
+      <div class="text-sm text-gray-600 w-28">Rating: {{ rating() }}</div>
+    </div>
+
+    <!-- Range slider -->
+    <div class="flex flex-row gap-4 items-center w-96">
+      <gui-slider class="flex-1" range [(value)]="priceRange"></gui-slider>
+      <div class="text-sm text-gray-600 w-28">
+        Price: {{ priceRange()[0] }}–{{ priceRange()[1] }}
+      </div>
+    </div>
+
+    <!-- Slider in a reactive form -->
+    <div class="mt-8 mb-2 font-bold text-lg">Slider in a reactive form</div>
+
+    <div class="flex flex-row gap-4 items-center w-96">
+      <gui-slider class="flex-1" [formControl]="brightnessControl"></gui-slider>
+      <div class="text-sm text-gray-600 w-28">
+        brightness = {{ brightnessControl.value }}
+      </div>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

@@ -1,0 +1,96 @@
+<div
+  #track
+  class="gui-slider-track"
+  (pointerdown)="onPointerDown($event)"
+  (pointermove)="onPointerMove($event)"
+  (pointerup)="onPointerUp()"
+  (pointercancel)="onPointerUp()"
+  (lostpointercapture)="onPointerUp()"
+>
+  <!-- Inactive track is the full bar; the active segment is overlaid. -->
+  <span class="gui-slider-inactive" aria-hidden="true"></span>
+
+  @if (range()) {
+    <span
+      class="gui-slider-active"
+      aria-hidden="true"
+      [style.left.%]="valueToPercent(rangeValue()[0])"
+      [style.right.%]="100 - valueToPercent(rangeValue()[1])"
+    ></span>
+  } @else {
+    <span
+      class="gui-slider-active"
+      aria-hidden="true"
+      [style.left.%]="0"
+      [style.right.%]="100 - valueToPercent(singleValue())"
+    ></span>
+  }
+
+  <!-- Discrete stop / tick indicators. -->
+  @for (tick of ticks(); track $index) {
+    <span
+      class="gui-slider-tick"
+      aria-hidden="true"
+      [style.left.%]="tick"
+    ></span>
+  }
+
+  @if (range()) {
+    <!-- Start thumb -->
+    <div
+      class="gui-slider-thumb gui-slider-thumb-start"
+      guiStateLayer
+      guiRipple
+      guiFocusRing
+      role="slider"
+      [style.left.%]="valueToPercent(rangeValue()[0])"
+      [tabindex]="disabled() ? -1 : 0"
+      [attr.aria-valuemin]="thumbMin('start')"
+      [attr.aria-valuemax]="thumbMax('start')"
+      [attr.aria-valuenow]="rangeValue()[0]"
+      [attr.aria-valuetext]="rangeValue()[0]"
+      [attr.aria-disabled]="disabled() ? 'true' : null"
+      (keydown)="onKeyDown($event, 'start')"
+    >
+      <span class="gui-slider-value" aria-hidden="true">{{ rangeValue()[0] }}</span>
+    </div>
+
+    <!-- End thumb -->
+    <div
+      class="gui-slider-thumb gui-slider-thumb-end"
+      guiStateLayer
+      guiRipple
+      guiFocusRing
+      role="slider"
+      [style.left.%]="valueToPercent(rangeValue()[1])"
+      [tabindex]="disabled() ? -1 : 0"
+      [attr.aria-valuemin]="thumbMin('end')"
+      [attr.aria-valuemax]="thumbMax('end')"
+      [attr.aria-valuenow]="rangeValue()[1]"
+      [attr.aria-valuetext]="rangeValue()[1]"
+      [attr.aria-disabled]="disabled() ? 'true' : null"
+      (keydown)="onKeyDown($event, 'end')"
+    >
+      <span class="gui-slider-value" aria-hidden="true">{{ rangeValue()[1] }}</span>
+    </div>
+  } @else {
+    <!-- Single thumb -->
+    <div
+      class="gui-slider-thumb"
+      guiStateLayer
+      guiRipple
+      guiFocusRing
+      role="slider"
+      [style.left.%]="valueToPercent(singleValue())"
+      [tabindex]="disabled() ? -1 : 0"
+      [attr.aria-valuemin]="min()"
+      [attr.aria-valuemax]="max()"
+      [attr.aria-valuenow]="singleValue()"
+      [attr.aria-valuetext]="singleValue()"
+      [attr.aria-disabled]="disabled() ? 'true' : null"
+      (keydown)="onKeyDown($event, 'single')"
+    >
+      <span class="gui-slider-value" aria-hidden="true">{{ singleValue() }}</span>
+    </div>
+  }
+</div>
