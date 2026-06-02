@@ -147,7 +147,7 @@ New `@ngguide/ui/button-group`; projects `gui-button` / `gui-icon-button` childr
   - `ButtonGroupComponent`: host `role="group"`, `connected` input, projects children; container not focusable (children keep their own tab stops).
   - _Requirements: 12, 18_
 
-- [ ] 20. Button-group CSS (expressive press) + specs + demo
+- [x] 20. Button-group CSS (expressive press) + specs + demo
   - CSS: connected vs standard spacing, per-position (leading/middle/trailing) shared shapes, and the expressive press where the pressed child expands ~15% and neighbors compress — driven by `:has([data-gui-state~='pressed'])` sibling rules and gated by `prefers-reduced-motion`.
   - Specs: `role=group`, container not focusable, projected buttons remain individually focusable.
   - Add a button-group demo (connected + standard).

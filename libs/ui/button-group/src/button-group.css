@@ -1,5 +1,72 @@
-/* M3 button group. Full styling (spacing + expressive press) lands in the next task. */
+/* M3 button group: standard (spaced) or connected (shared-edge) arrangement,
+ * plus the M3 expressive press (the pressed button grows, neighbors compress).
+ *
+ * Note on selectors: this component has no shadow DOM, so projected buttons are
+ * light-DOM children of the host. `::slotted()` therefore does NOT apply; the
+ * projected buttons are reached with plain `:host > *` child selectors instead. */
 :host {
   display: inline-flex;
   align-items: center;
+}
+
+/* Standard arrangement: M3 spacing between buttons. */
+:host {
+  gap: 8px;
+}
+
+/* Connected arrangement: buttons sit edge-to-edge, no gap. */
+:host([data-connected]) {
+  gap: 0;
+}
+
+/* Connected: children share edges, so square off all corners, then round only
+ * the outer edges of the first/last button. These reach the projected buttons
+ * because they are light-DOM children of the host (no shadow DOM, no ::slotted). */
+:host([data-connected]) > * {
+  border-radius: 0;
+}
+
+:host([data-connected]) > *:first-child {
+  border-top-left-radius: var(--md-sys-shape-corner-full);
+  border-bottom-left-radius: var(--md-sys-shape-corner-full);
+}
+
+:host([data-connected]) > *:last-child {
+  border-top-right-radius: var(--md-sys-shape-corner-full);
+  border-bottom-right-radius: var(--md-sys-shape-corner-full);
+}
+
+/* M3 expressive press. The state-layer directive sets data-gui-state="pressed"
+ * on the active child; the pressed button grows and its siblings compress.
+ * M3 ButtonGroup uses an ExpandedRatio (~0.15) for the grow amount; the
+ * sibling compression here is an approximation of that behaviour. */
+:host > * {
+  transform-origin: center;
+  transition: transform var(--md-sys-motion-duration-short4)
+    var(--md-sys-motion-easing-standard);
+}
+
+:host > *[data-gui-state~='pressed'] {
+  transform: scaleX(1.15);
+  transform-origin: center;
+  transition: transform var(--md-sys-motion-duration-short4)
+    var(--md-sys-motion-easing-standard);
+}
+
+/* Approximate neighbor compression: when any child is pressed, slightly
+ * shrink its siblings (ExpandedRatio approximation). */
+:host:has(> *[data-gui-state~='pressed']) > *:not([data-gui-state~='pressed']) {
+  transform: scaleX(0.95);
+}
+
+/* Respect reduced-motion: no transitions, no expressive transforms. */
+@media (prefers-reduced-motion: reduce) {
+  :host > * {
+    transition: none;
+  }
+
+  :host > *[data-gui-state~='pressed'],
+  :host:has(> *[data-gui-state~='pressed']) > * {
+    transform: none;
+  }
 }

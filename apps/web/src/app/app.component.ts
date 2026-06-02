@@ -4,6 +4,7 @@ import { GuiSize } from '@ngguide/ui';
 import { M3ThemeService } from '@ngguide/ui/theme';
 
 import { ButtonComponent, GuiButtonVariant } from '@ngguide/ui/button';
+import { ButtonGroupComponent } from '@ngguide/ui/button-group';
 import {
   ExtendedFabComponent,
   FabComponent,
@@ -25,6 +26,7 @@ import { InteractionDemoComponent } from './interaction-demo.component';
   imports: [
     RouterModule,
     ButtonComponent,
+    ButtonGroupComponent,
     FabComponent,
     ExtendedFabComponent,
     IconComponent,

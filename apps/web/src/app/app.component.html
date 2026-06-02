@@ -353,6 +353,45 @@
       </div>
     </div>
 
+    <!-- Button Group -->
+    <div class="mt-8 mb-2 font-bold text-lg">Button Group</div>
+
+    <!-- Connected group: buttons share edges, expressive press on pointerdown -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          14
+        </div>
+      </div>
+      <gui-button-group connected>
+        <button gui-button size="md" variant="tonal">Left</button>
+        <button gui-button size="md" variant="tonal">Center</button>
+        <button gui-button size="md" variant="tonal">Right</button>
+      </gui-button-group>
+      <div class="ml-4 text-sm text-gray-600">
+        Connected: shared edges, press a button to see the expressive grow
+      </div>
+    </div>
+
+    <!-- Standard group: spaced buttons -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          15
+        </div>
+      </div>
+      <gui-button-group>
+        <button gui-button size="md" variant="filled">One</button>
+        <button gui-button size="md" variant="filled">Two</button>
+        <button gui-button size="md" variant="filled">Three</button>
+      </gui-button-group>
+      <div class="ml-4 text-sm text-gray-600">Standard: spaced buttons</div>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>
