@@ -6,6 +6,10 @@ import { M3ThemeService } from '@ngguide/ui/theme';
 import { ButtonComponent, GuiButtonVariant } from '@ngguide/ui/button';
 import { FabComponent, GuiFabColor } from '@ngguide/ui/fab';
 import { IconComponent } from '@ngguide/ui/icon';
+import {
+  GuiIconButtonVariant,
+  IconButtonComponent,
+} from '@ngguide/ui/icon-button';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -14,6 +18,7 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     ButtonComponent,
     FabComponent,
     IconComponent,
+    IconButtonComponent,
     InteractionDemoComponent,
   ],
   selector: 'app-root',
@@ -52,4 +57,14 @@ export class AppComponent {
   underline = false;
   fabColors: GuiFabColor[] = ['primary', 'secondary', 'tertiary'];
   fabSizes: GuiSize[] = ['sm', 'md', 'lg'];
+
+  iconButtonVariants: GuiIconButtonVariant[] = [
+    'standard',
+    'filled',
+    'tonal',
+    'outlined',
+  ];
+
+  /** Selected state for the toggle icon button demo. */
+  favorite = false;
 }

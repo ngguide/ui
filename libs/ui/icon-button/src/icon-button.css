@@ -1,4 +1,9 @@
-/* M3 icon button. Full variant/width/size/selected styling lands in the next task. */
+/* Resting container styling only. Hover/focus/pressed tints, the ripple and the
+   focus ring are drawn by the composed interaction foundation
+   (GuiStateLayer/GuiRipple/GuiFocusRing via hostDirectives) — never re-implement
+   them here. This file sets per-variant/size container background, color, border,
+   shape and the expressive shape morph only. Values trace to --md-sys-* tokens. */
+
 :host {
   display: inline-flex;
   align-items: center;
@@ -7,5 +12,201 @@
   cursor: pointer;
   border: none;
   background: transparent;
+  position: relative;
+  /* Standard icon button default content color. */
+  color: var(--md-sys-color-on-surface-variant);
+  /* Icon buttons default to a round (full) shape. */
+  border-radius: var(--md-sys-shape-corner-full);
+  transition:
+    background-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    border-radius var(--md-sys-motion-duration-short2)
+      var(--md-sys-motion-easing-standard);
 }
-:host(.gui-disabled) { pointer-events: none; }
+
+/* The selected-icon slot only shows in the selected (toggle) state. Projected
+   content lives in the host's light DOM, so a :host(...) descendant selector
+   reaches it without ::ng-deep. */
+:host(:not([data-selected])) [guiSelectedIcon] {
+  display: none;
+}
+
+/* When selected, hide the default (non-selected) projected content so the
+   selected glyph swaps in cleanly. */
+:host([data-selected]) > :not([guiSelectedIcon]) {
+  display: none;
+}
+
+/* --- Sizes (square visual container per the M3 icon-button ladder) ---
+   Each size sets the visual width/height and the nested icon size via the
+   --gui-comp-icon-size custom property so any nested <gui-icon> scales. --- */
+:host([data-size='xs']) {
+  min-width: 32px;
+  min-height: 32px;
+  width: 32px;
+  height: 32px;
+  --gui-comp-icon-size: 20px;
+}
+
+:host([data-size='sm']) {
+  min-width: 40px;
+  min-height: 40px;
+  width: 40px;
+  height: 40px;
+  --gui-comp-icon-size: 20px;
+}
+
+:host([data-size='md']) {
+  min-width: 56px;
+  min-height: 56px;
+  width: 56px;
+  height: 56px;
+  --gui-comp-icon-size: 24px;
+}
+
+:host([data-size='lg']) {
+  min-width: 96px;
+  min-height: 96px;
+  width: 96px;
+  height: 96px;
+  --gui-comp-icon-size: 32px;
+}
+
+:host([data-size='xl']) {
+  min-width: 136px;
+  min-height: 136px;
+  width: 136px;
+  height: 136px;
+  --gui-comp-icon-size: 40px;
+}
+
+/* Guarantee the M3 minimum 48x48dp accessible touch target for the two small
+   sizes. The visual icon container stays centered; only the hit area grows. */
+:host([data-size='xs']),
+:host([data-size='sm']) {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+/* --- Widths: adjust horizontal size relative to the square via padding.
+   These small spacing literals are the M3 width spacing for icon buttons. --- */
+:host([data-width='narrow']) {
+  padding-inline: 4px;
+}
+/* uniform = default square, no horizontal padding adjustment. */
+:host([data-width='uniform']) {
+  padding-inline: 0;
+}
+:host([data-width='wide']) {
+  padding-inline: 12px;
+}
+
+/* --- Shape + expressive morph (per-size radii) ---
+   round (default) = full; selected flips round -> a size-specific square token;
+   pressed overrides both with the size-specific pressed radius. --- */
+
+/* xs / sm: square = medium, pressed = small, selected = square */
+:host([data-size='xs'][data-selected]),
+:host([data-size='sm'][data-selected]) {
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+:host([data-size='xs'][data-gui-state~='pressed']),
+:host([data-size='sm'][data-gui-state~='pressed']) {
+  border-radius: var(--md-sys-shape-corner-small);
+}
+
+/* md: square = large, pressed = medium, selected = square */
+:host([data-size='md'][data-selected]) {
+  border-radius: var(--md-sys-shape-corner-large);
+}
+:host([data-size='md'][data-gui-state~='pressed']) {
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+
+/* lg / xl: square = extra-large, pressed = large, selected = square */
+:host([data-size='lg'][data-selected]),
+:host([data-size='xl'][data-selected]) {
+  border-radius: var(--md-sys-shape-corner-extra-large);
+}
+:host([data-size='lg'][data-gui-state~='pressed']),
+:host([data-size='xl'][data-gui-state~='pressed']) {
+  border-radius: var(--md-sys-shape-corner-large);
+}
+
+/* --- Variant colors (resting), with toggle color roles --- */
+
+/* Standard */
+:host([data-variant='standard']) {
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+}
+:host([data-variant='standard'][data-toggle][data-selected]) {
+  color: var(--md-sys-color-primary);
+}
+
+/* Filled */
+:host([data-variant='filled']) {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+:host([data-variant='filled'][data-toggle]:not([data-selected])) {
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-primary);
+}
+:host([data-variant='filled'][data-toggle][data-selected]) {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* Tonal */
+:host([data-variant='tonal']) {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+:host([data-variant='tonal'][data-toggle]:not([data-selected])) {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+:host([data-variant='tonal'][data-toggle][data-selected]) {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Outlined */
+:host([data-variant='outlined']) {
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+:host([data-variant='outlined'][data-toggle]:not([data-selected])) {
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+:host([data-variant='outlined'][data-toggle][data-selected]) {
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  border-color: transparent;
+}
+
+/* --- Disabled (M3 disabled treatment via tokens). The interaction layer
+   already suppresses the state layer for disabled hosts. --- */
+:host(.gui-disabled) {
+  pointer-events: none;
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+}
+:host([data-variant='filled'].gui-disabled),
+:host([data-variant='tonal'].gui-disabled) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 88%
+  );
+}
+:host([data-variant='outlined'].gui-disabled) {
+  border-color: color-mix(
+    in srgb,
+    var(--md-sys-color-outline-variant),
+    transparent 88%
+  );
+}

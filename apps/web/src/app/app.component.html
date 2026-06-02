@@ -227,6 +227,86 @@
       <div class="ml-4 text-sm text-gray-600">Disabled FAB examples</div>
     </div>
 
+    <!-- Icon Button Demonstrations -->
+    <div class="mt-8 mb-2 font-bold text-lg">Icon Button</div>
+
+    <!-- Icon Button Variants -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          9
+        </div>
+      </div>
+      @for (variant of iconButtonVariants; track variant) {
+        <div>
+          <button
+            gui-icon-button
+            size="md"
+            [variant]="variant"
+            [attr.aria-label]="variant"
+          >
+            <gui-icon>★</gui-icon>
+          </button>
+        </div>
+      }
+      <div class="ml-4 text-sm text-gray-600">
+        Variants: standard, filled, tonal, outlined
+      </div>
+    </div>
+
+    <!-- Toggle icon button with selected-icon swap -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          10
+        </div>
+      </div>
+      <div>
+        <button
+          gui-icon-button
+          size="md"
+          variant="tonal"
+          toggle
+          [(selected)]="favorite"
+          aria-label="Favorite"
+        >
+          <gui-icon>☆</gui-icon>
+          <gui-icon guiSelectedIcon>★</gui-icon>
+        </button>
+      </div>
+      <div class="ml-4 text-sm text-gray-600">
+        Toggle with selected-icon swap: {{ favorite ? 'Selected' : 'Unselected' }}
+      </div>
+    </div>
+
+    <!-- Icon Button size range -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          11
+        </div>
+      </div>
+      @for (size of sizes; track size) {
+        <div>
+          <button
+            gui-icon-button
+            [size]="size"
+            variant="filled"
+            [attr.aria-label]="size"
+          >
+            <gui-icon>★</gui-icon>
+          </button>
+        </div>
+      }
+      <div class="ml-4 text-sm text-gray-600">Sizes: xs, sm, md, lg, xl</div>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

@@ -85,7 +85,7 @@ New `@ngguide/ui/icon-button`. Blast radius: *safe* — additive.
   - Implement `IconButtonComponent` per `design.md`: variants standard/filled/tonal/outlined, `width` narrow/uniform/wide, `size`, `toggle` + `selected = model(false)`, `[guiSelectedIcon]` slot, `hostDirectives` trio, disabled handling as in the button.
   - _Requirements: 6, 1, 3, 13, 14, 18_
 
-- [ ] 9. `icon-button.css` + specs + demo
+- [x] 9. `icon-button.css` + specs + demo
   - CSS: the 4 variant containers, the 3 widths (per-width leading/trailing space), the size scale + selected shapes, and a transparent 48×48dp hit area for `[data-size='xs']`/`[data-size='sm']` (M3 target size) — tokens only.
   - Spec `libs/ui/icon-button/src/icon-button.spec.ts`: variant/width/size reflection; toggle + `aria-pressed`; selected glyph swap.
   - Add an icon-button section to the `apps/web` demo.

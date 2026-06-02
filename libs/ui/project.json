@@ -42,6 +42,7 @@
         "include": [
           "../button/src/button.spec.ts",
           "../fab/src/fab.spec.ts",
+          "../icon-button/src/icon-button.spec.ts",
           "../icon/src/icon.spec.ts",
           "../theme/src/engine.spec.ts",
           "../theme/src/css-builder.spec.ts",
