@@ -1,0 +1,5 @@
+/* M3 button group. Full styling (spacing + expressive press) lands in the next task. */
+:host {
+  display: inline-flex;
+  align-items: center;
+}

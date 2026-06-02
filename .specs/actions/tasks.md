@@ -142,7 +142,7 @@ New `@ngguide/ui/segmented-button` (group + segment, native ARIA, no CDK menu). 
 New `@ngguide/ui/button-group`; projects `gui-button` / `gui-icon-button` children. Blast radius:
 *safe* — additive (depends on Groups B and C for the child components).
 
-- [ ] 19. Button-group entry point + component
+- [x] 19. Button-group entry point + component
   - Create `libs/ui/button-group/{ng-package.json, src/index.ts}`; tsconfig path; add spec to `include`.
   - `ButtonGroupComponent`: host `role="group"`, `connected` input, projects children; container not focusable (children keep their own tab stops).
   - _Requirements: 12, 18_
