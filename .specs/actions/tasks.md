@@ -55,7 +55,7 @@ Blast radius: *safe* — purely additive.
 Rewrites `ButtonComponent` onto the interaction foundation with toggle, icon slots, and shape morph.
 Blast radius: *safe* — pre-release breaking change; spec + demo updated in this group keep `web` green.
 
-- [ ] 4. Retrofit `ButtonComponent`
+- [x] 4. Retrofit `ButtonComponent`
   - Rewrite `libs/ui/button/src/button.ts`: add `hostDirectives: [GuiStateLayerDirective, GuiRippleDirective, GuiFocusRingDirective]` (imported from `@ngguide/ui/interaction`); named-slot template (`[guiIcon]` / default label / `[guiSelectedIcon]`); inputs `variant`/`size`/`shape`/`disabled`/`toggle` + `selected = model(false)`; host bindings for `data-variant`/`data-size`/`data-shape`/`data-selected`/`aria-pressed`, and `disabled` (native) vs `aria-disabled` (anchor) via a computed `isButton`; `(click)="onActivate($event)"` that flips `selected` only when `toggle()` && !`disabled()` (and never for `variant==='text'`).
   - Remove the old standalone-CSS reliance; the directives now own hover/focus/pressed.
   - _Requirements: 1, 2, 3, 4, 5, 13, 14, 17_
