@@ -72,7 +72,7 @@ Blast radius: *safe* — pre-release breaking change; spec + demo updated in thi
   - Update `apps/web/src/app/app.component.{ts,html}` to exercise the 5 variants × sizes × round/square × toggle × icon.
   - _Requirements: 1, 2, 3, 5, 18_
 
-- [ ] 7. Checkpoint — Group B verification
+- [x] 7. Checkpoint — Group B verification
   - Run `pnpm exec nx test ui --include=button/src/button.spec.ts` and `pnpm exec nx run-many -t lint test build`.
   - Manually confirm in `nx serve web` that buttons show state-layer/ripple/focus-ring (no bespoke CSS), toggle flips color+shape, and disabled suppresses feedback.
 
