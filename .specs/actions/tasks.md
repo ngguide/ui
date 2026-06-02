@@ -128,7 +128,7 @@ New `@ngguide/ui/segmented-button` (group + segment, native ARIA, no CDK menu). 
   - `SegmentedButtonGroupComponent` (host `role="radiogroup"`, `multiple` input, `value = model<string|string[]|null>(null)`, `contentChildren` registry, `isSelected`/`toggleValue`, dev `console.warn` when <2 or >5 segments) and `SegmentedButtonComponent` (`role` radio|checkbox, `aria-checked`, `data-selected`, active checkmark, `(click)` → `group.toggleValue`, `hostDirectives` trio, `value` required input).
   - _Requirements: 10, 3, 13, 15, 18_
 
-- [ ] 17. Segmented CSS + specs + demo
+- [x] 17. Segmented CSS + specs + demo
   - CSS: connected pill row with interior dividers, height 40dp, icon 18dp, 1dp outline, the active checkmark, and the selected container appearance — tokens only.
   - Specs: single-select assigns `role=radio` + `aria-checked` and updates a string value; multi-select assigns `role=checkbox` and accumulates an array; out-of-range segment count warns; each segment is an independent tab stop activated by click (Space/Enter).
   - Add a segmented-buttons section to the demo.

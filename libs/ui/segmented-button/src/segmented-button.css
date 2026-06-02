@@ -1,10 +1,66 @@
-/* M3 segmented buttons. Full styling lands in the next task. */
-:host { display: inline-flex; }
+/* M3 segmented buttons — tokens only; the interaction host directives
+   (state layer, ripple, focus ring) own state/ripple/focus. */
+
+/* Group: a single connected row of segments. */
+:host {
+  display: inline-flex;
+}
+
+/* Interior-divider approach: every segment carries a full 1px outline; we
+   strip the left border on all but the first segment so adjacent segments
+   share a single 1px divider (no doubling) and the outer shape is a pill. */
 button[gui-segmented-button] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   box-sizing: border-box;
   cursor: pointer;
+  height: 40px;
+  padding: 0 12px;
   background: transparent;
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+
+  /* M3 label-large. */
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+
+  --gui-comp-icon-size: 18px;
+
+  transition: background-color var(--md-sys-motion-duration-short4)
+    var(--md-sys-motion-easing-standard);
+}
+
+/* Collapse interior dividers to a single 1px line. */
+button[gui-segmented-button]:not(:first-of-type) {
+  border-left: none;
+}
+
+/* Pill outer shape: round the leading edge of the first segment… */
+button[gui-segmented-button]:first-of-type {
+  border-top-left-radius: var(--md-sys-shape-corner-full);
+  border-bottom-left-radius: var(--md-sys-shape-corner-full);
+}
+
+/* …and the trailing edge of the last. */
+button[gui-segmented-button]:last-of-type {
+  border-top-right-radius: var(--md-sys-shape-corner-full);
+  border-bottom-right-radius: var(--md-sys-shape-corner-full);
+}
+
+/* Selected appearance. */
+button[gui-segmented-button][data-selected] {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Leading checkmark (only rendered when selected). */
+.gui-segment-check {
+  display: inline-flex;
+}
+
+.gui-segment-label {
+  white-space: nowrap;
 }

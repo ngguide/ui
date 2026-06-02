@@ -311,6 +311,48 @@
       <div class="ml-4 text-sm text-gray-600">Sizes: xs, sm, md, lg, xl</div>
     </div>
 
+    <!-- Segmented Buttons -->
+    <div class="mt-8 mb-2 font-bold text-lg">Segmented Buttons</div>
+
+    <!-- Single-select segmented buttons -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          12
+        </div>
+      </div>
+      <gui-segmented-buttons [(value)]="alignment">
+        <button gui-segmented-button value="left">Left</button>
+        <button gui-segmented-button value="center">Center</button>
+        <button gui-segmented-button value="right">Right</button>
+      </gui-segmented-buttons>
+      <div class="ml-4 text-sm text-gray-600">
+        Single-select: {{ alignment ?? 'none' }}
+      </div>
+    </div>
+
+    <!-- Multi-select segmented buttons -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          13
+        </div>
+      </div>
+      <gui-segmented-buttons multiple [(value)]="weekdays">
+        <button gui-segmented-button value="mon">Mon</button>
+        <button gui-segmented-button value="tue">Tue</button>
+        <button gui-segmented-button value="wed">Wed</button>
+        <button gui-segmented-button value="thu">Thu</button>
+      </gui-segmented-buttons>
+      <div class="ml-4 text-sm text-gray-600">
+        Multi-select: {{ weekdays.join(', ') || 'none' }}
+      </div>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

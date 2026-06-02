@@ -45,6 +45,7 @@
           "../fab/src/extended-fab.spec.ts",
           "../icon-button/src/icon-button.spec.ts",
           "../icon/src/icon.spec.ts",
+          "../segmented-button/src/segmented-button.spec.ts",
           "../theme/src/engine.spec.ts",
           "../theme/src/css-builder.spec.ts",
           "../theme/src/validate.spec.ts",

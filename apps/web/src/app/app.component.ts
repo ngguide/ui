@@ -15,6 +15,10 @@ import {
   GuiIconButtonVariant,
   IconButtonComponent,
 } from '@ngguide/ui/icon-button';
+import {
+  SegmentedButtonComponent,
+  SegmentedButtonGroupComponent,
+} from '@ngguide/ui/segmented-button';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -25,6 +29,8 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     ExtendedFabComponent,
     IconComponent,
     IconButtonComponent,
+    SegmentedButtonGroupComponent,
+    SegmentedButtonComponent,
     InteractionDemoComponent,
   ],
   selector: 'app-root',
@@ -77,4 +83,10 @@ export class AppComponent {
 
   /** Selected state for the toggle icon button demo. */
   favorite = false;
+
+  /** Single-select segmented buttons demo. */
+  alignment: string | null = 'center';
+
+  /** Multi-select segmented buttons demo. */
+  weekdays: string[] = ['mon'];
 }
