@@ -161,7 +161,7 @@ New `@ngguide/ui/button-group`; projects `gui-button` / `gui-icon-button` childr
 New `@ngguide/ui/fab-menu` using `@angular/cdk/menu`. Blast radius: *safe* — additive (depends on
 Groups C and D). Includes the zoneless overlay-positioning validation.
 
-- [ ] 22. FAB-menu entry point + component (+ #28984 validation)
+- [x] 22. FAB-menu entry point + component (+ #28984 validation)
   - Create `libs/ui/fab-menu/{ng-package.json, src/index.ts}`; tsconfig path; add specs to `include`.
   - `FabMenuComponent` per `design.md`: a `gui-fab` trigger with `[cdkMenuTriggerFor]`, `aria-expanded` + "Toggle menu" label on open, `(cdkMenuOpened)`/`(cdkMenuClosed)` → `opened` signal; an `ng-template` `cdkMenu` list; `FabMenuItemComponent` (`button[gui-fab-menu-item][cdkMenuItem]`, 48dp min target).
   - **Validate zoneless positioning (#28984):** confirm the opened overlay anchors to the trigger (not top-left) under this project's zoneless setup on CDK 21.2.13. If broken, stop and fall back to `research.md` §5 Variant C (internal `GuiMenuTrigger` contract + stub) and flag the deviation.

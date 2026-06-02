@@ -1,0 +1,13 @@
+/* M3 FAB menu. Full styling lands in the next task. */
+.gui-fab-menu-list { display: flex; flex-direction: column; }
+button[gui-fab-menu-item] {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  min-width: 48px;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}

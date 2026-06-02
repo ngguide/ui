@@ -532,6 +532,17 @@ describe('FabMenuComponent', () => {
   toggle-*unselected* column (e.g. filled = `surface-container`) from the non-toggle *default*
   column (filled = `primary`) — both lack `[data-selected]`. Same pattern will apply to icon buttons.
 
+- **Moderate (Groups G & H):** the original FAB-menu / split-button snippets projected `cdkMenuItem`
+  into the component's own `<div cdkMenu>` via `<ng-content>`. That breaks CDK menu's DI — a projected
+  element resolves `inject(CdkMenu)` through its *declaration* (consumer) context, not the projection
+  context, so the items can't find the component-owned `CdkMenu`. **Corrected approach (DI-safe,
+  keeps `@angular/cdk/menu`):** the **consumer provides the menu panel as an `<ng-template>`**
+  (containing `<div cdkMenu>` + `<button gui-fab-menu-item>` items); the component queries it with
+  `contentChild(TemplateRef)` and binds `[cdkMenuTriggerFor]="menu()"`. `FabMenuItemComponent`
+  composes `CdkMenuItem` (+ the interaction directives) via `hostDirectives`, resolving `CdkMenu`
+  correctly because both live in the consumer's template. The split button's trailing button binds
+  the same consumer-provided template.
+
 ## Open items carried into implementation
 
 - **Zoneless CDK-menu positioning (#28984)** — validate early (first fab-menu task / test plan).
