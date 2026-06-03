@@ -1000,6 +1000,48 @@
       </div>
     </div>
 
+    <!-- Containment — List -->
+    <div class="flex flex-col gap-4 mt-8">
+      <h2 class="text-lg font-medium">List</h2>
+
+      <!-- (a) Action list: 1/2/3 lines, leading icon / trailing text -->
+      <gui-card variant="outlined" class="w-96">
+        <gui-list mode="action">
+          <gui-list-item [lines]="1">
+            <gui-icon guiListItemLeading>★</gui-icon>
+            Single-line item
+            <span guiListItemTrailing>now</span>
+          </gui-list-item>
+          <gui-divider inset="inset" />
+          <gui-list-item [lines]="2">
+            <gui-icon guiListItemLeading>☆</gui-icon>
+            Two-line item
+            <span guiListItemSupporting>With supporting text</span>
+            <span guiListItemTrailing>5m</span>
+          </gui-list-item>
+          <gui-divider inset="inset" />
+          <gui-list-item [lines]="3">
+            <gui-icon guiListItemLeading>✶</gui-icon>
+            Three-line item
+            <span guiListItemSupporting
+              >A longer supporting description spanning the available width of the
+              row.</span
+            >
+            <span guiListItemTrailing>1h</span>
+          </gui-list-item>
+        </gui-list>
+      </gui-card>
+
+      <!-- (b) Selectable listbox (arrow keys + Enter/Space/click) -->
+      <gui-card variant="outlined" class="w-96">
+        <gui-list mode="listbox" [multiselectable]="true">
+          @for (fruit of fruits; track fruit) {
+            <gui-list-item selectable>{{ fruit }}</gui-list-item>
+          }
+        </gui-list>
+      </gui-card>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

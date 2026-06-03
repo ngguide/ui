@@ -64,6 +64,7 @@ import {
   GuiCardPrimaryAction,
 } from '@ngguide/ui/card';
 import { GuiDivider } from '@ngguide/ui/divider';
+import { GuiList, GuiListItem } from '@ngguide/ui/list';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -110,6 +111,8 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     GuiCardClickable,
     GuiCardPrimaryAction,
     GuiDivider,
+    GuiList,
+    GuiListItem,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
@@ -127,6 +130,7 @@ export class AppComponent {
   /** Containment demo: last card interaction, for visible feedback. */
   readonly lastCardAction = signal('none');
   readonly cardVariants = ['elevated', 'filled', 'outlined'] as const;
+  readonly fruits = ['Apple', 'Banana', 'Cherry', 'Date'];
 
   /** Re-theme the running app from a brand seed color. */
   applyBrand(seed: string): void {

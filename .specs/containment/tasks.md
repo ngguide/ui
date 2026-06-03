@@ -143,12 +143,12 @@ One entry point with container + item, both `action` and `listbox` modes; reuses
     trailing-control sync exposes one accessible state.
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.6, 14.2, 14.3_
 
-- [ ] 11. Demo — list
+- [x] 11. Demo — list
   - apps/web: import `GuiList`/`GuiListItem`; add a 1/2/3-line action list (leading icon/avatar, trailing
     text/icon) and a selectable listbox with checkboxes.
   - _Requirements: 4, 5, 6_
 
-- [ ] 12. Checkpoint — Group C verification
+- [x] 12. Checkpoint — Group C verification
   - `pnpm exec nx test ui` (list specs pass); lint + build green for `ui` (and `web` if demo added).
   - Confirm `@ngguide/ui/list` builds and roving focus works in the demo (keyboard arrows).
 
