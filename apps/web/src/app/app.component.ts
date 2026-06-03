@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CdkMenu, CdkMenuTrigger } from '@angular/cdk/menu';
 import { GuiSize } from '@ngguide/ui';
@@ -34,6 +34,12 @@ import { ChipComponent, ChipSetComponent } from '@ngguide/ui/chip';
 import { RadioComponent, RadioGroupComponent } from '@ngguide/ui/radio';
 import { SwitchComponent } from '@ngguide/ui/switch';
 import { SliderComponent } from '@ngguide/ui/slider';
+import {
+  TextFieldComponent,
+  TextFieldInputDirective,
+  TextFieldLeadingDirective,
+  TextFieldTrailingDirective,
+} from '@ngguide/ui/text-field';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -62,7 +68,12 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     RadioComponent,
     SwitchComponent,
     SliderComponent,
+    TextFieldComponent,
+    TextFieldInputDirective,
+    TextFieldLeadingDirective,
+    TextFieldTrailingDirective,
     ReactiveFormsModule,
+    FormsModule,
     InteractionDemoComponent,
   ],
   selector: 'app-root',
@@ -159,6 +170,19 @@ export class AppComponent {
 
   /** Reactive-form example bound to a gui-slider. */
   brightnessControl = new FormControl(60);
+
+  /** Text field demo state. */
+  firstName = signal('');
+  email = signal('');
+  amount = signal('');
+  bio = signal('');
+
+  /** Reactive-form example bound to a projected text-field input (D1). */
+  usernameControl = new FormControl('');
+
+  clearEmail(): void {
+    this.email.set('');
+  }
 
   /** No-op handler for the split-button primary action demo. */
   onSave(): void {

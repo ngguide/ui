@@ -117,19 +117,19 @@ opens.
 Presentational `<gui-text-field>` projecting the consumer's native `<input>`/`<textarea>` (deviation D1 —
 no CVA on the wrapper). Blast radius: **safe** — standalone additive component.
 
-- [ ] 12. Scaffold the `@ngguide/ui/text-field` entry point
+- [x] 12. Scaffold the `@ngguide/ui/text-field` entry point
   - Create `libs/ui/text-field/ng-package.json` + `src/index.ts` barrel.
   - Add `"@ngguide/ui/text-field": ["libs/ui/text-field/src/index.ts"]` to `tsconfig.base.json` `paths`.
   - _Requirements: 12.1, 12.2_
 
-- [ ] 13. Implement the input marker + slot directives
+- [x] 13. Implement the input marker + slot directives
   - Create `libs/ui/text-field/src/text-field-input.ts`: `TextFieldInputDirective`
     (`input[guiTextFieldInput], textarea[guiTextFieldInput]`) exposing `el`, `focused`, `empty`, `multiline`
     signals via `(focus)/(blur)/(input)` — no value accessor (consumer's native CVA stays intact).
   - Create slot marker directives `[guiTextFieldLeading]`, `[guiTextFieldTrailing]` in the same entry.
   - _Requirements: 1.6, 3.1, 3.2, 3.3, 8.1_
 
-- [ ] 14. Implement the `TextFieldComponent` (template + styles)
+- [x] 14. Implement the `TextFieldComponent` (template + styles)
   - Create `libs/ui/text-field/src/text-field.ts` (`gui-text-field`), `.html`, `.css`, and
     `text-field-tokens.ts` (`GUI_TEXT_FIELD` const: 56px height + verified paddings).
   - Inputs: `variant` (filled/outlined), `label`, `supportingText`, `errorText`, `error`, `required`,
@@ -143,7 +143,7 @@ no CVA on the wrapper). Blast radius: **safe** — standalone additive component
     switches.
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 2.1, 2.2, 2.3, 2.4, 2.5, 3.4, 3.5, 4.1, 4.2, 4.3, 4.4, 4.5, 5.1, 5.2, 5.3, 5.4, 10.1, 11.1, 11.3_
 
-- [ ] 15. Register spec + wire the demo host
+- [x] 15. Register spec + wire the demo host
   - Append `../text-field/src/text-field.spec.ts` to `libs/ui/project.json` `test.include`.
   - Add a text-field section to `apps/web/src/app/app.component.{ts,html}` (after the slider section):
     filled + outlined, with label/supporting/error, leading/trailing icon (`gui-icon-button` clear),
@@ -151,7 +151,7 @@ no CVA on the wrapper). Blast radius: **safe** — standalone additive component
     input.
   - _Requirements: 12.3, 12.4_
 
-- [ ] 16. Checkpoint — Group C verification
+- [x] 16. Checkpoint — Group C verification
   - Run `pnpm exec nx run-many -t lint test build -p ui web` — green.
   - Confirm the text-field renders both variants in `nx serve web`; `main` green with only A+B+C.
 

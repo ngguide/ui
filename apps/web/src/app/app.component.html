@@ -664,6 +664,69 @@
       </div>
     </div>
 
+    <!-- Text field -->
+    <div class="mt-8 mb-2 font-bold text-lg">Text field</div>
+
+    <!-- Filled + outlined with label/supporting text -->
+    <div class="flex flex-row gap-4 items-start">
+      <gui-text-field label="First name" supportingText="As on your ID">
+        <input guiTextFieldInput [(ngModel)]="firstName" />
+      </gui-text-field>
+
+      <gui-text-field
+        variant="outlined"
+        label="Username"
+        supportingText="Pick a handle"
+      >
+        <input guiTextFieldInput [formControl]="usernameControl" />
+      </gui-text-field>
+    </div>
+
+    <!-- Error example with error text -->
+    <div class="flex flex-row gap-4 items-start mt-4">
+      <gui-text-field
+        label="Email"
+        error
+        errorText="Enter a valid email"
+        [required]="true"
+      >
+        <input guiTextFieldInput type="email" [(ngModel)]="email" />
+        <gui-icon-button guiTextFieldTrailing aria-label="Clear" (click)="clearEmail()">
+          <gui-icon>close</gui-icon>
+        </gui-icon-button>
+      </gui-text-field>
+    </div>
+
+    <!-- Leading icon + trailing clear button -->
+    <div class="flex flex-row gap-4 items-start mt-4">
+      <gui-text-field variant="outlined" label="Search">
+        <gui-icon guiTextFieldLeading>search</gui-icon>
+        <input guiTextFieldInput [(ngModel)]="bio" />
+        <gui-icon-button guiTextFieldTrailing aria-label="Clear" (click)="bio.set('')">
+          <gui-icon>close</gui-icon>
+        </gui-icon-button>
+      </gui-text-field>
+    </div>
+
+    <!-- Prefix/suffix + maxLength counter -->
+    <div class="flex flex-row gap-4 items-start mt-4">
+      <gui-text-field label="Amount" prefix="$" suffix=".00" [maxLength]="6">
+        <input guiTextFieldInput inputmode="numeric" [(ngModel)]="amount" />
+      </gui-text-field>
+    </div>
+
+    <!-- Multiline -->
+    <div class="flex flex-row gap-4 items-start mt-4">
+      <gui-text-field
+        variant="outlined"
+        label="Bio"
+        supportingText="Tell us about yourself"
+        [maxLength]="200"
+      >
+        <textarea guiTextFieldInput rows="3" [(ngModel)]="bio"></textarea>
+      </gui-text-field>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

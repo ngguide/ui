@@ -56,6 +56,7 @@
           "../chip/src/chip.spec.ts",
           "../radio/src/radio.spec.ts",
           "../switch/src/switch.spec.ts",
+          "../text-field/src/text-field.spec.ts",
           "../theme/src/engine.spec.ts",
           "../theme/src/css-builder.spec.ts",
           "../theme/src/validate.spec.ts",

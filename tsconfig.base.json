@@ -34,6 +34,7 @@
       "@ngguide/ui/slider": ["libs/ui/slider/src/index.ts"],
       "@ngguide/ui/split-button": ["libs/ui/split-button/src/index.ts"],
       "@ngguide/ui/switch": ["libs/ui/switch/src/index.ts"],
+      "@ngguide/ui/text-field": ["libs/ui/text-field/src/index.ts"],
       "@ngguide/ui/theme": ["libs/ui/theme/src/index.ts"]
     }
   },
