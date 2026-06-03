@@ -1,0 +1,43 @@
+<svg
+  #svg
+  class="gui-clock-dial-svg"
+  viewBox="0 0 256 256"
+  width="256"
+  height="256"
+  aria-hidden="true"
+>
+  <!-- Track from center to the active number. -->
+  <line
+    class="gui-clock-hand"
+    [class.gui-clock-hand-animated]="animateHand()"
+    x1="128"
+    y1="128"
+    [attr.x2]="handle().x"
+    [attr.y2]="handle().y"
+  />
+
+  <!-- Center dot (8px diameter). -->
+  <circle class="gui-clock-center" cx="128" cy="128" r="4" />
+
+  <!-- Selector handle (48px diameter) at the active number. -->
+  <circle
+    class="gui-clock-handle"
+    [attr.cx]="handle().x"
+    [attr.cy]="handle().y"
+    r="24"
+  />
+
+  <!-- Numbers. -->
+  @for (n of numbers(); track n.ring + ':' + n.unit) {
+    <text
+      class="gui-clock-number"
+      [class.gui-clock-number-selected]="n.unit === currentUnit()"
+      [attr.x]="n.x"
+      [attr.y]="n.y"
+      text-anchor="middle"
+      dominant-baseline="central"
+    >
+      {{ n.label }}
+    </text>
+  }
+</svg>

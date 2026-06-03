@@ -230,12 +230,12 @@ Range selection (modal / modal-input only — verified no docked range), composi
 Dial + input time picker (12h/24h) composing `GuiFormControl<GuiTime>`, with an SVG clock dial. Blast
 radius: **safe** — additive; depends on Groups A, B, C.
 
-- [ ] 25. Scaffold the `@ngguide/ui/time-picker` entry point
+- [x] 25. Scaffold the `@ngguide/ui/time-picker` entry point
   - Create `libs/ui/time-picker/ng-package.json` + `src/index.ts`.
   - Add `"@ngguide/ui/time-picker": ["libs/ui/time-picker/src/index.ts"]` to `tsconfig.base.json` `paths`.
   - _Requirements: 12.1, 12.2_
 
-- [ ] 26. Implement the SVG clock dial
+- [x] 26. Implement the SVG clock dial
   - Create `libs/ui/time-picker/src/clock-dial.ts` (`gui-clock-dial`), `.html`, `.css`, and
     `time-picker-tokens.ts` (`GUI_CLOCK`: dial 256px, handle 48px, center 8px, track 2px). Inputs: `mode`
     (hours/minutes), `hour12`, `value` model. SVG numbers at `x = cx + r·sin θ`, `y = cy − r·cos θ`; 24h adds
@@ -245,7 +245,7 @@ radius: **safe** — additive; depends on Groups A, B, C.
     inner ring only when `hour12=false`; keyboard arrows step the unit.
   - _Requirements: 7.1, 7.3, 7.4, 10.4_
 
-- [ ] 27. Implement the `TimePickerComponent`
+- [x] 27. Implement the `TimePickerComponent`
   - Create `libs/ui/time-picker/src/time-picker.ts` (`gui-time-picker`), `.html`, `.css`. `hostDirectives`:
     `{ directive: GuiFormControl, inputs: ['value: time','disabled'], outputs: ['valueChange: timeChange']
     }` (`GuiFormControl<GuiTime>`). Inputs: `variant` (dial/input), `hour12` (null → `prefersHour12(locale)`),
@@ -257,13 +257,13 @@ radius: **safe** — additive; depends on Groups A, B, C.
     AM/PM present only in 12h; reactive-forms round-trip; cancel does not commit.
   - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 8.1, 8.2, 8.3, 8.4, 8.5, 9.2, 9.3, 10.2, 10.4, 10.5_
 
-- [ ] 28. Register specs + wire the demo host
+- [x] 28. Register specs + wire the demo host
   - Append `../time-picker/src/clock-dial.spec.ts` and `../time-picker/src/time-picker.spec.ts` to
     `libs/ui/project.json` `test.include`.
   - Add a time-picker demo (dial + input, 12h + 24h) to `apps/web` bound via `FormControl<GuiTime>`.
   - _Requirements: 12.3, 12.4_
 
-- [ ] 29. Final checkpoint — everything green
+- [x] 29. Final checkpoint — everything green
   - Run `pnpm exec nx run-many -t lint test build -p ui web` — full suite green.
   - All 12 requirements trace to a shipped task (see mapping across Groups A–F).
   - `pnpm exec nx serve web` exercises text-field, date-picker (docked/modal/modal-input/range), and

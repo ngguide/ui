@@ -36,7 +36,8 @@
       "@ngguide/ui/split-button": ["libs/ui/split-button/src/index.ts"],
       "@ngguide/ui/switch": ["libs/ui/switch/src/index.ts"],
       "@ngguide/ui/text-field": ["libs/ui/text-field/src/index.ts"],
-      "@ngguide/ui/theme": ["libs/ui/theme/src/index.ts"]
+      "@ngguide/ui/theme": ["libs/ui/theme/src/index.ts"],
+      "@ngguide/ui/time-picker": ["libs/ui/time-picker/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

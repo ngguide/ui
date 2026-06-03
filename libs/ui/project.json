@@ -74,7 +74,9 @@
           "../overlay/src/picker-overlay.spec.ts",
           "../date-picker/src/calendar.spec.ts",
           "../date-picker/src/date-picker.spec.ts",
-          "../date-picker/src/date-range-picker.spec.ts"
+          "../date-picker/src/date-range-picker.spec.ts",
+          "../time-picker/src/clock-dial.spec.ts",
+          "../time-picker/src/time-picker.spec.ts"
         ]
       }
     },

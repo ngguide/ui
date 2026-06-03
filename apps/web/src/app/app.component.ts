@@ -44,7 +44,8 @@ import {
   DatePickerComponent,
   DateRangePickerComponent,
 } from '@ngguide/ui/date-picker';
-import { GuiDateRange } from '@ngguide/ui/datetime';
+import { GuiDateRange, GuiTime } from '@ngguide/ui/datetime';
+import { TimePickerComponent } from '@ngguide/ui/time-picker';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -79,6 +80,7 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     TextFieldTrailingDirective,
     DatePickerComponent,
     DateRangePickerComponent,
+    TimePickerComponent,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
@@ -195,6 +197,9 @@ export class AppComponent {
     { start: null, end: null },
     { nonNullable: true },
   );
+
+  /** Time picker example. */
+  timeControl = new FormControl<GuiTime | null>(null);
 
   clearEmail(): void {
     this.email.set('');

@@ -1,0 +1,49 @@
+:host {
+  display: inline-block;
+  width: 256px;
+  height: 256px;
+  border-radius: 50%;
+  background: var(--md-sys-color-surface-container-highest);
+  outline: none;
+}
+
+:host(:focus-visible) {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.gui-clock-dial-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  user-select: none;
+}
+
+.gui-clock-center {
+  fill: var(--md-sys-color-primary);
+}
+
+.gui-clock-hand {
+  stroke: var(--md-sys-color-primary);
+  stroke-width: 2;
+}
+
+.gui-clock-hand-animated {
+  transition:
+    x2 0.2s ease,
+    y2 0.2s ease;
+}
+
+.gui-clock-handle {
+  fill: var(--md-sys-color-primary);
+}
+
+.gui-clock-number {
+  fill: var(--md-sys-color-on-surface);
+  font: var(--md-sys-typescale-body-large, 400 16px/24px system-ui);
+}
+
+.gui-clock-number-selected {
+  fill: var(--md-sys-color-on-primary);
+}

@@ -1,0 +1,153 @@
+<gui-text-field variant="outlined" [label]="label()">
+  <input
+    guiTextFieldInput
+    [value]="displayValue()"
+    [readOnly]="true"
+    [attr.aria-label]="label()"
+  />
+  <button
+    gui-icon-button
+    guiTextFieldTrailing
+    type="button"
+    aria-label="Open time picker"
+    [disabled]="control.effectiveDisabled()"
+    (click)="open()"
+  >
+    <gui-icon>schedule</gui-icon>
+  </button>
+</gui-text-field>
+
+<ng-template #panel>
+  <div class="gui-time-picker-panel" role="dialog" aria-modal="true">
+    <span class="gui-time-picker-headline">{{ label() }}</span>
+
+    @if (activeVariant() === 'dial') {
+      <gui-clock-dial
+        [mode]="dialMode()"
+        [hour12]="effectiveHour12()"
+        [value]="pendingTime()"
+        (valueChange)="onDialChange($event)"
+      />
+      <div class="gui-time-picker-dial-modes">
+        <button
+          gui-button
+          variant="text"
+          type="button"
+          [attr.aria-pressed]="dialMode() === 'hours'"
+          (click)="dialMode.set('hours')"
+        >
+          Hour
+        </button>
+        <button
+          gui-button
+          variant="text"
+          type="button"
+          [attr.aria-pressed]="dialMode() === 'minutes'"
+          (click)="dialMode.set('minutes')"
+        >
+          Minute
+        </button>
+      </div>
+    } @else {
+      <div class="gui-time-picker-fields">
+        <div
+          class="gui-time-field"
+          role="spinbutton"
+          tabindex="0"
+          aria-label="Hour"
+          [class.gui-time-field-error]="hourError()"
+          [attr.aria-valuenow]="displayHour()"
+          [attr.aria-valuemin]="hourMin()"
+          [attr.aria-valuemax]="hourMax()"
+          [attr.aria-valuetext]="hourText()"
+          (keydown)="onHourKey($event)"
+        >
+          <input
+            class="gui-time-field-input"
+            type="text"
+            inputmode="numeric"
+            aria-label="Hour value"
+            [value]="hourText()"
+            (change)="onHourInput($any($event.target).value)"
+          />
+        </div>
+
+        <span class="gui-time-field-separator">:</span>
+
+        <div
+          class="gui-time-field"
+          role="spinbutton"
+          tabindex="0"
+          aria-label="Minute"
+          [class.gui-time-field-error]="minuteError()"
+          [attr.aria-valuenow]="displayMinute()"
+          aria-valuemin="0"
+          aria-valuemax="59"
+          [attr.aria-valuetext]="minuteText()"
+          (keydown)="onMinuteKey($event)"
+        >
+          <input
+            class="gui-time-field-input"
+            type="text"
+            inputmode="numeric"
+            aria-label="Minute value"
+            [value]="minuteText()"
+            (change)="onMinuteInput($any($event.target).value)"
+          />
+        </div>
+
+        @if (effectiveHour12()) {
+          <div
+            class="gui-time-period"
+            role="group"
+            aria-label="AM or PM"
+          >
+            <button
+              type="button"
+              class="gui-time-period-btn"
+              [class.gui-time-period-selected]="period() === 'AM'"
+              [attr.aria-pressed]="period() === 'AM'"
+              (click)="setPeriod('AM')"
+            >
+              AM
+            </button>
+            <button
+              type="button"
+              class="gui-time-period-btn"
+              [class.gui-time-period-selected]="period() === 'PM'"
+              [attr.aria-pressed]="period() === 'PM'"
+              (click)="setPeriod('PM')"
+            >
+              PM
+            </button>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="gui-time-picker-actions">
+      <button
+        gui-icon-button
+        type="button"
+        class="gui-time-picker-toggle"
+        [attr.aria-label]="
+          activeVariant() === 'dial'
+            ? 'Switch to text input'
+            : 'Switch to dial'
+        "
+        (click)="toggleVariant()"
+      >
+        <gui-icon>{{
+          activeVariant() === 'dial' ? 'keyboard' : 'schedule'
+        }}</gui-icon>
+      </button>
+      <span class="gui-time-picker-spacer"></span>
+      <button gui-button variant="text" type="button" (click)="close()">
+        Cancel
+      </button>
+      <button gui-button variant="text" type="button" (click)="onConfirm()">
+        OK
+      </button>
+    </div>
+  </div>
+</ng-template>
