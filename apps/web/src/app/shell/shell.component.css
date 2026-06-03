@@ -1,0 +1,211 @@
+:host {
+  /* The container query below adapts the nav surface against the shell's own
+     inline size — no JS, no hydration shift (Decision 2A). */
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  overflow: hidden;
+}
+
+/* ── Top app bar ─────────────────────────────────────────────────────────── */
+
+.shell-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  height: 64px;
+  padding: 0 12px;
+  background: var(--md-sys-color-surface-container);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.shell-titles {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  line-height: 1.1;
+}
+
+.shell-app-title {
+  font-family: var(--md-sys-typescale-title-medium-font);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shell-app-subtitle {
+  font-size: var(--md-sys-typescale-body-small-size);
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shell-search {
+  margin-left: 16px;
+  flex: 0 1 280px;
+  min-width: 0;
+}
+
+.shell-spacer {
+  flex: 1 1 auto;
+}
+
+.shell-badge-host {
+  display: inline-flex;
+}
+
+/* ── Body: rail + content ────────────────────────────────────────────────── */
+
+.shell-body {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.shell-rail {
+  display: none; /* compact default → bottom bar; rail shown when expanded */
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  flex: 0 0 auto;
+  width: 88px;
+  padding: 12px 0;
+  overflow-y: auto;
+  background: var(--md-sys-color-surface);
+}
+
+.shell-rail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0 12px;
+  padding: 8px 0;
+  border-radius: 28px;
+  overflow: hidden;
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.shell-rail-icon {
+  --gui-comp-icon-size: 24px;
+  width: 56px;
+  height: 32px;
+  border-radius: 16px;
+  transition: background-color 120ms ease;
+}
+
+.shell-rail-item.is-active {
+  color: var(--md-sys-color-on-surface);
+}
+
+.shell-rail-item.is-active .shell-rail-icon {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.shell-rail-label {
+  font-family: var(--md-sys-typescale-label-medium-font);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+  text-align: center;
+}
+
+.shell-content {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 24px;
+  background: var(--md-sys-color-surface);
+}
+
+/* ── Bottom navigation (compact) ─────────────────────────────────────────── */
+
+.shell-bottom {
+  display: flex;
+  flex: 0 0 auto;
+  height: 80px;
+  background: var(--md-sys-color-surface-container);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.shell-bottom-item {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px 0 16px;
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.shell-bottom-item gui-icon {
+  --gui-comp-icon-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 32px;
+  border-radius: 16px;
+  transition: background-color 120ms ease;
+}
+
+.shell-bottom-item.is-active {
+  color: var(--md-sys-color-on-surface);
+}
+
+.shell-bottom-item.is-active gui-icon {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.shell-bottom-label {
+  font-family: var(--md-sys-typescale-label-medium-font);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+}
+
+/* ── Overlay menu accents ────────────────────────────────────────────────── */
+
+.shell-seed-dot {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* ── Expanded window class: rail replaces the bottom bar ─────────────────── */
+
+@container (min-width: 840px) {
+  .shell-rail {
+    display: flex;
+  }
+
+  .shell-bottom {
+    display: none;
+  }
+}
+
+@container (max-width: 599px) {
+  .shell-search {
+    display: none;
+  }
+}

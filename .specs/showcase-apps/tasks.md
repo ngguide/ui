@@ -75,12 +75,12 @@ redirects to `/admin/dashboard`, theming/adaptivity work, and the flat playgroun
 Blast radius: replaces the demo root — revert = `git restore` of `app.component.*`, `app.routes.ts`,
 `app.component.spec.ts` and re-add `interaction-demo.component.ts`.
 
-- [ ] 6. Shell component (app bar + adaptive navigation + theme controls)
+- [x] 6. Shell component (app bar + adaptive navigation + theme controls)
   - Create `apps/web/src/app/shell/shell.component.ts` / `.html` / `.css`: top app bar (app-switcher `gui-menu`, search `gui-text-field`, dark `gui-switch`, brand-seed `gui-menu`, notifications `[guiBadge]` + `gui-icon-button`, avatar `gui-menu`, `guiTooltip`s); navigation rail (expanded) ↔ bottom bar / drawer (compact) via CSS `container-type: inline-size` + `@container`; custom nav items carry `guiStateLayer`/`guiRipple`/`guiFocusRing` with a roving tab stop (`createRovingFocus`); `<router-outlet/>`; `activeApp`/`activeSection` computed from `Router` URL via `toSignal(NavigationEnd)`.
   - Use `ThemeController` for dark toggle + brand-seed selection.
   - _Requirements: 1.1, 1.2, 1.3, 7.1, 7.3, 8.1, 8.2, 8.3; interaction coverage (R2)_
 
-- [ ] 7. Shell unit test
+- [x] 7. Shell unit test
   - Create `apps/web/src/app/shell/shell.component.spec.ts`: `activeApp()` resolves from a set URL; the template renders `<router-outlet>`; toggling dark calls `ThemeController.toggleDark`.
   - _Requirements: 1.3, 7.1_
 
