@@ -692,7 +692,7 @@
       >
         <input guiTextFieldInput type="email" [(ngModel)]="email" />
         <gui-icon-button guiTextFieldTrailing aria-label="Clear" (click)="clearEmail()">
-          <gui-icon>close</gui-icon>
+          <gui-icon>✕</gui-icon>
         </gui-icon-button>
       </gui-text-field>
     </div>
@@ -700,10 +700,10 @@
     <!-- Leading icon + trailing clear button -->
     <div class="flex flex-row gap-4 items-start mt-4">
       <gui-text-field variant="outlined" label="Search">
-        <gui-icon guiTextFieldLeading>search</gui-icon>
+        <gui-icon guiTextFieldLeading>🔍</gui-icon>
         <input guiTextFieldInput [(ngModel)]="bio" />
         <gui-icon-button guiTextFieldTrailing aria-label="Clear" (click)="bio.set('')">
-          <gui-icon>close</gui-icon>
+          <gui-icon>✕</gui-icon>
         </gui-icon-button>
       </gui-text-field>
     </div>
