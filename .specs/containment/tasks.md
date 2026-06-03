@@ -94,7 +94,7 @@ Two structural entry points reusing tokens + interaction directives; no overlay 
     suppresses activation + state layers; primary-action region emits independently.
   - _Requirements: 1.1–1.7, 2.1–2.6, 13.1–13.4, 14.3, 14.4_
 
-- [ ] 6. Divider entry point
+- [x] 6. Divider entry point
   - Scaffold `@ngguide/ui/divider` (+ wiring).
   - `libs/ui/divider/src/divider.ts`: `GuiDivider` (`gui-divider`, OnPush, `inset`
     `none|inset|middle-inset`, `orientation` `horizontal|vertical`, host `role=separator` +
