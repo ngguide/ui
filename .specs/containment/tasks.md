@@ -67,7 +67,7 @@ Blast radius: **safe** — additive helpers, inert until a later group imports t
   - Add `@import './scrim.css';` to `libs/ui/src/styles/theme.css` (after `badge.css`).
   - _Requirements: 12.1, 15.2_
 
-- [ ] 4. Checkpoint — Group A verification
+- [x] 4. Checkpoint — Group A verification
   - Run new specs: `pnpm exec nx test ui` (breakpoint + modal specs pass).
   - Run existing overlay spec to catch regressions: confirm `picker-overlay.spec.ts` still green.
   - `pnpm exec nx run-many -t lint build --projects=ui` green; confirm `@ngguide/ui/overlay` still builds.
