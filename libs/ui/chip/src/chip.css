@@ -79,6 +79,16 @@
   align-items: center;
 }
 
+.gui-chip-leading:empty {
+  display: none;
+}
+
+/* M3 leading selected checkmark (filter chips). */
+.gui-chip-check {
+  width: 18px;
+  height: 18px;
+}
+
 /* Selected (filter/input) chip — M3 secondary-container treatment plus space
    for a leading checkmark. */
 :host([data-selected]) {

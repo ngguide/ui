@@ -10,7 +10,10 @@
   box-shadow: var(--md-sys-elevation-level2);
 }
 
-:host {
+/* Encapsulation is None on MenuItemComponent (see menu-item.ts) so these rules
+   are global — they target the host via the `.gui-menu-item` host class instead
+   of `:host`. All selectors stay `gui-menu*`-namespaced. */
+.gui-menu-item {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -50,14 +53,14 @@
 }
 
 /* CdkMenuItem reflects disabled as [aria-disabled="true"]. */
-:host([aria-disabled='true']) {
+.gui-menu-item[aria-disabled='true'] {
   pointer-events: none;
   cursor: default;
   color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
 }
 
-:host([aria-disabled='true']) .gui-menu-item-leading,
-:host([aria-disabled='true']) .gui-menu-item-trailing {
+.gui-menu-item[aria-disabled='true'] .gui-menu-item-leading,
+.gui-menu-item[aria-disabled='true'] .gui-menu-item-trailing {
   color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
 }
 

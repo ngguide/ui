@@ -1,4 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ViewEncapsulation,
+} from '@angular/core';
 import { CdkMenuItem } from '@angular/cdk/menu';
 import {
   GuiFocusRingDirective,
@@ -29,6 +33,14 @@ import {
       ><ng-content select="[guiMenuItemTrailing]"
     /></span>`,
   styleUrl: './menu.css',
+  // The `.gui-menu` surface and `.gui-menu-divider` are applied to
+  // CONSUMER-authored elements (a `<div gui-menu cdkMenu>` and
+  // `<gui-menu-divider>`), which the CDK renders into the overlay carrying the
+  // consumer's encapsulation id — emulated-scoped rules here would never match
+  // them. ViewEncapsulation.None emits the (all `gui-menu*`-namespaced) rules
+  // globally so the surface/divider style wherever the overlay places them.
+  encapsulation: ViewEncapsulation.None,
+  host: { 'class': 'gui-menu-item' },
   hostDirectives: [
     // Expose CdkMenuItem's disabled input (aliased `cdkMenuItemDisabled`) so
     // consumers can set `[disabled]`/`[cdkMenuItemDisabled]` on the host.

@@ -29,9 +29,18 @@ export type GuiChipType = 'assist' | 'filter' | 'input' | 'suggestion';
   selector: 'gui-chip',
   exportAs: 'guiChip',
   template: `
-    <span class="gui-chip-leading" aria-hidden="true"
-      ><ng-content select="[guiChipLeading]"
-    /></span>
+    <span class="gui-chip-leading" aria-hidden="true">
+      @if (type() === 'filter' && selected()) {
+        <svg class="gui-chip-check" viewBox="0 -960 960 960" focusable="false">
+          <path
+            d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"
+            fill="currentColor"
+          />
+        </svg>
+      } @else {
+        <ng-content select="[guiChipLeading]" />
+      }
+    </span>
     <button
       #primary
       class="gui-chip-primary"
