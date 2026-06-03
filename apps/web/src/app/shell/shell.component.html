@@ -72,7 +72,10 @@
 </header>
 
 <div class="shell-body">
-  <!-- Navigation rail (expanded width) -->
+  <!-- Navigation rail (expanded width). The keydown drives the roving tab stop
+       and is delegated from the focusable rail items below (WAI-ARIA roving
+       tabindex), so the landmark itself need not be focusable. -->
+  <!-- eslint-disable-next-line @angular-eslint/template/interactive-supports-focus -->
   <nav class="shell-rail" aria-label="Primary" (keydown)="onRailKeydown($event)">
     @for (item of activeApp().nav; track item.path) {
       <a

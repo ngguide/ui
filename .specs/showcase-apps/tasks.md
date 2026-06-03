@@ -90,22 +90,22 @@ Blast radius: replaces the demo root — revert = `git restore` of `app.componen
   - Create `apps/web/src/app/admin/admin.store.spec.ts`: search across name+email, role filter, sort, add/update/remove reflect in `visible()`, `isEmpty` true on no match.
   - _Requirements: 3.3, 3.4, 6.1, 6.2, 6.3, 9.1_
 
-- [ ] 9. Console dashboard screen
+- [x] 9. Console dashboard screen
   - Create `apps/web/src/app/admin/dashboard.component.ts` / `.html` / `.css`: KPI `gui-card`s (number via `formatNumber`/`formatCurrency` + delta + `gui-circular-progress`/`gui-linear-progress` ratio); a small inline-SVG `sparkline.component.ts` (polyline from `number[]`, `role="img"` + `aria-label`); recent-activity `gui-list`; a `gui-button-group` range toggle.
   - _Requirements: 3.1, 3.2, 10.1, 10.2_
 
-- [ ] 10. Console feature routes (dashboard + placeholders)
+- [x] 10. Console feature routes (dashboard + placeholders)
   - Create `apps/web/src/app/admin/admin.routes.ts`: `providers: [AdminStore]`; children `''→'dashboard'`, `dashboard` (loadComponent). Leave `users`/`settings` for Group C (do not reference not-yet-created files).
   - _Requirements: 1.4_
 
-- [ ] 11. Switch the root to the Shell (remove the flat playground)
+- [x] 11. Switch the root to the Shell (remove the flat playground)
   - Modify `apps/web/src/app/app.routes.ts`: `{ path: '', loadComponent: ShellComponent, children: [ {'' → 'admin'}, {'admin', loadChildren admin.routes} ] }`.
   - Gut `apps/web/src/app/app.component.ts` to a router host (`template: '<router-outlet />'`, `imports: [RouterOutlet]`, `OnPush`, selector `app-root` preserved); remove all flat-demo imports/state.
   - Replace `apps/web/src/app/app.component.html` with `<router-outlet />` (or inline + delete the file); empty/remove `app.component.css` (`bg-lines`); delete `apps/web/src/app/interaction-demo.component.ts` (its `interaction` coverage moved to the shell nav).
   - Update `apps/web/src/app/app.component.spec.ts`: replace the `[gui-button]` assertion with a `router-outlet` presence assertion.
   - _Requirements: 1.1, 1.4; Superseded Behaviors_
 
-- [ ] 12. Checkpoint — Group B verification
+- [x] 12. Checkpoint — Group B verification
   - Run: `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build -p web`.
   - Confirm: `/` → `/admin/dashboard` renders the Shell + dashboard; dark toggle and brand-seed switch re-theme all chrome; nav rail (wide) ↔ bottom bar/drawer (narrow) on resize; flat playground no longer reachable; `app.component.spec` + `shell.spec` + `admin.store.spec` green; `nx serve web` boots and prerender/hydration is error-free.
 
