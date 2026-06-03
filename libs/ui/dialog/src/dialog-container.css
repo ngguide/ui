@@ -1,0 +1,55 @@
+/* M3 dialog surface chrome. The container host IS the surface. */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  outline: none;
+  min-width: 280px;
+  max-height: inherit;
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  box-shadow: var(--md-sys-elevation-level3);
+  overflow: hidden;
+  animation: gui-dialog-enter var(--md-sys-motion-duration-medium4)
+    var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+@keyframes gui-dialog-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* --- Full-screen: edge-to-edge surface, no radius (Req 8.1) --- */
+:host([data-fullscreen]) {
+  width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: var(--md-sys-color-surface);
+  animation-name: gui-dialog-enter-fullscreen;
+}
+
+@keyframes gui-dialog-enter-fullscreen {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Reduced motion: no enter animation (Req 15.2) --- */
+:host(.gui-no-motion) {
+  animation: none;
+}

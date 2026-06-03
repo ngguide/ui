@@ -25,6 +25,7 @@
       "@ngguide/ui/chip": ["libs/ui/chip/src/index.ts"],
       "@ngguide/ui/date-picker": ["libs/ui/date-picker/src/index.ts"],
       "@ngguide/ui/datetime": ["libs/ui/datetime/src/index.ts"],
+      "@ngguide/ui/dialog": ["libs/ui/dialog/src/index.ts"],
       "@ngguide/ui/fab": ["libs/ui/fab/src/index.ts"],
       "@ngguide/ui/fab-menu": ["libs/ui/fab-menu/src/index.ts"],
       "@ngguide/ui/forms": ["libs/ui/forms/src/index.ts"],

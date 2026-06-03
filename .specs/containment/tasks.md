@@ -157,7 +157,7 @@ One entry point with container + item, both `action` and `listbox` modes; reuses
 Basic + full-screen dialog on CDK `Dialog` via a custom container, imperative `open()` + declarative trigger.
 Depends on Group A (modal foundation). Blast radius: **coupled to Group A** (imports its helpers).
 
-- [ ] 13. Dialog config, service, ref, anatomy slots
+- [x] 13. Dialog config, service, ref, anatomy slots
   - Scaffold `@ngguide/ui/dialog` (+ wiring; `styles/dialog.css`).
   - `dialog-config.ts`: `GuiDialogFullScreen` (`never|compact|always`), `GuiDialogConfig<D>` extending
     `GuiModalConfigBase`, re-export `GUI_DIALOG_DATA`.
@@ -171,7 +171,7 @@ Depends on Group A (modal foundation). Blast radius: **coupled to Group A** (imp
     emits on `closed`; restore-focus returns to opener; `fullScreen:'compact'` honors the breakpoint signal.
   - _Requirements: 7.1, 7.2, 7.4, 7.6, 8.1, 12.1–12.7, 16.2_
 
-- [ ] 14. Dialog container (M3 chrome + motion) + full-screen layout
+- [x] 14. Dialog container (M3 chrome + motion) + full-screen layout
   - `dialog-container.ts`: `GuiDialogContainer extends CdkDialogContainer` — `surface-container-high`,
     `corner-extra-large` (28dp), `elevation-level3`, centered; enter (emphasized-decelerate) / exit
     (emphasized-accelerate) via motion tokens, disabled under `GuiReducedMotion`; full-screen mode

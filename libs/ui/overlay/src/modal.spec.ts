@@ -19,8 +19,9 @@ describe('normalizeModalConfig', () => {
     expect(cfg.restoreFocus).toBe(true);
     expect(cfg.disableClose).toBe(false);
     // Scroll-lock relies on CDK Dialog's default block scroll strategy
-    // (Req 12.6) — the normalizer does not override scrollStrategy.
-    expect(cfg.scrollStrategy).toBeUndefined();
+    // (Req 12.6) — the normalizer deliberately does not set scrollStrategy,
+    // so it is absent from the narrowed normalized config type.
+    expect('scrollStrategy' in cfg).toBe(false);
   });
 
   it('propagates caller overrides', () => {

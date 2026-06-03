@@ -1,6 +1,6 @@
 import { Injector, TemplateRef } from '@angular/core';
 import { ComponentType } from '@angular/cdk/overlay';
-import { DIALOG_DATA, DialogConfig, DialogRef } from '@angular/cdk/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Observable } from 'rxjs';
 
 /**
@@ -70,8 +70,29 @@ export function asArray(value: string | string[] | undefined): string[] {
 }
 
 /**
- * Map a {@link GuiModalConfigBase} onto a CDK {@link DialogConfig}, applying the
- * M3 modal defaults: `ariaModal: true`, a backdrop styled by the global
+ * The CDK `DialogConfig` fields the normalizer sets. Deliberately narrower than
+ * `DialogConfig` — it omits the result-generic-dependent fields (`providers`,
+ * `templateContext`) so it can be spread into a fully-typed
+ * `DialogConfig<D, DialogRef<R, C>>` without provoking variance errors.
+ */
+export interface GuiNormalizedModalConfig<D = unknown> {
+  role: GuiDialogRole;
+  ariaModal: true;
+  ariaLabel: string | null;
+  ariaLabelledBy: string | null;
+  disableClose: boolean;
+  autoFocus: string;
+  restoreFocus: boolean;
+  hasBackdrop: true;
+  backdropClass: string;
+  data: D | null;
+  injector: Injector | undefined;
+  panelClass: string[];
+}
+
+/**
+ * Map a {@link GuiModalConfigBase} onto the CDK `DialogConfig` fields, applying
+ * the M3 modal defaults: `ariaModal: true`, a backdrop styled by the global
  * `.gui-scrim` class, `autoFocus: 'first-tabbable'`, and `restoreFocus: true`
  * (Req 12.1–12.3, 12.7, 14.1). Scroll-lock is left to CDK `Dialog`'s default
  * block scroll strategy (Req 12.6). Family-specific fields (`container`,
@@ -79,7 +100,7 @@ export function asArray(value: string | string[] | undefined): string[] {
  */
 export function normalizeModalConfig<D = unknown>(
   config?: GuiModalConfigBase<D>,
-): DialogConfig<D> {
+): GuiNormalizedModalConfig<D> {
   return {
     role: config?.role ?? 'dialog',
     ariaModal: true,
@@ -97,8 +118,8 @@ export function normalizeModalConfig<D = unknown>(
 }
 
 /** Wrap a CDK {@link DialogRef} in the narrower public {@link GuiDialogRef}. */
-export function wrapDialogRef<R = unknown>(
-  ref: DialogRef<R, unknown>,
+export function wrapDialogRef<R = unknown, C = unknown>(
+  ref: DialogRef<R, C>,
 ): GuiDialogRef<R> {
   return {
     closed: ref.closed,

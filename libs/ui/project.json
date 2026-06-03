@@ -79,6 +79,8 @@
           "../divider/src/divider.spec.ts",
           "../list/src/list.spec.ts",
           "../list/src/list-item.spec.ts",
+          "../dialog/src/dialog.service.spec.ts",
+          "../dialog/src/dialog.spec.ts",
           "../progress/src/linear-progress.spec.ts",
           "../progress/src/circular-progress.spec.ts",
           "../loading-indicator/src/loading-indicator.spec.ts",
