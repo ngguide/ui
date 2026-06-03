@@ -66,7 +66,10 @@
           "../interaction/src/state-layer.directive.spec.ts",
           "../interaction/src/ripple.directive.spec.ts",
           "../interaction/src/focus-ring.directive.spec.ts",
-          "../interaction/src/a11y.spec.ts"
+          "../interaction/src/a11y.spec.ts",
+          "../datetime/src/date-utils.spec.ts",
+          "../datetime/src/intl.spec.ts",
+          "../datetime/src/parse.spec.ts"
         ]
       }
     },

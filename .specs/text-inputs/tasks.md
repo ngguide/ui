@@ -25,7 +25,7 @@ There are **no cutovers** — every group is purely additive (new files + new `t
 Pure, framework-free date math + `Intl` localization + locale-aware parsing consumed by both pickers.
 Blast radius: **safe** — additive entry point with no consumers yet.
 
-- [ ] 1. Scaffold the `@ngguide/ui/datetime` entry point
+- [-] 1. Scaffold the `@ngguide/ui/datetime` entry point
   - Create `libs/ui/datetime/ng-package.json` (`{ "lib": { "entryFile": "src/index.ts" } }`) and
     `libs/ui/datetime/src/index.ts` barrel.
   - Add `"@ngguide/ui/datetime": ["libs/ui/datetime/src/index.ts"]` to `tsconfig.base.json` `paths`.
