@@ -1,0 +1,18 @@
+/* M3 plain tooltip — inverse surface, 24dp tall, 8dp padding, extra-small corner. */
+:host {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 24px;
+  max-width: 200px;
+  padding: 4px 8px;
+  border-radius: var(--md-sys-shape-corner-extra-small, 4px);
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  font-family: var(--md-sys-typescale-body-small-font);
+  font-weight: var(--md-sys-typescale-body-small-weight);
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  letter-spacing: var(--md-sys-typescale-body-small-tracking);
+  pointer-events: none;
+}

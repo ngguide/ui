@@ -78,6 +78,8 @@
           "../loading-indicator/src/loading-indicator.spec.ts",
           "../snackbar/src/snackbar.service.spec.ts",
           "../snackbar/src/snackbar.spec.ts",
+          "../tooltip/src/tooltip.spec.ts",
+          "../tooltip/src/rich-tooltip.spec.ts",
           "../date-picker/src/calendar.spec.ts",
           "../date-picker/src/date-picker.spec.ts",
           "../date-picker/src/date-range-picker.spec.ts",

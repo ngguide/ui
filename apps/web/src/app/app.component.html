@@ -884,6 +884,46 @@
       </button>
     </div>
 
+    <!-- Tooltips -->
+    <h2 class="text-xl font-semibold mt-8">Tooltips</h2>
+    <div class="flex flex-row gap-6 items-center">
+      <button
+        gui-icon-button
+        variant="standard"
+        aria-label="Settings"
+        guiTooltip="Settings"
+      >
+        <gui-icon>★</gui-icon>
+      </button>
+      <button
+        gui-icon-button
+        variant="standard"
+        aria-label="Search"
+        guiTooltip="Search the catalog"
+        position="below"
+      >
+        <gui-icon>☆</gui-icon>
+      </button>
+
+      <gui-rich-tooltip #rt>
+        <span guiRichTooltipSubhead>Encrypted storage</span>
+        Your files are encrypted at rest and in transit.
+        <div guiRichTooltipActions>
+          <button gui-button variant="text" type="button">Learn more</button>
+          <button gui-button variant="text" type="button">Dismiss</button>
+        </div>
+      </gui-rich-tooltip>
+      <button
+        gui-button
+        variant="outlined"
+        type="button"
+        [guiRichTooltipTrigger]="rt"
+      >
+        Rich tooltip
+      </button>
+      <div class="ml-4 text-sm text-gray-600">Plain (hover/focus), rich</div>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

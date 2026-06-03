@@ -180,11 +180,11 @@ Group A** (uses `openGlobalBottom`); otherwise additive/**safe**.
 `[guiTooltip]` plain directive + `gui-rich-tooltip` panel + trigger directive. Blast radius: **coupled
 to Group A** (uses `openConnected`); otherwise additive/**safe**.
 
-- [ ] 22. Scaffold the `tooltip` entry point
+- [x] 22. Scaffold the `tooltip` entry point
   - Create `libs/ui/tooltip/{ng-package.json, src/index.ts}`; add path alias; register plain + rich specs.
   - _Requirements: 16.1, 16.2_
 
-- [ ] 23. Implement the plain tooltip directive
+- [x] 23. Implement the plain tooltip directive
   - `libs/ui/tooltip/src/tooltip.ts` + css per design: `guiTooltip` message, `position`, `showDelay`
     (default 500), `hideDelay`, `disabled`; hover/focus/long-press → after delay `openConnected` a
     `role="tooltip"` panel; set `aria-describedby` on the trigger while visible; pointerleave/blur/
@@ -192,7 +192,7 @@ to Group A** (uses `openConnected`); otherwise additive/**safe**.
     `--md-sys-color-inverse-on-surface`, height 24dp, padding 8dp, corner-extra-small.
   - _Requirements: 11.1–11.7, 13.1–13.3, 14.1_
 
-- [ ] 24. Implement the rich tooltip (panel + trigger)
+- [x] 24. Implement the rich tooltip (panel + trigger)
   - `libs/ui/tooltip/src/rich-tooltip.ts` + css per design: `gui-rich-tooltip` panel projecting
     subhead/body/actions (up to two `gui-button`s), `role="tooltip"`, surface
     `--md-sys-color-surface-container`, subhead/body `--md-sys-color-on-surface-variant`, padding
@@ -201,17 +201,17 @@ to Group A** (uses `openConnected`); otherwise additive/**safe**.
     when over neither after a grace delay); Escape / action activation closes; `aria-describedby` while open.
   - _Requirements: 12.1–12.5, 13.2, 13.4, 14.1_
 
-- [ ] 25. Tooltip specs + demo
+- [x] 25. Tooltip specs + demo
   - `tooltip.spec.ts`: `aria-describedby` only while visible; Escape hides + focus stays on trigger;
     disabled/empty never opens.
   - `rich-tooltip.spec.ts`: panel renders subhead/body/actions; persistent open/close logic; actions focusable.
   - Demo sections in `apps/web` (plain on icon buttons; rich with actions).
   - _Requirements: 11.5, 12.2, 13.1, 13.3, 16.3_
 
-- [ ] 26. Checkpoint — Group F verification
+- [x] 26. Checkpoint — Group F verification
   - Run tooltip specs + Group A overlay spec + `lint build -p ui`. Confirm independently mergeable on top of A.
 
-- [ ] 27. Final checkpoint — everything green
+- [x] 27. Final checkpoint — everything green
   - `pnpm exec nx run-many -t lint test build -p ui web` — all green for both projects.
   - Confirm every new entry point builds via ng-packagr (`nx build ui` produces all new entries).
   - All 16 requirements traceable to a shipped task; new specs registered in `project.json`.

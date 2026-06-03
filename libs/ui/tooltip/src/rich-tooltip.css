@@ -1,0 +1,41 @@
+/* M3 rich tooltip — surface-container, on-surface-variant text, 12dp corner. */
+.gui-rich-tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-sizing: border-box;
+  max-width: 320px;
+  padding: 12px 16px;
+  border-radius: var(--md-sys-shape-corner-medium, 12px);
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+.gui-rich-tooltip-subhead:empty,
+.gui-rich-tooltip-actions:empty {
+  display: none;
+}
+
+.gui-rich-tooltip-subhead {
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-title-small-font);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+  font-size: var(--md-sys-typescale-title-small-size);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  letter-spacing: var(--md-sys-typescale-title-small-tracking);
+}
+
+.gui-rich-tooltip-body {
+  font-family: var(--md-sys-typescale-body-medium-font);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+}
+
+.gui-rich-tooltip-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}

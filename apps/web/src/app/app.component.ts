@@ -53,6 +53,11 @@ import {
 } from '@ngguide/ui/progress';
 import { GuiLoadingIndicator } from '@ngguide/ui/loading-indicator';
 import { GuiSnackbar } from '@ngguide/ui/snackbar';
+import {
+  GuiRichTooltip,
+  GuiRichTooltipTrigger,
+  GuiTooltip,
+} from '@ngguide/ui/tooltip';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -92,6 +97,9 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     GuiLinearProgress,
     GuiCircularProgress,
     GuiLoadingIndicator,
+    GuiTooltip,
+    GuiRichTooltip,
+    GuiRichTooltipTrigger,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
