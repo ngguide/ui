@@ -54,7 +54,7 @@ the existing flat demo keeps rendering unchanged. Blast radius: safe.
   - Create `apps/web/src/app/core/formatters.spec.ts`: assert `$1,234.50` grouping, `Jun 4, 2026` date format, relative label vs `DEMO_TODAY`, two-letter initials.
   - _Requirements: 5.2; NFR (SSR determinism)_
 
-- [ ] 3. Navigation model + theme controller
+- [x] 3. Navigation model + theme controller
   - Create `apps/web/src/app/shell/nav.ts`: `NavItem`, `DemoApp`, `DEMO_APPS` (Console/Tracker/Commerce + their sections; icons are Material Symbols ligature names).
   - Create `apps/web/src/app/shell/theme-controller.ts`: root-provided `ThemeController` with `mode`/`seed` signals and `setMode`/`toggleDark`/`setSeed` calling `M3ThemeService.setTheme({ ...BASE_THEME, sourceColor, mode })`.
   - _Requirements: 1.1, 7.1, 7.2, 7.3_
