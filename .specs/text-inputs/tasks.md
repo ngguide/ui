@@ -77,12 +77,12 @@ dialogs, plus the global overlay-container stylesheet (first raw cdk/overlay use
 radius: **safe** — additive; `theme.css` gains overlay container rules that affect nothing until an overlay
 opens.
 
-- [ ] 7. Scaffold the `@ngguide/ui/overlay` entry point
+- [x] 7. Scaffold the `@ngguide/ui/overlay` entry point
   - Create `libs/ui/overlay/ng-package.json` + `libs/ui/overlay/src/index.ts`.
   - Add `"@ngguide/ui/overlay": ["libs/ui/overlay/src/index.ts"]` to `tsconfig.base.json` `paths`.
   - _Requirements: 12.1, 12.2_
 
-- [ ] 8. Implement the `GuiPickerOverlay` service
+- [x] 8. Implement the `GuiPickerOverlay` service
   - Create `libs/ui/overlay/src/picker-overlay.ts`: `openDocked(portal, {origin,width})` →
     `FlexibleConnectedPositionStrategy` (`STANDARD_DROPDOWN_BELOW_POSITIONS`, viewportMargin) +
     `RepositionScrollStrategy`, no backdrop, close on `outsidePointerEvents()`/Escape; `openModal(portal,
@@ -95,7 +95,7 @@ opens.
     overlay attaches, `close()` disposes and emits `closed`, focus restores to the trigger.
   - _Requirements: 9.1, 9.2, 9.3, 9.4, 10.5_
 
-- [ ] 9. Ship the overlay-container stylesheet
+- [x] 9. Ship the overlay-container stylesheet
   - Create `libs/ui/src/styles/overlay.css` with the CDK overlay container/backdrop structural rules
     (mirroring `@angular/cdk/overlay-prebuilt.css`, no node_modules `@import`), backdrop themed via
     `--md-sys-color-scrim`.
@@ -103,11 +103,11 @@ opens.
     and the demo app inherits it through its existing `theme.css` import.
   - _Requirements: 9.4, 11.1, 12.5_
 
-- [ ] 10. Register overlay spec
+- [x] 10. Register overlay spec
   - Append `../overlay/src/picker-overlay.spec.ts` to `libs/ui/project.json` `test.include`.
   - _Requirements: 12.3_
 
-- [ ] 11. Checkpoint — Group B verification
+- [x] 11. Checkpoint — Group B verification
   - Run `pnpm exec nx test ui` — overlay spec passes alongside Group A.
   - Run `pnpm exec nx build ui` — `overlay.css` is copied into `dist/libs/ui/styles/`.
   - Confirm `main` green with only A+B; no component opens an overlay yet (inert).

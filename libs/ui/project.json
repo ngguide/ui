@@ -69,7 +69,8 @@
           "../interaction/src/a11y.spec.ts",
           "../datetime/src/date-utils.spec.ts",
           "../datetime/src/intl.spec.ts",
-          "../datetime/src/parse.spec.ts"
+          "../datetime/src/parse.spec.ts",
+          "../overlay/src/picker-overlay.spec.ts"
         ]
       }
     },
