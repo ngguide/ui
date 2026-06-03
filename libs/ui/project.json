@@ -86,6 +86,8 @@
           "../bottom-sheet/src/bottom-sheet.spec.ts",
           "../side-sheet/src/side-sheet.service.spec.ts",
           "../side-sheet/src/side-sheet.spec.ts",
+          "../carousel/src/carousel-keylines.spec.ts",
+          "../carousel/src/carousel.spec.ts",
           "../progress/src/linear-progress.spec.ts",
           "../progress/src/circular-progress.spec.ts",
           "../loading-indicator/src/loading-indicator.spec.ts",

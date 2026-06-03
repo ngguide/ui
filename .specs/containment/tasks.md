@@ -261,7 +261,7 @@ Modal + standard side sheet on the end edge. Depends on Group A. Blast radius: *
 Pure keyline engine + components implementing the four M3 layouts. Independent of the overlay foundation.
 Blast radius: **safe**.
 
-- [ ] 24. Keyline sizing engine (pure)
+- [x] 24. Keyline sizing engine (pure)
   - Scaffold `@ngguide/ui/carousel` (+ wiring).
   - `carousel-keylines.ts`: `GuiCarouselLayout`, `MIN_SMALL_ITEM=40`, `MAX_SMALL_ITEM=56`,
     `KeylineArrangement`, `arrange(layout, viewportWidth, opts)` (small=clamp(large/3,40,56),
@@ -271,7 +271,7 @@ Blast radius: **safe**.
   - Test (`carousel-keylines.spec.ts`): the verified sizing rules per layout; small clamp; drop-below-threshold.
   - _Requirements: 11.2, 11.3, 11.5, 16.4_
 
-- [ ] 25. Carousel + item components
+- [x] 25. Carousel + item components
   - `carousel.ts`: `GuiCarousel` (`gui-carousel`, OnPush, `layout`, `preferredLargeWidth` default 186,
     `itemSpacing` default 8, host `role=group`+`aria-roledescription=carousel`+`data-layout`); injects
     `GuiBreakpoint` + `GuiReducedMotion`; `afterNextRender` sets up `ResizeObserver(track)` + scroll listener
@@ -282,7 +282,7 @@ Blast radius: **safe**.
     items get widths from the engine after layout.
   - _Requirements: 11.1, 11.4, 16.3, 16.4_
 
-- [ ] 26. Layouts, full-screen orientation, reduced motion + demo
+- [x] 26. Layouts, full-screen orientation, reduced motion + demo
   - `GuiCarousel.effectiveLayout()`: full-screen layout switches to vertical orientation on compact
     (`GuiBreakpoint.isCompact()`); under `GuiReducedMotion`, disable per-scroll size morphing (items render at
     arranged sizes). Verify multi-browse/uncontained/hero/full-screen all render per the engine.
