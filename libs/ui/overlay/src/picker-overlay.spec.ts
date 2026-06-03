@@ -88,4 +88,51 @@ describe('GuiPickerOverlay', () => {
     handle.close();
     expect(handle.ref.hasAttached()).toBe(false);
   });
+
+  it('openGlobalBottom attaches without a backdrop and does not move focus', () => {
+    const trigger = fixture.nativeElement.querySelector(
+      'button',
+    ) as HTMLButtonElement;
+    document.body.appendChild(fixture.nativeElement);
+    trigger.focus();
+    const focusedBefore = document.activeElement;
+
+    const portal = host.buildPortal();
+    const handle = service.openGlobalBottom(portal, { maxWidth: '672px' });
+
+    expect(handle.ref.hasAttached()).toBe(true);
+    // No backdrop element is created for the global-bottom surface.
+    expect(handle.ref.backdropElement).toBeFalsy();
+    // Focus is not stolen by the surface.
+    expect(document.activeElement).toBe(focusedBefore);
+
+    handle.close();
+    expect(handle.ref.hasAttached()).toBe(false);
+    // Closing does not restore/alter focus either (no focus management).
+    expect(document.activeElement).toBe(focusedBefore);
+
+    fixture.nativeElement.remove();
+  });
+
+  it('openConnected attaches connected to an origin without capturing focus', () => {
+    const origin = fixture.nativeElement.querySelector(
+      'button',
+    ) as HTMLButtonElement;
+    document.body.appendChild(fixture.nativeElement);
+    origin.focus();
+    const focusedBefore = document.activeElement;
+
+    const portal = host.buildPortal();
+    const handle = service.openConnected(portal, { origin });
+
+    expect(handle.ref.hasAttached()).toBe(true);
+    expect(handle.ref.backdropElement).toBeFalsy();
+    expect(document.activeElement).toBe(focusedBefore);
+
+    handle.close();
+    expect(handle.ref.hasAttached()).toBe(false);
+    expect(document.activeElement).toBe(focusedBefore);
+
+    fixture.nativeElement.remove();
+  });
 });
