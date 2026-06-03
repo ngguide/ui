@@ -24,9 +24,8 @@ export class GuiDialogTrigger {
     alias: 'guiDialogTrigger',
   });
   /** Optional dialog configuration. */
-  readonly config = input<GuiDialogConfig | undefined>(undefined, {
-    alias: 'guiDialogConfig',
-  });
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  readonly config = input<GuiDialogConfig | undefined>(undefined, { alias: 'guiDialogConfig' });
 
   protected open(): void {
     this.dialog.open(this.template(), this.config());

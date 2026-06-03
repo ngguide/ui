@@ -63,9 +63,10 @@ describe('GuiDialog', () => {
   });
 
   describe('fullScreen', () => {
+    // GuiBreakpoint calls addEventListener via optional chaining, so the mock
+    // can omit it entirely.
     class FakeMql {
       constructor(public matches: boolean) {}
-      addEventListener(): void {}
     }
 
     function configureCompact(matches: boolean): void {

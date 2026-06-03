@@ -85,9 +85,10 @@ describe('GuiDialogContainer', () => {
           {
             provide: MediaMatcher,
             useValue: {
+              // addEventListener is invoked via optional chaining, so it can
+              // be omitted from the mock.
               matchMedia: (q: string) => ({
                 matches: q.includes('prefers-reduced-motion'),
-                addEventListener: () => {},
               }),
             },
           },

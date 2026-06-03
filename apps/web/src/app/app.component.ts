@@ -65,6 +65,15 @@ import {
 } from '@ngguide/ui/card';
 import { GuiDivider } from '@ngguide/ui/divider';
 import { GuiList, GuiListItem } from '@ngguide/ui/list';
+import {
+  GuiDialog,
+  GuiDialogActions,
+  GuiDialogContent,
+  GuiDialogFullscreenHeader,
+  GuiDialogHeadline,
+  GuiDialogIcon,
+  GuiDialogTrigger,
+} from '@ngguide/ui/dialog';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -113,6 +122,12 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     GuiDivider,
     GuiList,
     GuiListItem,
+    GuiDialogTrigger,
+    GuiDialogIcon,
+    GuiDialogHeadline,
+    GuiDialogContent,
+    GuiDialogActions,
+    GuiDialogFullscreenHeader,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
@@ -123,6 +138,8 @@ import { InteractionDemoComponent } from './interaction-demo.component';
 })
 export class AppComponent {
   private readonly theme = inject(M3ThemeService);
+  /** Dialog service used by the containment demo (imperative full-screen open). */
+  protected readonly dialog = inject(GuiDialog);
 
   /** Demo brand seeds to exercise runtime re-theming (Req 7.3). */
   readonly brandSeeds = ['#6750A4', '#00629D', '#B3261E'];

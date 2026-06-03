@@ -1042,6 +1042,84 @@
       </gui-card>
     </div>
 
+    <!-- Containment — Dialog -->
+    <div class="flex flex-col gap-4 mt-8">
+      <h2 class="text-lg font-medium">Dialog</h2>
+
+      <div class="flex flex-row gap-2 items-center">
+        <!-- (a) Basic dialog via declarative trigger -->
+        <button
+          gui-button
+          variant="filled"
+          type="button"
+          [guiDialogTrigger]="basicDialog"
+          [guiDialogConfig]="{ ariaLabelledBy: 'reset-headline' }"
+        >
+          Basic dialog
+        </button>
+
+        <!-- (b) Full-screen dialog via imperative open() -->
+        <button
+          gui-button
+          variant="outlined"
+          type="button"
+          (click)="dialog.open(fullScreenDialog, { fullScreen: 'always', ariaLabelledBy: 'edit-title' })"
+        >
+          Full-screen dialog
+        </button>
+      </div>
+
+      <ng-template #basicDialog let-ref="dialogRef">
+        <gui-dialog-icon>⚠️</gui-dialog-icon>
+        <gui-dialog-headline id="reset-headline">Reset settings?</gui-dialog-headline>
+        <gui-dialog-content>
+          This will restore all settings to their default values. You can't undo
+          this action.
+        </gui-dialog-content>
+        <gui-dialog-actions>
+          <button gui-button variant="text" type="button" (click)="ref.close()">
+            Cancel
+          </button>
+          <button
+            gui-button
+            variant="text"
+            type="button"
+            (click)="ref.close('reset')"
+          >
+            Reset
+          </button>
+        </gui-dialog-actions>
+      </ng-template>
+
+      <ng-template #fullScreenDialog let-ref="dialogRef">
+        <gui-dialog-fullscreen-header>
+          <button
+            gui-icon-button
+            variant="standard"
+            guiDialogClose
+            aria-label="Close"
+            type="button"
+            (click)="ref.close()"
+          >
+            <gui-icon>✕</gui-icon>
+          </button>
+          <span id="edit-title">Edit profile</span>
+          <button
+            gui-button
+            variant="text"
+            guiDialogConfirm
+            type="button"
+            (click)="ref.close('saved')"
+          >
+            Save
+          </button>
+        </gui-dialog-fullscreen-header>
+        <gui-dialog-content>
+          <p class="py-4">Full-screen dialogs fill the window on compact layouts.</p>
+        </gui-dialog-content>
+      </ng-template>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

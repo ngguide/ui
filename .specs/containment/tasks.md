@@ -182,7 +182,7 @@ Depends on Group A (modal foundation). Blast radius: **coupled to Group A** (imp
     + header; content scrolls; reduced-motion disables animation.
   - _Requirements: 7.1, 7.3, 7.5, 8.1, 8.2, 8.4, 8.5, 15.1, 15.2, 15.3_
 
-- [ ] 15. Declarative trigger + demo
+- [x] 15. Declarative trigger + demo
   - `dialog.trigger.ts`: `[guiDialogTrigger]` directive (`TemplateRef` input + optional `guiDialogConfig`,
     opens on click via `GuiDialog`).
   - apps/web: import `GuiDialog` + slots + trigger; add buttons opening a basic dialog (icon/headline/2
@@ -190,7 +190,7 @@ Depends on Group A (modal foundation). Blast radius: **coupled to Group A** (imp
   - Test: trigger opens the template; Escape + scrim-click close (unless `disableClose`).
   - _Requirements: 7.2, 8.2, 8.3, 12.4, 12.5, 16.2_
 
-- [ ] 16. Checkpoint — Group D verification
+- [x] 16. Checkpoint — Group D verification
   - `pnpm exec nx test ui` (dialog specs pass) + existing overlay specs green.
   - lint + build green for `ui`,`web`; `@ngguide/ui/dialog` builds; demo opens/closes both dialog types with
     focus trap + restore verified in the browser.
