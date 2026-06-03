@@ -199,7 +199,7 @@ Depends on Group A (modal foundation). Blast radius: **coupled to Group A** (imp
 
 Modal (CDK Dialog + drag) and standard (inline) variants. Depends on Group A. Blast radius: **coupled to Group A**.
 
-- [ ] 17. Bottom-sheet config, service, container
+- [x] 17. Bottom-sheet config, service, container
   - Scaffold `@ngguide/ui/bottom-sheet` (+ wiring; `styles/bottom-sheet.css`).
   - `bottom-sheet-config.ts`: `GuiBottomSheetConfig<D>` extending `GuiModalConfigBase`
     (`showDragHandle` default true, `aboveFab`, `dismissThreshold` default 96, `maxWidth` default `640px`).
@@ -211,7 +211,7 @@ Modal (CDK Dialog + drag) and standard (inline) variants. Depends on Group A. Bl
   - Export from index. Test (`bottom-sheet.service.spec.ts`): opens bottom-anchored modal with scrim + trap; `close` emits.
   - _Requirements: 9.1, 9.5, 12.1–12.7, 15.1, 15.2, 16.2_
 
-- [ ] 18. Drag handle + dismiss/spring-back + standard inline mode
+- [x] 18. Drag handle + dismiss/spring-back + standard inline mode
   - `bottom-sheet.ts`: `GuiBottomSheet` surface component used by both modes — drag handle (32×4dp
     `on-surface-variant`) with `CdkDrag cdkDragLockAxis="y"`, `cdkDragConstrainPosition` clamping upward;
     `cdkDragMoved`→fade scrim by `distance.y/height`; `cdkDragEnded`→ if `distance.y > dismissThreshold`

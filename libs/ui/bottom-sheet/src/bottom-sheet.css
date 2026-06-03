@@ -1,0 +1,61 @@
+/* M3 standard (non-modal) bottom sheet. Fixed to the bottom edge; coexists with
+   page content (no scrim). Slides in/out on `open`. */
+
+:host {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 6;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.gui-bottom-sheet-surface {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 640px;
+  max-height: 50dvh;
+  pointer-events: auto;
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+  border-start-start-radius: var(--md-sys-shape-corner-extra-large);
+  border-start-end-radius: var(--md-sys-shape-corner-extra-large);
+  box-shadow: var(--md-sys-elevation-level1);
+  transform: translateY(100%);
+  transition: transform var(--md-sys-motion-duration-medium4)
+    var(--md-sys-motion-easing-emphasized);
+}
+
+/* --- Open: slide into view (Req 9.2) --- */
+:host([data-open]) .gui-bottom-sheet-surface {
+  transform: translateY(0);
+}
+
+/* --- Reduced motion: no slide (Req 15.2) --- */
+:host(.gui-no-motion) .gui-bottom-sheet-surface {
+  transition: none;
+}
+
+/* --- Drag handle: 32×4dp, on-surface-variant, centered (Req 9.1) --- */
+.gui-bottom-sheet-handle {
+  flex: 0 0 auto;
+  align-self: center;
+  width: 32px;
+  height: 4px;
+  margin: 16px 0;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-on-surface-variant);
+  cursor: grab;
+  touch-action: none;
+}
+.gui-bottom-sheet-handle:active {
+  cursor: grabbing;
+}
+
+.gui-bottom-sheet-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}

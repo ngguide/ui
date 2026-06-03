@@ -20,6 +20,7 @@
       "@ngguide/ui/button": ["libs/ui/button/src/index.ts"],
       "@ngguide/ui/card": ["libs/ui/card/src/index.ts"],
       "@ngguide/ui/button-group": ["libs/ui/button-group/src/index.ts"],
+      "@ngguide/ui/bottom-sheet": ["libs/ui/bottom-sheet/src/index.ts"],
       "@ngguide/ui/checkbox": ["libs/ui/checkbox/src/index.ts"],
       "@ngguide/ui/divider": ["libs/ui/divider/src/index.ts"],
       "@ngguide/ui/chip": ["libs/ui/chip/src/index.ts"],

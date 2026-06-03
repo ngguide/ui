@@ -82,6 +82,8 @@
           "../dialog/src/dialog.service.spec.ts",
           "../dialog/src/dialog.spec.ts",
           "../dialog/src/dialog.trigger.spec.ts",
+          "../bottom-sheet/src/bottom-sheet.service.spec.ts",
+          "../bottom-sheet/src/bottom-sheet.spec.ts",
           "../progress/src/linear-progress.spec.ts",
           "../progress/src/circular-progress.spec.ts",
           "../loading-indicator/src/loading-indicator.spec.ts",
