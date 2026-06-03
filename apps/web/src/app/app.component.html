@@ -860,6 +860,30 @@
       <div class="ml-4 text-sm text-gray-600">Default, contained</div>
     </div>
 
+    <!-- Snackbar -->
+    <h2 class="text-xl font-semibold mt-8">Snackbar</h2>
+    <div class="flex flex-row flex-wrap gap-3 items-center">
+      <button gui-button variant="filled" type="button" (click)="showSnackbar()">
+        Simple
+      </button>
+      <button
+        gui-button
+        variant="filled"
+        type="button"
+        (click)="showSnackbarWithAction()"
+      >
+        With action
+      </button>
+      <button
+        gui-button
+        variant="filled"
+        type="button"
+        (click)="showSnackbarRequired()"
+      >
+        Action required (two-line)
+      </button>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

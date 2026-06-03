@@ -1,0 +1,48 @@
+/* M3 snackbar surface — inverse color roles, extra-small corner, elevation 3. */
+:host {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  min-height: 48px;
+  min-width: 288px;
+  max-width: 100%;
+  padding: 4px 8px 4px 16px;
+  border-radius: var(--md-sys-shape-corner-extra-small, 4px);
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  box-shadow: var(--md-sys-elevation-level3);
+  font-family: var(--md-sys-typescale-body-medium-font);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+}
+
+.gui-snackbar-label {
+  flex: 1 1 auto;
+  padding: 10px 0;
+}
+
+/* Two-line layout — taller surface, top-aligned controls. */
+:host([data-two-line='true']) {
+  align-items: flex-start;
+  min-height: 68px;
+}
+
+:host([data-two-line='true']) .gui-snackbar-action,
+:host([data-two-line='true']) .gui-snackbar-close {
+  margin-top: 4px;
+}
+
+/* The action button text uses the inverse-primary role. */
+.gui-snackbar-action {
+  flex: 0 0 auto;
+  --md-comp-button-text-label-color: var(--md-sys-color-inverse-primary);
+  color: var(--md-sys-color-inverse-primary);
+}
+
+.gui-snackbar-close {
+  flex: 0 0 auto;
+  color: var(--md-sys-color-inverse-on-surface);
+}

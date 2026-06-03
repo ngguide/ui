@@ -52,6 +52,7 @@ import {
   GuiLinearProgress,
 } from '@ngguide/ui/progress';
 import { GuiLoadingIndicator } from '@ngguide/ui/loading-indicator';
+import { GuiSnackbar } from '@ngguide/ui/snackbar';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -118,6 +119,29 @@ export class AppComponent {
 
   /** Determinate progress demo value (0..1). */
   readonly progressValue = signal(0.4);
+
+  private readonly snackbar = inject(GuiSnackbar);
+
+  /** Demo: a simple auto-dismissing snackbar. */
+  showSnackbar(): void {
+    this.snackbar.open('Profile saved');
+  }
+
+  /** Demo: a snackbar with an action. */
+  showSnackbarWithAction(): void {
+    const ref = this.snackbar.open({ message: 'Message deleted', action: 'Undo' });
+    ref.onAction.subscribe(() => this.snackbar.open('Restore complete'));
+  }
+
+  /** Demo: an action-required snackbar (no auto-dismiss) with a close button. */
+  showSnackbarRequired(): void {
+    this.snackbar.open({
+      message: 'Connection lost — changes are saved locally and will sync',
+      action: 'Retry',
+      showClose: true,
+      duration: null,
+    });
+  }
 
   sizes: GuiSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
   variants: GuiButtonVariant[] = [

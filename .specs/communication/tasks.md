@@ -141,11 +141,11 @@ New `gui-loading-indicator` (SVG morph). Blast radius: **safe** — independent.
 `GuiSnackbar` service (queue + timer + announce) + `gui-snackbar` surface. Blast radius: **coupled to
 Group A** (uses `openGlobalBottom`); otherwise additive/**safe**.
 
-- [ ] 17. Scaffold the `snackbar` entry point
+- [x] 17. Scaffold the `snackbar` entry point
   - Create `libs/ui/snackbar/{ng-package.json, src/index.ts}`; add path alias; register service + surface specs.
   - _Requirements: 16.1, 16.2_
 
-- [ ] 18. Implement snackbar config + surface
+- [x] 18. Implement snackbar config + surface
   - `libs/ui/snackbar/src/snackbar-config.ts`: `GuiSnackbarConfig`, `GuiSnackbarRef`,
     `GuiSnackbarCloseReason`.
   - `libs/ui/snackbar/src/snackbar.ts` surface component + css: `role="status"`; single/two-line;
@@ -154,7 +154,7 @@ Group A** (uses `openGlobalBottom`); otherwise additive/**safe**.
     `--md-sys-color-inverse-primary`; corner-extra-small (4dp); elevation level 3.
   - _Requirements: 7.1–7.7, 10.2, 15.1_
 
-- [ ] 19. Implement `GuiSnackbar` service (queue, timer, announce, dismissal)
+- [x] 19. Implement `GuiSnackbar` service (queue, timer, announce, dismissal)
   - `libs/ui/snackbar/src/snackbar.service.ts` per design: signal FIFO queue showing one at a time;
     `open(config|string)` → `GuiSnackbarRef`; `dismissAll()`; attach surface via
     `GuiPickerOverlay.openGlobalBottom` (alignment by breakpoint, `aboveFab` offset, max-width);
@@ -164,14 +164,14 @@ Group A** (uses `openGlobalBottom`); otherwise additive/**safe**.
     deterministic; timer side-effects live in the service.
   - _Requirements: 8.1–8.3, 9.1–9.7, 10.1, 10.3, 14.1_
 
-- [ ] 20. Snackbar specs + demo
+- [x] 20. Snackbar specs + demo
   - `snackbar.service.spec.ts`: FIFO one-at-a-time; queues while showing; reports close reason;
     `LiveAnnouncer` called politely; `duration: null` never auto-dismisses; `dismissAll()` clears.
   - `snackbar.spec.ts`: surface renders message/action/close; `role="status"`.
   - Demo buttons in `apps/web` (simple, with-action, action-required, above-FAB).
   - _Requirements: 9.2, 9.3, 9.4, 9.6, 10.1, 16.3_
 
-- [ ] 21. Checkpoint — Group E verification
+- [x] 21. Checkpoint — Group E verification
   - Run snackbar specs + Group A overlay spec + `lint build -p ui`. Confirm Group A is present (coupled);
     confirm independently mergeable on top of A.
 
