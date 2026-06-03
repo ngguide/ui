@@ -160,12 +160,12 @@ no CVA on the wrapper). Blast radius: **safe** — standalone additive component
 Single-date picker (docked · modal · modal-input) over an APG grid calendar, composing
 `GuiFormControl<Date>`. Blast radius: **safe** — additive; depends on Groups A, B, C.
 
-- [ ] 17. Scaffold the `@ngguide/ui/date-picker` entry point
+- [x] 17. Scaffold the `@ngguide/ui/date-picker` entry point
   - Create `libs/ui/date-picker/ng-package.json` + `src/index.ts`.
   - Add `"@ngguide/ui/date-picker": ["libs/ui/date-picker/src/index.ts"]` to `tsconfig.base.json` `paths`.
   - _Requirements: 12.1, 12.2_
 
-- [ ] 18. Implement the calendar grid component
+- [x] 18. Implement the calendar grid component
   - Create `libs/ui/date-picker/src/calendar.ts` (`gui-calendar`, `role="grid"`), `.html`, `.css`.
   - Inputs: `activeMonth` model, `selected`, `min`, `max`, `dateFilter`, `locale`, `today`; output
     `dateSelected`. Renders weekday `columnheader`s ordered by `firstDayOfWeek(locale)` + 42 gridcells from
@@ -177,7 +177,7 @@ Single-date picker (docked · modal · modal-input) over an APG grid calendar, c
     navigation moves focus, disabled cells unselectable, `aria-selected` on the chosen date.
   - _Requirements: 6.1, 6.6, 6.7, 10.2, 10.3, 10.6, 11.3_
 
-- [ ] 19. Implement the `DatePickerComponent`
+- [x] 19. Implement the `DatePickerComponent`
   - Create `libs/ui/date-picker/src/date-picker.ts` (`gui-date-picker`), `.html`, `.css`. `hostDirectives`:
     `{ directive: GuiFormControl, inputs: ['value: date','disabled'], outputs: ['valueChange: dateChange'] }`
     (`GuiFormControl<Date>`). Inputs: `variant` (docked/modal/modal-input), `label`, `locale`, `min`,
@@ -191,13 +191,13 @@ Single-date picker (docked · modal · modal-input) over an APG grid calendar, c
     date → error.
   - _Requirements: 6.1, 6.2, 6.3, 6.5, 6.8, 6.9, 8.1, 8.2, 8.3, 8.4, 8.5, 9.1, 9.2, 9.3, 10.1, 10.5_
 
-- [ ] 20. Register spec + wire the demo host
+- [x] 20. Register spec + wire the demo host
   - Append `../date-picker/src/calendar.spec.ts` and `../date-picker/src/date-picker.spec.ts` to
     `libs/ui/project.json` `test.include`.
   - Add a date-picker demo (docked + modal + modal-input) to `apps/web` bound via `FormControl<Date>`.
   - _Requirements: 12.3, 12.4_
 
-- [ ] 21. Checkpoint — Group D verification
+- [x] 21. Checkpoint — Group D verification
   - Run `pnpm exec nx run-many -t lint test build -p ui web` — green.
   - Confirm docked/modal/modal-input open, navigate, and commit in `nx serve web`; `main` green with A–D.
 

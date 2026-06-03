@@ -727,6 +727,27 @@
       </gui-text-field>
     </div>
 
+    <!-- Date picker -->
+    <div class="mt-8 mb-2 font-bold text-lg">Date picker</div>
+
+    <div class="flex flex-row gap-4 items-start flex-wrap">
+      <gui-date-picker
+        label="Docked date"
+        variant="docked"
+        [formControl]="dateControl"
+      />
+      <gui-date-picker
+        label="Modal date"
+        variant="modal"
+        [formControl]="dateControl"
+      />
+      <gui-date-picker
+        label="Modal input date"
+        variant="modal-input"
+        [formControl]="dateControl"
+      />
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

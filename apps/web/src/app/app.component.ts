@@ -40,6 +40,7 @@ import {
   TextFieldLeadingDirective,
   TextFieldTrailingDirective,
 } from '@ngguide/ui/text-field';
+import { DatePickerComponent } from '@ngguide/ui/date-picker';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -72,6 +73,7 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     TextFieldInputDirective,
     TextFieldLeadingDirective,
     TextFieldTrailingDirective,
+    DatePickerComponent,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
@@ -179,6 +181,9 @@ export class AppComponent {
 
   /** Reactive-form example bound to a projected text-field input (D1). */
   usernameControl = new FormControl('');
+
+  /** Date picker examples (docked / modal / modal-input). */
+  dateControl = new FormControl<Date | null>(null);
 
   clearEmail(): void {
     this.email.set('');

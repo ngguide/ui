@@ -1,0 +1,35 @@
+<div class="gui-calendar-row gui-calendar-weekdays" role="row">
+  @for (wd of weekdays(); track $index) {
+    <span class="gui-calendar-weekday" role="columnheader" [attr.abbr]="wd.long">
+      {{ wd.narrow }}
+    </span>
+  }
+</div>
+
+@for (week of weeks(); track $index) {
+  <div class="gui-calendar-row" role="row">
+    @for (cell of week; track cellKey(cell.date)) {
+      <button
+        type="button"
+        class="gui-calendar-cell"
+        role="gridcell"
+        [attr.data-ts]="cellKey(cell.date)"
+        [attr.data-outside]="!cell.inCurrentMonth ? '' : null"
+        [attr.data-selected]="isSelected(cell.date) ? '' : null"
+        [attr.data-today]="isToday(cell.date) ? '' : null"
+        [attr.tabindex]="isFocused(cell.date) ? 0 : -1"
+        [attr.aria-selected]="isSelected(cell.date) ? 'true' : null"
+        [attr.aria-current]="isToday(cell.date) ? 'date' : null"
+        [attr.aria-disabled]="
+          isDisabled(cell.date, cell.inCurrentMonth) ? 'true' : null
+        "
+        guiStateLayer
+        guiRipple
+        guiFocusRing
+        (click)="onCellClick(cell.date, cell.inCurrentMonth)"
+      >
+        <span class="gui-calendar-day">{{ cell.date.getDate() }}</span>
+      </button>
+    }
+  </div>
+}
