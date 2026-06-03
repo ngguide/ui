@@ -793,6 +793,31 @@
       />
     </div>
 
+    <!-- Badge -->
+    <h2 class="text-xl font-semibold mt-8">Badge</h2>
+    <div class="flex flex-row gap-6 items-center">
+      <button gui-icon-button variant="standard" aria-label="Notifications" guiBadge>
+        <gui-icon>★</gui-icon>
+      </button>
+      <button
+        gui-icon-button
+        variant="standard"
+        aria-label="Messages, 3 unread"
+        [guiBadge]="3"
+      >
+        <gui-icon>✉</gui-icon>
+      </button>
+      <button
+        gui-icon-button
+        variant="standard"
+        aria-label="Alerts, 999+ unread"
+        [guiBadge]="1500"
+      >
+        <gui-icon>☆</gui-icon>
+      </button>
+      <div class="ml-4 text-sm text-gray-600">Dot, numeric, capped "999+"</div>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

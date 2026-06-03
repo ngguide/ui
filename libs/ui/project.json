@@ -40,6 +40,7 @@
         "tsConfig": "libs/ui/tsconfig.spec.json",
         "runnerConfig": "libs/ui/vitest.config.ts",
         "include": [
+          "../badge/src/badge.spec.ts",
           "../button/src/button.spec.ts",
           "../fab/src/fab.spec.ts",
           "../fab/src/extended-fab.spec.ts",

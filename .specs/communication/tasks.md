@@ -55,12 +55,12 @@ Adds two additive openers to `GuiPickerOverlay`. Blast radius: **safe** — new 
 New `[guiBadge]` host directive. Blast radius: **safe** — standalone new entry point, no dependencies
 on A. Independent.
 
-- [ ] 4. Scaffold the `badge` entry point
+- [x] 4. Scaffold the `badge` entry point
   - Create `libs/ui/badge/{ng-package.json, src/index.ts}`; add `@ngguide/ui/badge` to
     `tsconfig.base.json` `paths`; register the spec path in `libs/ui/project.json` `test.options.include`.
   - _Requirements: 16.1, 16.2_
 
-- [ ] 5. Implement the `GuiBadge` directive
+- [x] 5. Implement the `GuiBadge` directive
   - `libs/ui/badge/src/badge.ts` per design: `value`/`max`/`hidden` signal inputs, `variant`/`display`
     computeds, "{max}+" cap, dot vs numeric; inject a corner `<span class="gui-badge" aria-hidden="true">`
     via `Renderer2`; host `position: relative` + `data-gui-badge-*` attrs.
@@ -70,13 +70,13 @@ on A. Independent.
   - Export from `src/index.ts`.
   - _Requirements: 1.1–1.7, 2.1–2.3, 15.1, 15.2_
 
-- [ ] 6. Badge spec + demo
+- [x] 6. Badge spec + demo
   - `libs/ui/badge/src/badge.spec.ts`: dot when no value; cap "999+"; hidden ⇒ no badge; badge graphic
     `aria-hidden`.
   - Add a demo section to `apps/web` (`app.component.{ts,html}`) badging an icon button.
   - _Requirements: 1.4, 1.5, 2.2, 2.3, 16.3_
 
-- [ ] 7. Checkpoint — Group B verification
+- [x] 7. Checkpoint — Group B verification
   - Run badge spec + `lint build -p ui`. Confirm independently mergeable; no other entry points touched.
 
 ### Group C — Progress (`@ngguide/ui/progress`)

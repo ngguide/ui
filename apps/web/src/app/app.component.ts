@@ -46,6 +46,7 @@ import {
 } from '@ngguide/ui/date-picker';
 import { GuiDateRange, GuiTime } from '@ngguide/ui/datetime';
 import { TimePickerComponent } from '@ngguide/ui/time-picker';
+import { GuiBadge } from '@ngguide/ui/badge';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -81,6 +82,7 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     DatePickerComponent,
     DateRangePickerComponent,
     TimePickerComponent,
+    GuiBadge,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
