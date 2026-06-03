@@ -795,26 +795,29 @@
 
     <!-- Badge -->
     <h2 class="text-xl font-semibold mt-8">Badge</h2>
+    <!-- [guiBadge] anchors to its host's top-trailing corner and overflows it,
+         so it must sit on a non-clipping element. Icon buttons clip overflow for
+         their state layer, so wrap them in an inline-flex badge host. -->
     <div class="flex flex-row gap-6 items-center">
-      <button gui-icon-button variant="standard" aria-label="Notifications" guiBadge>
-        <gui-icon>★</gui-icon>
-      </button>
-      <button
-        gui-icon-button
-        variant="standard"
-        aria-label="Messages, 3 unread"
-        [guiBadge]="3"
-      >
-        <gui-icon>✉</gui-icon>
-      </button>
-      <button
-        gui-icon-button
-        variant="standard"
-        aria-label="Alerts, 999+ unread"
-        [guiBadge]="1500"
-      >
-        <gui-icon>☆</gui-icon>
-      </button>
+      <span guiBadge class="inline-flex">
+        <button gui-icon-button variant="standard" aria-label="Notifications">
+          <gui-icon>★</gui-icon>
+        </button>
+      </span>
+      <span [guiBadge]="3" class="inline-flex">
+        <button gui-icon-button variant="standard" aria-label="Messages, 3 unread">
+          <gui-icon>✉</gui-icon>
+        </button>
+      </span>
+      <span [guiBadge]="1500" class="inline-flex">
+        <button
+          gui-icon-button
+          variant="standard"
+          aria-label="Alerts, 999+ unread"
+        >
+          <gui-icon>☆</gui-icon>
+        </button>
+      </span>
       <div class="ml-4 text-sm text-gray-600">Dot, numeric, capped "999+"</div>
     </div>
 

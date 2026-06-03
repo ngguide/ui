@@ -20,6 +20,10 @@ import {
  * The injected badge graphic is `aria-hidden`; the meaning must be conveyed by
  * the host's own accessible name (e.g. `aria-label="Notifications, 3 unread"`).
  *
+ * The badge overflows the host's bounds, so the host must not clip overflow.
+ * Elements that clip for a state layer (e.g. icon buttons) should be wrapped in
+ * a non-clipping badge host such as `<span guiBadge><button …>…</button></span>`.
+ *
  * Requires the kit theme stylesheet (`@ngguide/ui/styles/theme.css`), which
  * carries the `.gui-badge` styling.
  */
