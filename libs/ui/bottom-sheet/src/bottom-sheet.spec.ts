@@ -16,11 +16,10 @@ class StandardHost {
 }
 
 /** Build a minimal CdkDragEnd with the given downward distance. */
-function dragEnd(distanceY: number): CdkDragEnd {
-  const reset = (): void => undefined;
+function dragEnd(distanceY: number, reset: () => void = () => undefined): CdkDragEnd {
   return {
     distance: { x: 0, y: distanceY },
-    source: { setFreeDragPosition: reset },
+    source: { reset },
   } as unknown as CdkDragEnd;
 }
 
@@ -65,5 +64,26 @@ describe('GuiBottomSheetSurface (standard)', () => {
       dragEnd(20),
     );
     expect(fixture.componentInstance.open()).toBe(true);
+  });
+
+  it('clears the inline drag transform on drag end so CSS drives position (Req 9.4)', () => {
+    const fixture = TestBed.createComponent(StandardHost);
+    fixture.detectChanges();
+    const surface = fixture.debugElement.children[0]
+      .componentInstance as GuiBottomSheetSurface;
+    const onEnd = (surface as unknown as { onDragEnded(e: CdkDragEnd): void })
+      .onDragEnded;
+    // Both a dismissing drag and a spring-back must reset() the drag ref —
+    // otherwise CdkDrag's inline translate3d(0,0,0) would override the CSS
+    // closed/open transform and the sheet would not slide.
+    let dismissReset = 0;
+    onEnd.call(surface, dragEnd(120, () => (dismissReset += 1)));
+    expect(dismissReset).toBe(1);
+
+    fixture.componentInstance.open.set(true);
+    fixture.detectChanges();
+    let springReset = 0;
+    onEnd.call(surface, dragEnd(20, () => (springReset += 1)));
+    expect(springReset).toBe(1);
   });
 });

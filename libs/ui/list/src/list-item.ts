@@ -9,6 +9,7 @@ import {
   model,
   signal,
 } from '@angular/core';
+import { GuiFocusRingDirective } from '@ngguide/ui/interaction';
 import { GUI_LIST, GuiListMode } from './list-context';
 
 /**
@@ -41,6 +42,12 @@ import { GUI_LIST, GuiListMode } from './list-context';
     /></span>
   `,
   styleUrl: './list-item.css',
+  // Keyboard focus indicator (Req 14.4): GuiFocusRingDirective marks keyboard
+  // focus with `.gui-focus-visible` via CDK FocusMonitor, which also covers the
+  // roving programmatic focus of a listbox option. The ring visual lives in
+  // list-item.css. Non-focusable rows (action items with no tabindex) never
+  // receive host focus, so it shows only on selectable/roving options.
+  hostDirectives: [GuiFocusRingDirective],
   host: {
     class: 'gui-list-item',
     '[attr.data-lines]': 'lines()',

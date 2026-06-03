@@ -118,6 +118,17 @@ export class GuiCarousel {
       return;
     }
 
+    // Uncontained lays out items of a *uniform* width; native scroll + the
+    // container's overflow clip the trailing item. There is no per-scroll
+    // keyline morph here (that is the multi-browse/hero behavior) — every item
+    // renders at the large width (Req 11.2).
+    if (this.effectiveLayout() === 'uncontained') {
+      for (const item of items) {
+        item.width.set(arr.large);
+      }
+      return;
+    }
+
     const reduced = this.reducedMotion.prefersReducedMotion();
     const scrollOffset = reduced ? 0 : this.track().nativeElement.scrollLeft;
 

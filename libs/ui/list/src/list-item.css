@@ -39,6 +39,20 @@
   outline: none;
 }
 
+/* --- Keyboard focus indicator (Req 14.4). GuiFocusRingDirective adds
+   `.gui-focus-visible` on keyboard focus (covering the roving programmatic
+   focus of listbox options). Inset by the ring thickness so it stays within the
+   full-bleed row instead of being clipped by the list's bounds; uses the host
+   content color so it contrasts on both plain and selected (secondary-
+   container) rows. Disabled options never show the ring. --- */
+:host(.gui-focus-visible) {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid currentColor;
+  outline-offset: calc(-1 * var(--md-sys-state-focus-indicator-thickness));
+}
+:host([aria-disabled='true'].gui-focus-visible) {
+  outline: none;
+}
+
 /* --- Leading slot: holds a 24dp icon / 40dp avatar / 56dp image --- */
 .gui-list-item-leading {
   display: flex;
@@ -64,8 +78,15 @@
   font-weight: var(--md-sys-typescale-body-large-weight);
   line-height: var(--md-sys-typescale-body-large-line-height);
   letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  /* The headline is a single line; it truncates with an ellipsis (Req 4.4). */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
+/* Supporting text is clamped to the row's reserved lines (headline takes one),
+   truncating with an ellipsis instead of growing the row (Req 4.4): 2-line rows
+   reserve one supporting line, 3-line rows reserve two. */
 .gui-list-item-supporting {
   font-family: var(--md-sys-typescale-body-medium-font);
   font-size: var(--md-sys-typescale-body-medium-size);
@@ -73,6 +94,14 @@
   line-height: var(--md-sys-typescale-body-medium-line-height);
   letter-spacing: var(--md-sys-typescale-body-medium-tracking);
   color: var(--md-sys-color-on-surface-variant);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:host([data-lines='3']) .gui-list-item-supporting {
+  -webkit-line-clamp: 2;
 }
 .gui-list-item-supporting:empty {
   display: none;

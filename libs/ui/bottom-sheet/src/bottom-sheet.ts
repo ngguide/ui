@@ -65,7 +65,11 @@ export class GuiBottomSheetSurface {
     if (event.distance.y > this.dismissThreshold()) {
       this.open.set(false);
     }
-    // Always reset the transform; visibility is driven by `open` + CSS.
-    event.source.setFreeDragPosition({ x: 0, y: 0 });
+    // Clear the inline drag transform entirely so the CSS open/closed state
+    // (`translateY(0)` vs `translateY(100%)`) drives the surface position and
+    // animates. `setFreeDragPosition({0,0})` would leave an inline
+    // `translate3d(0,0,0)` that overrides the closed `translateY(100%)`, so a
+    // dismissed sheet would snap back into view instead of sliding away.
+    event.source.reset();
   }
 }

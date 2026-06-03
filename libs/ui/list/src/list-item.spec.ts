@@ -54,4 +54,14 @@ describe('GuiListItem', () => {
     const item = fixture.nativeElement.querySelector('gui-list-item');
     expect(item.getAttribute('aria-disabled')).toBe('true');
   });
+
+  it('carries the focus-ring directive for a keyboard focus indicator (Req 14.4)', () => {
+    const fixture = TestBed.createComponent(ItemHost);
+    fixture.componentInstance.mode.set('listbox');
+    fixture.detectChanges();
+    const item = fixture.nativeElement.querySelector('gui-list-item');
+    // GuiFocusRingDirective applies `.gui-focus-ring`; it toggles
+    // `.gui-focus-visible` (and thus the outline) on keyboard focus.
+    expect(item.classList.contains('gui-focus-ring')).toBe(true);
+  });
 });

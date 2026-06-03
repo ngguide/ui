@@ -1221,13 +1221,13 @@
             <gui-icon>✕</gui-icon>
           </button>
         </gui-side-sheet-header>
-        <div class="px-4 flex-1">
+        <gui-side-sheet-content>
           <gui-list mode="listbox" [multiselectable]="true">
             <gui-list-item selectable>Unread</gui-list-item>
             <gui-list-item selectable>Starred</gui-list-item>
             <gui-list-item selectable>Attachments</gui-list-item>
           </gui-list>
-        </div>
+        </gui-side-sheet-content>
         <gui-side-sheet-actions>
           <button gui-button variant="text" type="button" (click)="ref.close()">
             Cancel
@@ -1258,10 +1258,10 @@
             <gui-icon>✕</gui-icon>
           </button>
         </gui-side-sheet-header>
-        <div class="px-4 flex-1 text-sm text-gray-600">
+        <gui-side-sheet-content class="text-sm text-gray-600">
           A standard side sheet has no scrim — the page behind stays
           interactive.
-        </div>
+        </gui-side-sheet-content>
       </gui-side-sheet>
     </div>
 

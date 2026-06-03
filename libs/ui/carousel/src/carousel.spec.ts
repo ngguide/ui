@@ -55,6 +55,24 @@ describe('GuiCarousel', () => {
     expect(parseFloat(items[5].style.width)).toBeLessThan(186);
   });
 
+  it('sizes uncontained items uniformly (no per-scroll morph) (Req 11.2)', () => {
+    const fixture = TestBed.createComponent(CarouselHost);
+    fixture.componentInstance.layout.set('uncontained');
+    fixture.detectChanges();
+    flush();
+    const carousel = fixture.debugElement.children[0]
+      .componentInstance as GuiCarousel;
+    (carousel as unknown as { measure(w: number): void }).measure(412);
+    fixture.detectChanges();
+    const widths = Array.from(
+      fixture.nativeElement.querySelectorAll('gui-carousel-item'),
+    ).map((el) => (el as HTMLElement).style.width);
+    // Every item is the same (large) width — the trailing item is cut by the
+    // container's overflow, not resized down per keyline.
+    expect(new Set(widths).size).toBe(1);
+    expect(parseFloat(widths[0])).toBeGreaterThan(56);
+  });
+
   it('renders full-screen items without an engine width (CSS fills them)', () => {
     const fixture = TestBed.createComponent(CarouselHost);
     fixture.componentInstance.layout.set('full-screen');

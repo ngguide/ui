@@ -78,6 +78,7 @@ import { GuiBottomSheet, GuiBottomSheetSurface } from '@ngguide/ui/bottom-sheet'
 import {
   GuiSideSheet,
   GuiSideSheetActions,
+  GuiSideSheetContent,
   GuiSideSheetHeader,
   GuiSideSheetSurface,
 } from '@ngguide/ui/side-sheet';
@@ -143,6 +144,7 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     GuiBottomSheetSurface,
     GuiSideSheetSurface,
     GuiSideSheetHeader,
+    GuiSideSheetContent,
     GuiSideSheetActions,
     GuiCarousel,
     GuiCarouselItem,

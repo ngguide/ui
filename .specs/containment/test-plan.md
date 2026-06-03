@@ -114,7 +114,7 @@ says so.
       not reachable by Tab.
     - _Requirements: 3.3, 3.4, 14.5_
 
-- [!] 3. List — densities, leading/trailing, action vs listbox
+- [x] 3. List — densities, leading/trailing, action vs listbox
   - [x] 3.1 One/two/three-line densities at the correct heights
     - **Preconditions:** Demo open at the "List" section (action list).
     - **Steps:**
@@ -122,16 +122,16 @@ says so.
     - **Expected:** Heights are 56 / 72 / 88dp respectively; headline uses the body-large typescale,
       supporting text uses body-medium, trailing supporting text uses label-small.
     - _Requirements: 4.1, 4.2, 4.3, 13.1_
-  - [!] 3.2 Long supporting text truncates within the reserved lines
+  - [x] 3.2 Long supporting text truncates within the reserved lines
     - **Preconditions:** Action list; the 3-line row with a long description.
     - **Steps:**
       1. Narrow the container and observe the supporting text.
     - **Expected:** Supporting text truncates within the row's reserved lines; nothing overflows the row.
     - _Requirements: 4.4_
-    - **FAILED:** The supporting text has no `-webkit-line-clamp`/ellipsis (computed `overflow:visible`,
-      `line-clamp:none`). With the demo's short copy it happens to fit in 2 lines, but injecting longer
-      text grows the 3-line row from 88px to 168px (6 lines) instead of truncating — the row just
-      expands. Fix: clamp supporting text to its reserved line count in `list-item.css`.
+    - **FIXED & re-tested:** `list-item.css` now clamps the supporting text with `-webkit-line-clamp`
+      (1 line for 2-line rows, 2 for 3-line) plus `overflow:hidden`/ellipsis, and the headline is single
+      line with ellipsis. Re-test: injecting long text now keeps the 3-line row at **88px** (`scrollHeight
+      88`, no overflow, `line-clamp:2`) instead of growing to 168px. (Originally: no clamp, row grew.)
   - [x] 3.3 Leading and trailing elements positioned per M3
     - **Preconditions:** Action list with leading icons and trailing supporting text; dividers between rows.
     - **Steps:**
@@ -165,10 +165,11 @@ says so.
       Enter/Space/click toggle selection; selected rows render the secondary-container treatment and
       expose `aria-selected=true`; multi-select keeps multiple selected.
     - _Requirements: 6.3, 6.6, 14.2, 14.3, 14.5_
-    - **PASSED (with note):** Single tab stop ✓, arrows wrap (Date→Apple) ✓, Home/End ✓, Enter/Space/click
-      toggle selection ✓, `aria-selected=true` + secondary-container (`#4a4458`) ✓, multi-select keeps
-      [Apple,Banana,Cherry] ✓. **Type-ahead does NOT move focus** (no jump on `c`/`d`/`b`) — optional in
-      the APG listbox pattern and not mandated by Req 6.6, so recorded as pass; worth wiring up later.
+    - **PASSED:** Single tab stop ✓, arrows wrap (Date→Apple) ✓, Home/End ✓, Enter/Space/click toggle
+      selection ✓, `aria-selected=true` + secondary-container (`#4a4458`) ✓, multi-select keeps
+      [Apple,Banana,Cherry] ✓. **Type-ahead works** (`c`→Cherry, `d`→Date with a faithful keydown) — the
+      original "type-ahead broken" note was an `agent-browser press` artifact (its CDP key events race
+      with the RxJS-debounced type-ahead / focus wasn't on the option); real keyboards move focus.
   - [x] 3.7 Selected state is not conveyed by color alone
     - **Preconditions:** Listbox with a selected option; screen reader on.
     - **Steps:**
@@ -237,7 +238,7 @@ says so.
     - **Expected:** The inline `<ng-template>` content opens as the dialog without any imperative code.
     - _Requirements: 7.2_
 
-- [!] 5. Bottom sheet — modal, drag, standard
+- [x] 5. Bottom sheet — modal, drag, standard
   - [x] 5.1 Modal bottom sheet anatomy
     - **Preconditions:** Demo open at "Bottom sheet"; click "Modal sheet".
     - **Steps:**
@@ -266,7 +267,7 @@ says so.
       1. Scroll inside the sheet.
     - **Expected:** Content scrolls within the sheet, not past the screen edge.
     - _Requirements: 9.5_
-  - [!] 5.5 Standard bottom sheet coexists with the page
+  - [x] 5.5 Standard bottom sheet coexists with the page
     - **Preconditions:** Demo open; click "Toggle standard sheet".
     - **Steps:**
       1. With the standard sheet open, click/scroll/select text on the page behind it.
@@ -275,14 +276,11 @@ says so.
     - **Expected:** No scrim; the page behind stays fully interactive and scrollable; dragging down
       dismisses (sets open=false); the toggle button opens/closes it.
     - _Requirements: 9.2, 9.4_
-    - **FAILED:** No scrim ✓, host `pointer-events:none` (page interactive) ✓, toggle open/close slides
-      the surface off-screen ✓, and drag-down sets `open=false` ✓ — BUT after any drag the dismissed
-      sheet **stays visible on screen** instead of sliding away. `onDragEnded` calls
-      `event.source.setFreeDragPosition({x:0,y:0})` (bottom-sheet.ts:69), which writes an inline
-      `transform: translate3d(0,0,0)` that overrides the CSS closed state
-      `.gui-bottom-sheet-surface{transform:translateY(100%)}`. The clean (no-drag) toggle path hides
-      correctly; the bug is drag-specific. Fix: clear the inline drag transform on close (e.g. reset to
-      `''`/null) so the CSS slide-out applies, or animate the dismiss via the open state.
+    - **FIXED & re-tested:** `onDragEnded` now calls `event.source.reset()` (instead of
+      `setFreeDragPosition({0,0})`), which clears the inline drag transform so the CSS open/closed state
+      (`translateY(0)` / `translateY(100%)`) drives the position. Re-test: a past-threshold drag now sets
+      `open=false`, clears the inline transform, and the surface slides to `top 900` (off-screen); a
+      short drag springs back with the transform cleared. (Originally: dismissed sheet stayed visible.)
   - [s] 5.6 Drag handle can be hidden
     - **Preconditions:** Open a modal sheet with `showDragHandle: false`.
     - **Steps:**
@@ -292,7 +290,7 @@ says so.
     - **SKIPPED:** No demo opens a modal sheet with `showDragHandle: false`. The `@if (showDragHandle())`
       gate is covered by the bottom-sheet specs. Needs a demo button to dogfood in-browser.
 
-- [!] 6. Side sheet — modal and standard
+- [x] 6. Side sheet — modal and standard
   - [x] 6.1 Modal side sheet anatomy
     - **Preconditions:** Demo open at "Side sheet"; click "Modal side sheet".
     - **Steps:**
@@ -306,19 +304,17 @@ says so.
       1. Click the header ✕. 2. Reopen and press Escape. 3. Reopen and click "Apply".
     - **Expected:** ✕ and Escape close with a dismissal; "Apply" emits a confirm result ("applied").
     - _Requirements: 10.5, 10.6_
-  - [!] 6.3 Side-sheet content scrolls within the sheet
+  - [x] 6.3 Side-sheet content scrolls within the sheet
     - **Preconditions:** Modal side sheet with overflowing content.
     - **Steps:**
       1. Scroll inside the sheet body.
     - **Expected:** The content region scrolls within the sheet; the header/actions stay in place.
     - _Requirements: 10.6_
-    - **FAILED:** The side sheet provides **no built-in scrollable content region** (unlike the bottom
-      sheet's `.gui-bottom-sheet-body{overflow-y:auto}`). The inner surface is `overflow:hidden`, header
-      and actions are `flex:0 0 auto`, and the projected content slot is `overflow:visible`. Injecting
-      tall content grows the content to 2400px, overflows the surface by ~1556px, and **pushes the
-      actions region off-screen** (clipped) instead of scrolling. Fix: wrap projected content in a
-      `flex:1 1 auto; overflow-y:auto` region in the side-sheet surface/container, mirroring the bottom
-      sheet.
+    - **FIXED & re-tested:** Added a `GuiSideSheetContent` component
+      (`flex:1 1 auto; min-height:0; overflow-y:auto`) — the side-sheet analogue of `gui-dialog-content`
+      — and wrapped the demo's content in it. Re-test: tall content now scrolls **within** the content
+      region (`overflow-y:auto`, scrollable), the content stays inside the surface, and the header +
+      actions remain visible/pinned after scrolling. (Originally: content clipped and pushed actions off.)
   - [x] 6.4 Standard side sheet coexists with the page
     - **Preconditions:** Demo open; click "Toggle standard side sheet".
     - **Steps:**
@@ -388,7 +384,7 @@ says so.
       the scrim while a modal is open, so a stack can't be built in the playground. CDK overlay stacking
       handles top-most Escape/focus. Needs a nested-modal demo to dogfood.
 
-- [!] 8. Carousel — layouts and sizing
+- [x] 8. Carousel — layouts and sizing
   - [x] 8.1 Multi-browse sizes items into large/medium/small with a peek
     - **Preconditions:** Demo open at "Carousel"; "multi-browse" selected.
     - **Steps:**
@@ -397,18 +393,16 @@ says so.
     - **Expected:** A large focal item, then medium/small keylines (non-focal capped at two), with the
       smallest item peeking at the trailing edge; sizes morph as you scroll; small items stay within 40–56dp.
     - _Requirements: 11.1, 11.2, 11.3_
-  - [!] 8.2 Uncontained uses uniform items with a cut-off trailing item
+  - [x] 8.2 Uncontained uses uniform items with a cut-off trailing item
     - **Preconditions:** "uncontained" selected.
     - **Steps:**
       1. Inspect item widths; confirm the last visible item is partially cut off.
     - **Expected:** Uniform item widths; the trailing item is resized/cut at the edge; scrolls past the edge.
     - _Requirements: 11.2_
-    - **FAILED:** Uncontained items render **non-uniform** — measured `[181, 81, 76, 76, 76, 76, 76, 76]`
-      (focal large, the rest shrunk). The engine's `arrange('uncontained')` correctly returns uniform
-      `large` items, but `maskForOffset` applies the multi-browse distance-morph (`width = large −
-      distance·(large − smallest)`) to **every** layout, so only the focal item stays large. M3
-      uncontained should be uniform with no morph. Fix: skip `maskForOffset` (use static `large`) for
-      the `uncontained` and `full-screen` layouts.
+    - **FIXED & re-tested:** `applyWidths` now has an `uncontained` branch that assigns every item the
+      static `large` width (no `maskForOffset` morph); the trailing item is clipped by the container's
+      overflow rather than resized. Re-test: uncontained renders `[186, 186, 186, …]` (uniform), while
+      multi-browse/hero still morph (`[180, 62, 56, …]`). (Originally: uncontained was non-uniform.)
   - [x] 8.3 Hero shows one large focal item plus a peek
     - **Preconditions:** "hero" selected.
     - **Steps:**
@@ -459,7 +453,7 @@ says so.
       scroll **state** still work; items render at their arranged sizes.
     - _Requirements: 15.1, 15.2, 15.3_
 
-- [!] 10. Accessibility sweep (keyboard + screen reader)
+- [x] 10. Accessibility sweep (keyboard + screen reader)
   - [x] 10.1 Full keyboard-only operation
     - **Preconditions:** Mouse unplugged / not used; demo open.
     - **Steps:**
@@ -467,21 +461,18 @@ says so.
          sheet, switch carousel layouts.
     - **Expected:** Every interactive containment surface is reachable and operable by keyboard alone.
     - _Requirements: 14.3_
-  - [!] 10.2 Visible focus indicator everywhere
+  - [x] 10.2 Visible focus indicator everywhere
     - **Preconditions:** Keyboard navigation.
     - **Steps:**
       1. Tab through every focusable containment surface and watch the focus ring.
     - **Expected:** A visible focus indicator appears on each focusable surface, meeting WCAG 2.2 AA
       focus-appearance / non-text-contrast.
     - _Requirements: 14.4_
-    - **FAILED:** **Listbox options have no visible focus indicator.** A keyboard-focused option matches
-      `:focus-visible` but renders nothing: host `outline-style:none` (list-item.css:39 sets `outline:
-      none`), no `gui-state-layer`, no `gui-focus-ring` class (`GuiListItem` doesn't apply
-      `GuiFocusRingDirective`), no `::before/::after` ring, and no background change for the *focused*
-      (vs selected) row. Arrowing through the listbox gives a sighted keyboard user no sign of which
-      option is focused. The clickable **card** correctly shows the 3dp ring (it uses
-      `GuiFocusRingDirective`). Fix: give interactive/selectable list items the M3 focus indicator
-      (state-layer focus tint and/or the `gui-focus-ring`).
+    - **FIXED & re-tested:** `GuiListItem` now applies `GuiFocusRingDirective` (keyboard focus → the
+      `.gui-focus-visible` class via CDK FocusMonitor), and `list-item.css` draws the M3 focus indicator
+      on `:host(.gui-focus-visible)` (3dp `currentColor` outline, inset so it isn't clipped; suppressed
+      for disabled options). Re-test: arrowing to an option now shows `outline: solid 3px #e6e0e9`,
+      offset −3px. (Originally: no ring/tint at all on focused options.)
   - [x] 10.3 Screen-reader semantics
     - **Preconditions:** Screen reader on.
     - **Steps:**
@@ -518,14 +509,15 @@ says so.
       `gui-divider`, 64 `gui-list-item`, 26 `gui-carousel-item`), carousel items fall back to the CSS
       `--gui-carousel-large` width, and there are **no** `zone.js` references (zoneless). Console has **no
       hydration errors** (no NG0xxx / mismatch) and **no containment-component errors**. The only console
-      error (×20) is a pre-existing, out-of-scope `ChipSetComponent` issue: `createRovingFocus` enables
-      type-ahead but chips don't implement `getLabel` → `ListKeyManager … must implement the getLabel
-      method`. Worth a separate fix (and relevant to the list type-ahead note in 3.6).
+      error was a pre-existing `ChipSetComponent` issue (`createRovingFocus` enables type-ahead but chips
+      didn't implement `getLabel` → `ListKeyManager … must implement the getLabel method`). **Now fixed:**
+      `GuiChip` implements `getLabel()` (explicit `label` input or visible text). Re-test on a fresh
+      browser session: **0 console errors**.
 
 ## Summary
 - Total: 56 tests
-- Passed: 44
-- Failed: 5
+- Passed: 49
+- Failed: 0
 - Skipped: 7
 
 ### Run notes
@@ -535,18 +527,22 @@ computed styles, ARIA, and CDP media emulation (`prefers-color-scheme`, `prefers
 Screen-reader cases (1.7, 2.2, 3.7, 7.7, 10.3) were verified by their **ARIA semantics** as a proxy
 — true VoiceOver/NVDA narration still warrants a manual pass.
 
-**Failures (5):**
-- **3.2** — list supporting text has no line-clamp; long text grows the row instead of truncating.
-- **5.5** — standard bottom sheet stays visible after a drag-dismiss (CdkDrag `setFreeDragPosition`
-  inline transform overrides the CSS `translateY(100%)` close state).
-- **6.3** — side sheet has no built-in scroll region; overflowing content clips and pushes the actions
-  region off-screen.
-- **8.2** — uncontained carousel renders non-uniform (morphed) items because `maskForOffset` is applied
-  to every layout.
-- **10.2** — listbox options have no visible keyboard focus indicator.
+**All 5 originally-failed cases were fixed and re-verified in the browser:**
+- **3.2** — `list-item.css` clamps supporting text (`-webkit-line-clamp`) + single-line headline; the
+  3-line row stays 88px under long text.
+- **5.5** — `onDragEnded` now `reset()`s the CdkDrag transform, so a drag-dismissed standard sheet slides
+  off-screen (CSS `translateY(100%)`).
+- **6.3** — new `GuiSideSheetContent` (`flex:1; min-height:0; overflow-y:auto`) gives the side sheet a
+  scrollable content region; header/actions stay pinned.
+- **8.2** — carousel `applyWidths` renders uncontained items at a uniform `large` width (no morph);
+  multi-browse/hero still morph.
+- **10.2** — `GuiListItem` applies `GuiFocusRingDirective`; focused options show a 3dp inset ring.
+
+**Fixed beyond the 5 (during this pass):**
+- listbox **type-ahead** in fact works (`c`→Cherry) — the original 3.6 note was an `agent-browser press`
+  artifact, not a product defect.
+- pre-existing **`ChipSetComponent` console error** fixed by adding `getLabel()` to `GuiChip`; a fresh
+  session now logs **0 errors**.
 
 **Skipped (7):** 1.6, 3.8, 4.6, 5.6, 7.5, 7.8 (need a demo prop/button to exercise a config the
 playground doesn't expose), 8.6 (demo carousel container is fixed-width). All are covered by unit tests.
-
-**Also noted:** listbox type-ahead doesn't move focus (3.6 — optional per APG); a pre-existing
-`ChipSetComponent` console error (out of containment scope, see 11.3).

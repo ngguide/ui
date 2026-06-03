@@ -49,6 +49,32 @@ import { GuiReducedMotion } from '@ngguide/ui/interaction';
 })
 export class GuiSideSheetHeader {}
 
+/**
+ * Scrollable content region between the header and the actions (Req 10.6).
+ * Takes the remaining height of the sheet and scrolls its own overflow, so the
+ * header and actions stay pinned. `min-height: 0` lets it shrink inside the
+ * surface's flex column (without it, a flex item refuses to shrink below its
+ * content and would push the actions off-screen).
+ */
+@Component({
+  selector: 'gui-side-sheet-content',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `<ng-content />`,
+  host: { class: 'gui-side-sheet-content' },
+  styles: [
+    `
+      :host {
+        display: block;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 0 16px;
+      }
+    `,
+  ],
+})
+export class GuiSideSheetContent {}
+
 /** End-aligned action buttons region pinned to the sheet bottom (Req 10.4). */
 @Component({
   selector: 'gui-side-sheet-actions',
