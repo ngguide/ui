@@ -49,7 +49,7 @@ the existing flat demo keeps rendering unchanged. Blast radius: safe.
   - Create `apps/web/src/app/core/demo-date.ts`: `export const DEMO_TODAY = new Date(2026, 5, 4)` (fixed, SSR-deterministic).
   - _Requirements: 3.1, 4.4, 5.1, 7.2_
 
-- [ ] 2. Deterministic formatters + unit test
+- [x] 2. Deterministic formatters + unit test
   - Create `apps/web/src/app/core/formatters.ts`: `formatCurrency`, `formatNumber`, `formatDate(d)`, `formatRelative(from, to)`, `initials(name)` — using only explicit Date getters; no `Date.now()`/`Math.random()`/argless `new Date()`.
   - Create `apps/web/src/app/core/formatters.spec.ts`: assert `$1,234.50` grouping, `Jun 4, 2026` date format, relative label vs `DEMO_TODAY`, two-letter initials.
   - _Requirements: 5.2; NFR (SSR determinism)_
