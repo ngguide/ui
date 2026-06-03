@@ -25,13 +25,13 @@ There are **no cutovers** — every group is purely additive (new files + new `t
 Pure, framework-free date math + `Intl` localization + locale-aware parsing consumed by both pickers.
 Blast radius: **safe** — additive entry point with no consumers yet.
 
-- [-] 1. Scaffold the `@ngguide/ui/datetime` entry point
+- [x] 1. Scaffold the `@ngguide/ui/datetime` entry point
   - Create `libs/ui/datetime/ng-package.json` (`{ "lib": { "entryFile": "src/index.ts" } }`) and
     `libs/ui/datetime/src/index.ts` barrel.
   - Add `"@ngguide/ui/datetime": ["libs/ui/datetime/src/index.ts"]` to `tsconfig.base.json` `paths`.
   - _Requirements: 12.1, 12.2_
 
-- [ ] 2. Implement the data models and pure date utilities
+- [x] 2. Implement the data models and pure date utilities
   - Create `libs/ui/datetime/src/models.ts`: `GuiTime { hours; minutes }`, `GuiDateRange { start; end }`.
   - Create `libs/ui/datetime/src/date-utils.ts`: `startOfDay`, `isSameDay`, `addDays`, `addMonths`
     (day-clamping), `startOfMonth`, `daysInMonth`, `clampDate`, `isBefore`, `compareDate`, `CalendarCell`,
@@ -41,7 +41,7 @@ Blast radius: **safe** — additive entry point with no consumers yet.
     `firstDayOfWeek`, outside-month flags, leap-day clamp, DST-boundary `addDays` with no off-by-one.
   - _Requirements: 6.1, 6.4, 6.6_
 
-- [ ] 3. Implement the Intl localization helpers
+- [x] 3. Implement the Intl localization helpers
   - Create `libs/ui/datetime/src/intl.ts`: `monthNames`, `weekdayNames`, `formatDate`, `formatTime`,
     `firstDayOfWeek(locale)` (uses `Intl.Locale.getWeekInfo().firstDay` 1=Mon..7=Sun normalized to 0..6,
     with a small CLDR-derived fallback map then Sunday default — `getWeekInfo` is not Baseline),
@@ -51,7 +51,7 @@ Blast radius: **safe** — additive entry point with no consumers yet.
     (mock).
   - _Requirements: 6.7, 7.5_
 
-- [ ] 4. Implement locale-aware parsing
+- [x] 4. Implement locale-aware parsing
   - Create `libs/ui/datetime/src/parse.ts`: `parseDate(input, locale)` (derive field order via
     `Intl.DateTimeFormat(locale).formatToParts(reference)`, always accept ISO `yyyy-mm-dd`, return `null`
     on unparseable/ambiguous) and `parseTime(input, hour12)` (return `null` on out-of-range).
@@ -59,12 +59,12 @@ Blast radius: **safe** — additive entry point with no consumers yet.
     out-of-range time → null.
   - _Requirements: 6.8, 7.6_
 
-- [ ] 5. Register datetime specs
+- [x] 5. Register datetime specs
   - Append `../datetime/src/date-utils.spec.ts`, `../datetime/src/intl.spec.ts`,
     `../datetime/src/parse.spec.ts` to `libs/ui/project.json` `test.include`.
   - _Requirements: 12.3_
 
-- [ ] 6. Checkpoint — Group A verification
+- [x] 6. Checkpoint — Group A verification
   - Run `pnpm exec nx test ui` — the three datetime specs pass.
   - Run `pnpm exec nx build ui` — the new entry point builds via ng-packagr.
   - Confirm `main` builds/tests green with only Group A applied; `@ngguide/ui/datetime` resolves but has no
