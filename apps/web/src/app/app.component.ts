@@ -58,6 +58,12 @@ import {
   GuiRichTooltipTrigger,
   GuiTooltip,
 } from '@ngguide/ui/tooltip';
+import {
+  GuiCard,
+  GuiCardClickable,
+  GuiCardPrimaryAction,
+} from '@ngguide/ui/card';
+import { GuiDivider } from '@ngguide/ui/divider';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -100,6 +106,10 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     GuiTooltip,
     GuiRichTooltip,
     GuiRichTooltipTrigger,
+    GuiCard,
+    GuiCardClickable,
+    GuiCardPrimaryAction,
+    GuiDivider,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
@@ -113,6 +123,10 @@ export class AppComponent {
 
   /** Demo brand seeds to exercise runtime re-theming (Req 7.3). */
   readonly brandSeeds = ['#6750A4', '#00629D', '#B3261E'];
+
+  /** Containment demo: last card interaction, for visible feedback. */
+  readonly lastCardAction = signal('none');
+  readonly cardVariants = ['elevated', 'filled', 'outlined'] as const;
 
   /** Re-theme the running app from a brand seed color. */
   applyBrand(seed: string): void {

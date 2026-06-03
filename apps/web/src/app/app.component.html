@@ -927,6 +927,79 @@
       <div class="ml-4 text-sm text-gray-600">Plain (hover/focus), rich</div>
     </div>
 
+    <!-- Containment — Card + Divider -->
+    <div class="flex flex-col gap-4 mt-8">
+      <h2 class="text-lg font-medium">Card &amp; Divider</h2>
+
+      <!-- (a) Three card variants -->
+      <div class="flex flex-row gap-4 items-stretch">
+        @for (variant of cardVariants; track variant) {
+          <gui-card [variant]="variant" class="p-4 w-48 gap-1">
+            <span class="font-medium capitalize">{{ variant }}</span>
+            <span class="text-sm text-gray-600">M3 {{ variant }} card</span>
+          </gui-card>
+        }
+      </div>
+
+      <!-- (b) Whole-surface clickable card -->
+      <gui-card
+        variant="elevated"
+        guiCardClickable
+        class="p-4 w-72 gap-1"
+        (cardActivate)="lastCardAction.set('clickable card')"
+      >
+        <span class="font-medium">Clickable card</span>
+        <span class="text-sm text-gray-600"
+          >Whole surface is one button (Enter / Space / click)</span
+        >
+      </gui-card>
+
+      <!-- (c) Primary-action region + independent action buttons -->
+      <gui-card variant="outlined" class="w-72">
+        <div
+          guiCardPrimaryAction
+          class="p-4 flex flex-col gap-1"
+          (primaryAction)="lastCardAction.set('primary action')"
+        >
+          <span class="font-medium">Primary-action card</span>
+          <span class="text-sm text-gray-600">Tap the body to open</span>
+        </div>
+        <gui-divider />
+        <div class="p-2 flex flex-row gap-2 justify-end">
+          <button
+            gui-button
+            variant="text"
+            type="button"
+            (click)="lastCardAction.set('share')"
+          >
+            Share
+          </button>
+          <button
+            gui-button
+            variant="text"
+            type="button"
+            (click)="lastCardAction.set('save')"
+          >
+            Save
+          </button>
+        </div>
+      </gui-card>
+
+      <div class="text-sm text-gray-600">
+        Last card action: {{ lastCardAction() }}
+      </div>
+
+      <!-- (d) Divider insets -->
+      <div class="flex flex-col gap-2 w-72">
+        <span class="text-sm">none</span>
+        <gui-divider inset="none" />
+        <span class="text-sm">inset</span>
+        <gui-divider inset="inset" />
+        <span class="text-sm">middle-inset</span>
+        <gui-divider inset="middle-inset" />
+      </div>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

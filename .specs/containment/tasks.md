@@ -103,13 +103,13 @@ Two structural entry points reusing tokens + interaction directives; no overlay 
   - Export from index; test (`divider.spec.ts`): `role=separator`, `data-inset` reflects input, not focusable.
   - _Requirements: 3.1–3.4, 13.1, 14.5_
 
-- [ ] 7. Demo — card + divider
+- [x] 7. Demo — card + divider
   - `apps/web/src/app/app.component.ts/.html`: import `GuiCard`/`GuiCardClickable`/`GuiCardPrimaryAction`/
     `GuiDivider`; add a containment demo section showing all three card variants, a clickable card, a
     primary-action card with separate action buttons, and the three divider insets.
   - _Requirements: 1, 2, 3_
 
-- [ ] 8. Checkpoint — Group B verification
+- [x] 8. Checkpoint — Group B verification
   - `pnpm exec nx test ui` (card + divider specs pass); `nx test web` if demo wiring added bindings.
   - `pnpm exec nx run-many -t lint build --projects=ui,web` green; both new entry points build via ng-packagr.
   - Confirm `@ngguide/ui/card` and `@ngguide/ui/divider` resolve from `tsconfig.base.json` paths.
