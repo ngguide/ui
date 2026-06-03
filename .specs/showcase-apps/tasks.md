@@ -84,7 +84,7 @@ Blast radius: replaces the demo root — revert = `git restore` of `app.componen
   - Create `apps/web/src/app/shell/shell.component.spec.ts`: `activeApp()` resolves from a set URL; the template renders `<router-outlet>`; toggling dark calls `ThemeController.toggleDark`.
   - _Requirements: 1.3, 7.1_
 
-- [ ] 8. Console store + fixtures + unit test
+- [x] 8. Console store + fixtures + unit test
   - Create `apps/web/src/app/admin/admin.store.ts` (`@Injectable`, plain signals): `data` (users), `query`/`role`/`sort`/`loading` signals, `visible` computed (search+filter+sort), `isEmpty`, `add`/`update`/`remove`/`byId`.
   - Create `apps/web/src/app/admin/fixtures.ts`: `seedUsers()`, `seedMetrics()`, `seedActivity()` — deterministic (fixed dates via `new Date(2026, m, d)`, stable ids).
   - Create `apps/web/src/app/admin/admin.store.spec.ts`: search across name+email, role filter, sort, add/update/remove reflect in `visible()`, `isEmpty` true on no match.
