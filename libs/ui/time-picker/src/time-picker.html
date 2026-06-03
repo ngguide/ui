@@ -1,0 +1,179 @@
+<gui-text-field variant="outlined" [label]="label()">
+  <input
+    guiTextFieldInput
+    [value]="displayValue()"
+    [readOnly]="true"
+    [attr.aria-label]="label()"
+  />
+  <button
+    gui-icon-button
+    guiTextFieldTrailing
+    type="button"
+    aria-label="Open time picker"
+    [disabled]="control.effectiveDisabled()"
+    (click)="open()"
+  >
+    <gui-icon
+      ><svg
+        viewBox="0 -960 960 960"
+        width="24"
+        height="24"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          d="m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-320Zm0 240q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"
+        /></svg
+    ></gui-icon>
+  </button>
+</gui-text-field>
+
+<ng-template #panel>
+  <div class="gui-time-picker-panel" role="dialog" aria-modal="true">
+    <span class="gui-time-picker-headline">{{ label() }}</span>
+
+    @if (activeVariant() === 'dial') {
+      <gui-clock-dial
+        [mode]="dialMode()"
+        [hour12]="effectiveHour12()"
+        [value]="pendingTime()"
+        (valueChange)="onDialChange($event)"
+      />
+      <div class="gui-time-picker-dial-modes">
+        <button
+          gui-button
+          variant="text"
+          type="button"
+          [attr.aria-pressed]="dialMode() === 'hours'"
+          (click)="dialMode.set('hours')"
+        >
+          Hour
+        </button>
+        <button
+          gui-button
+          variant="text"
+          type="button"
+          [attr.aria-pressed]="dialMode() === 'minutes'"
+          (click)="dialMode.set('minutes')"
+        >
+          Minute
+        </button>
+      </div>
+    } @else {
+      <div class="gui-time-picker-fields">
+        <div
+          class="gui-time-field"
+          role="spinbutton"
+          tabindex="0"
+          aria-label="Hour"
+          [class.gui-time-field-error]="hourError()"
+          [attr.aria-valuenow]="displayHour()"
+          [attr.aria-valuemin]="hourMin()"
+          [attr.aria-valuemax]="hourMax()"
+          [attr.aria-valuetext]="hourText()"
+          (keydown)="onHourKey($event)"
+        >
+          <input
+            class="gui-time-field-input"
+            type="text"
+            inputmode="numeric"
+            aria-label="Hour value"
+            [value]="hourText()"
+            (change)="onHourInput($any($event.target).value)"
+          />
+        </div>
+
+        <span class="gui-time-field-separator">:</span>
+
+        <div
+          class="gui-time-field"
+          role="spinbutton"
+          tabindex="0"
+          aria-label="Minute"
+          [class.gui-time-field-error]="minuteError()"
+          [attr.aria-valuenow]="displayMinute()"
+          aria-valuemin="0"
+          aria-valuemax="59"
+          [attr.aria-valuetext]="minuteText()"
+          (keydown)="onMinuteKey($event)"
+        >
+          <input
+            class="gui-time-field-input"
+            type="text"
+            inputmode="numeric"
+            aria-label="Minute value"
+            [value]="minuteText()"
+            (change)="onMinuteInput($any($event.target).value)"
+          />
+        </div>
+
+        @if (effectiveHour12()) {
+          <div
+            class="gui-time-period"
+            role="group"
+            aria-label="AM or PM"
+          >
+            <button
+              type="button"
+              class="gui-time-period-btn"
+              [class.gui-time-period-selected]="period() === 'AM'"
+              [attr.aria-pressed]="period() === 'AM'"
+              (click)="setPeriod('AM')"
+            >
+              AM
+            </button>
+            <button
+              type="button"
+              class="gui-time-period-btn"
+              [class.gui-time-period-selected]="period() === 'PM'"
+              [attr.aria-pressed]="period() === 'PM'"
+              (click)="setPeriod('PM')"
+            >
+              PM
+            </button>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="gui-time-picker-actions">
+      <button
+        gui-icon-button
+        type="button"
+        class="gui-time-picker-toggle"
+        [attr.aria-label]="
+          activeVariant() === 'dial'
+            ? 'Switch to text input'
+            : 'Switch to dial'
+        "
+        (click)="toggleVariant()"
+      >
+        <gui-icon
+          ><svg
+            viewBox="0 -960 960 960"
+            width="24"
+            height="24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            @if (activeVariant() === 'dial') {
+              <path
+                d="M160-200q-33 0-56.5-23.5T80-280v-400q0-33 23.5-56.5T160-760h640q33 0 56.5 23.5T880-680v400q0 33-23.5 56.5T800-200H160Zm0-80h640v-400H160v400Zm160-40h320v-80H320v80ZM200-440h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80ZM200-560h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80Z"
+              />
+            } @else {
+              <path
+                d="m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-320Zm0 240q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"
+              />
+            }</svg
+        ></gui-icon>
+      </button>
+      <span class="gui-time-picker-spacer"></span>
+      <button gui-button variant="text" type="button" (click)="close()">
+        Cancel
+      </button>
+      <button gui-button variant="text" type="button" (click)="onConfirm()">
+        OK
+      </button>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,249 @@
+/* M3 text field visuals. Dimensions trace to GUI_TEXT_FIELD: 56px container,
+   8px top/bottom + 16px (12px with icons) side padding, 16px icon gap, 4px
+   supporting/counter top padding, 16px gap to counter, 4px outlined-label
+   horizontal padding. Colors use --md-sys-* tokens only. The host data-*
+   attributes (set by the component from the marked input) drive every state. */
+
+:host {
+  display: inline-flex;
+  flex-direction: column;
+  width: 256px;
+  box-sizing: border-box;
+  font: var(--md-sys-typescale-body-large, 400 16px / 24px sans-serif);
+}
+
+.gui-text-field-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px; /* icon ↔ text gap */
+  min-height: 56px;
+  box-sizing: border-box;
+  padding-block: 8px;
+  padding-inline: 16px; /* no icons */
+}
+
+/* With leading/trailing icons the side padding tightens to 12px. */
+:host([data-has-leading]) .gui-text-field-container {
+  padding-inline-start: 12px;
+}
+:host([data-has-trailing]) .gui-text-field-container {
+  padding-inline-end: 12px;
+}
+
+.gui-text-field-leading,
+.gui-text-field-trailing {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  color: var(--md-sys-color-on-surface-variant);
+}
+.gui-text-field-leading:empty,
+.gui-text-field-trailing:empty {
+  display: none;
+}
+
+.gui-text-field-middle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* The projected input/textarea: body-large, transparent, no native chrome. */
+.gui-text-field-middle ::ng-deep input,
+.gui-text-field-middle ::ng-deep textarea {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  font: inherit;
+  caret-color: var(--md-sys-color-primary);
+}
+.gui-text-field-middle ::ng-deep textarea {
+  resize: none;
+  min-height: 24px;
+}
+
+.gui-text-field-middle ::ng-deep input::placeholder,
+.gui-text-field-middle ::ng-deep textarea::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.gui-text-field-prefix,
+.gui-text-field-suffix {
+  flex: 0 0 auto;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* --- Floating label --- */
+.gui-text-field-label {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition:
+    transform var(--md-sys-motion-duration-short2, 100ms)
+      var(--md-sys-motion-easing-standard, ease),
+    font-size var(--md-sys-motion-duration-short2, 100ms)
+      var(--md-sys-motion-easing-standard, ease),
+    color var(--md-sys-motion-duration-short2, 100ms)
+      var(--md-sys-motion-easing-standard, ease);
+}
+
+/* Label floats up when populated or focused. */
+:host([data-populated]) .gui-text-field-label,
+:host([data-focused]) .gui-text-field-label {
+  font: var(--md-sys-typescale-body-small, 400 12px / 16px sans-serif);
+}
+:host([data-focused]) .gui-text-field-label {
+  color: var(--md-sys-color-primary);
+}
+
+/* --- Filled variant --- */
+:host([data-variant='filled']) .gui-text-field-container {
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-top-left-radius: var(--md-sys-shape-corner-extra-small, 4px);
+  border-top-right-radius: var(--md-sys-shape-corner-extra-small, 4px);
+}
+
+/* Activation indicator (bottom border). */
+:host([data-variant='filled']) .gui-text-field-container::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--md-sys-color-on-surface-variant);
+}
+:host([data-variant='filled'][data-focused]) .gui-text-field-container::after {
+  height: 2px;
+  background-color: var(--md-sys-color-primary);
+}
+
+/* Filled label: floats above the input, padded down inside the container. */
+:host([data-variant='filled'][data-populated]) .gui-text-field-label,
+:host([data-variant='filled'][data-focused]) .gui-text-field-label {
+  transform: translateY(-150%);
+}
+
+/* --- Outlined variant --- */
+:host([data-variant='outlined']) .gui-text-field-container {
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: var(--md-sys-shape-corner-extra-small, 4px);
+}
+:host([data-variant='outlined'][data-focused]) .gui-text-field-container {
+  border-width: 3px;
+  border-color: var(--md-sys-color-primary);
+  /* Compensate the thicker border so the layout doesn't shift. */
+  margin: -2px;
+}
+
+/* Outlined label sits on the outline (notch), with 4px horizontal padding and
+   an opaque background so it cuts through the border. */
+:host([data-variant='outlined'][data-populated]) .gui-text-field-label,
+:host([data-variant='outlined'][data-focused]) .gui-text-field-label {
+  top: 0;
+  transform: translateY(-50%);
+  padding-inline: 4px;
+  background-color: var(--md-sys-color-surface, #fff);
+}
+
+/* --- Error state --- */
+:host([data-error]) .gui-text-field-label,
+:host([data-error][data-focused]) .gui-text-field-label {
+  color: var(--md-sys-color-error);
+}
+:host([data-error][data-variant='filled']) .gui-text-field-container::after {
+  background-color: var(--md-sys-color-error);
+}
+:host([data-error][data-variant='outlined']) .gui-text-field-container {
+  border-color: var(--md-sys-color-error);
+}
+:host([data-error]) .gui-text-field-supporting-text {
+  color: var(--md-sys-color-error);
+}
+
+/* --- Supporting text + counter row --- */
+.gui-text-field-supporting {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px; /* gap between supporting text and counter */
+  padding-top: 4px;
+  padding-inline: 16px;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-body-small, 400 12px / 16px sans-serif);
+}
+.gui-text-field-supporting-text {
+  flex: 1 1 auto;
+}
+.gui-text-field-counter {
+  flex: 0 0 auto;
+}
+/* Collapse the row entirely when there is nothing to show. */
+.gui-text-field-supporting:empty {
+  display: none;
+}
+
+/* --- Multiline (textarea grows naturally) --- */
+:host([data-multiline]) .gui-text-field-container {
+  align-items: flex-start;
+  height: auto;
+}
+:host([data-multiline]) .gui-text-field-label {
+  top: 8px;
+  transform: none;
+}
+:host([data-multiline][data-populated]) .gui-text-field-label,
+:host([data-multiline][data-focused]) .gui-text-field-label {
+  top: 0;
+}
+
+/* --- Disabled (M3 disabled treatment via on-surface at reduced opacity) --- */
+:host([data-disabled]) {
+  pointer-events: none;
+}
+:host([data-disabled]) .gui-text-field-label,
+:host([data-disabled]) .gui-text-field-leading,
+:host([data-disabled]) .gui-text-field-trailing,
+:host([data-disabled]) .gui-text-field-prefix,
+:host([data-disabled]) .gui-text-field-suffix,
+:host([data-disabled]) .gui-text-field-supporting {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+}
+:host([data-disabled][data-variant='filled']) .gui-text-field-container {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 96%
+  );
+}
+:host([data-disabled][data-variant='filled']) .gui-text-field-container::after {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 62%
+  );
+}
+:host([data-disabled][data-variant='outlined']) .gui-text-field-container {
+  border-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 88%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gui-text-field-label {
+    transition: none;
+  }
+}

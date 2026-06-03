@@ -664,6 +664,135 @@
       </div>
     </div>
 
+    <!-- Text field -->
+    <div class="mt-8 mb-2 font-bold text-lg">Text field</div>
+
+    <!-- Filled + outlined with label/supporting text -->
+    <div class="flex flex-row gap-4 items-start">
+      <gui-text-field label="First name" supportingText="As on your ID">
+        <input guiTextFieldInput [(ngModel)]="firstName" />
+      </gui-text-field>
+
+      <gui-text-field
+        variant="outlined"
+        label="Username"
+        supportingText="Pick a handle"
+      >
+        <input guiTextFieldInput [formControl]="usernameControl" />
+      </gui-text-field>
+    </div>
+
+    <!-- Error example with error text -->
+    <div class="flex flex-row gap-4 items-start mt-4">
+      <gui-text-field
+        label="Email"
+        error
+        errorText="Enter a valid email"
+        [required]="true"
+      >
+        <input guiTextFieldInput type="email" [(ngModel)]="email" />
+        <gui-icon-button guiTextFieldTrailing aria-label="Clear" (click)="clearEmail()">
+          <gui-icon>✕</gui-icon>
+        </gui-icon-button>
+      </gui-text-field>
+    </div>
+
+    <!-- Leading icon + trailing clear button -->
+    <div class="flex flex-row gap-4 items-start mt-4">
+      <gui-text-field variant="outlined" label="Search">
+        <gui-icon guiTextFieldLeading>🔍</gui-icon>
+        <input guiTextFieldInput [(ngModel)]="bio" />
+        <gui-icon-button guiTextFieldTrailing aria-label="Clear" (click)="bio.set('')">
+          <gui-icon>✕</gui-icon>
+        </gui-icon-button>
+      </gui-text-field>
+    </div>
+
+    <!-- Prefix/suffix + maxLength counter -->
+    <div class="flex flex-row gap-4 items-start mt-4">
+      <gui-text-field label="Amount" prefix="$" suffix=".00" [maxLength]="6">
+        <input guiTextFieldInput inputmode="numeric" [(ngModel)]="amount" />
+      </gui-text-field>
+    </div>
+
+    <!-- Multiline -->
+    <div class="flex flex-row gap-4 items-start mt-4">
+      <gui-text-field
+        variant="outlined"
+        label="Bio"
+        supportingText="Tell us about yourself"
+        [maxLength]="200"
+      >
+        <textarea guiTextFieldInput rows="3" [(ngModel)]="bio"></textarea>
+      </gui-text-field>
+    </div>
+
+    <!-- Date picker -->
+    <div class="mt-8 mb-2 font-bold text-lg">Date picker</div>
+
+    <div class="flex flex-row gap-4 items-start flex-wrap">
+      <gui-date-picker
+        label="Docked date"
+        variant="docked"
+        [formControl]="dateControl"
+      />
+      <gui-date-picker
+        label="Modal date"
+        variant="modal"
+        [formControl]="dateControl"
+      />
+      <gui-date-picker
+        label="Modal input date"
+        variant="modal-input"
+        [formControl]="dateControl"
+      />
+    </div>
+
+    <div class="mt-8 mb-2 font-bold text-lg">Date range picker</div>
+
+    <div class="flex flex-row gap-4 items-start flex-wrap">
+      <gui-date-range-picker
+        label="Trip dates"
+        variant="modal"
+        [formControl]="dateRangeControl"
+      />
+      <gui-date-range-picker
+        label="Stay dates"
+        variant="modal-input"
+        [formControl]="dateRangeControl"
+      />
+    </div>
+
+    <!-- Time picker -->
+    <div class="mt-8 mb-2 font-bold text-lg">Time picker</div>
+
+    <div class="flex flex-row gap-4 items-start flex-wrap">
+      <gui-time-picker
+        label="Dial time (12h)"
+        variant="dial"
+        [hour12]="true"
+        [formControl]="timeControl"
+      />
+      <gui-time-picker
+        label="Dial time (24h)"
+        variant="dial"
+        [hour12]="false"
+        [formControl]="timeControl"
+      />
+      <gui-time-picker
+        label="Input time (12h)"
+        variant="input"
+        [hour12]="true"
+        [formControl]="timeControl"
+      />
+      <gui-time-picker
+        label="Input time (24h)"
+        variant="input"
+        [hour12]="false"
+        [formControl]="timeControl"
+      />
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

@@ -1,0 +1,85 @@
+<gui-text-field
+  variant="outlined"
+  [label]="label()"
+  [error]="inputError()"
+  errorText="Invalid date"
+>
+  <input
+    guiTextFieldInput
+    [value]="displayValue()"
+    [readOnly]="!editable()"
+    [attr.aria-label]="label()"
+    (change)="onInput($any($event.target).value)"
+  />
+  <button
+    gui-icon-button
+    guiTextFieldTrailing
+    type="button"
+    [attr.aria-label]="'Open calendar'"
+    [disabled]="control.effectiveDisabled()"
+    (click)="open()"
+  >
+    <gui-icon
+      ><svg
+        viewBox="0 -960 960 960"
+        width="24"
+        height="24"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Z"
+        /></svg
+    ></gui-icon>
+  </button>
+</gui-text-field>
+
+<ng-template #panel>
+  <div class="gui-date-picker-panel" role="dialog" aria-modal="true">
+    @if (variant() === 'modal' || variant() === 'modal-input') {
+      <div class="gui-date-picker-header">
+        <span class="gui-date-picker-headline">{{ label() }}</span>
+      </div>
+      <div class="gui-date-picker-divider"></div>
+    }
+
+    @if (variant() === 'modal-input') {
+      <div class="gui-date-picker-input">
+        <gui-text-field
+          variant="outlined"
+          label="Date"
+          [error]="inputError()"
+          errorText="Invalid date"
+        >
+          <input
+            guiTextFieldInput
+            [value]="displayValue()"
+            (change)="onInput($any($event.target).value)"
+          />
+        </gui-text-field>
+      </div>
+    } @else {
+      <gui-calendar
+        [(activeMonth)]="activeMonth"
+        [selected]="pendingDate()"
+        [min]="min()"
+        [max]="max()"
+        [dateFilter]="dateFilter()"
+        [locale]="locale()"
+        [today]="today"
+        (dateSelected)="onDateSelected($event)"
+      />
+    }
+
+    @if (variant() === 'modal' || variant() === 'modal-input') {
+      <div class="gui-date-picker-actions">
+        <button gui-button variant="text" type="button" (click)="close()">
+          Cancel
+        </button>
+        <button gui-button variant="text" type="button" (click)="onConfirm()">
+          OK
+        </button>
+      </div>
+    }
+  </div>
+</ng-template>

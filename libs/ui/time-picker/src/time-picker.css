@@ -1,0 +1,109 @@
+:host {
+  display: inline-block;
+}
+
+.gui-time-picker-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 28px;
+}
+
+.gui-time-picker-headline {
+  align-self: flex-start;
+  font: var(--md-sys-typescale-label-medium, 500 12px/16px system-ui);
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+}
+
+.gui-time-picker-dial-modes {
+  display: flex;
+  gap: 8px;
+}
+
+.gui-time-picker-fields {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gui-time-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 80px;
+  border-radius: 8px;
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+  outline: none;
+}
+
+:host-context([data-hour12='false']) .gui-time-field,
+.gui-time-field[data-wide] {
+  width: 114px;
+}
+
+.gui-time-field:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+}
+
+.gui-time-field-error {
+  outline: 2px solid var(--md-sys-color-error);
+}
+
+.gui-time-field-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: center;
+  font: var(--md-sys-typescale-display-large, 400 57px/64px system-ui);
+}
+
+.gui-time-field-input:focus {
+  outline: none;
+}
+
+.gui-time-field-separator {
+  font: var(--md-sys-typescale-display-large, 400 57px/64px system-ui);
+}
+
+.gui-time-period {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-left: 8px;
+}
+
+.gui-time-period-btn {
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  padding: 8px 12px;
+  cursor: pointer;
+  font: var(--md-sys-typescale-title-medium, 500 16px/24px system-ui);
+}
+
+.gui-time-period-selected {
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.gui-time-picker-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.gui-time-picker-spacer {
+  flex: 1;
+}

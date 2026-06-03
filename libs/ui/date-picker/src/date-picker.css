@@ -1,0 +1,35 @@
+:host {
+  display: inline-block;
+}
+
+.gui-date-picker-panel {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.gui-date-picker-header {
+  padding: 16px 24px 12px;
+}
+
+.gui-date-picker-headline {
+  font: var(--md-sys-typescale-headline-small, 400 24px/32px system-ui);
+  color: var(--md-sys-color-on-surface);
+}
+
+.gui-date-picker-divider {
+  height: 1px;
+  background: var(--md-sys-color-outline-variant, var(--md-sys-color-outline));
+}
+
+.gui-date-picker-input {
+  padding: 16px;
+}
+
+.gui-date-picker-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 12px 12px;
+}

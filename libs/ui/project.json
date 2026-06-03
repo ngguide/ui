@@ -56,6 +56,7 @@
           "../chip/src/chip.spec.ts",
           "../radio/src/radio.spec.ts",
           "../switch/src/switch.spec.ts",
+          "../text-field/src/text-field.spec.ts",
           "../theme/src/engine.spec.ts",
           "../theme/src/css-builder.spec.ts",
           "../theme/src/validate.spec.ts",
@@ -66,7 +67,16 @@
           "../interaction/src/state-layer.directive.spec.ts",
           "../interaction/src/ripple.directive.spec.ts",
           "../interaction/src/focus-ring.directive.spec.ts",
-          "../interaction/src/a11y.spec.ts"
+          "../interaction/src/a11y.spec.ts",
+          "../datetime/src/date-utils.spec.ts",
+          "../datetime/src/intl.spec.ts",
+          "../datetime/src/parse.spec.ts",
+          "../overlay/src/picker-overlay.spec.ts",
+          "../date-picker/src/calendar.spec.ts",
+          "../date-picker/src/date-picker.spec.ts",
+          "../date-picker/src/date-range-picker.spec.ts",
+          "../time-picker/src/clock-dial.spec.ts",
+          "../time-picker/src/time-picker.spec.ts"
         ]
       }
     },

@@ -1,0 +1,40 @@
+<div class="gui-text-field-container">
+  <span class="gui-text-field-leading">
+    <ng-content select="[guiTextFieldLeading]" />
+  </span>
+
+  <div class="gui-text-field-middle">
+    <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
+    <label class="gui-text-field-label" [id]="labelId">
+      {{ label() }}@if (required()) {<span aria-hidden="true">&nbsp;*</span>}
+    </label>
+
+    @if (prefix()) {
+      <span class="gui-text-field-prefix">{{ prefix() }}</span>
+    }
+
+    <ng-content />
+
+    @if (suffix()) {
+      <span class="gui-text-field-suffix">{{ suffix() }}</span>
+    }
+  </div>
+
+  <span class="gui-text-field-trailing">
+    <ng-content select="[guiTextFieldTrailing]" />
+  </span>
+</div>
+
+<div class="gui-text-field-supporting">
+  <span class="gui-text-field-supporting-text" [id]="supportingId">
+    @if (error() && errorText()) {
+      {{ errorText() }}
+    } @else {
+      {{ supportingText() }}
+    }
+  </span>
+
+  @if (counter()) {
+    <span class="gui-text-field-counter" [id]="counterId">{{ counter() }}</span>
+  }
+</div>
