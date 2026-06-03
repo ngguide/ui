@@ -81,6 +81,11 @@ import {
   GuiSideSheetHeader,
   GuiSideSheetSurface,
 } from '@ngguide/ui/side-sheet';
+import {
+  GuiCarousel,
+  GuiCarouselItem,
+  GuiCarouselLayout,
+} from '@ngguide/ui/carousel';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -139,6 +144,8 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     GuiSideSheetSurface,
     GuiSideSheetHeader,
     GuiSideSheetActions,
+    GuiCarousel,
+    GuiCarouselItem,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
@@ -159,6 +166,15 @@ export class AppComponent {
   protected readonly sideSheet = inject(GuiSideSheet);
   /** Standard (non-modal) side-sheet open state. */
   readonly standardSideSheetOpen = signal(false);
+  /** Carousel demo layout switcher. */
+  readonly carouselLayouts = [
+    'multi-browse',
+    'uncontained',
+    'hero',
+    'full-screen',
+  ] as const satisfies readonly GuiCarouselLayout[];
+  readonly carouselLayout = signal<GuiCarouselLayout>('multi-browse');
+  readonly carouselItems = [1, 2, 3, 4, 5, 6, 7, 8];
 
   /** Demo brand seeds to exercise runtime re-theming (Req 7.3). */
   readonly brandSeeds = ['#6750A4', '#00629D', '#B3261E'];

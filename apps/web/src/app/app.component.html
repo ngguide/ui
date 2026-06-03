@@ -1265,6 +1265,40 @@
       </gui-side-sheet>
     </div>
 
+    <!-- Containment — Carousel -->
+    <div class="flex flex-col gap-4 mt-8" style="max-width: 480px">
+      <h2 class="text-lg font-medium">Carousel</h2>
+
+      <div class="flex flex-row gap-2 items-center flex-wrap">
+        @for (l of carouselLayouts; track l) {
+          <button
+            gui-button
+            size="sm"
+            [variant]="carouselLayout() === l ? 'filled' : 'outlined'"
+            type="button"
+            (click)="carouselLayout.set(l)"
+          >
+            {{ l }}
+          </button>
+        }
+      </div>
+
+      <gui-carousel [layout]="carouselLayout()">
+        @for (n of carouselItems; track n) {
+          <gui-carousel-item>
+            <div
+              class="h-40 flex items-center justify-center text-2xl font-medium text-white"
+              [style.background]="
+                'oklch(60% 0.15 ' + n * 40 + 'deg)'
+              "
+            >
+              {{ n }}
+            </div>
+          </gui-carousel-item>
+        }
+      </gui-carousel>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

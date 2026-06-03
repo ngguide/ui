@@ -290,7 +290,7 @@ Blast radius: **safe**.
   - Test: full-screen compact orientation; reduced-motion disables morph; resize re-arranges (Req 11.5/11.6).
   - _Requirements: 11.5, 11.6, 15.1, 15.2, 15.3_
 
-- [ ] 27. Final checkpoint — everything green
+- [x] 27. Final checkpoint — everything green
   - Full suite: `pnpm exec nx run-many -t lint test build --projects=ui,web` green.
   - All seven entry points (`card, divider, list, dialog, bottom-sheet, side-sheet, carousel`) build via
     ng-packagr and resolve from `tsconfig.base.json`.
