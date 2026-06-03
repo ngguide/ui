@@ -1,0 +1,16 @@
+/* M3 list container: a vertical stack on the `surface` color. Rows own their
+   own padding / dividers; the list only provides the surface and layout. */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  padding-block: 8px;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+:host(:focus-visible) {
+  outline: none;
+}

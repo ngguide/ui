@@ -118,7 +118,7 @@ Two structural entry points reusing tokens + interaction directives; no overlay 
 
 One entry point with container + item, both `action` and `listbox` modes; reuses `createRovingFocus`. Blast radius: **safe**.
 
-- [ ] 9. List container + item structure
+- [x] 9. List container + item structure
   - Scaffold `@ngguide/ui/list` (+ wiring; ships `styles/list.css` or component CSS).
   - `libs/ui/list/src/list.ts`: `GuiList` (`gui-list`, OnPush, `mode` `action|listbox`, `multiselectable`,
     host role `list|listbox` + `aria-multiselectable` in listbox mode, `(keydown)` delegating to the manager).
@@ -134,7 +134,7 @@ One entry point with container + item, both `action` and `listbox` modes; reuses
     listbox mode role listbox/option + `aria-selected`; disabled item not activatable.
   - _Requirements: 4.1–4.5, 5.1–5.4, 6.5, 13.1–13.4_
 
-- [ ] 10. List interaction + selection
+- [x] 10. List interaction + selection
   - `GuiList`: in `listbox` mode build a `createRovingFocus(items, {orientation:'vertical'})` manager
     (single tab stop, arrow/typeahead/home-end), wire `onKeydown`; toggle `selected` on Enter/Space/click;
     honor `multiselectable`. In `action` mode rely on nested native controls + natural tab order.

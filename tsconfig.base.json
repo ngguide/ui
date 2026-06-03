@@ -31,6 +31,7 @@
       "@ngguide/ui/icon": ["libs/ui/icon/src/index.ts"],
       "@ngguide/ui/icon-button": ["libs/ui/icon-button/src/index.ts"],
       "@ngguide/ui/interaction": ["libs/ui/interaction/src/index.ts"],
+      "@ngguide/ui/list": ["libs/ui/list/src/index.ts"],
       "@ngguide/ui/loading-indicator": [
         "libs/ui/loading-indicator/src/index.ts"
       ],
