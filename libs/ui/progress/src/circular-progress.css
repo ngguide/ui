@@ -1,0 +1,65 @@
+/* M3 circular progress — 48dp diameter, 4dp stroke, rounded active cap. */
+:host {
+  --_size: 48px;
+  --_stroke: 4px;
+
+  display: inline-block;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  line-height: 0;
+}
+
+.gui-circular-svg {
+  inline-size: 100%;
+  block-size: 100%;
+  /* Start the determinate arc at 12 o'clock. */
+  transform: rotate(-90deg);
+}
+
+.gui-circular-track {
+  stroke: var(--md-sys-color-secondary-container);
+  stroke-width: var(--_stroke);
+}
+
+.gui-circular-active {
+  stroke: var(--md-sys-color-primary);
+  stroke-width: var(--_stroke);
+  /* stroke-dasharray / stroke-dashoffset supplied inline (determinate). */
+  transition: stroke-dashoffset 0.2s var(--md-sys-motion-easing-standard, ease);
+}
+
+/* Indeterminate — rotate the whole SVG; the arc length is a fixed fraction. */
+:host([data-mode='indeterminate']) .gui-circular-svg {
+  animation: gui-circular-rotate 1.4s linear infinite;
+}
+
+:host([data-mode='indeterminate']) .gui-circular-active {
+  /* ~25% visible arc that the rotation sweeps around the track. */
+  stroke-dasharray: 34.56 103.67;
+  stroke-dashoffset: 0;
+  transition: none;
+}
+
+@keyframes gui-circular-rotate {
+  to {
+    transform: rotate(270deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host([data-mode='indeterminate']) .gui-circular-svg {
+    animation: none;
+  }
+  :host([data-mode='indeterminate']) .gui-circular-active {
+    animation: gui-circular-pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes gui-circular-pulse {
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}

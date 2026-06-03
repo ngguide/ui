@@ -1,10 +1,11 @@
 import { ConfigurableFocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
 import {
+  ConnectedPosition,
   Overlay,
   OverlayRef,
   STANDARD_DROPDOWN_BELOW_POSITIONS,
 } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
+import { Portal, TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, inject } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
@@ -15,6 +16,23 @@ export interface GuiDockedConfig {
 
 export interface GuiModalConfig {
   ariaLabel?: string;
+}
+
+export interface GuiGlobalBottomConfig {
+  /** Horizontal alignment of the bottom-anchored surface. Caller drives via breakpoint. */
+  alignment?: 'center' | 'leading';
+  /** Distance from the bottom edge, e.g. '16px' or an above-FAB offset. */
+  bottomOffset?: string;
+  /** Max inline width (M3 snackbar max width). */
+  maxWidth?: string;
+  panelClass?: string | string[];
+}
+
+export interface GuiConnectedConfig {
+  origin: HTMLElement;
+  /** Preferred connected positions (e.g. above-then-below for tooltips). */
+  positions?: ConnectedPosition[];
+  panelClass?: string | string[];
 }
 
 export interface GuiOverlayHandle {
@@ -107,6 +125,72 @@ export class GuiPickerOverlay {
           handle.close();
         }
       });
+
+    return handle;
+  }
+
+  /**
+   * Bottom-anchored floating surface (snackbar). GlobalPositionStrategy, NO backdrop,
+   * NO focus trap, NO focus capture/restore — snackbars must not steal focus.
+   * Scroll strategy: reposition.
+   */
+  openGlobalBottom(
+    portal: Portal<unknown>,
+    cfg: GuiGlobalBottomConfig = {},
+  ): GuiOverlayHandle {
+    const bottomOffset = cfg.bottomOffset ?? '16px';
+    const positionBuilder = this.overlay
+      .position()
+      .global()
+      .bottom(bottomOffset);
+
+    const positionStrategy =
+      cfg.alignment === 'leading'
+        ? positionBuilder.left('16px')
+        : positionBuilder.centerHorizontally();
+
+    const ref = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+      hasBackdrop: false,
+      maxWidth: cfg.maxWidth,
+      panelClass: cfg.panelClass,
+    });
+
+    const closed$ = new Subject<void>();
+    const handle = this.makeHandle(ref, closed$, null, null);
+
+    ref.attach(portal);
+
+    return handle;
+  }
+
+  /**
+   * Connected floating surface anchored to an origin (tooltips).
+   * FlexibleConnectedPositionStrategy, NO backdrop, NO focus capture/restore —
+   * tooltips must not move focus. Scroll strategy: reposition.
+   */
+  openConnected(
+    portal: Portal<unknown>,
+    cfg: GuiConnectedConfig,
+  ): GuiOverlayHandle {
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo(cfg.origin)
+      .withPositions(cfg.positions ?? STANDARD_DROPDOWN_BELOW_POSITIONS)
+      .withViewportMargin(8);
+
+    const ref = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+      hasBackdrop: false,
+      panelClass: cfg.panelClass,
+    });
+
+    const closed$ = new Subject<void>();
+    const handle = this.makeHandle(ref, closed$, null, null);
+
+    ref.attach(portal);
 
     return handle;
   }

@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@ngguide/ui": ["libs/ui/src/index.ts"],
+      "@ngguide/ui/badge": ["libs/ui/badge/src/index.ts"],
       "@ngguide/ui/button": ["libs/ui/button/src/index.ts"],
       "@ngguide/ui/button-group": ["libs/ui/button-group/src/index.ts"],
       "@ngguide/ui/checkbox": ["libs/ui/checkbox/src/index.ts"],
@@ -28,15 +29,21 @@
       "@ngguide/ui/icon": ["libs/ui/icon/src/index.ts"],
       "@ngguide/ui/icon-button": ["libs/ui/icon-button/src/index.ts"],
       "@ngguide/ui/interaction": ["libs/ui/interaction/src/index.ts"],
+      "@ngguide/ui/loading-indicator": [
+        "libs/ui/loading-indicator/src/index.ts"
+      ],
       "@ngguide/ui/menu": ["libs/ui/menu/src/index.ts"],
       "@ngguide/ui/overlay": ["libs/ui/overlay/src/index.ts"],
+      "@ngguide/ui/progress": ["libs/ui/progress/src/index.ts"],
       "@ngguide/ui/radio": ["libs/ui/radio/src/index.ts"],
       "@ngguide/ui/segmented-button": ["libs/ui/segmented-button/src/index.ts"],
       "@ngguide/ui/slider": ["libs/ui/slider/src/index.ts"],
+      "@ngguide/ui/snackbar": ["libs/ui/snackbar/src/index.ts"],
       "@ngguide/ui/split-button": ["libs/ui/split-button/src/index.ts"],
       "@ngguide/ui/switch": ["libs/ui/switch/src/index.ts"],
       "@ngguide/ui/text-field": ["libs/ui/text-field/src/index.ts"],
       "@ngguide/ui/theme": ["libs/ui/theme/src/index.ts"],
+      "@ngguide/ui/tooltip": ["libs/ui/tooltip/src/index.ts"],
       "@ngguide/ui/time-picker": ["libs/ui/time-picker/src/index.ts"]
     }
   },

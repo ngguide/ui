@@ -793,6 +793,140 @@
       />
     </div>
 
+    <!-- Badge -->
+    <h2 class="text-xl font-semibold mt-8">Badge</h2>
+    <!-- [guiBadge] anchors to its host's top-trailing corner and overflows it,
+         so it must sit on a non-clipping element. Icon buttons clip overflow for
+         their state layer, so wrap them in an inline-flex badge host. -->
+    <div class="flex flex-row gap-6 items-center">
+      <span guiBadge class="inline-flex">
+        <button gui-icon-button variant="standard" aria-label="Notifications">
+          <gui-icon>★</gui-icon>
+        </button>
+      </span>
+      <span [guiBadge]="3" class="inline-flex">
+        <button gui-icon-button variant="standard" aria-label="Messages, 3 unread">
+          <gui-icon>✉</gui-icon>
+        </button>
+      </span>
+      <span [guiBadge]="1500" class="inline-flex">
+        <button
+          gui-icon-button
+          variant="standard"
+          aria-label="Alerts, 999+ unread"
+        >
+          <gui-icon>☆</gui-icon>
+        </button>
+      </span>
+      <div class="ml-4 text-sm text-gray-600">Dot, numeric, capped "999+"</div>
+    </div>
+
+    <!-- Progress -->
+    <h2 class="text-xl font-semibold mt-8">Progress</h2>
+    <div class="flex flex-col gap-4 max-w-md">
+      <label class="text-sm text-gray-600">
+        Determinate value: {{ (progressValue() * 100).toFixed(0) }}%
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          [value]="progressValue()"
+          (input)="progressValue.set(+$any($event.target).value)"
+          class="w-full"
+        />
+      </label>
+
+      <div class="flex flex-row gap-6 items-center">
+        <gui-linear-progress
+          [value]="progressValue()"
+          label="Determinate linear"
+          class="flex-1"
+        />
+        <gui-circular-progress
+          [value]="progressValue()"
+          label="Determinate circular"
+        />
+      </div>
+
+      <div class="flex flex-row gap-6 items-center">
+        <gui-linear-progress label="Indeterminate linear" class="flex-1" />
+        <gui-circular-progress label="Indeterminate circular" />
+      </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <h2 class="text-xl font-semibold mt-8">Loading indicator</h2>
+    <div class="flex flex-row gap-8 items-center">
+      <gui-loading-indicator label="Loading" />
+      <gui-loading-indicator variant="contained" label="Loading" />
+      <div class="ml-4 text-sm text-gray-600">Default, contained</div>
+    </div>
+
+    <!-- Snackbar -->
+    <h2 class="text-xl font-semibold mt-8">Snackbar</h2>
+    <div class="flex flex-row flex-wrap gap-3 items-center">
+      <button gui-button variant="filled" type="button" (click)="showSnackbar()">
+        Simple
+      </button>
+      <button
+        gui-button
+        variant="filled"
+        type="button"
+        (click)="showSnackbarWithAction()"
+      >
+        With action
+      </button>
+      <button
+        gui-button
+        variant="filled"
+        type="button"
+        (click)="showSnackbarRequired()"
+      >
+        Action required (two-line)
+      </button>
+    </div>
+
+    <!-- Tooltips -->
+    <h2 class="text-xl font-semibold mt-8">Tooltips</h2>
+    <div class="flex flex-row gap-6 items-center">
+      <button
+        gui-icon-button
+        variant="standard"
+        aria-label="Settings"
+        guiTooltip="Settings"
+      >
+        <gui-icon>★</gui-icon>
+      </button>
+      <button
+        gui-icon-button
+        variant="standard"
+        aria-label="Search"
+        guiTooltip="Search the catalog"
+        position="below"
+      >
+        <gui-icon>☆</gui-icon>
+      </button>
+
+      <gui-rich-tooltip #rt>
+        <span guiRichTooltipSubhead>Encrypted storage</span>
+        Your files are encrypted at rest and in transit.
+        <div guiRichTooltipActions>
+          <button gui-button variant="text" type="button">Learn more</button>
+          <button gui-button variant="text" type="button">Dismiss</button>
+        </div>
+      </gui-rich-tooltip>
+      <button
+        gui-button
+        variant="outlined"
+        type="button"
+        [guiRichTooltipTrigger]="rt"
+      >
+        Rich tooltip
+      </button>
+      <div class="ml-4 text-sm text-gray-600">Plain (hover/focus), rich</div>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

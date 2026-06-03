@@ -1,0 +1,51 @@
+/* M3 badge — styles for the corner graphic injected by the `[guiBadge]` directive.
+   The host carries `data-gui-badge-variant` (small|large) and, when hidden,
+   `data-gui-badge-hidden="true"`. */
+
+.gui-badge-host {
+  position: relative;
+}
+
+.gui-badge {
+  position: absolute;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+  font-family: var(--md-sys-typescale-label-small-font);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  font-size: var(--md-sys-typescale-label-small-size);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Small dot — 6dp, 3dp corner, offset 6×6dp from the top-trailing corner. */
+.gui-badge-host[data-gui-badge-variant='small'] .gui-badge {
+  width: 6px;
+  height: 6px;
+  min-width: 0;
+  padding: 0;
+  border-radius: 3px;
+  top: 0;
+  inset-inline-end: 0;
+  transform: translate(3px, -3px);
+}
+
+/* Large numeric — 16dp min, 8dp corner, 4dp horizontal padding, offset 14×12dp. */
+.gui-badge-host[data-gui-badge-variant='large'] .gui-badge {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  top: 0;
+  inset-inline-end: 0;
+  transform: translate(50%, -50%);
+}
+
+.gui-badge-host[data-gui-badge-hidden='true'] .gui-badge {
+  display: none;
+}
