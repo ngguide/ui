@@ -61,7 +61,7 @@ Blast radius: **safe** — additive helpers, inert until a later group imports t
     block scroll; `disableClose` propagates; `wrapDialogRef` forwards `close(result)`→`closed`. Add to `include`; reset.
   - _Requirements: 12.1, 12.2, 12.3, 12.4, 12.6, 12.7, 14.1_
 
-- [ ] 3. Global scrim stylesheet
+- [x] 3. Global scrim stylesheet
   - Create `libs/ui/src/styles/scrim.css`: `.gui-scrim` backdrop using `--md-sys-color-scrim` at 32% opacity,
     with an `@media (prefers-reduced-motion: reduce)` fade fallback (overlay.css precedent).
   - Add `@import './scrim.css';` to `libs/ui/src/styles/theme.css` (after `badge.css`).
