@@ -59,7 +59,7 @@ the existing flat demo keeps rendering unchanged. Blast radius: safe.
   - Create `apps/web/src/app/shell/theme-controller.ts`: root-provided `ThemeController` with `mode`/`seed` signals and `setMode`/`toggleDark`/`setSeed` calling `M3ThemeService.setTheme({ ...BASE_THEME, sourceColor, mode })`.
   - _Requirements: 1.1, 7.1, 7.2, 7.3_
 
-- [ ] 4. Material Symbols font + `.sym` icon class
+- [x] 4. Material Symbols font + `.sym` icon class
   - Modify `apps/web/src/styles.css`: add the Material Symbols `@import` (after the Roboto import, before `@import 'tailwindcss'`) and a `.sym` rule (font-family + variation settings + `font-size: var(--gui-comp-icon-size, 24px)`). Do **not** add global body restyle here (keep the flat demo visually unchanged; shell base layout lives in `shell.component.css`).
   - _Requirements: 5 (iconography); Decision 5A_
 
