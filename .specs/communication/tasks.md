@@ -83,12 +83,12 @@ on A. Independent.
 
 New `gui-linear-progress` (CSS) + `gui-circular-progress` (SVG). Blast radius: **safe** — independent.
 
-- [ ] 8. Scaffold the `progress` entry point
+- [x] 8. Scaffold the `progress` entry point
   - Create `libs/ui/progress/{ng-package.json, src/index.ts}`; add path alias; register both spec
     paths in `project.json`.
   - _Requirements: 16.1, 16.2_
 
-- [ ] 9. Implement `GuiLinearProgress` (CSS)
+- [x] 9. Implement `GuiLinearProgress` (CSS)
   - `libs/ui/progress/src/linear-progress.ts` + css per design: `value` (0..1, null⇒indeterminate),
     `label`; `role="progressbar"`, `aria-valuenow/min/max` for determinate, omitted for indeterminate;
     track 4dp + rounded ends + 4dp gap + stop indicator; `--md-sys-color-primary` active /
@@ -96,19 +96,19 @@ New `gui-linear-progress` (CSS) + `gui-circular-progress` (SVG). Blast radius: *
     `@media (prefers-reduced-motion)`.
   - _Requirements: 3.1–3.6, 6.1–6.4, 14.1, 14.2, 15.1_
 
-- [ ] 10. Implement `GuiCircularProgress` (SVG)
+- [x] 10. Implement `GuiCircularProgress` (SVG)
   - `libs/ui/progress/src/circular-progress.ts` + css per design: SVG track + active arc via
     `stroke-dasharray`/`offset`, `stroke-linecap="round"`; same ARIA contract; M3 circular default
     size/stroke (confirm against token browser); same color roles.
   - _Requirements: 4.1–4.5, 6.1–6.4, 14.1, 15.1_
 
-- [ ] 11. Progress specs + demo
+- [x] 11. Progress specs + demo
   - `linear-progress.spec.ts` + `circular-progress.spec.ts`: indeterminate omits `aria-valuenow`;
     determinate clamps + exposes `aria-valuenow`; value 0 vs null differ.
   - Demo sections in `apps/web` (determinate slider-driven + indeterminate, both geometries).
   - _Requirements: 3.2, 4.2, 6.2, 6.3, 16.3_
 
-- [ ] 12. Checkpoint — Group C verification
+- [x] 12. Checkpoint — Group C verification
   - Run progress specs + `lint build -p ui`. Confirm independently mergeable.
 
 ### Group D — Loading indicator (`@ngguide/ui/loading-indicator`)

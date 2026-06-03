@@ -818,6 +818,40 @@
       <div class="ml-4 text-sm text-gray-600">Dot, numeric, capped "999+"</div>
     </div>
 
+    <!-- Progress -->
+    <h2 class="text-xl font-semibold mt-8">Progress</h2>
+    <div class="flex flex-col gap-4 max-w-md">
+      <label class="text-sm text-gray-600">
+        Determinate value: {{ (progressValue() * 100).toFixed(0) }}%
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          [value]="progressValue()"
+          (input)="progressValue.set(+$any($event.target).value)"
+          class="w-full"
+        />
+      </label>
+
+      <div class="flex flex-row gap-6 items-center">
+        <gui-linear-progress
+          [value]="progressValue()"
+          label="Determinate linear"
+          class="flex-1"
+        />
+        <gui-circular-progress
+          [value]="progressValue()"
+          label="Determinate circular"
+        />
+      </div>
+
+      <div class="flex flex-row gap-6 items-center">
+        <gui-linear-progress label="Indeterminate linear" class="flex-1" />
+        <gui-circular-progress label="Indeterminate circular" />
+      </div>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

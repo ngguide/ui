@@ -47,6 +47,10 @@ import {
 import { GuiDateRange, GuiTime } from '@ngguide/ui/datetime';
 import { TimePickerComponent } from '@ngguide/ui/time-picker';
 import { GuiBadge } from '@ngguide/ui/badge';
+import {
+  GuiCircularProgress,
+  GuiLinearProgress,
+} from '@ngguide/ui/progress';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -83,6 +87,8 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     DateRangePickerComponent,
     TimePickerComponent,
     GuiBadge,
+    GuiLinearProgress,
+    GuiCircularProgress,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
@@ -107,6 +113,9 @@ export class AppComponent {
       customColors: [{ name: 'brand-success', value: '#2e7d32' }],
     });
   }
+
+  /** Determinate progress demo value (0..1). */
+  readonly progressValue = signal(0.4);
 
   sizes: GuiSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
   variants: GuiButtonVariant[] = [

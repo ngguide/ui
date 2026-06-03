@@ -73,6 +73,8 @@
           "../datetime/src/intl.spec.ts",
           "../datetime/src/parse.spec.ts",
           "../overlay/src/picker-overlay.spec.ts",
+          "../progress/src/linear-progress.spec.ts",
+          "../progress/src/circular-progress.spec.ts",
           "../date-picker/src/calendar.spec.ts",
           "../date-picker/src/date-picker.spec.ts",
           "../date-picker/src/date-range-picker.spec.ts",

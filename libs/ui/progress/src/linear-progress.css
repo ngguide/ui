@@ -1,0 +1,79 @@
+/* M3 linear progress — track 4dp, rounded ends, active bar + stop indicator. */
+:host {
+  --_track-height: 4px;
+  --_stop-size: 4px;
+
+  position: relative;
+  display: block;
+  width: 100%;
+  height: var(--_track-height);
+  overflow: hidden;
+}
+
+.gui-linear-track,
+.gui-linear-active {
+  position: absolute;
+  inset: 0;
+  height: var(--_track-height);
+  border-radius: calc(var(--_track-height) / 2);
+}
+
+.gui-linear-track {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.gui-linear-active {
+  background-color: var(--md-sys-color-primary);
+  transform-origin: left center;
+  /* `transform: scaleX(value)` is supplied inline (determinate). */
+}
+
+/* Stop indicator — a 4dp dot pinned to the trailing edge of the track. */
+.gui-linear-stop {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 0;
+  width: var(--_stop-size);
+  height: var(--_stop-size);
+  border-radius: 50%;
+  background-color: var(--md-sys-color-primary);
+  transform: translateY(-50%);
+}
+
+/* Indeterminate — the inline scaleX is ignored; an animated band sweeps the track. */
+:host([data-mode='indeterminate']) .gui-linear-active {
+  transform-origin: left center;
+  animation: gui-linear-indeterminate 2s linear infinite;
+}
+
+:host([data-mode='indeterminate']) .gui-linear-stop {
+  display: none;
+}
+
+@keyframes gui-linear-indeterminate {
+  0% {
+    transform: translateX(-100%) scaleX(0.3);
+  }
+  50% {
+    transform: translateX(50%) scaleX(0.5);
+  }
+  100% {
+    transform: translateX(150%) scaleX(0.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host([data-mode='indeterminate']) .gui-linear-active {
+    animation: gui-linear-pulse 1.5s ease-in-out infinite;
+    transform: scaleX(1);
+  }
+  @keyframes gui-linear-pulse {
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}
