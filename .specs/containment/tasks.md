@@ -77,7 +77,7 @@ Blast radius: **safe** — additive helpers, inert until a later group imports t
 
 Two structural entry points reusing tokens + interaction directives; no overlay dependency. Blast radius: **safe**.
 
-- [ ] 5. Card entry point
+- [x] 5. Card entry point
   - Scaffold `@ngguide/ui/card` (+ wiring steps 1–4 from the Overview; card ships `styles/card.css` only if
     a global rule is needed — prefer component `card.css`).
   - `libs/ui/card/src/card.ts`: `GuiCard` (`selector: gui-card`, OnPush, `variant` input

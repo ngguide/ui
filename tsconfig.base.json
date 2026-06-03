@@ -18,6 +18,7 @@
       "@ngguide/ui": ["libs/ui/src/index.ts"],
       "@ngguide/ui/badge": ["libs/ui/badge/src/index.ts"],
       "@ngguide/ui/button": ["libs/ui/button/src/index.ts"],
+      "@ngguide/ui/card": ["libs/ui/card/src/index.ts"],
       "@ngguide/ui/button-group": ["libs/ui/button-group/src/index.ts"],
       "@ngguide/ui/checkbox": ["libs/ui/checkbox/src/index.ts"],
       "@ngguide/ui/chip": ["libs/ui/chip/src/index.ts"],

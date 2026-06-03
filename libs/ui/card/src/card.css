@@ -1,0 +1,58 @@
+/* M3 card container. Per-variant container color, elevation, shape and border
+   only — hover/focus/pressed state layers, ripple and focus ring come from the
+   interaction foundation (GuiStateLayer/GuiRipple/GuiFocusRing) on the
+   actionable directives, never re-implemented here. */
+
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  /* Corner: medium (12dp). Content is clipped to the rounded corners. */
+  border-radius: var(--md-sys-shape-corner-medium);
+  overflow: hidden;
+  color: var(--md-sys-color-on-surface);
+  transition:
+    box-shadow var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    background-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard);
+}
+
+/* --- Elevated: surface-container-low + elevation level 1 (Req 1.2) --- */
+:host([data-variant='elevated']) {
+  background-color: var(--md-sys-color-surface-container-low);
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+/* --- Filled: surface-container-highest, no resting elevation (Req 1.2) --- */
+:host([data-variant='filled']) {
+  background-color: var(--md-sys-color-surface-container-highest);
+  box-shadow: var(--md-sys-elevation-level0);
+}
+
+/* --- Outlined: surface + 1dp outline-variant border, no elevation (Req 1.2) --- */
+:host([data-variant='outlined']) {
+  background-color: var(--md-sys-color-surface);
+  box-shadow: var(--md-sys-elevation-level0);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* --- Hover elevation for whole-surface actionable cards (Req 2.5) --- */
+:host([data-variant='elevated'].gui-card-clickable:hover) {
+  box-shadow: var(--md-sys-elevation-level2);
+}
+:host([data-variant='filled'].gui-card-clickable:hover) {
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+/* --- Disabled: 0.38 opacity, no pointer interaction (Req 2.6) --- */
+:host([data-disabled]) {
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+/* When the whole surface is the control, it must show the affordance. */
+:host(.gui-card-clickable) {
+  cursor: pointer;
+}
