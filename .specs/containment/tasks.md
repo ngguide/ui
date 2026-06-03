@@ -48,7 +48,7 @@ Blast radius: **safe** — additive helpers, inert until a later group imports t
     `matches` and updates on `change`. Append the spec to `project.json` `include`; `pnpm exec nx reset`.
   - _Requirements: 8, 11.6, 16.3_
 
-- [ ] 2. Shared modal config + normalizer + ref wrapper
+- [x] 2. Shared modal config + normalizer + ref wrapper
   - Create `libs/ui/overlay/src/modal.ts`: `GuiDialogRole`, `GuiModalConfigBase<D>`, the `GuiDialogRef<R>`
     interface, `normalizeModalConfig(config)` mapping onto CDK `DialogConfig`
     (`ariaModal:true`, `role`, `ariaLabel`, `ariaLabelledBy`, `disableClose`, `autoFocus` default

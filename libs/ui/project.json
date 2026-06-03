@@ -74,6 +74,7 @@
           "../datetime/src/parse.spec.ts",
           "../overlay/src/picker-overlay.spec.ts",
           "../overlay/src/breakpoint.spec.ts",
+          "../overlay/src/modal.spec.ts",
           "../progress/src/linear-progress.spec.ts",
           "../progress/src/circular-progress.spec.ts",
           "../loading-indicator/src/loading-indicator.spec.ts",
