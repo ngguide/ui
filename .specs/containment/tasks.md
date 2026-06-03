@@ -222,12 +222,12 @@ Modal (CDK Dialog + drag) and standard (inline) variants. Depends on Group A. Bl
     without scrim and leaves the page interactive.
   - _Requirements: 9.2, 9.3, 9.4, 9.6, 9.7_
 
-- [ ] 19. Demo — bottom sheet
+- [x] 19. Demo — bottom sheet
   - apps/web: import `GuiBottomSheet` (service + surface); add a button opening a modal sheet (drag handle,
     drag-to-dismiss) and a toggled standard sheet.
   - _Requirements: 9_
 
-- [ ] 20. Checkpoint — Group E verification
+- [x] 20. Checkpoint — Group E verification
   - `pnpm exec nx test ui` (bottom-sheet specs pass); lint + build green for `ui`,`web`.
   - `@ngguide/ui/bottom-sheet` builds; browser: drag-to-dismiss + spring-back + standard coexistence verified.
 

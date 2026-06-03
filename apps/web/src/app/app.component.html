@@ -1120,6 +1120,70 @@
       </ng-template>
     </div>
 
+    <!-- Containment — Bottom sheet -->
+    <div class="flex flex-col gap-4 mt-8">
+      <h2 class="text-lg font-medium">Bottom sheet</h2>
+
+      <div class="flex flex-row gap-2 items-center">
+        <button
+          gui-button
+          variant="filled"
+          type="button"
+          (click)="bottomSheet.open(modalSheet, { ariaLabel: 'Share' })"
+        >
+          Modal sheet (drag to dismiss)
+        </button>
+        <button
+          gui-button
+          variant="outlined"
+          type="button"
+          (click)="standardSheetOpen.set(!standardSheetOpen())"
+        >
+          Toggle standard sheet
+        </button>
+      </div>
+
+      <ng-template #modalSheet let-ref="dialogRef">
+        <div class="p-4 flex flex-col gap-2">
+          <span class="font-medium">Share</span>
+          <gui-list mode="action">
+            <gui-list-item>Copy link</gui-list-item>
+            <gui-list-item>Email</gui-list-item>
+            <gui-list-item>Message</gui-list-item>
+          </gui-list>
+          <button
+            gui-button
+            variant="text"
+            type="button"
+            class="self-end"
+            (click)="ref.close()"
+          >
+            Close
+          </button>
+        </div>
+      </ng-template>
+
+      <!-- Standard sheet coexists with the page (no scrim) -->
+      <gui-bottom-sheet [(open)]="standardSheetOpen">
+        <div class="p-4 flex flex-col gap-2">
+          <span class="font-medium">Standard sheet</span>
+          <span class="text-sm text-gray-600"
+            >This sheet has no scrim — the page stays interactive. Drag the
+            handle down to dismiss.</span
+          >
+          <button
+            gui-button
+            variant="text"
+            type="button"
+            class="self-end"
+            (click)="standardSheetOpen.set(false)"
+          >
+            Close
+          </button>
+        </div>
+      </gui-bottom-sheet>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>
