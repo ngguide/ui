@@ -75,6 +75,12 @@ import {
   GuiDialogTrigger,
 } from '@ngguide/ui/dialog';
 import { GuiBottomSheet, GuiBottomSheetSurface } from '@ngguide/ui/bottom-sheet';
+import {
+  GuiSideSheet,
+  GuiSideSheetActions,
+  GuiSideSheetHeader,
+  GuiSideSheetSurface,
+} from '@ngguide/ui/side-sheet';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -130,6 +136,9 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     GuiDialogActions,
     GuiDialogFullscreenHeader,
     GuiBottomSheetSurface,
+    GuiSideSheetSurface,
+    GuiSideSheetHeader,
+    GuiSideSheetActions,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
@@ -146,6 +155,10 @@ export class AppComponent {
   protected readonly bottomSheet = inject(GuiBottomSheet);
   /** Standard (non-modal) bottom-sheet open state. */
   readonly standardSheetOpen = signal(false);
+  /** Side-sheet service used by the containment demo (modal open). */
+  protected readonly sideSheet = inject(GuiSideSheet);
+  /** Standard (non-modal) side-sheet open state. */
+  readonly standardSideSheetOpen = signal(false);
 
   /** Demo brand seeds to exercise runtime re-theming (Req 7.3). */
   readonly brandSeeds = ['#6750A4', '#00629D', '#B3261E'];

@@ -252,7 +252,7 @@ Modal + standard side sheet on the end edge. Depends on Group A. Blast radius: *
   - Test (`side-sheet.spec.ts`): header/close/actions render; standard mode no scrim, page interactive.
   - _Requirements: 10.3, 10.4, 10.5, 10.6_
 
-- [ ] 23. Checkpoint — Group F verification
+- [x] 23. Checkpoint — Group F verification
   - `pnpm exec nx test ui` (side-sheet specs pass); lint + build green for `ui`,`web`.
   - `@ngguide/ui/side-sheet` builds; browser: modal open/close + standard coexistence verified.
 

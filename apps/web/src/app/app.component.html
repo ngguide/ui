@@ -1184,6 +1184,87 @@
       </gui-bottom-sheet>
     </div>
 
+    <!-- Containment — Side sheet -->
+    <div class="flex flex-col gap-4 mt-8">
+      <h2 class="text-lg font-medium">Side sheet</h2>
+
+      <div class="flex flex-row gap-2 items-center">
+        <button
+          gui-button
+          variant="filled"
+          type="button"
+          (click)="sideSheet.open(modalSideSheet, { ariaLabel: 'Filters' })"
+        >
+          Modal side sheet
+        </button>
+        <button
+          gui-button
+          variant="outlined"
+          type="button"
+          (click)="standardSideSheetOpen.set(!standardSideSheetOpen())"
+        >
+          Toggle standard side sheet
+        </button>
+      </div>
+
+      <ng-template #modalSideSheet let-ref="dialogRef">
+        <gui-side-sheet-header>
+          Filters
+          <button
+            gui-icon-button
+            variant="standard"
+            guiSideSheetClose
+            aria-label="Close"
+            type="button"
+            (click)="ref.close()"
+          >
+            <gui-icon>✕</gui-icon>
+          </button>
+        </gui-side-sheet-header>
+        <div class="px-4 flex-1">
+          <gui-list mode="listbox" [multiselectable]="true">
+            <gui-list-item selectable>Unread</gui-list-item>
+            <gui-list-item selectable>Starred</gui-list-item>
+            <gui-list-item selectable>Attachments</gui-list-item>
+          </gui-list>
+        </div>
+        <gui-side-sheet-actions>
+          <button gui-button variant="text" type="button" (click)="ref.close()">
+            Cancel
+          </button>
+          <button
+            gui-button
+            variant="filled"
+            type="button"
+            (click)="ref.close('applied')"
+          >
+            Apply
+          </button>
+        </gui-side-sheet-actions>
+      </ng-template>
+
+      <!-- Standard side sheet coexists with the page (no scrim) -->
+      <gui-side-sheet [(open)]="standardSideSheetOpen">
+        <gui-side-sheet-header>
+          Details
+          <button
+            gui-icon-button
+            variant="standard"
+            guiSideSheetClose
+            aria-label="Close"
+            type="button"
+            (click)="standardSideSheetOpen.set(false)"
+          >
+            <gui-icon>✕</gui-icon>
+          </button>
+        </gui-side-sheet-header>
+        <div class="px-4 flex-1 text-sm text-gray-600">
+          A standard side sheet has no scrim — the page behind stays
+          interactive.
+        </div>
+      </gui-side-sheet>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>
