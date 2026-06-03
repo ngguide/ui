@@ -1,0 +1,59 @@
+/* M3 modal bottom sheet. The host fills the bottom-anchored overlay pane; the
+   inner surface carries the chrome and is the draggable element. */
+
+:host {
+  display: block;
+  width: 100%;
+  outline: none;
+}
+
+.gui-bottom-sheet-surface {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  /* Initial height capped at ~50% of the viewport with internal scroll. */
+  max-height: 50dvh;
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+  border-start-start-radius: var(--md-sys-shape-corner-extra-large);
+  border-start-end-radius: var(--md-sys-shape-corner-extra-large);
+  box-shadow: var(--md-sys-elevation-level1);
+  animation: gui-bottom-sheet-enter var(--md-sys-motion-duration-medium4)
+    var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+@keyframes gui-bottom-sheet-enter {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+:host(.gui-no-motion) .gui-bottom-sheet-surface {
+  animation: none;
+}
+
+/* --- Drag handle: 32×4dp, on-surface-variant, centered (Req 9.1) --- */
+.gui-bottom-sheet-handle {
+  flex: 0 0 auto;
+  align-self: center;
+  width: 32px;
+  height: 4px;
+  margin: 16px 0;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-on-surface-variant);
+  cursor: grab;
+  touch-action: none;
+}
+.gui-bottom-sheet-handle:active {
+  cursor: grabbing;
+}
+
+/* --- Body scrolls independently below the handle --- */
+.gui-bottom-sheet-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}

@@ -1,0 +1,124 @@
+/* M3 list item. 16dp leading/trailing insets; height driven by line count
+   (56 / 72 / 88dp). Headline = body-large, supporting = body-medium, trailing
+   supporting text = label-small. Selected rows use the secondary-container. */
+
+:host {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: 16px;
+  padding-inline: 16px;
+  min-height: 56px;
+  color: var(--md-sys-color-on-surface);
+  background-color: transparent;
+}
+
+:host([data-lines='2']) {
+  min-height: 72px;
+}
+:host([data-lines='3']) {
+  min-height: 88px;
+  align-items: flex-start;
+  padding-block: 12px;
+}
+
+/* --- Selected option: secondary-container (Req 6.3) --- */
+:host([data-selected]) {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* --- Disabled option: dimmed but still present (Req 6.6) --- */
+:host([aria-disabled='true']) {
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+:host([tabindex]) {
+  cursor: pointer;
+  outline: none;
+}
+
+/* --- Keyboard focus indicator (Req 14.4). GuiFocusRingDirective adds
+   `.gui-focus-visible` on keyboard focus (covering the roving programmatic
+   focus of listbox options). Inset by the ring thickness so it stays within the
+   full-bleed row instead of being clipped by the list's bounds; uses the host
+   content color so it contrasts on both plain and selected (secondary-
+   container) rows. Disabled options never show the ring. --- */
+:host(.gui-focus-visible) {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid currentColor;
+  outline-offset: calc(-1 * var(--md-sys-state-focus-indicator-thickness));
+}
+:host([aria-disabled='true'].gui-focus-visible) {
+  outline: none;
+}
+
+/* --- Leading slot: holds a 24dp icon / 40dp avatar / 56dp image --- */
+.gui-list-item-leading {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.gui-list-item-leading:empty {
+  display: none;
+}
+
+/* --- Body: headline + supporting text stacked --- */
+.gui-list-item-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.gui-list-item-headline {
+  font-family: var(--md-sys-typescale-body-large-font);
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  /* The headline is a single line; it truncates with an ellipsis (Req 4.4). */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Supporting text is clamped to the row's reserved lines (headline takes one),
+   truncating with an ellipsis instead of growing the row (Req 4.4): 2-line rows
+   reserve one supporting line, 3-line rows reserve two. */
+.gui-list-item-supporting {
+  font-family: var(--md-sys-typescale-body-medium-font);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+  color: var(--md-sys-color-on-surface-variant);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:host([data-lines='3']) .gui-list-item-supporting {
+  -webkit-line-clamp: 2;
+}
+.gui-list-item-supporting:empty {
+  display: none;
+}
+
+/* --- Trailing slot: label-small supporting text or a control --- */
+.gui-list-item-trailing {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  font-family: var(--md-sys-typescale-label-small-font);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+  color: var(--md-sys-color-on-surface-variant);
+}
+.gui-list-item-trailing:empty {
+  display: none;
+}

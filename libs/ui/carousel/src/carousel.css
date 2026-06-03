@@ -1,0 +1,41 @@
+/* M3 carousel: native scroll + scroll-snap for momentum and snapping. The
+   engine sizes the items; this file only lays out the track. */
+
+:host {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+.gui-carousel-track {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.gui-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- Full-screen on compact: vertical orientation (Req 11.6) --- */
+:host([data-orientation='vertical']) .gui-carousel-track {
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  height: 100dvh;
+}
+:host([data-orientation='vertical']) ::ng-deep .gui-carousel-item {
+  width: 100% !important;
+  height: 100dvh;
+}
+
+/* --- Full-screen horizontal: each item fills the viewport width --- */
+:host([data-layout='full-screen'][data-orientation='horizontal'])
+  ::ng-deep
+  .gui-carousel-item {
+  width: 100% !important;
+}

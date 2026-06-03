@@ -58,6 +58,35 @@ import {
   GuiRichTooltipTrigger,
   GuiTooltip,
 } from '@ngguide/ui/tooltip';
+import {
+  GuiCard,
+  GuiCardClickable,
+  GuiCardPrimaryAction,
+} from '@ngguide/ui/card';
+import { GuiDivider } from '@ngguide/ui/divider';
+import { GuiList, GuiListItem } from '@ngguide/ui/list';
+import {
+  GuiDialog,
+  GuiDialogActions,
+  GuiDialogContent,
+  GuiDialogFullscreenHeader,
+  GuiDialogHeadline,
+  GuiDialogIcon,
+  GuiDialogTrigger,
+} from '@ngguide/ui/dialog';
+import { GuiBottomSheet, GuiBottomSheetSurface } from '@ngguide/ui/bottom-sheet';
+import {
+  GuiSideSheet,
+  GuiSideSheetActions,
+  GuiSideSheetContent,
+  GuiSideSheetHeader,
+  GuiSideSheetSurface,
+} from '@ngguide/ui/side-sheet';
+import {
+  GuiCarousel,
+  GuiCarouselItem,
+  GuiCarouselLayout,
+} from '@ngguide/ui/carousel';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -100,6 +129,25 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     GuiTooltip,
     GuiRichTooltip,
     GuiRichTooltipTrigger,
+    GuiCard,
+    GuiCardClickable,
+    GuiCardPrimaryAction,
+    GuiDivider,
+    GuiList,
+    GuiListItem,
+    GuiDialogTrigger,
+    GuiDialogIcon,
+    GuiDialogHeadline,
+    GuiDialogContent,
+    GuiDialogActions,
+    GuiDialogFullscreenHeader,
+    GuiBottomSheetSurface,
+    GuiSideSheetSurface,
+    GuiSideSheetHeader,
+    GuiSideSheetContent,
+    GuiSideSheetActions,
+    GuiCarousel,
+    GuiCarouselItem,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
@@ -110,9 +158,33 @@ import { InteractionDemoComponent } from './interaction-demo.component';
 })
 export class AppComponent {
   private readonly theme = inject(M3ThemeService);
+  /** Dialog service used by the containment demo (imperative full-screen open). */
+  protected readonly dialog = inject(GuiDialog);
+  /** Bottom-sheet service used by the containment demo (modal open). */
+  protected readonly bottomSheet = inject(GuiBottomSheet);
+  /** Standard (non-modal) bottom-sheet open state. */
+  readonly standardSheetOpen = signal(false);
+  /** Side-sheet service used by the containment demo (modal open). */
+  protected readonly sideSheet = inject(GuiSideSheet);
+  /** Standard (non-modal) side-sheet open state. */
+  readonly standardSideSheetOpen = signal(false);
+  /** Carousel demo layout switcher. */
+  readonly carouselLayouts = [
+    'multi-browse',
+    'uncontained',
+    'hero',
+    'full-screen',
+  ] as const satisfies readonly GuiCarouselLayout[];
+  readonly carouselLayout = signal<GuiCarouselLayout>('multi-browse');
+  readonly carouselItems = [1, 2, 3, 4, 5, 6, 7, 8];
 
   /** Demo brand seeds to exercise runtime re-theming (Req 7.3). */
   readonly brandSeeds = ['#6750A4', '#00629D', '#B3261E'];
+
+  /** Containment demo: last card interaction, for visible feedback. */
+  readonly lastCardAction = signal('none');
+  readonly cardVariants = ['elevated', 'filled', 'outlined'] as const;
+  readonly fruits = ['Apple', 'Banana', 'Cherry', 'Date'];
 
   /** Re-theme the running app from a brand seed color. */
   applyBrand(seed: string): void {

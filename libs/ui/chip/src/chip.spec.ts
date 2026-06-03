@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { ChipComponent, GuiChipType } from './chip';
 import { ChipSetComponent, GuiChipSelect } from './chip-set';
 
@@ -91,5 +92,12 @@ describe('ChipComponent', () => {
     fixture.detectChanges();
 
     expect(chips[0].hasAttribute('data-elevated')).toBe(true);
+  });
+
+  it('implements getLabel so roving type-ahead does not throw (FocusableOption)', () => {
+    const instances = fixture.debugElement
+      .queryAll(By.directive(ChipComponent))
+      .map((d) => d.componentInstance as ChipComponent);
+    expect(instances.map((c) => c.getLabel())).toEqual(['A', 'B']);
   });
 });

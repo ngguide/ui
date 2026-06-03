@@ -927,6 +927,378 @@
       <div class="ml-4 text-sm text-gray-600">Plain (hover/focus), rich</div>
     </div>
 
+    <!-- Containment — Card + Divider -->
+    <div class="flex flex-col gap-4 mt-8">
+      <h2 class="text-lg font-medium">Card &amp; Divider</h2>
+
+      <!-- (a) Three card variants -->
+      <div class="flex flex-row gap-4 items-stretch">
+        @for (variant of cardVariants; track variant) {
+          <gui-card [variant]="variant" class="p-4 w-48 gap-1">
+            <span class="font-medium capitalize">{{ variant }}</span>
+            <span class="text-sm text-gray-600">M3 {{ variant }} card</span>
+          </gui-card>
+        }
+      </div>
+
+      <!-- (b) Whole-surface clickable card -->
+      <gui-card
+        variant="elevated"
+        guiCardClickable
+        class="p-4 w-72 gap-1"
+        (cardActivate)="lastCardAction.set('clickable card')"
+      >
+        <span class="font-medium">Clickable card</span>
+        <span class="text-sm text-gray-600"
+          >Whole surface is one button (Enter / Space / click)</span
+        >
+      </gui-card>
+
+      <!-- (c) Primary-action region + independent action buttons -->
+      <gui-card variant="outlined" class="w-72">
+        <div
+          guiCardPrimaryAction
+          class="p-4 flex flex-col gap-1"
+          (primaryAction)="lastCardAction.set('primary action')"
+        >
+          <span class="font-medium">Primary-action card</span>
+          <span class="text-sm text-gray-600">Tap the body to open</span>
+        </div>
+        <gui-divider />
+        <div class="p-2 flex flex-row gap-2 justify-end">
+          <button
+            gui-button
+            variant="text"
+            type="button"
+            (click)="lastCardAction.set('share')"
+          >
+            Share
+          </button>
+          <button
+            gui-button
+            variant="text"
+            type="button"
+            (click)="lastCardAction.set('save')"
+          >
+            Save
+          </button>
+        </div>
+      </gui-card>
+
+      <div class="text-sm text-gray-600">
+        Last card action: {{ lastCardAction() }}
+      </div>
+
+      <!-- (d) Divider insets -->
+      <div class="flex flex-col gap-2 w-72">
+        <span class="text-sm">none</span>
+        <gui-divider inset="none" />
+        <span class="text-sm">inset</span>
+        <gui-divider inset="inset" />
+        <span class="text-sm">middle-inset</span>
+        <gui-divider inset="middle-inset" />
+      </div>
+    </div>
+
+    <!-- Containment — List -->
+    <div class="flex flex-col gap-4 mt-8">
+      <h2 class="text-lg font-medium">List</h2>
+
+      <!-- (a) Action list: 1/2/3 lines, leading icon / trailing text -->
+      <gui-card variant="outlined" class="w-96">
+        <gui-list mode="action">
+          <gui-list-item [lines]="1">
+            <gui-icon guiListItemLeading>★</gui-icon>
+            Single-line item
+            <span guiListItemTrailing>now</span>
+          </gui-list-item>
+          <gui-divider inset="inset" />
+          <gui-list-item [lines]="2">
+            <gui-icon guiListItemLeading>☆</gui-icon>
+            Two-line item
+            <span guiListItemSupporting>With supporting text</span>
+            <span guiListItemTrailing>5m</span>
+          </gui-list-item>
+          <gui-divider inset="inset" />
+          <gui-list-item [lines]="3">
+            <gui-icon guiListItemLeading>✶</gui-icon>
+            Three-line item
+            <span guiListItemSupporting
+              >A longer supporting description spanning the available width of the
+              row.</span
+            >
+            <span guiListItemTrailing>1h</span>
+          </gui-list-item>
+        </gui-list>
+      </gui-card>
+
+      <!-- (b) Selectable listbox (arrow keys + Enter/Space/click) -->
+      <gui-card variant="outlined" class="w-96">
+        <gui-list mode="listbox" [multiselectable]="true">
+          @for (fruit of fruits; track fruit) {
+            <gui-list-item selectable>{{ fruit }}</gui-list-item>
+          }
+        </gui-list>
+      </gui-card>
+    </div>
+
+    <!-- Containment — Dialog -->
+    <div class="flex flex-col gap-4 mt-8">
+      <h2 class="text-lg font-medium">Dialog</h2>
+
+      <div class="flex flex-row gap-2 items-center">
+        <!-- (a) Basic dialog via declarative trigger -->
+        <button
+          gui-button
+          variant="filled"
+          type="button"
+          [guiDialogTrigger]="basicDialog"
+          [guiDialogConfig]="{ ariaLabelledBy: 'reset-headline' }"
+        >
+          Basic dialog
+        </button>
+
+        <!-- (b) Full-screen dialog via imperative open() -->
+        <button
+          gui-button
+          variant="outlined"
+          type="button"
+          (click)="dialog.open(fullScreenDialog, { fullScreen: 'always', ariaLabelledBy: 'edit-title' })"
+        >
+          Full-screen dialog
+        </button>
+      </div>
+
+      <ng-template #basicDialog let-ref="dialogRef">
+        <gui-dialog-icon>⚠️</gui-dialog-icon>
+        <gui-dialog-headline id="reset-headline">Reset settings?</gui-dialog-headline>
+        <gui-dialog-content>
+          This will restore all settings to their default values. You can't undo
+          this action.
+        </gui-dialog-content>
+        <gui-dialog-actions>
+          <button gui-button variant="text" type="button" (click)="ref.close()">
+            Cancel
+          </button>
+          <button
+            gui-button
+            variant="text"
+            type="button"
+            (click)="ref.close('reset')"
+          >
+            Reset
+          </button>
+        </gui-dialog-actions>
+      </ng-template>
+
+      <ng-template #fullScreenDialog let-ref="dialogRef">
+        <gui-dialog-fullscreen-header>
+          <button
+            gui-icon-button
+            variant="standard"
+            guiDialogClose
+            aria-label="Close"
+            type="button"
+            (click)="ref.close()"
+          >
+            <gui-icon>✕</gui-icon>
+          </button>
+          <span id="edit-title">Edit profile</span>
+          <button
+            gui-button
+            variant="text"
+            guiDialogConfirm
+            type="button"
+            (click)="ref.close('saved')"
+          >
+            Save
+          </button>
+        </gui-dialog-fullscreen-header>
+        <gui-dialog-content>
+          <p class="py-4">Full-screen dialogs fill the window on compact layouts.</p>
+        </gui-dialog-content>
+      </ng-template>
+    </div>
+
+    <!-- Containment — Bottom sheet -->
+    <div class="flex flex-col gap-4 mt-8">
+      <h2 class="text-lg font-medium">Bottom sheet</h2>
+
+      <div class="flex flex-row gap-2 items-center">
+        <button
+          gui-button
+          variant="filled"
+          type="button"
+          (click)="bottomSheet.open(modalSheet, { ariaLabel: 'Share' })"
+        >
+          Modal sheet (drag to dismiss)
+        </button>
+        <button
+          gui-button
+          variant="outlined"
+          type="button"
+          (click)="standardSheetOpen.set(!standardSheetOpen())"
+        >
+          Toggle standard sheet
+        </button>
+      </div>
+
+      <ng-template #modalSheet let-ref="dialogRef">
+        <div class="p-4 flex flex-col gap-2">
+          <span class="font-medium">Share</span>
+          <gui-list mode="action">
+            <gui-list-item>Copy link</gui-list-item>
+            <gui-list-item>Email</gui-list-item>
+            <gui-list-item>Message</gui-list-item>
+          </gui-list>
+          <button
+            gui-button
+            variant="text"
+            type="button"
+            class="self-end"
+            (click)="ref.close()"
+          >
+            Close
+          </button>
+        </div>
+      </ng-template>
+
+      <!-- Standard sheet coexists with the page (no scrim) -->
+      <gui-bottom-sheet [(open)]="standardSheetOpen">
+        <div class="p-4 flex flex-col gap-2">
+          <span class="font-medium">Standard sheet</span>
+          <span class="text-sm text-gray-600"
+            >This sheet has no scrim — the page stays interactive. Drag the
+            handle down to dismiss.</span
+          >
+          <button
+            gui-button
+            variant="text"
+            type="button"
+            class="self-end"
+            (click)="standardSheetOpen.set(false)"
+          >
+            Close
+          </button>
+        </div>
+      </gui-bottom-sheet>
+    </div>
+
+    <!-- Containment — Side sheet -->
+    <div class="flex flex-col gap-4 mt-8">
+      <h2 class="text-lg font-medium">Side sheet</h2>
+
+      <div class="flex flex-row gap-2 items-center">
+        <button
+          gui-button
+          variant="filled"
+          type="button"
+          (click)="sideSheet.open(modalSideSheet, { ariaLabel: 'Filters' })"
+        >
+          Modal side sheet
+        </button>
+        <button
+          gui-button
+          variant="outlined"
+          type="button"
+          (click)="standardSideSheetOpen.set(!standardSideSheetOpen())"
+        >
+          Toggle standard side sheet
+        </button>
+      </div>
+
+      <ng-template #modalSideSheet let-ref="dialogRef">
+        <gui-side-sheet-header>
+          Filters
+          <button
+            gui-icon-button
+            variant="standard"
+            guiSideSheetClose
+            aria-label="Close"
+            type="button"
+            (click)="ref.close()"
+          >
+            <gui-icon>✕</gui-icon>
+          </button>
+        </gui-side-sheet-header>
+        <gui-side-sheet-content>
+          <gui-list mode="listbox" [multiselectable]="true">
+            <gui-list-item selectable>Unread</gui-list-item>
+            <gui-list-item selectable>Starred</gui-list-item>
+            <gui-list-item selectable>Attachments</gui-list-item>
+          </gui-list>
+        </gui-side-sheet-content>
+        <gui-side-sheet-actions>
+          <button gui-button variant="text" type="button" (click)="ref.close()">
+            Cancel
+          </button>
+          <button
+            gui-button
+            variant="filled"
+            type="button"
+            (click)="ref.close('applied')"
+          >
+            Apply
+          </button>
+        </gui-side-sheet-actions>
+      </ng-template>
+
+      <!-- Standard side sheet coexists with the page (no scrim) -->
+      <gui-side-sheet [(open)]="standardSideSheetOpen">
+        <gui-side-sheet-header>
+          Details
+          <button
+            gui-icon-button
+            variant="standard"
+            guiSideSheetClose
+            aria-label="Close"
+            type="button"
+            (click)="standardSideSheetOpen.set(false)"
+          >
+            <gui-icon>✕</gui-icon>
+          </button>
+        </gui-side-sheet-header>
+        <gui-side-sheet-content class="text-sm text-gray-600">
+          A standard side sheet has no scrim — the page behind stays
+          interactive.
+        </gui-side-sheet-content>
+      </gui-side-sheet>
+    </div>
+
+    <!-- Containment — Carousel -->
+    <div class="flex flex-col gap-4 mt-8" style="max-width: 480px">
+      <h2 class="text-lg font-medium">Carousel</h2>
+
+      <div class="flex flex-row gap-2 items-center flex-wrap">
+        @for (l of carouselLayouts; track l) {
+          <button
+            gui-button
+            size="sm"
+            [variant]="carouselLayout() === l ? 'filled' : 'outlined'"
+            type="button"
+            (click)="carouselLayout.set(l)"
+          >
+            {{ l }}
+          </button>
+        }
+      </div>
+
+      <gui-carousel [layout]="carouselLayout()">
+        @for (n of carouselItems; track n) {
+          <gui-carousel-item>
+            <div
+              class="h-40 flex items-center justify-center text-2xl font-medium text-white"
+              [style.background]="
+                'oklch(60% 0.15 ' + n * 40 + 'deg)'
+              "
+            >
+              {{ n }}
+            </div>
+          </gui-carousel-item>
+        }
+      </gui-carousel>
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

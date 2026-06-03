@@ -1,0 +1,37 @@
+/* M3 modal side sheet, docked to the inline-end edge, full height. */
+
+:host {
+  display: block;
+  height: 100%;
+  outline: none;
+}
+
+.gui-side-sheet-surface {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: clamp(256px, 25vw, 400px);
+  height: 100%;
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+  /* Rounded on the inner (inline-start) edge only. */
+  border-start-start-radius: var(--md-sys-shape-corner-large);
+  border-end-start-radius: var(--md-sys-shape-corner-large);
+  box-shadow: var(--md-sys-elevation-level1);
+  overflow: hidden;
+  animation: gui-side-sheet-enter var(--md-sys-motion-duration-medium4)
+    var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+@keyframes gui-side-sheet-enter {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+:host(.gui-no-motion) .gui-side-sheet-surface {
+  animation: none;
+}

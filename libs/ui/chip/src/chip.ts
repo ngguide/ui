@@ -96,9 +96,26 @@ export class ChipComponent {
 
   private readonly primary =
     viewChild.required<ElementRef<HTMLButtonElement>>('primary');
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
 
   focus(): void {
     this.primary().nativeElement.focus();
+  }
+
+  /**
+   * {@link FocusableOption} type-ahead label. `createRovingFocus` enables
+   * type-ahead, whose {@link FocusKeyManager} requires every option to provide a
+   * `getLabel()`; without it the manager throws on build. Returns the explicit
+   * `label` input or, failing that, the chip's visible text.
+   */
+  getLabel(): string {
+    return (
+      this.label() ||
+      this.host.nativeElement
+        .querySelector('.gui-chip-label')
+        ?.textContent?.trim() ||
+      ''
+    );
   }
 
   protected onPrimary(): void {

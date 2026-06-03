@@ -1,0 +1,35 @@
+/* M3 divider: a 1dp full-bleed rule in outline-variant. The border carries the
+   line so inset is expressed as margin on the leading / both edges. */
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  border: none;
+  background-color: var(--md-sys-color-outline-variant);
+  flex-shrink: 0;
+}
+
+/* --- Horizontal (default): 1dp tall, full width --- */
+:host([data-orientation='horizontal']) {
+  width: auto;
+  height: 1px;
+}
+:host([data-orientation='horizontal'][data-inset='inset']) {
+  margin-inline-start: 16px;
+}
+:host([data-orientation='horizontal'][data-inset='middle-inset']) {
+  margin-inline: 16px;
+}
+
+/* --- Vertical: 1dp wide, full height --- */
+:host([data-orientation='vertical']) {
+  width: 1px;
+  height: auto;
+  align-self: stretch;
+}
+:host([data-orientation='vertical'][data-inset='inset']) {
+  margin-block-start: 16px;
+}
+:host([data-orientation='vertical'][data-inset='middle-inset']) {
+  margin-block: 16px;
+}

@@ -1,0 +1,18 @@
+/* M3 modal scrim. Applied to the CDK overlay backdrop via
+   `backdropClass: 'gui-scrim'` by the shared modal normalizer. The dim is
+   `--md-sys-color-scrim` at 32% opacity (Req 12.1). The fade in/out is driven
+   by the CDK `.cdk-overlay-backdrop` opacity transition; under reduced motion
+   the dim appears instantly (Req 15.2). */
+.cdk-overlay-backdrop.gui-scrim {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-scrim) 32%,
+    transparent
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cdk-overlay-backdrop.gui-scrim {
+    transition: none;
+  }
+}

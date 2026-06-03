@@ -1,0 +1,11 @@
+/* M3 carousel item: extra-large (28dp) corners, clipped content, snap target.
+   Falls back to the carousel's large width (inherited custom prop) when the
+   engine has not assigned an explicit width (SSR / first frame). */
+:host {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: var(--gui-carousel-large, 186px);
+  overflow: hidden;
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  scroll-snap-align: start;
+}
