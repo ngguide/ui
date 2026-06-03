@@ -29,6 +29,9 @@
       "@ngguide/ui/icon": ["libs/ui/icon/src/index.ts"],
       "@ngguide/ui/icon-button": ["libs/ui/icon-button/src/index.ts"],
       "@ngguide/ui/interaction": ["libs/ui/interaction/src/index.ts"],
+      "@ngguide/ui/loading-indicator": [
+        "libs/ui/loading-indicator/src/index.ts"
+      ],
       "@ngguide/ui/menu": ["libs/ui/menu/src/index.ts"],
       "@ngguide/ui/overlay": ["libs/ui/overlay/src/index.ts"],
       "@ngguide/ui/progress": ["libs/ui/progress/src/index.ts"],

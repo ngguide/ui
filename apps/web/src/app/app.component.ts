@@ -51,6 +51,7 @@ import {
   GuiCircularProgress,
   GuiLinearProgress,
 } from '@ngguide/ui/progress';
+import { GuiLoadingIndicator } from '@ngguide/ui/loading-indicator';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -89,6 +90,7 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     GuiBadge,
     GuiLinearProgress,
     GuiCircularProgress,
+    GuiLoadingIndicator,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,

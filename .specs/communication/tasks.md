@@ -115,11 +115,11 @@ New `gui-linear-progress` (CSS) + `gui-circular-progress` (SVG). Blast radius: *
 
 New `gui-loading-indicator` (SVG morph). Blast radius: **safe** — independent.
 
-- [ ] 13. Scaffold the `loading-indicator` entry point
+- [x] 13. Scaffold the `loading-indicator` entry point
   - Create `libs/ui/loading-indicator/{ng-package.json, src/index.ts}`; add path alias; register spec.
   - _Requirements: 16.1, 16.2_
 
-- [ ] 14. Implement `GuiLoadingIndicator` (SVG morphing shapes)
+- [x] 14. Implement `GuiLoadingIndicator` (SVG morphing shapes)
   - `libs/ui/loading-indicator/src/loading-indicator.ts` + css per design: `variant`
     ('default'|'contained'), `label`; SVG `<path>` driven by a **deterministic** shape-tween (no
     `Math.random`/`Date.now`); 48dp overall / 38dp shape container; `role="progressbar"` busy +
@@ -127,13 +127,13 @@ New `gui-loading-indicator` (SVG morph). Blast radius: **safe** — independent.
     morph stops at a resting shape under `prefers-reduced-motion` (use `GuiReducedMotion`).
   - _Requirements: 5.1–5.4, 6.5, 14.1, 15.1_
 
-- [ ] 15. Loading-indicator spec + demo
+- [x] 15. Loading-indicator spec + demo
   - `loading-indicator.spec.ts`: renders SVG path; `role="progressbar"` + accessible label; default vs
     contained variant attr; deterministic output (no nondeterministic source).
   - Demo section in `apps/web`.
   - _Requirements: 5.4, 6.5, 16.3_
 
-- [ ] 16. Checkpoint — Group D verification
+- [x] 16. Checkpoint — Group D verification
   - Run loading-indicator spec + `lint build -p ui`. Confirm independently mergeable.
 
 ### Group E — Snackbar (`@ngguide/ui/snackbar`)

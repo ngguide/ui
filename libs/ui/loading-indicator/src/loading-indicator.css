@@ -1,0 +1,45 @@
+/* M3 loading indicator — 48dp overall, ~38dp shape, spinning + morphing cookie. */
+:host {
+  display: inline-block;
+  inline-size: 48px;
+  block-size: 48px;
+  line-height: 0;
+}
+
+.gui-loading-svg {
+  inline-size: 100%;
+  block-size: 100%;
+  transform-origin: center;
+  animation: gui-loading-spin 2.5s linear infinite;
+}
+
+.gui-loading-shape {
+  fill: var(--md-sys-color-primary);
+}
+
+/* Contained — shape sits on a filled circular container. */
+:host([data-variant='contained']) {
+  background-color: var(--md-sys-color-primary-container);
+  border-radius: 50%;
+}
+
+:host([data-variant='contained']) .gui-loading-shape {
+  fill: var(--md-sys-color-on-primary-container);
+}
+
+@keyframes gui-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Reduced motion — rest at a static shape; surface stays visible and busy. */
+:host([data-reduced-motion='true']) .gui-loading-svg {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gui-loading-svg {
+    animation: none;
+  }
+}
