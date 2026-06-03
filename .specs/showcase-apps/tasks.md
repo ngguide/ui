@@ -63,7 +63,7 @@ the existing flat demo keeps rendering unchanged. Blast radius: safe.
   - Modify `apps/web/src/styles.css`: add the Material Symbols `@import` (after the Roboto import, before `@import 'tailwindcss'`) and a `.sym` rule (font-family + variation settings + `font-size: var(--gui-comp-icon-size, 24px)`). Do **not** add global body restyle here (keep the flat demo visually unchanged; shell base layout lives in `shell.component.css`).
   - _Requirements: 5 (iconography); Decision 5A_
 
-- [ ] 5. Checkpoint — Group A verification
+- [x] 5. Checkpoint — Group A verification
   - Run: `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build -p web`.
   - Confirm `formatters.spec.ts` passes; new files type-check; the flat demo at `/` still renders unchanged (Material Symbols/`.sym` are unused so far).
 
