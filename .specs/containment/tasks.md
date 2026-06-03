@@ -235,7 +235,7 @@ Modal (CDK Dialog + drag) and standard (inline) variants. Depends on Group A. Bl
 
 Modal + standard side sheet on the end edge. Depends on Group A. Blast radius: **coupled to Group A**.
 
-- [ ] 21. Side-sheet config, service, container (modal)
+- [x] 21. Side-sheet config, service, container (modal)
   - Scaffold `@ngguide/ui/side-sheet` (+ wiring; `styles/side-sheet.css`).
   - `side-sheet-config.ts`: `GuiSideSheetConfig<D>` extending `GuiModalConfigBase` (`maxWidth` default 400px).
   - `side-sheet.service.ts`: `GuiSideSheet` injecting CDK `Dialog`; `open()` with
@@ -245,7 +245,7 @@ Modal + standard side sheet on the end edge. Depends on Group A. Blast radius: *
   - Export from index. Test (`side-sheet.service.spec.ts`): opens end-anchored modal with scrim + trap; Escape/close emits.
   - _Requirements: 10.1, 10.2, 10.5, 10.6, 12.1–12.7, 15.1, 15.2, 16.2_
 
-- [ ] 22. Side-sheet header/actions + standard inline mode + demo
+- [x] 22. Side-sheet header/actions + standard inline mode + demo
   - `side-sheet.ts`: surface with header slot (title + close affordance) and actions slot; standard variant
     (`variant="standard"`, `[(open)]`) renders inline without scrim/trap (coexists).
   - apps/web: import `GuiSideSheet`; add a modal side sheet (header + close + actions) and a toggled standard one.

@@ -42,6 +42,7 @@
       "@ngguide/ui/progress": ["libs/ui/progress/src/index.ts"],
       "@ngguide/ui/radio": ["libs/ui/radio/src/index.ts"],
       "@ngguide/ui/segmented-button": ["libs/ui/segmented-button/src/index.ts"],
+      "@ngguide/ui/side-sheet": ["libs/ui/side-sheet/src/index.ts"],
       "@ngguide/ui/slider": ["libs/ui/slider/src/index.ts"],
       "@ngguide/ui/snackbar": ["libs/ui/snackbar/src/index.ts"],
       "@ngguide/ui/split-button": ["libs/ui/split-button/src/index.ts"],

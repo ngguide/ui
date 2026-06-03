@@ -1,0 +1,36 @@
+/* M3 standard (non-modal) side sheet. Fixed to the inline-end edge, full
+   height; coexists with page content (no scrim). Slides in/out on `open`. */
+
+:host {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-end: 0;
+  z-index: 6;
+  display: block;
+  pointer-events: none;
+}
+
+.gui-side-sheet-surface {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: clamp(256px, 25vw, 400px);
+  height: 100%;
+  pointer-events: auto;
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+  border-start-start-radius: var(--md-sys-shape-corner-large);
+  border-end-start-radius: var(--md-sys-shape-corner-large);
+  box-shadow: var(--md-sys-elevation-level1);
+  transform: translateX(100%);
+  transition: transform var(--md-sys-motion-duration-medium4)
+    var(--md-sys-motion-easing-emphasized);
+}
+
+:host([data-open]) .gui-side-sheet-surface {
+  transform: translateX(0);
+}
+
+:host(.gui-no-motion) .gui-side-sheet-surface {
+  transition: none;
+}
