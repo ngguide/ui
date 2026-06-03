@@ -748,6 +748,21 @@
       />
     </div>
 
+    <div class="mt-8 mb-2 font-bold text-lg">Date range picker</div>
+
+    <div class="flex flex-row gap-4 items-start flex-wrap">
+      <gui-date-range-picker
+        label="Trip dates"
+        variant="modal"
+        [formControl]="dateRangeControl"
+      />
+      <gui-date-range-picker
+        label="Stay dates"
+        variant="modal-input"
+        [formControl]="dateRangeControl"
+      />
+    </div>
+
     <app-interaction-demo />
   </div>
 </div>

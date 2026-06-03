@@ -40,7 +40,11 @@ import {
   TextFieldLeadingDirective,
   TextFieldTrailingDirective,
 } from '@ngguide/ui/text-field';
-import { DatePickerComponent } from '@ngguide/ui/date-picker';
+import {
+  DatePickerComponent,
+  DateRangePickerComponent,
+} from '@ngguide/ui/date-picker';
+import { GuiDateRange } from '@ngguide/ui/datetime';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -74,6 +78,7 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     TextFieldLeadingDirective,
     TextFieldTrailingDirective,
     DatePickerComponent,
+    DateRangePickerComponent,
     ReactiveFormsModule,
     FormsModule,
     InteractionDemoComponent,
@@ -184,6 +189,12 @@ export class AppComponent {
 
   /** Date picker examples (docked / modal / modal-input). */
   dateControl = new FormControl<Date | null>(null);
+
+  /** Date-range picker example (modal). */
+  dateRangeControl = new FormControl<GuiDateRange>(
+    { start: null, end: null },
+    { nonNullable: true },
+  );
 
   clearEmail(): void {
     this.email.set('');

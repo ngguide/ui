@@ -1,0 +1,81 @@
+<div class="gui-date-range-picker-trigger">
+  <gui-text-field variant="outlined" label="Start date">
+    <input
+      guiTextFieldInput
+      [value]="displayStart()"
+      [readOnly]="true"
+      aria-label="Start date"
+    />
+  </gui-text-field>
+
+  <gui-text-field variant="outlined" label="End date">
+    <input
+      guiTextFieldInput
+      [value]="displayEnd()"
+      [readOnly]="true"
+      aria-label="End date"
+    />
+  </gui-text-field>
+
+  <button
+    gui-icon-button
+    type="button"
+    [attr.aria-label]="'Open calendar'"
+    [disabled]="control.effectiveDisabled()"
+    (click)="open()"
+  >
+    <gui-icon>calendar_today</gui-icon>
+  </button>
+</div>
+
+<ng-template #panel>
+  <div class="gui-date-range-picker-panel" role="dialog" aria-modal="true">
+    <div class="gui-date-range-picker-header">
+      <span class="gui-date-range-picker-headline">{{ label() }}</span>
+    </div>
+
+    @if (variant() === 'modal-input') {
+      <div class="gui-date-range-picker-inputs">
+        <gui-text-field variant="outlined" label="Start date">
+          <input
+            guiTextFieldInput
+            [value]="displayStart()"
+            [readOnly]="true"
+            aria-label="Start date"
+          />
+        </gui-text-field>
+        <gui-text-field variant="outlined" label="End date">
+          <input
+            guiTextFieldInput
+            [value]="displayEnd()"
+            [readOnly]="true"
+            aria-label="End date"
+          />
+        </gui-text-field>
+      </div>
+    }
+
+    <div class="gui-date-range-picker-divider"></div>
+
+    <gui-calendar
+      [(activeMonth)]="activeMonth"
+      [rangeStart]="pendingStart()"
+      [rangeEnd]="pendingEnd()"
+      [min]="min()"
+      [max]="max()"
+      [dateFilter]="dateFilter()"
+      [locale]="locale()"
+      [today]="today"
+      (dateSelected)="onDateSelected($event)"
+    />
+
+    <div class="gui-date-range-picker-actions">
+      <button gui-button variant="text" type="button" (click)="close()">
+        Cancel
+      </button>
+      <button gui-button variant="text" type="button" (click)="onConfirm()">
+        OK
+      </button>
+    </div>
+  </div>
+</ng-template>

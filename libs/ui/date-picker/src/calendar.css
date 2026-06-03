@@ -71,6 +71,37 @@
   color: var(--md-sys-color-on-primary);
 }
 
+/* In-range fill: a rectangular secondary-container band behind the day. */
+.gui-calendar-cell[data-in-range]::after,
+.gui-calendar-cell[data-range-start]::after,
+.gui-calendar-cell[data-range-end]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--md-sys-color-secondary-container);
+  z-index: 0;
+}
+
+.gui-calendar-cell[data-in-range] {
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Round the band on the leading/trailing endpoints. */
+.gui-calendar-cell[data-range-start]::after {
+  left: 50%;
+}
+
+.gui-calendar-cell[data-range-end]::after {
+  right: 50%;
+}
+
+/* Endpoints sit on the primary circle above the band. */
+.gui-calendar-cell[data-range-start],
+.gui-calendar-cell[data-range-end] {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
 .gui-calendar-cell[data-selected][data-today]::before {
   border-color: var(--md-sys-color-on-primary);
 }

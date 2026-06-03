@@ -206,7 +206,7 @@ Single-date picker (docked · modal · modal-input) over an APG grid calendar, c
 Range selection (modal / modal-input only — verified no docked range), composing
 `GuiFormControl<GuiDateRange>`. Blast radius: **safe** — additive; depends on Group D.
 
-- [ ] 22. Implement the `DateRangePickerComponent`
+- [x] 22. Implement the `DateRangePickerComponent`
   - Create `libs/ui/date-picker/src/date-range-picker.ts` (`gui-date-range-picker`), `.html`, `.css`;
     export from the `date-picker` barrel. `hostDirectives`: `{ directive: GuiFormControl, inputs: ['value:
     range','disabled'], outputs: ['valueChange: rangeChange'] }` (`GuiFormControl<GuiDateRange>`). Modal +
@@ -217,11 +217,11 @@ Range selection (modal / modal-input only — verified no docked range), composi
     `GuiDateRange`; an end before start is clamped; in-range cells flagged.
   - _Requirements: 6.4, 6.5, 6.9, 8.1, 8.5, 10.6_
 
-- [ ] 23. Wire the demo host for range
+- [x] 23. Wire the demo host for range
   - Append the range spec to `libs/ui/project.json` `test.include`; add a range demo to `apps/web`.
   - _Requirements: 12.3, 12.4_
 
-- [ ] 24. Checkpoint — Group E verification
+- [x] 24. Checkpoint — Group E verification
   - Run `pnpm exec nx run-many -t lint test build -p ui web` — green.
   - Confirm range selection + in-range highlight in `nx serve web`; `main` green with A–E.
 

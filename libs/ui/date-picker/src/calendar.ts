@@ -48,6 +48,9 @@ export class CalendarComponent {
   /** First-of-month currently displayed. Two-way so navigation flips months. */
   readonly activeMonth = model.required<Date>();
   readonly selected = input<Date | null>(null);
+  /** Range endpoints (modal range picker). Null when single-select. */
+  readonly rangeStart = input<Date | null>(null);
+  readonly rangeEnd = input<Date | null>(null);
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
   readonly dateFilter = input<((d: Date) => boolean) | null>(null);
@@ -143,6 +146,24 @@ export class CalendarComponent {
 
   protected isToday(date: Date): boolean {
     return isSameDay(date, this.today());
+  }
+
+  protected isRangeStart(date: Date): boolean {
+    const start = this.rangeStart();
+    return start != null && isSameDay(date, start);
+  }
+
+  protected isRangeEnd(date: Date): boolean {
+    const end = this.rangeEnd();
+    return end != null && isSameDay(date, end);
+  }
+
+  /** Strictly between start and end (exclusive of both endpoints). */
+  protected isInRange(date: Date): boolean {
+    const start = this.rangeStart();
+    const end = this.rangeEnd();
+    if (start == null || end == null) return false;
+    return compareDate(date, start) > 0 && compareDate(date, end) < 0;
   }
 
   protected onCellClick(date: Date, inCurrentMonth: boolean): void {
