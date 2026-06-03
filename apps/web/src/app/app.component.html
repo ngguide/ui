@@ -377,6 +377,96 @@
       </div>
     </div>
 
+    <!-- Chips -->
+    <div class="mt-8 mb-2 font-bold text-lg">Chips</div>
+
+    <!-- Assist chips (display-only) -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          C1
+        </div>
+      </div>
+      <gui-chip-set>
+        <gui-chip type="assist" value="share" label="Share">
+          <gui-icon guiChipLeading>↗</gui-icon> Share
+        </gui-chip>
+        <gui-chip type="assist" value="open" label="Open in maps">
+          Open in maps
+        </gui-chip>
+      </gui-chip-set>
+      <div class="ml-4 text-sm text-gray-600">Assist chips</div>
+    </div>
+
+    <!-- Filter chips (multiple) -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          C2
+        </div>
+      </div>
+      <gui-chip-set select="multiple" [(value)]="filters">
+        <gui-chip type="filter" value="new" label="New">New</gui-chip>
+        <gui-chip type="filter" value="popular" label="Popular">Popular</gui-chip>
+        <gui-chip type="filter" value="cheap" label="Cheap">Cheap</gui-chip>
+      </gui-chip-set>
+      <div class="ml-4 text-sm text-gray-600">
+        Filter (multiple): {{ filters().join(', ') || 'none' }}
+      </div>
+    </div>
+
+    <!-- Input chips (removable) -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          C3
+        </div>
+      </div>
+      <gui-chip-set>
+        @for (name of recipients(); track name) {
+          <gui-chip
+            type="input"
+            [value]="name"
+            [label]="name"
+            removable
+            (remove)="removeRecipient(name)"
+          >
+            {{ name }}
+            <span guiChipRemove aria-hidden="true">×</span>
+          </gui-chip>
+        }
+      </gui-chip-set>
+      <div class="ml-4 text-sm text-gray-600">
+        Input (removable): {{ recipients().join(', ') || 'empty' }}
+      </div>
+    </div>
+
+    <!-- Suggestion chips -->
+    <div class="flex flex-row gap-2 items-center">
+      <div>
+        <div
+          class="p-2 border rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          C4
+        </div>
+      </div>
+      <gui-chip-set>
+        <gui-chip type="suggestion" value="yes" label="Yes please">
+          Yes please
+        </gui-chip>
+        <gui-chip type="suggestion" value="no" label="No thanks">
+          No thanks
+        </gui-chip>
+      </gui-chip-set>
+      <div class="ml-4 text-sm text-gray-600">Suggestion chips</div>
+    </div>
+
     <!-- Button Group -->
     <div class="mt-8 mb-2 font-bold text-lg">Button Group</div>
 
@@ -431,14 +521,146 @@
         <span guiLeading>Save</span>
         <span guiTrailingIcon>▾</span>
         <ng-template>
-          <div cdkMenu class="gui-fab-menu-list">
-            <button gui-button cdkMenuItem>Save as…</button>
-            <button gui-button cdkMenuItem>Save all</button>
+          <div gui-menu cdkMenu>
+            <button gui-menu-item>Save as…</button>
+            <button gui-menu-item>Save all</button>
           </div>
         </ng-template>
       </gui-split-button>
       <div class="ml-4 text-sm text-gray-600">
         Split button: primary action + trailing menu of related choices
+      </div>
+    </div>
+
+    <!-- Menu -->
+    <div class="mt-8 mb-2 font-bold text-lg">Menu</div>
+
+    <div class="flex flex-row gap-2 items-center">
+      <button gui-button variant="tonal" [cdkMenuTriggerFor]="appMenu">
+        Actions ▾
+      </button>
+      <ng-template #appMenu>
+        <div gui-menu cdkMenu>
+          <button gui-menu-item>
+            <gui-icon guiMenuItemLeading>★</gui-icon>
+            New file
+          </button>
+          <button gui-menu-item>
+            <gui-icon guiMenuItemLeading>★</gui-icon>
+            Open…
+          </button>
+          <gui-menu-divider />
+          <button gui-menu-item>
+            Rename
+            <span guiMenuItemTrailing>⌘R</span>
+          </button>
+          <button gui-menu-item [cdkMenuTriggerFor]="shareMenu">
+            <gui-icon guiMenuItemLeading>★</gui-icon>
+            More…
+            <span guiMenuItemTrailing>▸</span>
+          </button>
+          <gui-menu-divider />
+          <button gui-menu-item [disabled]="true">Delete</button>
+        </div>
+      </ng-template>
+      <ng-template #shareMenu>
+        <div gui-menu cdkMenu>
+          <button gui-menu-item>Email</button>
+          <button gui-menu-item>Copy link</button>
+        </div>
+      </ng-template>
+      <div class="ml-4 text-sm text-gray-600">
+        Menu: surface + items, divider, disabled, trailing text, cascading
+        submenu
+      </div>
+    </div>
+
+    <!-- Checkbox -->
+    <div class="mt-8 mb-2 font-bold text-lg">Checkbox</div>
+
+    <div class="flex flex-row gap-6 items-center flex-wrap">
+      <gui-checkbox [(checked)]="terms">Unchecked</gui-checkbox>
+      <gui-checkbox [(checked)]="newsletter">Checked</gui-checkbox>
+      <gui-checkbox indeterminate>Indeterminate</gui-checkbox>
+      <gui-checkbox error>Error</gui-checkbox>
+      <gui-checkbox checked disabled>Disabled</gui-checkbox>
+    </div>
+
+    <!-- Switch -->
+    <div class="mt-8 mb-2 font-bold text-lg">Switch</div>
+
+    <div class="flex flex-row gap-6 items-center flex-wrap">
+      <gui-switch [(checked)]="wifi">Off</gui-switch>
+      <gui-switch [(checked)]="bluetooth">On</gui-switch>
+      <gui-switch [(checked)]="darkMode">
+        <gui-icon guiSwitchIcon>☾</gui-icon>
+        <gui-icon guiSwitchSelectedIcon>☀</gui-icon>
+        With icon
+      </gui-switch>
+      <gui-switch checked disabled>Disabled</gui-switch>
+    </div>
+
+    <!-- Radio -->
+    <div class="mt-8 mb-2 font-bold text-lg">Radio</div>
+
+    <gui-radio-group [(value)]="contact" class="flex flex-row gap-6 flex-wrap">
+      <gui-radio value="email">Email</gui-radio>
+      <gui-radio value="phone">Phone</gui-radio>
+      <gui-radio value="sms">SMS</gui-radio>
+      <gui-radio value="mail" disabled>Mail (disabled)</gui-radio>
+    </gui-radio-group>
+
+    <!-- Reactive forms -->
+    <div class="mt-8 mb-2 font-bold text-lg">Toggles in a reactive form</div>
+
+    <div class="flex flex-row gap-6 items-center flex-wrap">
+      <gui-checkbox [formControl]="acceptControl">Accept terms</gui-checkbox>
+      <gui-switch [formControl]="notifyControl">Notifications</gui-switch>
+      <div class="ml-4 text-sm text-gray-600">
+        accept = {{ acceptControl.value }}, notify = {{ notifyControl.value }}
+      </div>
+    </div>
+
+    <!-- Radio in a reactive form -->
+    <div class="mt-8 mb-2 font-bold text-lg">Radio in a reactive form</div>
+
+    <gui-radio-group [formControl]="planControl" class="flex flex-row gap-6 flex-wrap">
+      <gui-radio value="free">Free</gui-radio>
+      <gui-radio value="pro">Pro</gui-radio>
+      <gui-radio value="team">Team</gui-radio>
+    </gui-radio-group>
+    <div class="mt-2 text-sm text-gray-600">plan = {{ planControl.value }}</div>
+
+    <!-- Slider -->
+    <div class="mt-8 mb-2 font-bold text-lg">Slider</div>
+
+    <!-- Continuous single slider -->
+    <div class="flex flex-row gap-4 items-center w-96">
+      <gui-slider class="flex-1" [(value)]="volume"></gui-slider>
+      <div class="text-sm text-gray-600 w-28">Volume: {{ volume() }}</div>
+    </div>
+
+    <!-- Discrete single slider (ticks) -->
+    <div class="flex flex-row gap-4 items-center w-96">
+      <gui-slider class="flex-1" discrete [step]="10" [(value)]="rating"></gui-slider>
+      <div class="text-sm text-gray-600 w-28">Rating: {{ rating() }}</div>
+    </div>
+
+    <!-- Range slider -->
+    <div class="flex flex-row gap-4 items-center w-96">
+      <gui-slider class="flex-1" range [(value)]="priceRange"></gui-slider>
+      <div class="text-sm text-gray-600 w-28">
+        Price: {{ priceRange()[0] }}–{{ priceRange()[1] }}
+      </div>
+    </div>
+
+    <!-- Slider in a reactive form -->
+    <div class="mt-8 mb-2 font-bold text-lg">Slider in a reactive form</div>
+
+    <div class="flex flex-row gap-4 items-center w-96">
+      <gui-slider class="flex-1" [formControl]="brightnessControl"></gui-slider>
+      <div class="text-sm text-gray-600 w-28">
+        brightness = {{ brightnessControl.value }}
       </div>
     </div>
 

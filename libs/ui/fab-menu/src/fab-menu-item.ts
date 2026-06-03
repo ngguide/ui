@@ -1,24 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-} from '@angular/core';
-import { CdkMenuItem } from '@angular/cdk/menu';
-import {
-  GuiFocusRingDirective,
-  GuiRippleDirective,
-  GuiStateLayerDirective,
-} from '@ngguide/ui/interaction';
-
-/** A flat M3 FAB-menu action item. Composes CdkMenuItem (resolves the consumer's
- * cdkMenu) plus the interaction foundation. Min 48dp target. */
-@Component({
-  selector:
-    // eslint-disable-next-line @angular-eslint/component-selector
-    'button[gui-fab-menu-item]',
-  template: `<ng-content select="[guiIcon]" /><span class="gui-fab-menu-item-label"><ng-content /></span>`,
-  styleUrl: './fab-menu.css',
-  hostDirectives: [CdkMenuItem, GuiStateLayerDirective, GuiRippleDirective, GuiFocusRingDirective],
-  exportAs: 'guiFabMenuItem',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class FabMenuItemComponent {}
+/**
+ * A FAB-menu action item. This is the single shared M3 menu item
+ * (`MenuItemComponent` from `@ngguide/ui/menu`), re-exported under the legacy
+ * `FabMenuItemComponent` name. The shared class also matches the
+ * `button[gui-fab-menu-item]` selector and the `guiFabMenuItem` exportAs, so
+ * existing FAB-menu consumers keep working while routing through one
+ * implementation (R8.7).
+ */
+export { MenuItemComponent as FabMenuItemComponent } from '@ngguide/ui/menu';

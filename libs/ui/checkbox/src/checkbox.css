@@ -1,0 +1,126 @@
+/* M3 checkbox container. Hover/focus/pressed state layers, the ripple and the
+   focus ring are drawn by the composed interaction foundation
+   (GuiStateLayer/GuiRipple/GuiFocusRing via hostDirectives) — never re-implement
+   them here. This file styles the resting box, checkmark and color roles only.
+   Values trace to --md-sys-* tokens. */
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  cursor: pointer;
+  /* M3 control content color for the label. */
+  color: var(--md-sys-color-on-surface);
+  /* The control region drives the state-layer/focus-ring shape. */
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+/* Visually-hidden native input. It still receives focus and sits over the box
+   to provide the >=48px accessible hit target. */
+.gui-checkbox-box {
+  box-sizing: border-box;
+  position: relative;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--md-sys-color-on-surface-variant);
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  background: transparent;
+  transition:
+    background-color var(--md-sys-motion-duration-short2)
+      var(--md-sys-motion-easing-standard),
+    border-color var(--md-sys-motion-duration-short2)
+      var(--md-sys-motion-easing-standard);
+}
+
+input[type='checkbox'] {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  /* Center the 48px hit target over the 18px box. */
+  margin-left: -15px;
+  opacity: 0;
+  cursor: inherit;
+}
+
+/* Checkmark, drawn as a rotated pseudo-element on the box. */
+.gui-checkbox-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  box-sizing: border-box;
+  width: 6px;
+  height: 11px;
+  margin: 1px auto auto;
+  border: solid var(--md-sys-color-on-primary);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Checked: filled box + visible checkmark. */
+:host(:has(input:checked:not(:indeterminate))) .gui-checkbox-box {
+  background-color: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+}
+:host(:has(input:checked:not(:indeterminate))) .gui-checkbox-box::after {
+  opacity: 1;
+}
+
+/* Indeterminate: filled box + horizontal dash (overrides the checkmark). */
+:host(:has(input:indeterminate)) .gui-checkbox-box {
+  background-color: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+}
+:host(:has(input:indeterminate)) .gui-checkbox-box::after {
+  opacity: 1;
+  width: 10px;
+  height: 0;
+  margin: auto;
+  inset: 0;
+  border: none;
+  border-top: 2px solid var(--md-sys-color-on-primary);
+  transform: none;
+}
+
+/* Error state uses the M3 error role for the outline and fill. */
+:host([data-error]) .gui-checkbox-box {
+  border-color: var(--md-sys-color-error);
+}
+:host([data-error]:has(input:checked)) .gui-checkbox-box,
+:host([data-error]:has(input:indeterminate)) .gui-checkbox-box {
+  background-color: var(--md-sys-color-error);
+  border-color: var(--md-sys-color-error);
+}
+:host([data-error]:has(input:checked)) .gui-checkbox-box::after,
+:host([data-error]:has(input:indeterminate)) .gui-checkbox-box::after {
+  border-color: var(--md-sys-color-on-error);
+}
+
+/* Disabled (M3 disabled treatment via tokens). The interaction layer already
+   suppresses the state layer for disabled hosts. */
+:host(.gui-disabled) {
+  pointer-events: none;
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+}
+:host(.gui-disabled) .gui-checkbox-box {
+  border-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 62%
+  );
+}
+:host(.gui-disabled:has(input:checked)) .gui-checkbox-box,
+:host(.gui-disabled:has(input:indeterminate)) .gui-checkbox-box {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 62%
+  );
+  border-color: transparent;
+}

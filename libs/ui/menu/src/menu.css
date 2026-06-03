@@ -1,0 +1,72 @@
+/* M3 menu surface + items. */
+.gui-menu {
+  display: block;
+  box-sizing: border-box;
+  min-width: 112px;
+  max-width: 280px;
+  padding: 8px 0;
+  background: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+/* Encapsulation is None on MenuItemComponent (see menu-item.ts) so these rules
+   are global — they target the host via the `.gui-menu-item` host class instead
+   of `:host`. All selectors stay `gui-menu*`-namespaced. */
+.gui-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 48px;
+  padding: 0 12px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  text-align: left;
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface);
+  /* body-large */
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  --gui-comp-icon-size: 24px;
+}
+
+.gui-menu-item-label {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gui-menu-item-leading,
+.gui-menu-item-trailing {
+  display: inline-flex;
+  align-items: center;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.gui-menu-item-trailing {
+  margin-left: auto;
+}
+
+/* CdkMenuItem reflects disabled as [aria-disabled="true"]. */
+.gui-menu-item[aria-disabled='true'] {
+  pointer-events: none;
+  cursor: default;
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+.gui-menu-item[aria-disabled='true'] .gui-menu-item-leading,
+.gui-menu-item[aria-disabled='true'] .gui-menu-item-trailing {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+.gui-menu-divider {
+  display: block;
+  height: 1px;
+  margin: 8px 0;
+  background: var(--md-sys-color-outline-variant);
+}

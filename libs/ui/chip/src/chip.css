@@ -1,0 +1,130 @@
+/* M3 chip — tokens only; the interaction host directives (state layer, ripple,
+   focus ring) own the state/ripple/focus visuals on the chip host. This file
+   sets the resting container shape, color and border plus the selected and
+   elevated treatments. Values trace to --md-sys-* tokens.
+
+   This stylesheet is shared by <gui-chip-set> and <gui-chip>; Angular scopes it
+   to each component's own host, so the `gui-chip-set`-only rules (`.gui-chip-row`)
+   simply never match inside <gui-chip> and vice versa. The `:host` rules below
+   are written to be harmless for whichever host they land on. */
+
+/* --- Chip set layout (the grid row) --- */
+.gui-chip-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* --- Chip host (a single chip) --- */
+:host {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 8px;
+  position: relative;
+  cursor: pointer;
+
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  /* M3 small shape token (8px). */
+  border-radius: var(--md-sys-shape-corner-small);
+  /* Outlined chip default: 1px outline-variant border. */
+  border: 1px solid var(--md-sys-color-outline-variant);
+
+  transition:
+    background-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    border-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard);
+}
+
+/* The primary and remove buttons are borderless, transparent and inherit the
+   chip's color so the chip host owns all container styling. */
+.gui-chip-primary,
+.gui-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: inherit;
+}
+
+.gui-chip-remove {
+  width: 18px;
+  justify-content: center;
+}
+
+/* M3 label-large applied to the chip label. */
+.gui-chip-label {
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  color: inherit;
+}
+
+/* The leading slot only reserves space when there is content (e.g. an icon or
+   the selected checkmark). */
+.gui-chip-leading {
+  display: inline-flex;
+  align-items: center;
+}
+
+.gui-chip-leading:empty {
+  display: none;
+}
+
+/* M3 leading selected checkmark (filter chips). */
+.gui-chip-check {
+  width: 18px;
+  height: 18px;
+}
+
+/* Selected (filter/input) chip — M3 secondary-container treatment plus space
+   for a leading checkmark. */
+:host([data-selected]) {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: transparent;
+}
+
+/* Elevated chip — level-1 elevation and no border. */
+:host([data-elevated]) {
+  border: none;
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+/* Per-type nuances: assist/suggestion are display-only defaults; input/filter
+   are selectable. The selectable families pick up the selected rule above; the
+   defaults keep the resting outline. */
+:host([data-type='assist']),
+:host([data-type='suggestion']) {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Disabled — M3 disabled treatment via token color-mix. */
+:host(.gui-disabled) {
+  pointer-events: none;
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+  border-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 88%
+  );
+}
+:host([data-selected].gui-disabled) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 88%
+  );
+}

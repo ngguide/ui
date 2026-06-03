@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
+import { CdkMenu, CdkMenuTrigger } from '@angular/cdk/menu';
 import { GuiSize } from '@ngguide/ui';
 import { M3ThemeService } from '@ngguide/ui/theme';
 
@@ -15,6 +16,11 @@ import {
 import { FabMenuComponent, FabMenuItemComponent } from '@ngguide/ui/fab-menu';
 import { IconComponent } from '@ngguide/ui/icon';
 import {
+  MenuDirective,
+  MenuDividerComponent,
+  MenuItemComponent,
+} from '@ngguide/ui/menu';
+import {
   GuiIconButtonVariant,
   IconButtonComponent,
 } from '@ngguide/ui/icon-button';
@@ -23,6 +29,11 @@ import {
   SegmentedButtonGroupComponent,
 } from '@ngguide/ui/segmented-button';
 import { SplitButtonComponent } from '@ngguide/ui/split-button';
+import { CheckboxComponent } from '@ngguide/ui/checkbox';
+import { ChipComponent, ChipSetComponent } from '@ngguide/ui/chip';
+import { RadioComponent, RadioGroupComponent } from '@ngguide/ui/radio';
+import { SwitchComponent } from '@ngguide/ui/switch';
+import { SliderComponent } from '@ngguide/ui/slider';
 import { InteractionDemoComponent } from './interaction-demo.component';
 
 @Component({
@@ -35,12 +46,23 @@ import { InteractionDemoComponent } from './interaction-demo.component';
     FabMenuComponent,
     FabMenuItemComponent,
     CdkMenu,
-    CdkMenuItem,
+    CdkMenuTrigger,
+    MenuDirective,
+    MenuItemComponent,
+    MenuDividerComponent,
     SplitButtonComponent,
     IconComponent,
     IconButtonComponent,
     SegmentedButtonGroupComponent,
     SegmentedButtonComponent,
+    CheckboxComponent,
+    ChipSetComponent,
+    ChipComponent,
+    RadioGroupComponent,
+    RadioComponent,
+    SwitchComponent,
+    SliderComponent,
+    ReactiveFormsModule,
     InteractionDemoComponent,
   ],
   selector: 'app-root',
@@ -99,6 +121,44 @@ export class AppComponent {
 
   /** Multi-select segmented buttons demo. */
   weekdays: string[] = ['mon'];
+
+  /** Checkbox demo state. */
+  terms = false;
+  newsletter = true;
+  selectAll = false;
+
+  /** Switch demo state. */
+  wifi = false;
+  bluetooth = true;
+  darkMode = false;
+
+  /** Radio demo state. */
+  contact: string | null = 'email';
+
+  /** Filter chip set (multiple) demo state. */
+  filters = signal<string[]>(['new']);
+
+  /** Input chip set demo state — removable chips splice this array. */
+  recipients = signal<string[]>(['alice', 'bob', 'carol']);
+
+  removeRecipient(name: string): void {
+    this.recipients.update((list) => list.filter((x) => x !== name));
+  }
+
+  /** Reactive-form example bound to a gui-checkbox and a gui-switch. */
+  acceptControl = new FormControl(false);
+  notifyControl = new FormControl(true);
+
+  /** Reactive-form example bound to a gui-radio-group. */
+  planControl = new FormControl<string | null>('pro');
+
+  /** Slider demo state. */
+  volume = signal(40);
+  rating = signal(30);
+  priceRange = signal<[number, number]>([20, 80]);
+
+  /** Reactive-form example bound to a gui-slider. */
+  brightnessControl = new FormControl(60);
 
   /** No-op handler for the split-button primary action demo. */
   onSave(): void {

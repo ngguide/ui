@@ -12,29 +12,6 @@
   margin: 0;
 }
 
-button[gui-fab-menu-item] {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 48px;
-  min-width: 48px;
-  padding: 0 16px;
-  box-sizing: border-box;
-  cursor: pointer;
-  background: var(--md-sys-color-surface-container-high);
-  color: var(--md-sys-color-on-surface);
-  border: none;
-  border-radius: var(--md-sys-shape-corner-full);
-  --gui-comp-icon-size: 24px;
-  white-space: nowrap;
-  transition: background-color var(--md-sys-motion-duration-short4)
-    var(--md-sys-motion-easing-standard);
-}
-
-.gui-fab-menu-item-label {
-  white-space: nowrap;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .gui-fab-menu-list {
     animation: gui-fab-menu-in var(--md-sys-motion-duration-short4)
