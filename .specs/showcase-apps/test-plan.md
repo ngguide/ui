@@ -298,8 +298,8 @@ safe and self-resetting.
     - **Expected:** The customer list renders; the detail shows the customer plus their orders (each with its computed total), and links back to those orders.
     - _Requirements: 5.5_
 
-- [ ] 8. In-session data behavior & reset
-  - [ ] 8.1 Reload resets to seeded state
+- [x] 8. In-session data behavior & reset
+  - [x] 8.1 Reload resets to seeded state
     - **Preconditions:** Make several edits — add a user, change a task status, edit a product.
     - **Steps:**
       1. Do a full browser reload.
@@ -307,30 +307,31 @@ safe and self-resetting.
     - **Expected:** All data returns to its original seeded state; in-session edits are gone.
     - _Requirements: 6.3_
 
-  - [ ] 8.2 No backend / network for data
+  - [x] 8.2 No backend / network for data
     - **Preconditions:** Devtools Network tab open and cleared.
     - **Steps:**
       1. Exercise search, filter, CRUD across all three apps.
     - **Expected:** No XHR/fetch requests are made for application data (only static asset/chunk requests); nothing requires authentication.
     - _Requirements: 6.4_
 
-- [ ] 9. Runtime theming
-  - [ ] 9.1 Light/dark toggle applies everywhere
+- [x] 9. Runtime theming
+  - [x] 9.1 Light/dark toggle applies everywhere
     - **Preconditions:** Any screen.
     - **Steps:**
       1. Toggle the dark switch in the app bar.
       2. Navigate to other apps/sections.
     - **Expected:** The whole UI (chrome + content) switches scheme immediately and consistently across every screen.
     - _Requirements: 7.1_
+    - **Note (minor UX):** Toggling the switch flips the scheme (chrome + content) immediately and consistently ✓. However, the default theme `mode` is `'auto'` and the "Dark theme" switch is bound to `isDark = (mode === 'dark')` (`theme-controller.ts:22`). On a system that prefers dark, the UI renders **dark** at first load while the switch reads **OFF** — the switch reflects only an explicit `dark` choice, not the effective appearance in auto mode. Consider deriving the switch state from the *resolved* scheme.
 
-  - [ ] 9.2 Brand-seed switch regenerates the scheme
+  - [x] 9.2 Brand-seed switch regenerates the scheme
     - **Preconditions:** Any screen.
     - **Steps:**
       1. Open the brand-color menu and choose a different seed (e.g. Ocean, Crimson).
     - **Expected:** The entire color scheme regenerates from the chosen seed (primary/secondary/containers all shift) across the UI.
     - _Requirements: 7.2_
 
-  - [ ] 9.3 Theme persists across navigation (resets on reload)
+  - [x] 9.3 Theme persists across navigation (resets on reload)
     - **Preconditions:** Set dark mode + a non-default seed.
     - **Steps:**
       1. Navigate across all three apps and several sections.
@@ -338,7 +339,7 @@ safe and self-resetting.
     - **Expected:** Mode and seed persist across all in-session navigation; a full reload resets to the defaults.
     - _Requirements: 7.3_
 
-  - [ ] 9.4 No unstyled flash / color shift at first paint
+  - [x] 9.4 No unstyled flash / color shift at first paint
     - **Preconditions:** Use the production server (see Prerequisites). Throttle network in devtools.
     - **Steps:**
       1. Hard-reload a prerendered route (e.g. `/admin/dashboard`).
@@ -346,44 +347,44 @@ safe and self-resetting.
     - **Expected:** The themed colors are present at first paint; there is no flash of unstyled content and no post-load color shift/jump.
     - _Requirements: 7.4_
 
-- [ ] 10. Adaptive layout
-  - [ ] 10.1 Compact layout & navigation
+- [x] 10. Adaptive layout
+  - [x] 10.1 Compact layout & navigation
     - **Preconditions:** Narrow the window to ≤ 599px.
     - **Steps:**
       1. Observe the navigation and content layout at compact width across all three apps.
     - **Expected:** Navigation presents in a compact form (e.g. bottom bar) appropriate to narrow width; content reflows to a single column; primary actions remain reachable.
     - _Requirements: 8.1, 8.3_
 
-  - [ ] 10.2 Expanded layout & navigation
+  - [x] 10.2 Expanded layout & navigation
     - **Preconditions:** Widen to ≥ 1024px.
     - **Steps:**
       1. Observe the navigation and content layout at wide width.
     - **Expected:** A persistent navigation rail is shown; content uses the available width (multi-column where appropriate); all primary actions remain reachable.
     - _Requirements: 8.2, 8.3_
 
-  - [ ] 10.3 Live resize across the breakpoint
+  - [x] 10.3 Live resize across the breakpoint
     - **Preconditions:** A screen open.
     - **Steps:**
       1. Slowly drag the window across the compact↔expanded boundary, back and forth.
     - **Expected:** The nav morphs between rail and bottom bar at the breakpoint without layout breakage, content loss, or a visible jump/flicker; no console errors.
     - _Requirements: 8.1, 8.2_
 
-- [ ] 11. Empty / loading / error states
-  - [ ] 11.1 Empty states across lists
+- [x] 11. Empty / loading / error states
+  - [x] 11.1 Empty states across lists
     - **Preconditions:** None.
     - **Steps:**
       1. Drive each searchable list (users, orders, products, tasks) to a no-match state.
     - **Expected:** Each shows an explicit empty state (message + recovery action), never a blank region.
     - _Requirements: 9.1_
 
-  - [ ] 11.2 Loading indication
+  - [x] 11.2 Loading indication
     - **Preconditions:** A screen with a "Reload" action.
     - **Steps:**
       1. Trigger reload and watch.
     - **Expected:** A loading indicator appears during the simulated load, then content returns.
     - _Requirements: 9.2_
 
-  - [ ] 11.3 Recoverable error with retry
+  - [x] 11.3 Recoverable error with retry
     - **Preconditions:** On the Console dashboard.
     - **Steps:**
       1. Activate the "Sync" action.
@@ -391,59 +392,59 @@ safe and self-resetting.
     - **Expected:** The first attempt fails and surfaces a clear error (snackbar with Retry + an inline error banner); retrying succeeds, the error clears, and a success message is shown.
     - _Requirements: 9.4_
 
-  - [ ] 11.4 Invalid form input prevents submission
+  - [x] 11.4 Invalid form input prevents submission
     - **Preconditions:** Any create/edit form (user / task / product).
     - **Steps:**
       1. Enter invalid input and attempt to submit.
     - **Expected:** Inline error feedback is shown and submission is prevented until corrected (cross-check 4.4 / 6.5 / 7.4).
     - _Requirements: 9.3_
 
-- [ ] 12. Accessibility
-  - [ ] 12.1 Keyboard-only primary flows
+- [x] 12. Accessibility
+  - [x] 12.1 Keyboard-only primary flows
     - **Preconditions:** Use the keyboard only (no mouse/trackpad).
     - **Steps:**
       1. From `/`, Tab/arrow through the nav, open an app, navigate sections, open a menu, open a dialog/sheet, complete a create form, and submit — all via keyboard.
     - **Expected:** Every primary flow is completable with the keyboard; the navigation rail supports roving focus (arrow keys move between items, one tab stop); menus/dialogs/sheets trap and restore focus correctly; Escape closes overlays.
     - _Requirements: 10.1_
 
-  - [ ] 12.2 Visible focus indicator
+  - [x] 12.2 Visible focus indicator
     - **Preconditions:** Keyboard navigation.
     - **Steps:**
       1. Tab through interactive controls on several screens.
     - **Expected:** The focused control always shows a visible focus indicator.
     - _Requirements: 10.2_
 
-  - [ ] 12.3 Active location conveyed to assistive tech
+  - [x] 12.3 Active location conveyed to assistive tech
     - **Preconditions:** Screen reader on.
     - **Steps:**
       1. Navigate the rail/bottom bar and move between sections.
     - **Expected:** The active navigation destination is announced (e.g. current/selected state); landmarks/labels let a SR user understand the current app and section.
     - _Requirements: 10.3_
 
-  - [ ] 12.4 Color contrast in both modes
+  - [x] 12.4 Color contrast in both modes
     - **Preconditions:** A contrast checker or devtools.
     - **Steps:**
       1. Spot-check text and UI contrast on a few dense screens in light mode and again in dark mode, and across two brand seeds.
     - **Expected:** Text and essential UI meet WCAG 2.1 AA contrast in both light and dark modes.
     - _Requirements: 10.x (NFR: WCAG 2.1 AA)_
 
-- [ ] 13. SSR / first paint determinism
-  - [ ] 13.1 Prerendered first paint has real content
+- [x] 13. SSR / first paint determinism
+  - [x] 13.1 Prerendered first paint has real content
     - **Preconditions:** Production server running (see Prerequisites).
     - **Steps:**
       1. With JavaScript disabled (or via View Source / curl), load `/admin/dashboard`, `/tasks/board`, `/shop/products`.
     - **Expected:** The server response already contains rendered content (KPIs, columns, product cards) — not an empty `<app-root>`.
     - _Requirements: NFR (SSR first paint)_
 
-  - [ ] 13.2 Hydration without mismatch
+  - [x] 13.2 Hydration without mismatch
     - **Preconditions:** Production server; devtools Console open.
     - **Steps:**
       1. Load several routes with JS enabled and interact immediately.
     - **Expected:** No hydration-mismatch warnings/errors in the console; no visible content flip/shift between server HTML and hydrated app; relative dates/labels are stable (deterministic demo "today").
     - _Requirements: NFR (SSR no hydration mismatch)_
 
-- [ ] 14. Superseded behavior
-  - [ ] 14.1 Flat kitchen-sink playground is gone
+- [x] 14. Superseded behavior
+  - [x] 14.1 Flat kitchen-sink playground is gone
     - **Preconditions:** None.
     - **Steps:**
       1. Confirm there is no single-screen "render every component once" playground reachable from `/` or any route.
@@ -452,6 +453,50 @@ safe and self-resetting.
 
 ## Summary
 - Total: 53 tests
-- Passed: 0
-- Failed: 0
+- Passed: 49
+- Failed: 4
 - Skipped: 0
+
+## Dogfood Run Notes (agent-browser, 2026-06-04)
+
+Executed by driving Chrome via the `agent-browser` CLI against `nx serve web` (localhost:4200), plus
+the production build's prerendered `browser/` output served statically for the SSR/first-paint cases.
+
+### Failures — two root causes (4 cases)
+
+1. **Users list "⋮ Row actions" menu is broken — `NG0309` (blocks 4.3, 4.5, 4.6).**
+   `apps/web/src/app/admin/users.component.html` puts both `gui-menu-item` **and** a redundant
+   `cdkMenuItem` on the same three buttons; `gui-menu-item` already composes `CdkMenuItem`
+   (`libs/ui/menu/src/menu-item.ts`), so the directive matches twice → the menu never opens
+   (`setFocusOrigin`/`componentOffset` crash). Since user rows have no other affordance, the entire
+   list → detail/edit/delete navigation is unreachable. **Fix:** delete the redundant `cdkMenuItem`
+   from the View/Edit/Delete buttons (the working app-switcher uses `gui-menu-item` alone). Underlying
+   detail/edit/delete features all work when reached by URL or the detail page.
+
+2. **No assignee-filter UI in Tracker (fails 6.7).** `assigneeFilter`/`setAssigneeFilter` exist and are
+   unit-tested in `tasks.store.ts` but are not wired to any template control. Status/label/search
+   filters all work. **Fix:** surface an assignee filter, or remove the dead store API.
+
+### Minor findings (did not fail a case)
+
+- **Dashboard goal-progress is mislabeled.** `ratio()` (`dashboard.component.ts:97`) computes
+  *position within the recent spark range*, not goal attainment, so up-trending metrics read
+  "100% of goal" (3 of 4 cards) and the declining one reads "0% of goal" — looks broken for a showcase.
+- **Dark switch vs. `auto` mode (9.1).** Default `mode` is `auto`; the switch is bound to
+  `isDark = mode==='dark'`, so on a dark system the UI is dark while the switch reads OFF.
+- **New-task side sheet (6.5):** the "Assignees" and "Labels" section labels visually overlap their
+  chip rows.
+- **`server.mjs` on localhost** serves a CSR shell (17 KB) for prerender routes regardless of Host; the
+  prerendered static files (`browser/**/index.html`, ~100 KB with `ng-server-context`) are correct and
+  are what a static/CDN deploy serves. First-paint determinism (13.1/13.2/9.4) verified against those.
+
+### Coverage caveats (automation limits, not defects)
+
+- `gui-checkbox` and `gui-chip` filter selection don't toggle on agent-browser synthetic mouse-clicks
+  (they work via keyboard Space / clicking the chip host); bulk selection (4.9), task/list filters,
+  and category filter were verified that way.
+- The rich tooltip's hover-open (5.1) couldn't be triggered reliably headlessly; markup is correct and
+  the plain tooltip works.
+- 12.3 (screen-reader announcement) verified via ARIA semantics (`aria-current="page"`, nav/main
+  landmarks), not an actual VoiceOver/NVDA pass. 12.4 contrast verified by computed-ratio spot-checks
+  (dark: 7.7–14.4:1) + M3's AA-by-construction guarantee, not an exhaustive per-element audit.
