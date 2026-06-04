@@ -113,23 +113,23 @@ Blast radius: replaces the demo root — revert = `git restore` of `app.componen
 
 Additive screens behind `/admin`; the Console store already exists. Blast radius: safe.
 
-- [ ] 13. Users list screen (search / filter / sort / bulk-select / states)
+- [x] 13. Users list screen (search / filter / sort / bulk-select / states)
   - Create `apps/web/src/app/admin/users.component.*`: `gui-text-field` search (leading `gui-icon`, trailing clear `gui-icon-button`), `gui-chip-set`/`gui-segmented-buttons` filters, a `gui-list` of users with `gui-divider`s, per-row `gui-icon-button` + `gui-menu`, `gui-checkbox` bulk-select, an explicit empty state (`store.isEmpty`) with a "Clear filters" `gui-button`, a "Reload" loading sim using `gui-loading-indicator`.
   - _Requirements: 3.3, 6.1, 9.1, 9.2_
 
-- [ ] 14. User detail + create/edit form (validation + feedback)
+- [x] 14. User detail + create/edit form (validation + feedback)
   - Create `apps/web/src/app/admin/user-detail.component.*` and `apps/web/src/app/admin/user-form.component.*`: reactive form with `gui-text-field` (`error`/`errorText`, required), `gui-radio-group` (role), `gui-switch` (status), `gui-date-picker` (joined date); submit disabled until valid; `gui-snackbar` save feedback; delete via `gui-dialog` confirm.
   - _Requirements: 3.4, 3.5, 6.2, 9.3, 9.4_
 
-- [ ] 15. Settings surface
+- [x] 15. Settings surface
   - Create `apps/web/src/app/admin/settings.component.*`: `gui-switch`/`gui-radio-group`/`gui-slider`/`gui-segmented-buttons` preference rows (incl. dark-mode + contrast + brand-seed echoing `ThemeController`), `guiTooltip`/`gui-rich-tooltip` info affordance.
   - _Requirements: 3.6, 7.1, 7.2_
 
-- [ ] 16. Wire Console child routes
+- [x] 16. Wire Console child routes
   - Modify `apps/web/src/app/admin/admin.routes.ts`: add `users`, `users/new`, `users/:id`, `settings` (loadComponent).
   - _Requirements: 1.4_
 
-- [ ] 17. Checkpoint — Group C verification
+- [x] 17. Checkpoint — Group C verification
   - Run: `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build -p web`.
   - Confirm: users search/filter/sort update live; create/edit/delete reflect across list + detail; invalid form blocks submit with inline errors; empty + loading states show; settings controls work; reload resets data.
 
@@ -137,28 +137,28 @@ Additive screens behind `/admin`; the Console store already exists. Blast radius
 
 Additive `/tasks` branch. Blast radius: safe.
 
-- [ ] 18. Tasks store + fixtures + unit test
+- [x] 18. Tasks store + fixtures + unit test
   - Create `apps/web/src/app/tasks/tasks.store.ts`: `tasks`/`members`/`labels` signals, `query`/`statusFilter`/`assigneeFilter`/`labelFilter` signals, `byStatus` computed (board columns), `visibleList` computed, `add`/`update`/`remove`/`moveStatus`.
   - Create `apps/web/src/app/tasks/fixtures.ts` (deterministic) and `apps/web/src/app/tasks/tasks.store.spec.ts` (filter by status/assignee/label; `moveStatus`; CRUD reflect).
   - _Requirements: 4.1, 4.2, 4.6, 6.1, 6.2, 6.3_
 
-- [ ] 19. Board view (status columns)
+- [x] 19. Board view (status columns)
   - Create `apps/web/src/app/tasks/board.component.*`: status columns from `byStatus`; task cards (`gui-card`) with label/assignee `gui-chip`s, assignee-overflow `[guiBadge]`, priority; status change reflects immediately (default: `@angular/cdk/drag-drop` between columns — see Notes; a status `gui-menu`/`gui-segmented-buttons` is an acceptable alternative); `gui-fab` "new task".
   - _Requirements: 4.1, 4.2, 4.5_
 
-- [ ] 20. List view + board/list toggle
+- [x] 20. List view + board/list toggle
   - Create `apps/web/src/app/tasks/list.component.*`: filterable task table/`gui-list` with `gui-chip-set` filters; a `gui-segmented-buttons` board↔list toggle hosted in the Tracker root.
   - _Requirements: 4.1, 4.6_
 
-- [ ] 21. Task detail + create/edit form
+- [x] 21. Task detail + create/edit form
   - Create `apps/web/src/app/tasks/task-detail.component.*` (opens in a `gui-side-sheet` on expanded / `gui-bottom-sheet` on compact, chosen via `GuiBreakpoint`, without leaving the board) and `apps/web/src/app/tasks/task-form.component.*`: title/description (`gui-text-field`), status, assignees (multi `gui-chip-set`), due `gui-date-picker` + `gui-time-picker`, labels; validation.
   - _Requirements: 4.3, 4.4, 4.5, 9.3; overlay/side-sheet/bottom-sheet coverage_
 
-- [ ] 22. Tracker routes + wire into app routing
+- [x] 22. Tracker routes + wire into app routing
   - Create `apps/web/src/app/tasks/tasks.routes.ts` (`providers: [TasksStore]`; children board/list/detail/new). Modify `apps/web/src/app/app.routes.ts` to add `{ path: 'tasks', loadChildren: tasks.routes }`.
   - _Requirements: 1.2, 1.4_
 
-- [ ] 23. Checkpoint — Group D verification
+- [x] 23. Checkpoint — Group D verification
   - Run: `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build -p web`.
   - Confirm: board + list render; status change moves a task and persists in-session; detail opens without losing board context; create/edit/filter work; `tasks.store.spec` green; `/tasks` reachable from the shell.
 
@@ -166,28 +166,28 @@ Additive `/tasks` branch. Blast radius: safe.
 
 Additive `/shop` branch. Blast radius: safe.
 
-- [ ] 24. Shop store + fixtures + unit test
+- [x] 24. Shop store + fixtures + unit test
   - Create `apps/web/src/app/shop/shop.store.ts`: `products`/`orders`/`customers` signals, filter/sort/search signals, `visibleOrders`/`visibleProducts` computed, `totalOf(order)` computed helper, CRUD.
   - Create `apps/web/src/app/shop/fixtures.ts` (deterministic) and `apps/web/src/app/shop/shop.store.spec.ts` (filter/sort orders; order total; product CRUD reflect).
   - _Requirements: 5.1, 5.2, 5.6, 6.1, 6.2, 6.3_
 
-- [ ] 25. Orders list + order detail
+- [x] 25. Orders list + order detail
   - Create `apps/web/src/app/shop/orders.component.*` and `order-detail.component.*`: orders `gui-list`/table with status `gui-chip`s + totals, search/filter/sort, `gui-date-range-picker` order-date filter; detail shows line items + computed total.
   - _Requirements: 5.1, 5.2, 6.1_
 
-- [ ] 26. Products gallery + grid + product form
+- [x] 26. Products gallery + grid + product form
   - Create `apps/web/src/app/shop/products.component.*` and `product-form.component.*`: a `gui-carousel` featured strip (exercise multiple layouts), a `gui-card` product grid (deterministic CSS-gradient imagery from `imageHue`, price), a validated product edit form, a `gui-split-button` "Publish", a `gui-slider` price-range filter.
   - _Requirements: 5.3, 5.4, 6.2, 9.3; carousel/split-button/slider coverage_
 
-- [ ] 27. Customers list + detail
+- [x] 27. Customers list + detail
   - Create `apps/web/src/app/shop/customers.component.*` and `customer-detail.component.*`.
   - _Requirements: 5.5_
 
-- [ ] 28. Shop routes + wire into app routing
+- [x] 28. Shop routes + wire into app routing
   - Create `apps/web/src/app/shop/shop.routes.ts` (`providers: [ShopStore]`; children orders/orders/:id, products/products/:id, customers/customers/:id). Modify `apps/web/src/app/app.routes.ts` to add `{ path: 'shop', loadChildren: shop.routes }`.
   - _Requirements: 1.2, 1.4_
 
-- [ ] 29. Checkpoint — Group E verification
+- [x] 29. Checkpoint — Group E verification
   - Run: `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build -p web`.
   - Confirm: orders/products/customers render; order totals compute; product create/edit reflects everywhere; carousel layouts work; `/shop` reachable; `shop.store.spec` green.
 

@@ -1,0 +1,104 @@
+@let u = user();
+
+<header class="page-head">
+  <div class="head-left">
+    <a gui-button variant="text" routerLink="/admin/users">
+      <gui-icon guiIcon class="sym">arrow_back</gui-icon>
+      Users
+    </a>
+  </div>
+</header>
+
+@if (u) {
+  <gui-card variant="elevated" class="profile-card">
+    <div class="inner profile">
+      <span class="avatar" [style.background]="avatarBg(u.avatarHue)">
+        {{ initials(u.name) }}
+      </span>
+      <div class="profile-text">
+        <h1 class="page-title">{{ u.name }}</h1>
+        <p class="page-subtitle">{{ u.email }}</p>
+        <gui-chip-set select="none" class="profile-chips">
+          <gui-chip type="assist" value="role">{{ roleLabel(u.role) }}</gui-chip>
+          <gui-chip type="assist" value="status" [attr.data-status]="u.status">
+            {{ statusLabel(u.status) }}
+          </gui-chip>
+        </gui-chip-set>
+      </div>
+      <div class="profile-actions">
+        <a
+          gui-button
+          variant="filled"
+          [routerLink]="['/admin/users', u.id, 'edit']"
+        >
+          <gui-icon guiIcon class="sym">edit</gui-icon>
+          Edit
+        </a>
+        <button
+          gui-button
+          variant="outlined"
+          [guiDialogTrigger]="deleteTpl"
+          [guiDialogConfig]="{ ariaLabelledBy: 'detail-del-h' }"
+        >
+          <gui-icon guiIcon class="sym">delete</gui-icon>
+          Delete
+        </button>
+      </div>
+    </div>
+  </gui-card>
+
+  <gui-card variant="filled" class="detail-card">
+    <div class="inner">
+      <h2 class="section-title">Details</h2>
+      <dl class="details">
+        <div class="detail-row">
+          <dt>Role</dt>
+          <dd>{{ roleLabel(u.role) }}</dd>
+        </div>
+        <gui-divider inset="none" />
+        <div class="detail-row">
+          <dt>Status</dt>
+          <dd>{{ statusLabel(u.status) }}</dd>
+        </div>
+        <gui-divider inset="none" />
+        <div class="detail-row">
+          <dt>Joined</dt>
+          <dd>{{ formatDate(u.joinedAt) }}</dd>
+        </div>
+        <gui-divider inset="none" />
+        <div class="detail-row">
+          <dt>Last active</dt>
+          <dd>{{ lastActive(u.lastActiveAt) }}</dd>
+        </div>
+      </dl>
+    </div>
+  </gui-card>
+
+  <ng-template #deleteTpl let-ref="dialogRef">
+    <gui-dialog-icon><gui-icon class="sym">warning</gui-icon></gui-dialog-icon>
+    <gui-dialog-headline id="detail-del-h">Delete {{ u.name }}?</gui-dialog-headline>
+    <gui-dialog-content>
+      This permanently removes the user and their access. You can't undo this.
+    </gui-dialog-content>
+    <gui-dialog-actions>
+      <button gui-button variant="text" (click)="ref.close()">Cancel</button>
+      <button
+        gui-button
+        variant="text"
+        (click)="deleteUser(u.id); ref.close('confirm')"
+      >
+        Delete
+      </button>
+    </gui-dialog-actions>
+  </ng-template>
+} @else {
+  <div class="empty">
+    <gui-icon class="sym empty-icon">person_off</gui-icon>
+    <p class="empty-title">User not found</p>
+    <p class="empty-text">This user may have been removed or never existed.</p>
+    <a gui-button variant="tonal" routerLink="/admin/users">
+      <gui-icon guiIcon class="sym">arrow_back</gui-icon>
+      Back to users
+    </a>
+  </div>
+}

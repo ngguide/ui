@@ -1,0 +1,215 @@
+<header class="page-head">
+  <div>
+    <h1 class="page-title">Users</h1>
+    <p class="page-subtitle">Manage members, roles and access across the workspace.</p>
+  </div>
+  <div class="head-actions">
+    <button gui-button variant="text" (click)="reload()">
+      <gui-icon guiIcon class="sym">refresh</gui-icon>
+      Reload
+    </button>
+    <button gui-button variant="filled" routerLink="/admin/users/new">
+      <gui-icon guiIcon class="sym">add</gui-icon>
+      New user
+    </button>
+  </div>
+</header>
+
+<section class="toolbar">
+  <gui-text-field
+    class="search"
+    variant="outlined"
+    label="Search users"
+    supportingText="Filter by name or email"
+  >
+    <gui-icon guiTextFieldLeading class="sym">search</gui-icon>
+    <input
+      guiTextFieldInput
+      type="search"
+      [formControl]="search"
+      (input)="onSearch(search.value)"
+    />
+    @if (search.value) {
+      <gui-icon-button
+        guiTextFieldTrailing
+        aria-label="Clear search"
+        (click)="clearSearch()"
+      >
+        <gui-icon class="sym">close</gui-icon>
+      </gui-icon-button>
+    }
+  </gui-text-field>
+
+  <div class="filters">
+    <gui-chip-set
+      class="role-chips"
+      select="single"
+      [value]="roleFilter()"
+      (valueChange)="onRole($any($event))"
+    >
+      <gui-chip type="filter" value="all" label="All">All</gui-chip>
+      <gui-chip type="filter" value="admin" label="Admin">Admin</gui-chip>
+      <gui-chip type="filter" value="editor" label="Editor">Editor</gui-chip>
+      <gui-chip type="filter" value="viewer" label="Viewer">Viewer</gui-chip>
+    </gui-chip-set>
+
+    <gui-segmented-buttons
+      class="sort-segments"
+      [value]="sortBy()"
+      (valueChange)="onSort($any($event))"
+    >
+      <button gui-segmented-button value="name-asc">A–Z</button>
+      <button gui-segmented-button value="name-desc">Z–A</button>
+      <button gui-segmented-button value="recent">Recent</button>
+      <button gui-segmented-button value="role">Role</button>
+    </gui-segmented-buttons>
+  </div>
+</section>
+
+@if (hasSelection()) {
+  <div class="selection-bar" role="status">
+    <span class="selection-count">{{ selectedCount() }} selected</span>
+    <button gui-button variant="text" (click)="clearSelection()">Clear</button>
+    <button
+      gui-button
+      variant="tonal"
+      [guiDialogTrigger]="bulkDeleteTpl"
+      [guiDialogConfig]="{ ariaLabelledBy: 'bulk-del-h' }"
+    >
+      <gui-icon guiIcon class="sym">delete</gui-icon>
+      Delete selected
+    </button>
+  </div>
+}
+
+@if (store.loading()) {
+  <div class="loading">
+    <gui-loading-indicator label="Loading users" variant="contained" />
+  </div>
+} @else if (store.isEmpty()) {
+  <div class="empty">
+    <gui-icon class="sym empty-icon">search_off</gui-icon>
+    <p class="empty-title">No users match your filters</p>
+    <p class="empty-text">Try a different search term or clear the active filters.</p>
+    <button gui-button variant="tonal" (click)="clearFilters()">
+      <gui-icon guiIcon class="sym">filter_alt_off</gui-icon>
+      Clear filters
+    </button>
+  </div>
+} @else {
+  <div class="list-head">
+    <gui-checkbox
+      [checked]="allSelected()"
+      (checkedChange)="toggleAll($any($event))"
+    >
+      Select all
+    </gui-checkbox>
+    <span class="list-count">{{ store.visible().length }} of {{ store.total() }}</span>
+  </div>
+
+  <gui-list mode="action">
+    @for (u of store.visible(); track trackById($index, u); let last = $last) {
+      <gui-list-item [lines]="2" [class.row-selected]="isSelected(u.id)">
+        <span guiListItemLeading class="row-lead">
+          <gui-checkbox
+            [checked]="isSelected(u.id)"
+            (checkedChange)="toggleRow(u.id, $any($event))"
+          />
+          <span class="avatar" [style.background]="avatarBg(u.avatarHue)">
+            {{ initials(u.name) }}
+          </span>
+        </span>
+
+        {{ u.name }}
+        <span guiListItemSupporting>{{ u.email }}</span>
+
+        <span guiListItemTrailing class="row-trail">
+          <gui-chip type="assist" class="role-chip" [attr.data-status]="u.status">
+            {{ roleLabel(u.role) }} · {{ statusLabel(u.status) }}
+          </gui-chip>
+          <button
+            gui-icon-button
+            variant="standard"
+            aria-label="Row actions"
+            [cdkMenuTriggerFor]="rowMenu"
+          >
+            <gui-icon class="sym">more_vert</gui-icon>
+          </button>
+        </span>
+      </gui-list-item>
+
+      <ng-template #rowMenu>
+        <div gui-menu cdkMenu>
+          <button
+            gui-menu-item
+            cdkMenuItem
+            [routerLink]="['/admin/users', u.id]"
+          >
+            <gui-icon guiMenuItemLeading class="sym">visibility</gui-icon>
+            View
+          </button>
+          <button
+            gui-menu-item
+            cdkMenuItem
+            [routerLink]="['/admin/users', u.id, 'edit']"
+          >
+            <gui-icon guiMenuItemLeading class="sym">edit</gui-icon>
+            Edit
+          </button>
+          <gui-menu-divider />
+          <button
+            gui-menu-item
+            cdkMenuItem
+            [guiDialogTrigger]="deleteTpl"
+            [guiDialogConfig]="{ ariaLabelledBy: 'del-h', data: u }"
+          >
+            <gui-icon guiMenuItemLeading class="sym">delete</gui-icon>
+            Delete
+          </button>
+        </div>
+      </ng-template>
+
+      @if (!last) {
+        <gui-divider inset="inset" />
+      }
+    }
+  </gui-list>
+}
+
+<ng-template #deleteTpl let-ref="dialogRef" let-user="data">
+  <gui-dialog-icon><gui-icon class="sym">warning</gui-icon></gui-dialog-icon>
+  <gui-dialog-headline id="del-h">Delete {{ user.name }}?</gui-dialog-headline>
+  <gui-dialog-content>
+    This permanently removes the user and their access. You can't undo this.
+  </gui-dialog-content>
+  <gui-dialog-actions>
+    <button gui-button variant="text" (click)="ref.close()">Cancel</button>
+    <button
+      gui-button
+      variant="text"
+      (click)="deleteOne(user.id); ref.close('confirm')"
+    >
+      Delete
+    </button>
+  </gui-dialog-actions>
+</ng-template>
+
+<ng-template #bulkDeleteTpl let-ref="dialogRef">
+  <gui-dialog-icon><gui-icon class="sym">warning</gui-icon></gui-dialog-icon>
+  <gui-dialog-headline id="bulk-del-h">
+    Delete {{ selectedCount() }} users?
+  </gui-dialog-headline>
+  <gui-dialog-content>
+    This permanently removes the selected users. You can't undo this.
+  </gui-dialog-content>
+  <gui-dialog-actions>
+    <button gui-button variant="text" (click)="ref.close()">Cancel</button>
+    <button
+      gui-button
+      variant="text"
+      (click)="deleteSelected(); ref.close('confirm')"
+    >
+      Delete
+    </button>
+  </gui-dialog-actions>
+</ng-template>

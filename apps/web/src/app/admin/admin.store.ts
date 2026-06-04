@@ -1,4 +1,11 @@
-import { Injectable, computed, signal } from '@angular/core';
+import {
+  Injectable,
+  PLATFORM_ID,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { ActivityEntry, Metric, User, UserRole } from '../core/models';
 import { seedActivity, seedMetrics, seedUsers } from './fixtures';
 
@@ -32,6 +39,8 @@ function comparatorFor(sort: UserSort): (a: User, b: User) => number {
  */
 @Injectable()
 export class AdminStore {
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+
   private readonly data = signal<User[]>(seedUsers());
 
   readonly metrics = signal<Metric[]>(seedMetrics());
@@ -94,5 +103,19 @@ export class AdminStore {
 
   byId(id: string): User | undefined {
     return this.data().find((u) => u.id === id);
+  }
+
+  /**
+   * Client-only loading simulation: flips `loading` on, then off after a short
+   * delay. Guarded by `isPlatformBrowser` so SSR never schedules a timer (which
+   * would keep the render pending) and stays deterministic on the server.
+   */
+  reload(): void {
+    this.loading.set(true);
+    if (!this.isBrowser) {
+      this.loading.set(false);
+      return;
+    }
+    setTimeout(() => this.loading.set(false), 700);
   }
 }
