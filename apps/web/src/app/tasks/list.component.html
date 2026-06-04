@@ -65,6 +65,29 @@
         }
       </gui-chip-set>
     </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Assignee</span>
+      <gui-chip-set
+        select="single"
+        [value]="store.assigneeFilter()"
+        (valueChange)="onAssignee($event)"
+      >
+        <gui-chip type="filter" value="all" label="All">All</gui-chip>
+        @for (m of store.members(); track m.id) {
+          <gui-chip type="filter" [value]="m.id" [label]="m.name">
+            <span
+              guiChipLeading
+              class="chip-avatar"
+              [style.background]="avatarColor(m.avatarHue)"
+              [style.color]="avatarInk(m.avatarHue)"
+              >{{ initials(m.name) }}</span
+            >
+            {{ m.name }}
+          </gui-chip>
+        }
+      </gui-chip-set>
+    </div>
   </div>
 </section>
 

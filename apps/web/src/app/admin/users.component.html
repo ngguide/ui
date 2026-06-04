@@ -144,7 +144,6 @@
         <div gui-menu cdkMenu>
           <button
             gui-menu-item
-            cdkMenuItem
             [routerLink]="['/admin/users', u.id]"
           >
             <gui-icon guiMenuItemLeading class="sym">visibility</gui-icon>
@@ -152,7 +151,6 @@
           </button>
           <button
             gui-menu-item
-            cdkMenuItem
             [routerLink]="['/admin/users', u.id, 'edit']"
           >
             <gui-icon guiMenuItemLeading class="sym">edit</gui-icon>
@@ -161,7 +159,6 @@
           <gui-menu-divider />
           <button
             gui-menu-item
-            cdkMenuItem
             [guiDialogTrigger]="deleteTpl"
             [guiDialogConfig]="{ ariaLabelledBy: 'del-h', data: u }"
           >

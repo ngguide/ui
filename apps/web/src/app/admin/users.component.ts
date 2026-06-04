@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { CdkMenu, CdkMenuTrigger } from '@angular/cdk/menu';
 
 import { ButtonComponent } from '@ngguide/ui/button';
 import { IconButtonComponent } from '@ngguide/ui/icon-button';
@@ -57,7 +57,6 @@ import { AdminStore, RoleFilter, UserSort } from './admin.store';
     ReactiveFormsModule,
     RouterLink,
     CdkMenu,
-    CdkMenuItem,
     CdkMenuTrigger,
     ButtonComponent,
     IconButtonComponent,

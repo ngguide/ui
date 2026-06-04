@@ -93,13 +93,10 @@ export class DashboardComponent {
     }
   }
 
-  /** Where the latest sample sits within its recent range → 0..1 goal bar. */
+  /** Goal attainment: current value vs. its target, clamped to 0..1. */
   protected ratio(m: Metric): number {
-    const min = Math.min(...m.spark);
-    const max = Math.max(...m.spark);
-    const range = max - min || 1;
-    const last = m.spark[m.spark.length - 1];
-    return Math.min(1, Math.max(0, (last - min) / range));
+    if (m.goal <= 0) return 0;
+    return Math.min(1, Math.max(0, m.value / m.goal));
   }
 
   protected ratioPct(m: Metric): string {

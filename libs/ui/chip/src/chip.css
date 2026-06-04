@@ -41,6 +41,14 @@
       var(--md-sys-motion-easing-standard);
 }
 
+/* The shared :host block above is sized for a single chip (fixed 32px height).
+   On the chip-set host (role="grid") that clips wrapped chip rows onto whatever
+   follows; let the set grow to fit while keeping the 32px single-row baseline. */
+:host([role='grid']) {
+  height: auto;
+  min-height: 32px;
+}
+
 /* The primary and remove buttons are borderless, transparent and inherit the
    chip's color so the chip host owns all container styling. */
 .gui-chip-primary,

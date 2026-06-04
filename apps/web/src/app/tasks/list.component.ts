@@ -5,7 +5,6 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 
 import { ButtonComponent } from '@ngguide/ui/button';
 import { IconButtonComponent } from '@ngguide/ui/icon-button';
@@ -45,7 +44,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
-    RouterLink,
     ButtonComponent,
     IconButtonComponent,
     IconComponent,
@@ -97,6 +95,10 @@ export class ListComponent {
 
   protected onLabel(value: string | string[] | null): void {
     this.store.setLabelFilter((value as string | null) ?? 'all');
+  }
+
+  protected onAssignee(value: string | string[] | null): void {
+    this.store.setAssigneeFilter((value as string | null) ?? 'all');
   }
 
   protected clearFilters(): void {

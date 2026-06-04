@@ -25,6 +25,8 @@ export interface Metric {
   key: string;
   label: string;
   value: number;
+  /** Target for this period; goal attainment = `value / goal` (clamped 0..1). */
+  goal: number;
   /** Period-over-period change as a percentage (e.g. 12.5 → +12.5%). */
   deltaPct: number;
   format: 'number' | 'currency' | 'percent';
