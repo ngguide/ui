@@ -17,34 +17,98 @@
   align-self: flex-start;
   font: var(--md-sys-typescale-label-medium, 500 12px/16px system-ui);
   color: var(--md-sys-color-on-surface-variant);
-  text-transform: uppercase;
 }
 
-.gui-time-picker-dial-modes {
+.gui-time-picker-dial-body {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* M3 horizontal dial: time selectors beside the clock dial. */
+.gui-time-picker-panel[data-layout='horizontal'] .gui-time-picker-dial-body {
+  flex-direction: row;
+  align-items: center;
+}
+
+.gui-time-picker-dial-selectors {
+  display: flex;
+  align-items: center;
   gap: 8px;
+}
+
+/* In horizontal layout the time selectors stack into a column. */
+.gui-time-picker-panel[data-layout='horizontal']
+  .gui-time-picker-dial-selectors {
+  flex-direction: column;
+}
+
+.gui-time-picker-panel[data-layout='horizontal'] .gui-time-selector-separator {
+  display: none;
+}
+
+.gui-time-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* M3 dial Time selector container: 96dp × 80dp. */
+  width: 96px;
+  height: 80px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+  font: var(--md-sys-typescale-display-large, 400 57px/64px system-ui);
+}
+
+/* M3 24h dial Time selector container width = 114dp. */
+.gui-time-picker-panel[data-hour12='false'] .gui-time-selector {
+  width: 114px;
+}
+
+.gui-time-selector-active {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.gui-time-selector:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+}
+
+.gui-time-selector-separator {
+  font: var(--md-sys-typescale-display-large, 400 57px/64px system-ui);
 }
 
 .gui-time-picker-fields {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
+}
+
+.gui-time-field-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 }
 
 .gui-time-field {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* M3 Time input field container: 96dp × 72dp (input variant). */
   width: 96px;
-  height: 80px;
+  height: 72px;
   border-radius: 8px;
   background: var(--md-sys-color-surface-container-highest);
   color: var(--md-sys-color-on-surface);
   outline: none;
 }
 
-:host-context([data-hour12='false']) .gui-time-field,
-.gui-time-field[data-wide] {
+/* M3 24h Time input field container width = 114dp. */
+.gui-time-picker-panel[data-hour12='false'] .gui-time-field {
   width: 114px;
 }
 
@@ -54,6 +118,17 @@
 
 .gui-time-field-error {
   outline: 2px solid var(--md-sys-color-error);
+}
+
+.gui-time-field-label {
+  font: var(--md-sys-typescale-body-small, 400 12px/16px system-ui);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.gui-time-field-supporting {
+  align-self: flex-start;
+  font: var(--md-sys-typescale-body-small, 400 12px/16px system-ui);
+  color: var(--md-sys-color-on-surface-variant);
 }
 
 .gui-time-field-input {
@@ -77,17 +152,32 @@
 .gui-time-period {
   display: flex;
   flex-direction: column;
+  /* M3 Period selector container (input variant): 52dp × 72dp. */
+  width: 52px;
+  height: 72px;
   border: 1px solid var(--md-sys-color-outline);
   border-radius: 8px;
   overflow: hidden;
   margin-left: 8px;
 }
 
+/* M3 dial vertical Period selector container: 52dp × 80dp. */
+.gui-time-picker-panel[data-layout='vertical'] .gui-time-period {
+  height: 80px;
+}
+
+/* M3 dial horizontal Period selector container: 216dp × 38dp (row). */
+.gui-time-picker-panel[data-layout='horizontal'] .gui-time-period {
+  flex-direction: row;
+  width: 216px;
+  height: 38px;
+}
+
 .gui-time-period-btn {
+  flex: 1;
   border: none;
   background: transparent;
   color: var(--md-sys-color-on-surface);
-  padding: 8px 12px;
   cursor: pointer;
   font: var(--md-sys-typescale-title-medium, 500 16px/24px system-ui);
 }

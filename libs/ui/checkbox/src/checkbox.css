@@ -25,7 +25,9 @@
   width: 18px;
   height: 18px;
   border: 2px solid var(--md-sys-color-on-surface-variant);
-  border-radius: var(--md-sys-shape-corner-extra-small);
+  /* M3 container corner shape is 2dp. The shape scale has no 2px token
+     (extra-small = 4px), so the spec value is a literal here. */
+  border-radius: 2px;
   background: transparent;
   transition:
     background-color var(--md-sys-motion-duration-short2)

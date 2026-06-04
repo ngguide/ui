@@ -75,4 +75,17 @@ describe('GuiLinearProgress', () => {
     const active = el().querySelector('.gui-linear-active') as HTMLElement;
     expect(active.style.transform).toBe('scaleX(0.5)');
   });
+
+  it('renders the track as the gapped inactive segment (1 - value)', () => {
+    host.value = 0.3;
+    fixture.detectChanges();
+    const track = el().querySelector('.gui-linear-track') as HTMLElement;
+    expect(track.style.transform).toBe('scaleX(0.7)');
+  });
+
+  it('always exposes an accessible name, defaulting when no label is given', () => {
+    host.label = undefined as unknown as string;
+    fixture.detectChanges();
+    expect(el().getAttribute('aria-label')).toBe('Loading');
+  });
 });

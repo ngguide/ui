@@ -23,7 +23,8 @@
   user-select: none;
 }
 
-/* Small dot — 6dp, 3dp corner, offset 6×6dp from the top-trailing corner. */
+/* Small dot — 6dp, 3dp corner, pinned to the icon's top-trailing corner so the
+   6×6dp dot sits fully inside the icon bounding box (M3 small-badge offset). */
 .gui-badge-host[data-gui-badge-variant='small'] .gui-badge {
   width: 6px;
   height: 6px;
@@ -32,18 +33,21 @@
   border-radius: 3px;
   top: 0;
   inset-inline-end: 0;
-  transform: translate(3px, -3px);
+  transform: none;
 }
 
-/* Large numeric — 16dp min, 8dp corner, 4dp horizontal padding, offset 14×12dp. */
+/* Large numeric — 16dp min/tall, 8dp corner, 4dp horizontal padding, capped at
+   the 34dp max-character width. Anchored at the icon's top-trailing corner with
+   the M3 14×12dp offset (bottom-leading corner 14dp down / 12dp leading). */
 .gui-badge-host[data-gui-badge-variant='large'] .gui-badge {
   min-width: 16px;
+  max-width: 34px;
   height: 16px;
   padding: 0 4px;
   border-radius: 8px;
-  top: 0;
-  inset-inline-end: 0;
-  transform: translate(50%, -50%);
+  top: -2px;
+  inset-inline-end: -4px;
+  transform: none;
 }
 
 .gui-badge-host[data-gui-badge-hidden='true'] .gui-badge {

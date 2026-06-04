@@ -35,4 +35,33 @@ describe('ButtonGroupComponent', () => {
   it('is not focusable itself (no tabindex on the container)', () => {
     expect(host.hasAttribute('tabindex')).toBe(false);
   });
+
+  it('defaults size to md and shape to round on the host', () => {
+    expect(host.getAttribute('data-size')).toBe('md');
+    expect(host.getAttribute('data-shape')).toBe('round');
+  });
+
+  it('reflects size and shape inputs onto data attributes', () => {
+    fixture.componentRef.setInput('size', 'xs');
+    fixture.componentRef.setInput('shape', 'square');
+    fixture.detectChanges();
+    expect(host.getAttribute('data-size')).toBe('xs');
+    expect(host.getAttribute('data-shape')).toBe('square');
+  });
+
+  it('advertises selection mode via role / aria-multiselectable', () => {
+    // none → plain group, not multiselectable.
+    expect(host.getAttribute('role')).toBe('group');
+    expect(host.hasAttribute('aria-multiselectable')).toBe(false);
+
+    fixture.componentRef.setInput('selection', 'single');
+    fixture.detectChanges();
+    expect(host.getAttribute('role')).toBe('radiogroup');
+    expect(host.hasAttribute('aria-multiselectable')).toBe(false);
+
+    fixture.componentRef.setInput('selection', 'multi');
+    fixture.detectChanges();
+    expect(host.getAttribute('role')).toBe('group');
+    expect(host.getAttribute('aria-multiselectable')).toBe('true');
+  });
 });

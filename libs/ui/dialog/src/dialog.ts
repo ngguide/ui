@@ -48,10 +48,6 @@ export class GuiDialogIcon {}
         line-height: var(--md-sys-typescale-headline-small-line-height);
         letter-spacing: var(--md-sys-typescale-headline-small-tracking);
       }
-      /* When an icon precedes the headline, M3 centers the headline. */
-      :host-context(gui-dialog-icon + *) {
-        text-align: center;
-      }
     `,
   ],
 })
@@ -81,6 +77,30 @@ export class GuiDialogHeadline {}
   ],
 })
 export class GuiDialogContent {}
+
+/**
+ * Optional 1dp divider (M3 anatomy "Divider"). Place between regions — e.g.
+ * above the actions or below the headline — when scrollable content needs a
+ * visible separation. Rendered as a full-width hairline on `outline-variant`.
+ */
+@Component({
+  selector: 'gui-dialog-divider',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '',
+  host: { class: 'gui-dialog-divider', role: 'separator' },
+  styles: [
+    `
+      :host {
+        display: block;
+        flex: 0 0 auto;
+        height: 1px;
+        border: none;
+        background-color: var(--md-sys-color-outline-variant);
+      }
+    `,
+  ],
+})
+export class GuiDialogDivider {}
 
 /** End-aligned action buttons region (up to three text buttons, Req 7.1). */
 @Component({
@@ -126,11 +146,11 @@ export class GuiDialogActions {}
       :host {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 8px;
         height: 56px;
-        padding: 0 16px;
+        padding: 0 24px;
         flex: 0 0 auto;
-        background-color: var(--md-sys-color-surface);
+        background-color: var(--md-sys-color-surface-container-high);
         color: var(--md-sys-color-on-surface);
       }
       .gui-dialog-fs-title {
@@ -140,6 +160,11 @@ export class GuiDialogActions {}
         font-weight: var(--md-sys-typescale-title-large-weight);
         line-height: var(--md-sys-typescale-title-large-line-height);
         letter-spacing: var(--md-sys-typescale-title-large-tracking);
+      }
+      /* Close affordance is projected; M3 sizes it at 24dp. */
+      .gui-dialog-fs-leading {
+        font-size: 24px;
+        line-height: 24px;
       }
       .gui-dialog-fs-leading,
       .gui-dialog-fs-confirm {
@@ -151,3 +176,33 @@ export class GuiDialogActions {}
   ],
 })
 export class GuiDialogFullscreenHeader {}
+
+/**
+ * Optional full-screen bottom action bar (M3 anatomy "Bottom action bar"):
+ * a 56dp-tall, full-width bar pinned below the scrollable content for the
+ * primary/secondary actions. Use it when the confirm action is placed at the
+ * bottom rather than in the {@link GuiDialogFullscreenHeader}.
+ */
+@Component({
+  selector: 'gui-dialog-fullscreen-actions',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `<ng-content />`,
+  host: { class: 'gui-dialog-fullscreen-actions' },
+  styles: [
+    `
+      :host {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        width: 100%;
+        height: 56px;
+        padding: 0 24px;
+        flex: 0 0 auto;
+        box-sizing: border-box;
+        background-color: var(--md-sys-color-surface-container-high);
+      }
+    `,
+  ],
+})
+export class GuiDialogFullscreenActions {}

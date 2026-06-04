@@ -125,3 +125,13 @@
   background: var(--md-sys-color-scrim);
   opacity: 0.32;
 }
+
+/* M3 modal bottom sheet — 56dp side margins on large windows (>= 640dp). The
+   pane class is applied by GuiBottomSheet (bottom-sheet.service.ts); the pane is
+   an ancestor of the container host, so view-encapsulated CSS can't reach it. */
+@media (min-width: 640px) {
+  .cdk-overlay-pane.gui-bottom-sheet-pane {
+    margin-inline: 56px;
+    max-width: calc(100vw - 112px);
+  }
+}

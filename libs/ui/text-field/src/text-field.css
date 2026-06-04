@@ -10,6 +10,12 @@
   width: 256px;
   box-sizing: border-box;
   font: var(--md-sys-typescale-body-large, 400 16px / 24px sans-serif);
+
+  /* Backdrop the outlined-variant label notch is filled with so it cleanly
+     breaks the outline. Defaults to the M3 surface; override this custom
+     property to the field's actual backdrop (e.g. a surface-container) when the
+     field is not placed directly on `surface`. */
+  --gui-text-field-container-background: var(--md-sys-color-surface, #fff);
 }
 
 .gui-text-field-container {
@@ -33,6 +39,7 @@
 
 .gui-text-field-leading,
 .gui-text-field-trailing {
+  position: relative; /* keep icons above the hover state layer */
   display: inline-flex;
   align-items: center;
   flex: 0 0 auto;
@@ -108,6 +115,12 @@
   color: var(--md-sys-color-primary);
 }
 
+/* Hover: the label darkens to on-surface (M3 hovered states). Focus wins. */
+:host(:not([data-disabled]):not([data-focused]):not([data-error]):hover)
+  .gui-text-field-label {
+  color: var(--md-sys-color-on-surface);
+}
+
 /* --- Filled variant --- */
 :host([data-variant='filled']) .gui-text-field-container {
   background-color: var(--md-sys-color-surface-container-highest);
@@ -130,6 +143,38 @@
   background-color: var(--md-sys-color-primary);
 }
 
+/* Hover (filled): an 8% on-surface state layer over the container and the
+   active indicator darkens to on-surface (M3 hovered states). The state layer
+   is painted as a separate ::before so it tints the container background. */
+:host([data-variant='filled']:not([data-disabled])) .gui-text-field-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-color: transparent;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  transition: background-color var(--md-sys-motion-duration-short2, 100ms)
+    var(--md-sys-motion-easing-standard, ease);
+}
+:host([data-variant='filled']:not([data-disabled]):hover)
+  .gui-text-field-container::before {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface)
+      calc(var(--md-sys-state-hover-state-layer-opacity, 0.08) * 100%),
+    transparent
+  );
+}
+:host(
+    [data-variant='filled']:not([data-disabled]):not([data-focused]):not(
+        [data-error]
+      ):hover
+  )
+  .gui-text-field-container::after {
+  background-color: var(--md-sys-color-on-surface);
+}
+
 /* Filled label: floats above the input, padded down inside the container. */
 :host([data-variant='filled'][data-populated]) .gui-text-field-label,
 :host([data-variant='filled'][data-focused]) .gui-text-field-label {
@@ -142,10 +187,22 @@
   border-radius: var(--md-sys-shape-corner-extra-small, 4px);
 }
 :host([data-variant='outlined'][data-focused]) .gui-text-field-container {
-  border-width: 3px;
+  /* M3: focused outlined container outline is 2dp. */
+  border-width: 2px;
   border-color: var(--md-sys-color-primary);
   /* Compensate the thicker border so the layout doesn't shift. */
-  margin: -2px;
+  margin: -1px;
+}
+
+/* Hover (outlined): outline darkens to on-surface (M3 hovered states).
+   Focus wins over hover, so exclude the focused state. */
+:host(
+    [data-variant='outlined']:not([data-disabled]):not([data-focused]):not(
+        [data-error]
+      ):hover
+  )
+  .gui-text-field-container {
+  border-color: var(--md-sys-color-on-surface);
 }
 
 /* Outlined label sits on the outline (notch), with 4px horizontal padding and
@@ -155,7 +212,7 @@
   top: 0;
   transform: translateY(-50%);
   padding-inline: 4px;
-  background-color: var(--md-sys-color-surface, #fff);
+  background-color: var(--gui-text-field-container-background);
 }
 
 /* --- Error state --- */
@@ -171,6 +228,29 @@
 }
 :host([data-error]) .gui-text-field-supporting-text {
   color: var(--md-sys-color-error);
+}
+
+/* Error + hover (M3 error hovered states): label, active indicator and outline
+   darken to on-error-container. Focus keeps the resting error role. */
+:host([data-error]:not([data-disabled]):not([data-focused]):hover)
+  .gui-text-field-label {
+  color: var(--md-sys-color-on-error-container);
+}
+:host(
+    [data-error][data-variant='filled']:not([data-disabled]):not(
+        [data-focused]
+      ):hover
+  )
+  .gui-text-field-container::after {
+  background-color: var(--md-sys-color-on-error-container);
+}
+:host(
+    [data-error][data-variant='outlined']:not([data-disabled]):not(
+        [data-focused]
+      ):hover
+  )
+  .gui-text-field-container {
+  border-color: var(--md-sys-color-on-error-container);
 }
 
 /* --- Supporting text + counter row --- */

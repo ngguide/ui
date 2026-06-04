@@ -8,7 +8,11 @@ import {
   linkedSignal,
   model,
   output,
+  signal,
 } from '@angular/core';
+import { IconButtonComponent } from '@ngguide/ui/icon-button';
+import { IconComponent } from '@ngguide/ui/icon';
+import { GuiTooltip } from '@ngguide/ui/tooltip';
 import {
   GuiFocusRingDirective,
   GuiRippleDirective,
@@ -28,18 +32,35 @@ import {
   weekdayNames,
 } from '@ngguide/ui/datetime';
 
+/** Calendar view modes: the day grid or the year-selection grid (M3 config). */
+export type GuiCalendarView = 'day' | 'year';
+
+/** Number of years shown per page in the year-selection grid. */
+const YEAR_PAGE_SIZE = 24;
+
 /**
  * M3 calendar grid (WAI-ARIA APG date-grid pattern). Pure-presentational over
  * the @ngguide/ui/datetime helpers — it owns no "now" (the host passes `today`).
+ *
+ * Anatomy (M3): a header with previous/next-month navigation icon buttons and
+ * Month / Year selection menu buttons, the weekday label row, and either the
+ * day grid or the year-selection grid.
  */
 @Component({
   selector: 'gui-calendar',
   templateUrl: './calendar.html',
   styleUrl: './calendar.css',
-  imports: [GuiStateLayerDirective, GuiRippleDirective, GuiFocusRingDirective],
+  imports: [
+    GuiStateLayerDirective,
+    GuiRippleDirective,
+    GuiFocusRingDirective,
+    IconButtonComponent,
+    IconComponent,
+    GuiTooltip,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    'role': 'grid',
+    'role': 'group',
     '[attr.aria-label]': 'monthYearLabel()',
     '(keydown)': 'onKeydown($event)',
   },
@@ -61,6 +82,9 @@ export class CalendarComponent {
 
   private readonly host =
     inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+
+  /** Current view: day grid or year-selection grid. */
+  protected readonly view = signal<GuiCalendarView>('day');
 
   protected readonly weekdays = computed(() => {
     const fdow = firstDayOfWeek(this.locale());
@@ -93,9 +117,43 @@ export class CalendarComponent {
     return rows;
   });
 
-  protected readonly monthYearLabel = computed(() => {
-    const month = this.activeMonth();
-    return `${monthNames(this.locale())[month.getMonth()]} ${month.getFullYear()}`;
+  protected readonly monthLabel = computed(
+    () => monthNames(this.locale())[this.activeMonth().getMonth()],
+  );
+
+  protected readonly yearLabel = computed(() =>
+    String(this.activeMonth().getFullYear()),
+  );
+
+  protected readonly monthYearLabel = computed(
+    () => `${this.monthLabel()} ${this.yearLabel()}`,
+  );
+
+  /** First year of the current year-grid page. */
+  private readonly yearPageStart = linkedSignal<Date, number>({
+    source: this.activeMonth,
+    computation: (month, previous) => {
+      const year = month.getFullYear();
+      if (
+        previous &&
+        year >= previous.value &&
+        year < previous.value + YEAR_PAGE_SIZE
+      ) {
+        return previous.value;
+      }
+      // Page the active year roughly to the middle of the grid.
+      return year - (((year % YEAR_PAGE_SIZE) + YEAR_PAGE_SIZE) % YEAR_PAGE_SIZE);
+    },
+  });
+
+  /** Years shown in the year-selection grid for the current page. */
+  protected readonly years = computed(() => {
+    const start = this.yearPageStart();
+    const out: number[] = [];
+    for (let i = 0; i < YEAR_PAGE_SIZE; i++) {
+      out.push(start + i);
+    }
+    return out;
   });
 
   /**
@@ -166,12 +224,66 @@ export class CalendarComponent {
     return compareDate(date, start) > 0 && compareDate(date, end) < 0;
   }
 
+  protected isSelectedYear(year: number): boolean {
+    return year === this.activeMonth().getFullYear();
+  }
+
   protected onCellClick(date: Date, inCurrentMonth: boolean): void {
     if (this.isDisabled(date, inCurrentMonth)) return;
     this.dateSelected.emit(startOfDay(date));
   }
 
+  /** Jump one month back/forward via the header navigation icon buttons. */
+  protected prevMonth(): void {
+    this.activeMonth.set(startOfMonth(addMonths(this.activeMonth(), -1)));
+  }
+
+  protected nextMonth(): void {
+    this.activeMonth.set(startOfMonth(addMonths(this.activeMonth(), 1)));
+  }
+
+  /** Toggle the year-selection grid open/closed (M3 Year selection config). */
+  protected toggleYearView(): void {
+    this.view.update((v) => (v === 'year' ? 'day' : 'year'));
+  }
+
+  /** The Month menu button returns to (or stays on) the day grid. */
+  protected showDayView(): void {
+    this.view.set('day');
+  }
+
+  /** Page the year grid back/forward by one full page. */
+  protected prevYearPage(): void {
+    this.yearPageStart.update((y) => y - YEAR_PAGE_SIZE);
+  }
+
+  protected nextYearPage(): void {
+    this.yearPageStart.update((y) => y + YEAR_PAGE_SIZE);
+  }
+
+  /** Pick a year from the year grid, then return to the day grid. */
+  protected onYearClick(year: number): void {
+    const month = this.activeMonth();
+    this.activeMonth.set(new Date(year, month.getMonth(), 1, 0, 0, 0, 0));
+    this.view.set('day');
+  }
+
   protected onKeydown(event: KeyboardEvent): void {
+    // M3 keyboard shortcuts: Shift+M / Shift+Y jump to the month / year menu
+    // buttons; they apply in any view.
+    if (event.shiftKey && (event.key === 'm' || event.key === 'M')) {
+      event.preventDefault();
+      this.focusHeaderButton('month');
+      return;
+    }
+    if (event.shiftKey && (event.key === 'y' || event.key === 'Y')) {
+      event.preventDefault();
+      this.focusHeaderButton('year');
+      return;
+    }
+
+    if (this.view() === 'year') return;
+
     let next: Date | null = null;
     const current = this.focusedDate();
 
@@ -253,6 +365,13 @@ export class CalendarComponent {
         btn.focus();
       }
     });
+  }
+
+  private focusHeaderButton(which: 'month' | 'year'): void {
+    const btn = this.host.querySelector<HTMLButtonElement>(
+      `button[data-header="${which}"]`,
+    );
+    btn?.focus();
   }
 
   /** Epoch ms at local midnight — stable cell key for focus lookup. */

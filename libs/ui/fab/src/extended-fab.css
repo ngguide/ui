@@ -17,7 +17,21 @@
   color: var(--md-sys-color-primary);
   box-shadow: var(--md-sys-elevation-level3);
 
+  /* Default container metrics = M3 Expressive small extended FAB (56dp). */
+  height: 56px;
+  min-width: 80px;
+  padding: 0 16px;
+  border-radius: var(--md-sys-shape-corner-large);
+
   --gui-comp-icon-size: 24px;
+
+  /* Default label type = M3 Expressive small extended FAB (title-medium).
+     Per-size rules below override only where the variant differs. */
+  --gui-comp-label-font: var(--md-sys-typescale-title-medium-font);
+  --gui-comp-label-size: var(--md-sys-typescale-title-medium-size);
+  --gui-comp-label-weight: var(--md-sys-typescale-title-medium-weight);
+  --gui-comp-label-line-height: var(--md-sys-typescale-title-medium-line-height);
+  --gui-comp-label-tracking: var(--md-sys-typescale-title-medium-tracking);
 
   transition:
     background-color var(--md-sys-motion-duration-short4)
@@ -28,31 +42,59 @@
       var(--md-sys-motion-easing-standard);
 }
 
-/* --- Sizes (M3 extended FAB heights mirror FAB; pill shape). Exact per-size
-   horizontal paddings are an M3 detail kept reasonable here. --- */
+/* --- Sizes (M3 Expressive extended FAB scale: Small 56 / baseline FAB 56 /
+   Medium 80 / Large 96). Expanded width is dynamic with an 80dp minimum.
+   The label type style scales with the variant (small uses title-medium;
+   the deprecated baseline uses label-large). --- */
+/* Small extended FAB (recommended default — inherits :host title-medium). */
 :host([data-size='sm']) {
   height: 56px;
+  min-width: 80px;
   padding: 0 16px;
   border-radius: var(--md-sys-shape-corner-large);
 
   --gui-comp-icon-size: 24px;
 }
 
-:host,
+/* Baseline extended FAB (deprecated in M3 Expressive — kept for back-compat,
+   label-large type, 16dp inner padding). */
 :host([data-size='md']) {
   height: 56px;
+  min-width: 80px;
   padding: 0 16px;
   border-radius: var(--md-sys-shape-corner-large);
 
   --gui-comp-icon-size: 24px;
+  --gui-comp-label-font: var(--md-sys-typescale-label-large-font);
+  --gui-comp-label-size: var(--md-sys-typescale-label-large-size);
+  --gui-comp-label-weight: var(--md-sys-typescale-label-large-weight);
+  --gui-comp-label-line-height: var(--md-sys-typescale-label-large-line-height);
+  --gui-comp-label-tracking: var(--md-sys-typescale-label-large-tracking);
 }
 
+/* Medium extended FAB (80dp — inherits :host title-medium). */
 :host([data-size='lg']) {
+  height: 80px;
+  min-width: 80px;
+  padding: 0 24px;
+  border-radius: var(--md-sys-shape-corner-large-increased);
+
+  --gui-comp-icon-size: 28px;
+}
+
+/* Large extended FAB (96dp). */
+:host([data-size='xl']) {
   height: 96px;
-  padding: 0 26px;
+  min-width: 80px;
+  padding: 0 28px;
   border-radius: var(--md-sys-shape-corner-extra-large);
 
-  --gui-comp-icon-size: 32px;
+  --gui-comp-icon-size: 36px;
+  --gui-comp-label-font: var(--md-sys-typescale-title-large-font);
+  --gui-comp-label-size: var(--md-sys-typescale-title-large-size);
+  --gui-comp-label-weight: var(--md-sys-typescale-title-large-weight);
+  --gui-comp-label-line-height: var(--md-sys-typescale-title-large-line-height);
+  --gui-comp-label-tracking: var(--md-sys-typescale-title-large-tracking);
 }
 
 /* --- Collapsed (icon-only): shrink to a square FAB when not expanded. The
@@ -64,11 +106,20 @@
 }
 
 :host([data-size='lg']:not([data-expanded])) {
+  min-width: 80px;
+}
+
+:host([data-size='xl']:not([data-expanded])) {
   min-width: 96px;
 }
 
 .gui-extended-fab-label {
   white-space: nowrap;
+  font-family: var(--gui-comp-label-font);
+  font-size: var(--gui-comp-label-size);
+  font-weight: var(--gui-comp-label-weight);
+  line-height: var(--gui-comp-label-line-height);
+  letter-spacing: var(--gui-comp-label-tracking);
 }
 
 /* --- Colors (container + on-color). Default = primary-container. --- */
@@ -101,6 +152,12 @@
 :host([data-color='tertiary']) {
   background-color: var(--md-sys-color-tertiary);
   color: var(--md-sys-color-on-tertiary);
+}
+
+/* --- Hovered: M3 raises the extended FAB from resting elevation 3 to
+   elevation 4. --- */
+:host(:hover) {
+  box-shadow: var(--md-sys-elevation-level4);
 }
 
 /* --- Disabled (M3 disabled treatment via tokens). The interaction layer

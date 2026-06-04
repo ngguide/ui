@@ -98,12 +98,13 @@ The medium FAB placement has 16dp margins
 The close button is placed higher to align with the top of the medium FAB
 The large FAB placement has 16dp margins
 The close button is placed higher to align with the top of the large FAB
-On web, the FAB menu opens from the FAB, and inherits its states and specs from the baseline menu component.
+On web, the FAB menu opens from the FAB, and inherits its interaction states from the baseline menu component, while using the larger, more elevated FAB-menu container surface (container-large shape, level-3 elevation) and larger, contrasting items.
 The gap between the FAB and menu can vary, but 4dp is recommended.
 Spacing and interaction on FAB menu for web:
 - Enabled
 - Hovered
-- Selected
+- Focused
+- Pressed
 
 ## Accessibility
 

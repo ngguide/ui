@@ -57,10 +57,27 @@ describe('GuiBadge', () => {
     expect(badgeEl()?.textContent?.trim()).toBe('999+');
   });
 
-  it('marks the badge graphic aria-hidden', () => {
+  it('announces "New notification" for the non-counting dot', () => {
     fixture.detectChanges();
 
-    expect(badgeEl()?.getAttribute('aria-hidden')).toBe('true');
+    expect(badgeEl()?.getAttribute('role')).toBe('img');
+    expect(badgeEl()?.getAttribute('aria-label')).toBe('New notification');
+  });
+
+  it('announces the number for a numeric badge', () => {
+    host.value = 7;
+    fixture.detectChanges();
+
+    expect(badgeEl()?.getAttribute('aria-label')).toBe('7');
+  });
+
+  it('limits content to four characters (M3 cap)', () => {
+    host.value = 123456;
+    host.max = 99999;
+    fixture.detectChanges();
+
+    expect(badgeEl()?.textContent?.trim()).toBe('9999');
+    expect(badgeEl()?.getAttribute('aria-label')).toBe('9999');
   });
 
   it('sets data-gui-badge-hidden on the host when hidden', () => {

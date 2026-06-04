@@ -136,6 +136,37 @@ describe('GuiSnackbar', () => {
     }
   });
 
+  it('does not auto-dismiss an actionable snackbar by default (M3)', () => {
+    vi.useFakeTimers();
+    try {
+      const ref = service.open({ message: 'Deleted', action: 'Undo' });
+      let dismissed = false;
+      ref.afterDismissed.subscribe(() => (dismissed = true));
+
+      vi.advanceTimersByTime(60000);
+
+      expect(dismissed).toBe(false);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('dismisses with reason "dismiss" when Esc is pressed in focus', () => {
+    const ref = service.open('Saved');
+    let reason: GuiSnackbarCloseReason | undefined;
+    ref.afterDismissed.subscribe((r) => (reason = r));
+    flush();
+
+    const overlay = document.querySelector(
+      '.gui-snackbar-pane',
+    ) as HTMLElement | null;
+    overlay?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+    );
+
+    expect(reason).toBe('dismiss');
+  });
+
   it('dismissAll clears the queue and closes the current', () => {
     const first = service.open('First');
     const second = service.open('Second');

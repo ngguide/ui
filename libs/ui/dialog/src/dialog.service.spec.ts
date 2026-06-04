@@ -16,17 +16,31 @@ function flush(): void {
 }
 
 describe('GuiDialog', () => {
-  it('opens a modal with role=dialog + aria-modal (Req 12.1, 14.1)', () => {
+  it('opens a basic dialog with role=alertdialog + aria-modal (Req 12.1, 14.1)', () => {
+    // M3: basic dialogs are "alert dialogs" on web, so role defaults to
+    // "alertdialog" unless the caller overrides it.
     const ref = TestBed.inject(GuiDialog).open(DialogContent, {
       ariaLabel: 'Test',
     });
     flush();
     const surface = document.querySelector('.gui-dialog-container');
-    expect(surface?.getAttribute('role')).toBe('dialog');
+    expect(surface?.getAttribute('role')).toBe('alertdialog');
     expect(surface?.getAttribute('aria-modal')).toBe('true');
     ref.close();
     flush();
     expect(document.querySelector('.gui-dialog-container')).toBeNull();
+  });
+
+  it('keeps role=dialog for full-screen dialogs unless overridden', () => {
+    const ref = TestBed.inject(GuiDialog).open(DialogContent, {
+      ariaLabel: 'Test',
+      fullScreen: 'always',
+    });
+    flush();
+    const surface = document.querySelector('.gui-dialog-container');
+    expect(surface?.getAttribute('role')).toBe('dialog');
+    ref.close();
+    flush();
   });
 
   it('close(result) emits the result on closed (Req 16.2)', () => {

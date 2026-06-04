@@ -11,36 +11,168 @@
 :host {
   display: inline-flex;
   align-items: center;
-  /* Standard arrangement: M3 spacing between buttons. */
+  /* Standard arrangement inner padding (gap) is size-dependent so XS/S keep a
+   * minimum 48dp accessible target. M3: XS 18 / S 12 / M 8 / L 8 / XL 8 dp.
+   * Default size is M, so 8px is the base. */
   gap: 8px;
 }
 
-/* Connected arrangement: buttons sit edge-to-edge, no gap. */
-:host([data-connected]) {
-  gap: 0;
+/* Standard inner padding per size (M3 Measurements). M/L/XL share the 8px base. */
+:host([data-size='xs']) {
+  gap: 18px;
 }
 
-/* Connected: children share edges, so square off all corners, then round only
- * the outer edges of the first/last button. `::ng-deep` reaches the projected
- * child components; `!important` overrides their intrinsic `:host` radius. */
+:host([data-size='sm']) {
+  gap: 12px;
+}
+
+/* Connected arrangement: M3 uses a 2dp inner padding at every size. */
+:host([data-connected]) {
+  gap: 2px;
+}
+
+/* Connected: children square off their shared (inner) edges; outer edges are
+ * shaped per the round/square default-shape config. `::ng-deep` reaches the
+ * projected child components; `!important` overrides their intrinsic radius. */
 :host([data-connected]) ::ng-deep > * {
   border-radius: 0 !important;
 }
 
-:host([data-connected]) ::ng-deep > *:first-child {
+/* --- Round connected: fully-round outer caps, square (per-size) inner corners.
+ * The inner shape "remains square with the following corner sizes" (M3), so the
+ * shared inner edges get the per-size radius and the first/last outer caps are
+ * fully round (pill end caps whose radius equals half the button height). */
+:host([data-connected][data-shape='round']) ::ng-deep > *:first-child {
   border-start-start-radius: var(--md-sys-shape-corner-full) !important;
   border-end-start-radius: var(--md-sys-shape-corner-full) !important;
 }
 
-:host([data-connected]) ::ng-deep > *:last-child {
+:host([data-connected][data-shape='round']) ::ng-deep > *:last-child {
   border-start-end-radius: var(--md-sys-shape-corner-full) !important;
   border-end-end-radius: var(--md-sys-shape-corner-full) !important;
 }
 
+/* --- Square connected: the OUTER caps use the per-size corner size; inner
+ * corners stay square (0, set above). */
+:host([data-connected][data-shape='square'][data-size='xs']) ::ng-deep > *:first-child {
+  border-start-start-radius: var(--md-sys-shape-corner-extra-small) !important;
+  border-end-start-radius: var(--md-sys-shape-corner-extra-small) !important;
+}
+
+:host([data-connected][data-shape='square'][data-size='xs']) ::ng-deep > *:last-child {
+  border-start-end-radius: var(--md-sys-shape-corner-extra-small) !important;
+  border-end-end-radius: var(--md-sys-shape-corner-extra-small) !important;
+}
+
+:host([data-connected][data-shape='square'][data-size='sm']) ::ng-deep > *:first-child,
+:host([data-connected][data-shape='square'][data-size='md']) ::ng-deep > *:first-child {
+  border-start-start-radius: var(--md-sys-shape-corner-small) !important;
+  border-end-start-radius: var(--md-sys-shape-corner-small) !important;
+}
+
+:host([data-connected][data-shape='square'][data-size='sm']) ::ng-deep > *:last-child,
+:host([data-connected][data-shape='square'][data-size='md']) ::ng-deep > *:last-child {
+  border-start-end-radius: var(--md-sys-shape-corner-small) !important;
+  border-end-end-radius: var(--md-sys-shape-corner-small) !important;
+}
+
+:host([data-connected][data-shape='square'][data-size='lg']) ::ng-deep > *:first-child {
+  border-start-start-radius: var(--md-sys-shape-corner-large) !important;
+  border-end-start-radius: var(--md-sys-shape-corner-large) !important;
+}
+
+:host([data-connected][data-shape='square'][data-size='lg']) ::ng-deep > *:last-child {
+  border-start-end-radius: var(--md-sys-shape-corner-large) !important;
+  border-end-end-radius: var(--md-sys-shape-corner-large) !important;
+}
+
+:host([data-connected][data-shape='square'][data-size='xl']) ::ng-deep > *:first-child {
+  border-start-start-radius: var(--md-sys-shape-corner-large-increased) !important;
+  border-end-start-radius: var(--md-sys-shape-corner-large-increased) !important;
+}
+
+:host([data-connected][data-shape='square'][data-size='xl']) ::ng-deep > *:last-child {
+  border-start-end-radius: var(--md-sys-shape-corner-large-increased) !important;
+  border-end-end-radius: var(--md-sys-shape-corner-large-increased) !important;
+}
+
+/* --- Round connected: per-size square inner corners on the shared edges. The
+ * outer caps (rounded above) keep their fully-round value; only the inner edges
+ * take the per-size corner size. We round both inner edges of middle children
+ * and the inner edge of the first/last child. */
+:host([data-connected][data-shape='round'][data-size='xs']) ::ng-deep > *:not(:first-child):not(:last-child) {
+  border-radius: var(--md-sys-shape-corner-extra-small) !important;
+}
+
+:host([data-connected][data-shape='round'][data-size='sm']) ::ng-deep > *:not(:first-child):not(:last-child),
+:host([data-connected][data-shape='round'][data-size='md']) ::ng-deep > *:not(:first-child):not(:last-child) {
+  border-radius: var(--md-sys-shape-corner-small) !important;
+}
+
+:host([data-connected][data-shape='round'][data-size='lg']) ::ng-deep > *:not(:first-child):not(:last-child) {
+  border-radius: var(--md-sys-shape-corner-large) !important;
+}
+
+:host([data-connected][data-shape='round'][data-size='xl']) ::ng-deep > *:not(:first-child):not(:last-child) {
+  border-radius: var(--md-sys-shape-corner-large-increased) !important;
+}
+
+/* Round connected: the inner (shared) edge of the first/last child takes the
+ * per-size square corner; the outer edge stays fully round (set above). */
+:host([data-connected][data-shape='round'][data-size='xs']) ::ng-deep > *:first-child {
+  border-start-end-radius: var(--md-sys-shape-corner-extra-small) !important;
+  border-end-end-radius: var(--md-sys-shape-corner-extra-small) !important;
+}
+:host([data-connected][data-shape='round'][data-size='xs']) ::ng-deep > *:last-child {
+  border-start-start-radius: var(--md-sys-shape-corner-extra-small) !important;
+  border-end-start-radius: var(--md-sys-shape-corner-extra-small) !important;
+}
+
+:host([data-connected][data-shape='round'][data-size='sm']) ::ng-deep > *:first-child,
+:host([data-connected][data-shape='round'][data-size='md']) ::ng-deep > *:first-child {
+  border-start-end-radius: var(--md-sys-shape-corner-small) !important;
+  border-end-end-radius: var(--md-sys-shape-corner-small) !important;
+}
+:host([data-connected][data-shape='round'][data-size='sm']) ::ng-deep > *:last-child,
+:host([data-connected][data-shape='round'][data-size='md']) ::ng-deep > *:last-child {
+  border-start-start-radius: var(--md-sys-shape-corner-small) !important;
+  border-end-start-radius: var(--md-sys-shape-corner-small) !important;
+}
+
+:host([data-connected][data-shape='round'][data-size='lg']) ::ng-deep > *:first-child {
+  border-start-end-radius: var(--md-sys-shape-corner-large) !important;
+  border-end-end-radius: var(--md-sys-shape-corner-large) !important;
+}
+:host([data-connected][data-shape='round'][data-size='lg']) ::ng-deep > *:last-child {
+  border-start-start-radius: var(--md-sys-shape-corner-large) !important;
+  border-end-start-radius: var(--md-sys-shape-corner-large) !important;
+}
+
+:host([data-connected][data-shape='round'][data-size='xl']) ::ng-deep > *:first-child {
+  border-start-end-radius: var(--md-sys-shape-corner-large-increased) !important;
+  border-end-end-radius: var(--md-sys-shape-corner-large-increased) !important;
+}
+:host([data-connected][data-shape='round'][data-size='xl']) ::ng-deep > *:last-child {
+  border-start-start-radius: var(--md-sys-shape-corner-large-increased) !important;
+  border-end-start-radius: var(--md-sys-shape-corner-large-increased) !important;
+}
+
+/* Square connected: inner corners of middle children stay square (0, set above);
+ * nothing further needed since outer caps are handled per-size above. */
+
+/* --- Minimum accessible target: XS/S connected groups guarantee a 48dp target
+ * area and a minimum width of 48dp on each button (M3 Measurements / a11y). */
+:host([data-connected][data-size='xs']) ::ng-deep > *,
+:host([data-connected][data-size='sm']) ::ng-deep > * {
+  min-width: 48px;
+  min-height: 48px;
+}
+
 /* M3 expressive press. The state-layer directive sets data-gui-state="pressed"
- * on the active child; the pressed button grows and its siblings compress.
- * M3 ButtonGroup uses an ExpandedRatio (~0.15) for the grow amount; the
- * sibling compression here is an approximation of that behaviour. */
+ * on the active child; the pressed button grows. In a STANDARD group the press
+ * also briefly changes the width of adjacent buttons (they compress); a
+ * CONNECTED group must NOT add any interaction between adjacent buttons, so the
+ * sibling compression is scoped to standard groups only. */
 :host ::ng-deep > * {
   transform-origin: center;
   transition: transform var(--md-sys-motion-duration-short4)
@@ -51,10 +183,18 @@
   transform: scaleX(1.15);
 }
 
-/* Approximate neighbor compression: when any child is pressed, slightly
- * shrink its siblings (ExpandedRatio approximation). */
-:host:has(> *[data-gui-state~='pressed']) ::ng-deep > *:not([data-gui-state~='pressed']) {
+/* Standard-only neighbor compression: when any child is pressed, slightly shrink
+ * its siblings. Connected groups are excluded (no adjacent interaction in M3). */
+:host(:not([data-connected]):has(> *[data-gui-state~='pressed'])) ::ng-deep > *:not([data-gui-state~='pressed']) {
   transform: scaleX(0.95);
+}
+
+/* Connected: selecting a button morphs only that button's shape (no adjacent
+ * interaction). The child carries its own `data-selected`; in a connected group
+ * round off all of the selected button's corners to morph it from the squared
+ * shared-edge shape toward round (shape morph on select, M3). */
+:host([data-connected]) ::ng-deep > *[data-selected] {
+  border-radius: var(--md-sys-shape-corner-full) !important;
 }
 
 /* Respect reduced-motion: no transitions, no expressive transforms. */

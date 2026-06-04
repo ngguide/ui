@@ -1,19 +1,31 @@
 <div class="gui-date-range-picker-trigger">
-  <gui-text-field variant="outlined" label="Start date">
+  <gui-text-field
+    variant="outlined"
+    label="Start date"
+    [error]="startError()"
+    errorText="Invalid date"
+    [supportingText]="dateFormatHint()"
+  >
     <input
       guiTextFieldInput
       [value]="displayStart()"
-      [readOnly]="true"
       aria-label="Start date"
+      (change)="onStartInput($any($event.target).value)"
     />
   </gui-text-field>
 
-  <gui-text-field variant="outlined" label="End date">
+  <gui-text-field
+    variant="outlined"
+    label="End date"
+    [error]="endError()"
+    errorText="Invalid date"
+    [supportingText]="dateFormatHint()"
+  >
     <input
       guiTextFieldInput
       [value]="displayEnd()"
-      [readOnly]="true"
       aria-label="End date"
+      (change)="onEndInput($any($event.target).value)"
     />
   </gui-text-field>
 
@@ -42,31 +54,48 @@
 <ng-template #panel>
   <div class="gui-date-range-picker-panel" role="dialog" aria-modal="true">
     <div class="gui-date-range-picker-header">
-      <span class="gui-date-range-picker-headline">{{ label() }}</span>
+      <span class="gui-date-range-picker-supporting">{{ label() }}</span>
+      <span class="gui-date-range-picker-headline">{{ headlineText() }}</span>
     </div>
 
     @if (variant() === 'modal-input') {
       <div class="gui-date-range-picker-inputs">
-        <gui-text-field variant="outlined" label="Start date">
+        <gui-text-field
+          variant="outlined"
+          label="Start date"
+          [error]="startError()"
+          errorText="Invalid date"
+          [supportingText]="dateFormatHint()"
+        >
           <input
             guiTextFieldInput
-            [value]="displayStart()"
-            [readOnly]="true"
+            [value]="pendingStartDisplay()"
             aria-label="Start date"
+            (change)="onModalStartInput($any($event.target).value)"
           />
         </gui-text-field>
-        <gui-text-field variant="outlined" label="End date">
+        <gui-text-field
+          variant="outlined"
+          label="End date"
+          [error]="endError()"
+          errorText="Invalid date"
+          [supportingText]="dateFormatHint()"
+        >
           <input
             guiTextFieldInput
-            [value]="displayEnd()"
-            [readOnly]="true"
+            [value]="pendingEndDisplay()"
             aria-label="End date"
+            (change)="onModalEndInput($any($event.target).value)"
           />
         </gui-text-field>
       </div>
     }
 
     <div class="gui-date-range-picker-divider"></div>
+
+    @if (variant() !== 'modal-input') {
+      <div class="gui-date-range-picker-subhead">{{ monthSubhead() }}</div>
+    }
 
     <gui-calendar
       [(activeMonth)]="activeMonth"

@@ -42,6 +42,9 @@ export class GuiDialog {
       ...normalizeModalConfig<D>(config),
       container: GuiDialogContainer,
       guiFullScreen: fullScreen,
+      // M3: basic dialogs are alert dialogs on web (role="alertdialog"); full-
+      // screen dialogs stay role="dialog". The caller can still override.
+      role: config?.role ?? (fullScreen ? 'dialog' : 'alertdialog'),
       panelClass: [
         fullScreen ? 'gui-dialog-fullscreen-pane' : 'gui-dialog-pane',
         ...asArray(config?.panelClass),

@@ -105,19 +105,36 @@ describe('SliderComponent', () => {
     fixture.detectChanges();
 
     const [startThumb] = thumbs();
-    // Push the start thumb up past the end value via PageUp (10×step).
-    key(startThumb, 'PageUp');
+    // Push the start thumb up past the end via Space + ArrowUp (interval = 10×step).
+    key(startThumb, ' ');
     fixture.detectChanges();
-    key(startThumb, 'PageUp');
+    key(startThumb, 'ArrowUp');
     fixture.detectChanges();
-    key(startThumb, 'PageUp');
+    key(startThumb, 'ArrowUp');
     fixture.detectChanges();
-    key(startThumb, 'PageUp');
+    key(startThumb, 'ArrowUp');
+    fixture.detectChanges();
+    key(startThumb, 'ArrowUp');
     fixture.detectChanges();
 
     const value = host.value() as [number, number];
     expect(value[0]).toBeLessThanOrEqual(value[1]);
     expect(value[0]).toBe(50);
+  });
+
+  it('Space + Arrow steps by one interval (10×step)', () => {
+    host.value.set(0);
+    fixture.detectChanges();
+
+    key(thumbs()[0], ' ');
+    fixture.detectChanges();
+    key(thumbs()[0], 'ArrowRight');
+    fixture.detectChanges();
+    expect(host.value()).toBe(10);
+  });
+
+  it('sets aria-orientation on the handle', () => {
+    expect(thumbs()[0].getAttribute('aria-orientation')).toBe('horizontal');
   });
 
   it('renders two thumbs in range mode', () => {

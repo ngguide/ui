@@ -244,7 +244,7 @@ Dates pass the 4.5:1 contrast minimum
 | Enter/return | Enter/return |
 | Enter/return | Closes the calendar and saves the selected date |
 | Page up/down | Move to the same date on next/previous month |
-| Home/End | Move to the first day of the month |
+| Home/End | Move to the first/last day of the week |
 | Shift + Page up/down | Moves to the same date in the next/previous year |
 | Shift + M | Moves to the month list dropdown |
 | Shift + Y | Moves to the year list dropdown |

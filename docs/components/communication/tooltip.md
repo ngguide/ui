@@ -41,7 +41,9 @@ Plain tooltip padding and size measurements
 | Attribute | Value |
 | --- | --- |
 | Container height | 24dp |
-| Padding | 8dp |
+| Top and bottom padding | 4dp |
+| Left and right padding | 8dp |
+| Max width | 200dp |
 
 ### Rich tooltip
 - Subhead
@@ -64,6 +66,7 @@ Rich tooltip padding and size measurements
 | Top padding | 12dp |
 | Bottom padding | 8dp |
 | Left and right padding | 16dp |
+| Max width | 320dp |
 
 #### Rich tooltip configurations
 Rich tooltips can have a headline, body, and up to two buttons. The headline and number of buttons can be configured.

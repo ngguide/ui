@@ -122,8 +122,15 @@ describe('SegmentedButtonComponent', () => {
   });
 
   describe('group host', () => {
-    it('has role="radiogroup"', () => {
+    it('has role="radiogroup" in single-select', () => {
       expect(group.getAttribute('role')).toBe('radiogroup');
+    });
+
+    it('switches to role="group" in multi-select (children are checkboxes)', () => {
+      host.multiple.set(true);
+      fixture.detectChanges();
+
+      expect(group.getAttribute('role')).toBe('group');
     });
 
     it('sets aria-multiselectable="true" when multiple', () => {

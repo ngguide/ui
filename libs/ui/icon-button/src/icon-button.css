@@ -94,8 +94,8 @@
 :host([data-width='narrow']) {
   padding-inline: 4px;
 }
-/* uniform = default square, no horizontal padding adjustment. */
-:host([data-width='uniform']) {
+/* default = standard square, no horizontal padding adjustment. */
+:host([data-width='default']) {
   padding-inline: 0;
 }
 :host([data-width='wide']) {
@@ -103,31 +103,49 @@
 }
 
 /* --- Shape + expressive morph (per-size radii) ---
-   round (default) = full; selected flips round -> a size-specific square token;
-   pressed overrides both with the size-specific pressed radius. --- */
+   The base :host is round (full). A button shows its size-specific SQUARE radius
+   when it is either a round-resting button that is selected, OR a square-resting
+   button that is NOT selected — i.e. M3's "toggle morphs round -> square" and the
+   "if the resting shape is square, the selected shape should be round" inversion.
+   A square-resting button that IS selected flips back to round (full).
+   Pressed always overrides with the size-specific pressed radius (same value for
+   round and square per M3). --- */
 
-/* xs / sm: square = medium, pressed = small, selected = square */
-:host([data-size='xs'][data-selected]),
-:host([data-size='sm'][data-selected]) {
+/* xs / sm: square = medium (12dp), pressed = small (8dp) */
+:host([data-size='xs'][data-shape='round'][data-selected]),
+:host([data-size='sm'][data-shape='round'][data-selected]),
+:host([data-size='xs'][data-shape='square']:not([data-selected])),
+:host([data-size='sm'][data-shape='square']:not([data-selected])) {
   border-radius: var(--md-sys-shape-corner-medium);
 }
+
+/* md: square = large (16dp), pressed = medium (12dp) */
+:host([data-size='md'][data-shape='round'][data-selected]),
+:host([data-size='md'][data-shape='square']:not([data-selected])) {
+  border-radius: var(--md-sys-shape-corner-large);
+}
+
+/* lg / xl: square = extra-large (28dp), pressed = large (16dp) */
+:host([data-size='lg'][data-shape='round'][data-selected]),
+:host([data-size='xl'][data-shape='round'][data-selected]),
+:host([data-size='lg'][data-shape='square']:not([data-selected])),
+:host([data-size='xl'][data-shape='square']:not([data-selected])) {
+  border-radius: var(--md-sys-shape-corner-extra-large);
+}
+
+/* Square-resting toggle, selected -> invert back to round (full). Placed after
+   the square rules so it wins at equal specificity via source order. */
+:host([data-shape='square'][data-selected]) {
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+/* Pressed (last, so it overrides every resting/selected radius above). */
 :host([data-size='xs'][data-gui-state~='pressed']),
 :host([data-size='sm'][data-gui-state~='pressed']) {
   border-radius: var(--md-sys-shape-corner-small);
 }
-
-/* md: square = large, pressed = medium, selected = square */
-:host([data-size='md'][data-selected]) {
-  border-radius: var(--md-sys-shape-corner-large);
-}
 :host([data-size='md'][data-gui-state~='pressed']) {
   border-radius: var(--md-sys-shape-corner-medium);
-}
-
-/* lg / xl: square = extra-large, pressed = large, selected = square */
-:host([data-size='lg'][data-selected]),
-:host([data-size='xl'][data-selected]) {
-  border-radius: var(--md-sys-shape-corner-extra-large);
 }
 :host([data-size='lg'][data-gui-state~='pressed']),
 :host([data-size='xl'][data-gui-state~='pressed']) {
@@ -151,8 +169,8 @@
   color: var(--md-sys-color-on-primary);
 }
 :host([data-variant='filled'][data-toggle]:not([data-selected])) {
-  background-color: var(--md-sys-color-surface-container-highest);
-  color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
 }
 :host([data-variant='filled'][data-toggle][data-selected]) {
   background-color: var(--md-sys-color-primary);
@@ -169,8 +187,8 @@
   color: var(--md-sys-color-on-secondary-container);
 }
 :host([data-variant='tonal'][data-toggle][data-selected]) {
-  background-color: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
 }
 
 /* Outlined */

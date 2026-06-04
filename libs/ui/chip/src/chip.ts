@@ -29,6 +29,9 @@ export type GuiChipType = 'assist' | 'filter' | 'input' | 'suggestion';
   selector: 'gui-chip',
   exportAs: 'guiChip',
   template: `
+    <span class="gui-chip-avatar" aria-hidden="true">
+      <ng-content select="[guiChipAvatar]" />
+    </span>
     <span class="gui-chip-leading" aria-hidden="true">
       @if (type() === 'filter' && selected()) {
         <svg class="gui-chip-check" viewBox="0 -960 960 960" focusable="false">
@@ -59,7 +62,9 @@ export type GuiChipType = 'assist' | 'filter' | 'input' | 'suggestion';
         [attr.aria-label]="'Remove ' + label()"
         (click)="remove.emit()"
       >
-        <ng-content select="[guiChipRemove]" />
+        <span class="gui-chip-remove-icon">
+          <ng-content select="[guiChipRemove]" />
+        </span>
       </button>
     }
   `,

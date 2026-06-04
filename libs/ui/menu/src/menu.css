@@ -6,8 +6,28 @@
   max-width: 280px;
   padding: 8px 0;
   background: var(--md-sys-color-surface-container);
+  /* Baseline menus have square (extra-small, 4dp) corners. */
   border-radius: var(--md-sys-shape-corner-extra-small);
   box-shadow: var(--md-sys-elevation-level2);
+}
+
+/* M3 Expressive vertical menus use rounded corners and a surface-container-low
+   container. */
+.gui-menu[data-variant='vertical'] {
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+
+/* Vibrant color style — tertiary-based container (Expressive only). */
+.gui-menu[data-color='vibrant'] {
+  background: var(--md-sys-color-tertiary-container);
+}
+
+/* Grouped layout — extra spacing between grouped sections (Expressive only). */
+.gui-menu[data-layout='grouped'] {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 /* Encapsulation is None on MenuItemComponent (see menu-item.ts) so these rules
@@ -27,18 +47,56 @@
   text-align: left;
   text-decoration: none;
   color: var(--md-sys-color-on-surface);
-  /* body-large */
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.5px;
+  /* M3 menu-item label uses the label-large typescale. */
+  font-family: var(--md-sys-typescale-label-large-font);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
   --gui-comp-icon-size: 24px;
 }
 
-.gui-menu-item-label {
+/* Vertical menus give items rounded corners; the shape morphs (per M3) when an
+   item is selected. */
+.gui-menu[data-variant='vertical'] .gui-menu-item {
+  border-radius: var(--md-sys-shape-corner-large);
+}
+
+.gui-menu[data-variant='vertical'] .gui-menu-item[data-selected] {
+  border-radius: var(--md-sys-shape-corner-extra-large);
+}
+
+/* The label column. Wraps the label and optional two-line supporting text. */
+.gui-menu-item-body {
+  display: flex;
   flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.gui-menu-item-label {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Optional two-line supporting text (body-medium, on-surface-variant). Hidden
+   unless the consumer projects content into it. */
+.gui-menu-item-supporting {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-sys-typescale-body-medium-font);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+}
+
+.gui-menu-item-supporting:empty {
+  display: none;
 }
 
 .gui-menu-item-leading,
@@ -48,8 +106,89 @@
   color: var(--md-sys-color-on-surface-variant);
 }
 
+/* The checkmark selection cue (M3 recommends an icon in addition to color and
+   shape). Sized to the leading-icon slot. */
+.gui-menu-item-check {
+  width: var(--gui-comp-icon-size);
+  height: var(--gui-comp-icon-size);
+}
+
+/* Optional trailing text (e.g. a keyboard shortcut) and badge. Both on-surface
+   -variant and hidden when empty. */
+.gui-menu-item-trailing-text,
+.gui-menu-item-badge {
+  display: inline-flex;
+  align-items: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-sys-typescale-label-large-font);
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+}
+
+.gui-menu-item-trailing-text {
+  margin-left: auto;
+}
+
+.gui-menu-item-trailing-text:empty,
+.gui-menu-item-badge:empty {
+  display: none;
+}
+
+/* When trailing text already pushes to the end, the trailing icon follows it;
+   otherwise the icon takes the end position. */
 .gui-menu-item-trailing {
   margin-left: auto;
+}
+
+.gui-menu-item-trailing-text:not(:empty) ~ .gui-menu-item-trailing,
+.gui-menu-item-badge:not(:empty) ~ .gui-menu-item-trailing {
+  margin-left: 0;
+}
+
+/* --- Selected state ----------------------------------------------------- */
+/* Standard color style: tertiary container / on-tertiary container. The state
+   layer (gui-state-layer, tinting with currentColor) follows the label color
+   automatically. */
+.gui-menu-item[data-selected] {
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.gui-menu-item[data-selected] .gui-menu-item-leading,
+.gui-menu-item[data-selected] .gui-menu-item-trailing,
+.gui-menu-item[data-selected] .gui-menu-item-trailing-text,
+.gui-menu-item[data-selected] .gui-menu-item-badge,
+.gui-menu-item[data-selected] .gui-menu-item-supporting {
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+/* Vibrant color style: selected uses tertiary / on-tertiary. */
+.gui-menu[data-color='vibrant'] .gui-menu-item[data-selected] {
+  background: var(--md-sys-color-tertiary);
+  color: var(--md-sys-color-on-tertiary);
+}
+
+.gui-menu[data-color='vibrant'] .gui-menu-item[data-selected] .gui-menu-item-leading,
+.gui-menu[data-color='vibrant'] .gui-menu-item[data-selected] .gui-menu-item-trailing,
+.gui-menu[data-color='vibrant'] .gui-menu-item[data-selected] .gui-menu-item-trailing-text,
+.gui-menu[data-color='vibrant'] .gui-menu-item[data-selected] .gui-menu-item-badge,
+.gui-menu[data-color='vibrant'] .gui-menu-item[data-selected] .gui-menu-item-supporting {
+  color: var(--md-sys-color-on-tertiary);
+}
+
+/* Vibrant unselected items: on-tertiary-container label/icons over the
+   tertiary-container container. */
+.gui-menu[data-color='vibrant'] .gui-menu-item {
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.gui-menu[data-color='vibrant'] .gui-menu-item-leading,
+.gui-menu[data-color='vibrant'] .gui-menu-item-trailing,
+.gui-menu[data-color='vibrant'] .gui-menu-item-trailing-text,
+.gui-menu[data-color='vibrant'] .gui-menu-item-badge,
+.gui-menu[data-color='vibrant'] .gui-menu-item-supporting {
+  color: var(--md-sys-color-on-tertiary-container);
 }
 
 /* CdkMenuItem reflects disabled as [aria-disabled="true"]. */
@@ -60,7 +199,10 @@
 }
 
 .gui-menu-item[aria-disabled='true'] .gui-menu-item-leading,
-.gui-menu-item[aria-disabled='true'] .gui-menu-item-trailing {
+.gui-menu-item[aria-disabled='true'] .gui-menu-item-trailing,
+.gui-menu-item[aria-disabled='true'] .gui-menu-item-trailing-text,
+.gui-menu-item[aria-disabled='true'] .gui-menu-item-badge,
+.gui-menu-item[aria-disabled='true'] .gui-menu-item-supporting {
   color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
 }
 

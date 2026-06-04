@@ -12,8 +12,11 @@
   flex-direction: column;
   box-sizing: border-box;
   width: 100%;
-  /* Initial height capped at ~50% of the viewport with internal scroll. */
-  max-height: 50dvh;
+  /* Selected preset height (set via `--gui-bottom-sheet-height`, default 50dvh)
+     with internal scroll, never taller than the window minus the 72dp top
+     margin M3 reserves above the sheet. */
+  height: var(--gui-bottom-sheet-height, 50dvh);
+  max-height: calc(100dvh - 72px);
   background-color: var(--md-sys-color-surface-container-low);
   color: var(--md-sys-color-on-surface);
   border-start-start-radius: var(--md-sys-shape-corner-extra-large);
@@ -21,6 +24,14 @@
   box-shadow: var(--md-sys-elevation-level1);
   animation: gui-bottom-sheet-enter var(--md-sys-motion-duration-medium4)
     var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+/* --- Wide window (> 640dp): 56dp top margin (Req 9.1). Side margins are
+   applied to the overlay pane (`.gui-bottom-sheet-pane`) globally. --- */
+@media (min-width: 640px) {
+  .gui-bottom-sheet-surface {
+    max-height: calc(100dvh - 56px);
+  }
 }
 
 @keyframes gui-bottom-sheet-enter {
@@ -36,20 +47,40 @@
   animation: none;
 }
 
-/* --- Drag handle: 32×4dp, on-surface-variant, centered (Req 9.1) --- */
+/* --- Drag handle: 32×4dp visual bar centered in a 48dp accessible hit target.
+   The button has 22dp padding top/bottom (Req: M3 measurements), so its total
+   interactive height is 22 + 4 + 22 = 48dp. Visible focus is shown per M3. --- */
 .gui-bottom-sheet-handle {
   flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   align-self: center;
+  box-sizing: content-box;
   width: 32px;
   height: 4px;
-  margin: 16px 0;
-  border-radius: var(--md-sys-shape-corner-full);
-  background-color: var(--md-sys-color-on-surface-variant);
+  padding: 22px 0;
+  border: none;
+  background: transparent;
   cursor: grab;
   touch-action: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.gui-bottom-sheet-handle::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 4px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-on-surface-variant);
 }
 .gui-bottom-sheet-handle:active {
   cursor: grabbing;
+}
+.gui-bottom-sheet-handle:focus-visible {
+  outline: 3px solid var(--md-sys-color-secondary);
+  outline-offset: 2px;
 }
 
 /* --- Body scrolls independently below the handle --- */

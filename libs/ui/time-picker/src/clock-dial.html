@@ -4,7 +4,6 @@
   viewBox="0 0 256 256"
   width="256"
   height="256"
-  aria-hidden="true"
 >
   <!-- Track from center to the active number. -->
   <line
@@ -14,10 +13,11 @@
     y1="128"
     [attr.x2]="handle().x"
     [attr.y2]="handle().y"
+    aria-hidden="true"
   />
 
   <!-- Center dot (8px diameter). -->
-  <circle class="gui-clock-center" cx="128" cy="128" r="4" />
+  <circle class="gui-clock-center" cx="128" cy="128" r="4" aria-hidden="true" />
 
   <!-- Selector handle (48px diameter) at the active number. -->
   <circle
@@ -25,19 +25,35 @@
     [attr.cx]="handle().x"
     [attr.cy]="handle().y"
     r="24"
+    aria-hidden="true"
   />
 
   <!-- Numbers. -->
   @for (n of numbers(); track n.ring + ':' + n.unit) {
-    <text
-      class="gui-clock-number"
-      [class.gui-clock-number-selected]="n.unit === currentUnit()"
-      [attr.x]="n.x"
-      [attr.y]="n.y"
-      text-anchor="middle"
-      dominant-baseline="central"
-    >
-      {{ n.label }}
-    </text>
+  <text
+    class="gui-clock-number"
+    [class.gui-clock-number-selected]="n.unit === currentUnit()"
+    [attr.x]="n.x"
+    [attr.y]="n.y"
+    text-anchor="middle"
+    dominant-baseline="central"
+    aria-hidden="true"
+  >
+    {{ n.label }}
+  </text>
+
+  <!-- 48×48dp Button-role hit target per M3; r=24 in the 256dp viewBox. -->
+  <circle
+    class="gui-clock-target"
+    role="button"
+    tabindex="0"
+    [attr.aria-label]="n.ariaLabel"
+    [attr.aria-pressed]="n.unit === currentUnit()"
+    [attr.cx]="n.x"
+    [attr.cy]="n.y"
+    r="24"
+    (click)="selectUnit(n.unit)"
+    (keydown)="onNumberKey($event, n.unit)"
+  />
   }
 </svg>

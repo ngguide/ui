@@ -1,7 +1,9 @@
 import {
   Directive,
+  DestroyRef,
   ElementRef,
   OnDestroy,
+  OnInit,
   booleanAttribute,
   computed,
   inject,
@@ -45,14 +47,24 @@ export type GuiInteractionState = 'pressed' | 'dragged' | null;
     '(dragend)': 'onDragged(false)',
   },
 })
-export class GuiStateLayerDirective implements OnDestroy {
+export class GuiStateLayerDirective implements OnInit, OnDestroy {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly styles = inject(GuiInteractionStyles);
   private readonly focusMonitor = inject(FocusMonitor);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly el = this.host.nativeElement;
 
   /** Explicit disabled flag; native `disabled`/`aria-disabled` are also honored. */
   readonly disabled = input(false, { transform: booleanAttribute });
+
+  /**
+   * Drive the focus tint off keyboard focus that lands on a focusable
+   * DESCENDANT, not just the host — needed when the focus target is a
+   * visually-hidden control nested inside the state-layer host (the native
+   * `<input>` of a radio/checkbox). Defaults off, so every host whose own
+   * element is the focus target keeps the exact prior behaviour.
+   */
+  readonly monitorDescendants = input(false, { transform: booleanAttribute });
 
   private readonly pressed = signal(false);
   private readonly dragged = signal(false);
@@ -83,10 +95,13 @@ export class GuiStateLayerDirective implements OnDestroy {
   constructor() {
     // Ensure the shared interaction stylesheet is present on first use.
     this.styles.ensure();
+  }
+
+  ngOnInit(): void {
     // Drive the focus tint off the same keyboard-focus signal as the ring.
     this.focusMonitor
-      .monitor(this.el)
-      .pipe(takeUntilDestroyed())
+      .monitor(this.el, this.monitorDescendants())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((origin: FocusOrigin) =>
         this.el.classList.toggle('gui-focus-visible', origin === 'keyboard'),
       );

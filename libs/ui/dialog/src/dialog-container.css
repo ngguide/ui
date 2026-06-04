@@ -34,7 +34,7 @@
   max-height: 100dvh;
   border-radius: 0;
   box-shadow: none;
-  background-color: var(--md-sys-color-surface);
+  background-color: var(--md-sys-color-surface-container-high);
   animation-name: gui-dialog-enter-fullscreen;
 }
 
@@ -47,6 +47,16 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* When an icon precedes the headline, M3 center-aligns the headline and the
+   icon→title gap is the icon's 16dp bottom margin alone (drop the headline's
+   24dp top padding so the gap is exactly 16dp, not 40dp). The anatomy slots are
+   projected light-DOM children carrying the consumer's encapsulation id, so
+   `::ng-deep` is required to pierce into them. */
+:host ::ng-deep .gui-dialog-icon + .gui-dialog-headline {
+  padding-top: 0;
+  text-align: center;
 }
 
 /* --- Reduced motion: no enter animation (Req 15.2) --- */

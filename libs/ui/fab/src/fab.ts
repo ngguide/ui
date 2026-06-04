@@ -12,8 +12,11 @@ import {
   GuiStateLayerDirective,
 } from '@ngguide/ui/interaction';
 
-/** M3 FAB sizes: small (40), baseline/regular (56), large (96). */
-export type GuiFabSize = 'sm' | 'md' | 'lg';
+/**
+ * M3 FAB sizes (container dp): small (40), FAB/baseline (56), medium (80), large (96).
+ * `sm` is still available but no longer recommended in M3 Expressive — prefer a larger size.
+ */
+export type GuiFabSize = 'sm' | 'md' | 'lg' | 'xl';
 /** M3 FAB color mappings (default = primary-container; surface FABs are deprecated in M3). */
 export type GuiFabColor =
   | 'primary-container'
@@ -33,7 +36,6 @@ export type GuiFabColor =
   host: {
     '[attr.data-color]': 'color()',
     '[attr.data-size]': 'size()',
-    '[attr.data-lowered]': 'lowered() ? "" : null',
     '[attr.disabled]': 'isButton && disabled() ? "" : null',
     '[attr.aria-disabled]': '!isButton && disabled() ? "true" : null',
     '[class.gui-disabled]': 'disabled()',
@@ -44,7 +46,6 @@ export type GuiFabColor =
 export class FabComponent {
   color = input<GuiFabColor>('primary-container');
   size = input<GuiFabSize>('md');
-  lowered = input(false, { transform: booleanAttribute });
   disabled = input(false, { transform: booleanAttribute });
 
   protected readonly isButton =

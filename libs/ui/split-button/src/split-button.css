@@ -1,6 +1,7 @@
-/* M3 split button: connected shape + trailing morph.
+/* M3 split button: connected shape + per-size inner corners + trailing morph.
    The gui-button children already carry variant colors + the interaction
-   foundation; here we only adjust the connected shape and the trailing morph. */
+   foundation; here we only adjust the connected shape, the inner-corner state
+   morphs, the trailing menu-icon optical offset/spin and the touch targets. */
 :host {
   display: inline-flex;
   align-items: stretch;
@@ -10,35 +11,132 @@
 
 /* Connected corners: square the inner facing edges while the outer edges keep
    the gui-button round (pill) default. Leading keeps its left edge full,
-   trailing keeps its right edge full.
+   trailing keeps its right edge full. The inner radius is per-size (M3
+   Measurements): XS/S/M 4dp, L 8dp, XL 12dp — mapped to the shape tokens
+   extra-small (4px), small (8px) and medium (12px).
    `!important` is required to win over each child gui-button's own
    `:host([data-size][data-shape])` radius (higher specificity otherwise) — the
    split context legitimately overrides the child's intrinsic pill shape. */
 .gui-split-leading {
-  border-top-right-radius: var(--md-sys-shape-corner-small) !important;
-  border-bottom-right-radius: var(--md-sys-shape-corner-small) !important;
+  border-top-right-radius: var(
+    --gui-split-inner-radius,
+    var(--md-sys-shape-corner-extra-small)
+  ) !important;
+  border-bottom-right-radius: var(
+    --gui-split-inner-radius,
+    var(--md-sys-shape-corner-extra-small)
+  ) !important;
 }
 
 .gui-split-trailing {
-  border-top-left-radius: var(--md-sys-shape-corner-small) !important;
-  border-bottom-left-radius: var(--md-sys-shape-corner-small) !important;
+  border-top-left-radius: var(
+    --gui-split-inner-radius,
+    var(--md-sys-shape-corner-extra-small)
+  ) !important;
+  border-bottom-left-radius: var(
+    --gui-split-inner-radius,
+    var(--md-sys-shape-corner-extra-small)
+  ) !important;
   transition: border-radius var(--md-sys-motion-duration-short2)
     var(--md-sys-motion-easing-standard);
 }
 
-/* Trailing pressed morph (inner-pressed): the state layer sets data-gui-state
-   on pointerdown. */
-.gui-split-trailing[data-gui-state~='pressed'] {
-  border-radius: var(--md-sys-shape-corner-small) !important;
+/* Per-size inner corner radius (the 2dp gap is fixed; only the radius varies). */
+.gui-split-leading[data-size='xs'],
+.gui-split-trailing[data-size='xs'],
+.gui-split-leading[data-size='sm'],
+.gui-split-trailing[data-size='sm'],
+.gui-split-leading[data-size='md'],
+.gui-split-trailing[data-size='md'] {
+  --gui-split-inner-radius: var(--md-sys-shape-corner-extra-small);
+}
+.gui-split-leading[data-size='lg'],
+.gui-split-trailing[data-size='lg'] {
+  --gui-split-inner-radius: var(--md-sys-shape-corner-small);
+}
+.gui-split-leading[data-size='xl'],
+.gui-split-trailing[data-size='xl'] {
+  --gui-split-inner-radius: var(--md-sys-shape-corner-medium);
 }
 
-/* Trailing open morph: M3 checked/open trailing morphs to a full pill. */
+/* Inner-corner state morph (M3 leading + trailing shapes change for
+   hovered / focused / pressed). The interaction foundation sets `:hover`,
+   the `.gui-focus-visible` class (keyboard focus) and `data-gui-state~='pressed'`
+   on each child gui-button; the inner facing corners flatten while morphing. */
+.gui-split-leading:hover,
+.gui-split-leading.gui-focus-visible,
+.gui-split-leading[data-gui-state~='pressed'],
+.gui-split-trailing:hover,
+.gui-split-trailing.gui-focus-visible,
+.gui-split-trailing[data-gui-state~='pressed'] {
+  --gui-split-inner-radius: var(--md-sys-shape-corner-none);
+}
+
+/* Trailing open morph: M3 says the trailing menu button "changes shape when
+   activated"; the documented trailing-shape change is the inner-corner morph,
+   so opening flattens the inner corners (no undocumented full-pill morph). */
 .gui-split-trailing[data-open] {
-  border-radius: var(--md-sys-shape-corner-full) !important;
+  --gui-split-inner-radius: var(--md-sys-shape-corner-none);
+}
+
+/* --- Trailing menu icon: optical centering offset + activation spin --- */
+.gui-split-trailing-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Optical-centering offset (M3 Measurements, menu icon when unselected):
+     XS -1dp, S -1dp, M -2dp, L -3dp, XL -6dp from center. Overridden to 0 when
+     selected (the icon becomes centered). */
+  transform: translateX(var(--gui-split-icon-offset, 0px))
+    rotate(var(--gui-split-icon-rotate, 0deg));
+  transition:
+    transform var(--md-sys-motion-duration-short2)
+      var(--md-sys-motion-easing-standard);
+}
+.gui-split-trailing[data-size='xs'] .gui-split-trailing-icon {
+  --gui-split-icon-offset: -1px;
+}
+.gui-split-trailing[data-size='sm'] .gui-split-trailing-icon {
+  --gui-split-icon-offset: -1px;
+}
+.gui-split-trailing[data-size='md'] .gui-split-trailing-icon {
+  --gui-split-icon-offset: -2px;
+}
+.gui-split-trailing[data-size='lg'] .gui-split-trailing-icon {
+  --gui-split-icon-offset: -3px;
+}
+.gui-split-trailing[data-size='xl'] .gui-split-trailing-icon {
+  --gui-split-icon-offset: -6px;
+}
+
+/* Selected state (M3): the icon becomes centered when selected — drop the
+   unselected optical offset. Color does not change (only the state layer from
+   the interaction foundation applies). */
+.gui-split-trailing[data-split-selected] .gui-split-trailing-icon {
+  --gui-split-icon-offset: 0px;
+}
+
+/* The menu button spins when activated (M3 Expressive). */
+.gui-split-trailing[data-open] .gui-split-trailing-icon {
+  --gui-split-icon-rotate: 180deg;
+}
+
+/* --- Minimum 48x48dp touch target (M3 Accessibility) ---
+   XS (32px) and S (40px) split buttons are shorter than 48dp, so each button
+   needs a ≥48dp target area. Grow the interactive child to the 48dp minimum
+   (same approach as the icon-button ladder). `min-width` keeps the icon-only
+   trailing button at least 48dp wide as well. */
+.gui-split-leading[data-size='xs'],
+.gui-split-trailing[data-size='xs'],
+.gui-split-leading[data-size='sm'],
+.gui-split-trailing[data-size='sm'] {
+  min-height: 48px;
+  min-width: 48px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gui-split-trailing {
+  .gui-split-trailing,
+  .gui-split-trailing-icon {
     transition: none;
   }
 }

@@ -102,16 +102,16 @@ A: Filled, B: Tonal, C: Outlined, D: Standard
 - Enabled
 - Disabled (10% state layer)
 - Hovered (8% state layer)
-- Focused (10% state layer)
-- Pressed (10% state layer)
+- Focused (12% state layer)
+- Pressed (12% state layer)
 
 ##### Toggle
 A: Unselected. B: Selected
 - Enabled
 - Disabled (10% state layer)
 - Hovered (8% state layer)
-- Focused (10% state layer)
-- Pressed (10% state layer)
+- Focused (12% state layer)
+- Pressed (12% state layer)
 
 #### Tonal button states
 
@@ -119,16 +119,16 @@ A: Unselected. B: Selected
 - Enabled
 - Disabled (10% state layer)
 - Hovered (8% state layer)
-- Focused (10% state layer)
-- Pressed (10% state layer)
+- Focused (12% state layer)
+- Pressed (12% state layer)
 
 ##### Toggle
 A: Unselected. B: Selected
 - Enabled
 - Disabled (10% state layer)
 - Hovered (8% state layer)
-- Focused (10% state layer)
-- Pressed (10% state layer)
+- Focused (12% state layer)
+- Pressed (12% state layer)
 
 #### Outlined button states
 
@@ -136,16 +136,16 @@ A: Unselected. B: Selected
 - Enabled
 - Disabled (10% state layer)
 - Hovered (8% state layer)
-- Focused (10% state layer)
-- Pressed (10% state layer)
+- Focused (12% state layer)
+- Pressed (12% state layer)
 
 ##### Toggle
 A: Unselected. B: Selected
 - Enabled
 - Disabled (10% state layer)
 - Hovered (8% state layer)
-- Focused (10% state layer)
-- Pressed (10% state layer)
+- Focused (12% state layer)
+- Pressed (12% state layer)
 
 #### Standard icon button states
 The standard icon button’s container is invisible at rest, but visible when the state layer is applied.
@@ -154,16 +154,16 @@ The standard icon button’s container is invisible at rest, but visible when th
 - Enabled
 - Disabled (10% state layer)
 - Hovered (8% state layer)
-- Focused (10% state layer)
-- Pressed (10% state layer)
+- Focused (12% state layer)
+- Pressed (12% state layer)
 
 ##### Toggle
 A: Unselected. B: Selected
 - Enabled
 - Disabled (10% state layer)
 - Hovered (8% state layer)
-- Focused (10% state layer)
-- Pressed (10% state layer)
+- Focused (12% state layer)
+- Pressed (12% state layer)
 
 ### Shape morph
 

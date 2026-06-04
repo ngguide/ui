@@ -1,7 +1,11 @@
-/* M3 linear progress — track 4dp, rounded ends, active bar + stop indicator. */
+/* M3 linear progress — track 4dp (default), rounded ends, gapped active bar +
+   stop indicator. Track thickness is configurable via the host `--_track-height`
+   custom property (M3 Expressive). */
 :host {
   --_track-height: 4px;
   --_stop-size: 4px;
+  /* Gap between the active indicator end and the inactive track (M3 Dec-2023). */
+  --_gap: 4px;
 
   position: relative;
   display: block;
@@ -18,8 +22,13 @@
   border-radius: calc(var(--_track-height) / 2);
 }
 
+/* The track is the inactive segment ahead of the active indicator. It scales
+   from the trailing edge so a gap sits between the active end and the track. */
 .gui-linear-track {
   background-color: var(--md-sys-color-secondary-container);
+  transform-origin: right center;
+  margin-inline-start: var(--_gap);
+  /* `transform: scaleX(1 - value)` is supplied inline (determinate). */
 }
 
 .gui-linear-active {
@@ -40,25 +49,86 @@
   transform: translateY(-50%);
 }
 
-/* Indeterminate — the inline scaleX is ignored; an animated band sweeps the track. */
+/* --- Wavy shape (M3 Expressive) --- */
+:host([data-shape='wavy']) {
+  height: auto;
+  overflow: visible;
+}
+
+.gui-linear-wave {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.gui-linear-wave-track {
+  stroke: var(--md-sys-color-secondary-container);
+  stroke-width: var(--_track-height);
+  stroke-linecap: round;
+}
+
+.gui-linear-wave-active {
+  stroke: var(--md-sys-color-primary);
+  stroke-width: var(--_track-height);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.2s var(--md-sys-motion-easing-standard, ease);
+}
+
+/* Indeterminate — the inline scaleX is ignored; two sequenced bands sweep the
+   track (M3 motion behavior). The primary band leads, a shorter secondary band
+   follows offset in time. */
+:host([data-mode='indeterminate']) .gui-linear-track {
+  transform: none;
+  margin-inline-start: 0;
+}
+
 :host([data-mode='indeterminate']) .gui-linear-active {
   transform-origin: left center;
-  animation: gui-linear-indeterminate 2s linear infinite;
+  animation: gui-linear-indeterminate-primary 2s
+    var(--md-sys-motion-easing-standard, ease) infinite;
+}
+
+:host([data-mode='indeterminate']) .gui-linear-active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  height: var(--_track-height);
+  border-radius: inherit;
+  background-color: inherit;
+  transform-origin: left center;
+  animation: gui-linear-indeterminate-secondary 2s
+    var(--md-sys-motion-easing-standard, ease) infinite;
 }
 
 :host([data-mode='indeterminate']) .gui-linear-stop {
   display: none;
 }
 
-@keyframes gui-linear-indeterminate {
+/* Primary band: a wide sweep across the track. */
+@keyframes gui-linear-indeterminate-primary {
   0% {
     transform: translateX(-100%) scaleX(0.3);
   }
   50% {
-    transform: translateX(50%) scaleX(0.5);
+    transform: translateX(50%) scaleX(0.6);
   }
   100% {
-    transform: translateX(150%) scaleX(0.3);
+    transform: translateX(160%) scaleX(0.1);
+  }
+}
+
+/* Secondary band: a shorter, faster sweep phased after the primary. */
+@keyframes gui-linear-indeterminate-secondary {
+  0%,
+  40% {
+    transform: translateX(-150%) scaleX(0.1);
+  }
+  80% {
+    transform: translateX(60%) scaleX(0.4);
+  }
+  100% {
+    transform: translateX(200%) scaleX(0.05);
   }
 }
 
@@ -66,6 +136,10 @@
   :host([data-mode='indeterminate']) .gui-linear-active {
     animation: gui-linear-pulse 1.5s ease-in-out infinite;
     transform: scaleX(1);
+  }
+  :host([data-mode='indeterminate']) .gui-linear-active::after {
+    animation: none;
+    display: none;
   }
   @keyframes gui-linear-pulse {
     0%,

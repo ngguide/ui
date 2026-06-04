@@ -84,8 +84,8 @@ Surface FAB color styles are still available, but no longer recommended.
 ### States
 - Enabled
 - Hovered (8% state layer) - elevation 4
-- Focused (10% state layer)
-- Pressed (10% state layer)
+- Focused (12% state layer)
+- Pressed (12% state layer)
 
 ### Measurements
 

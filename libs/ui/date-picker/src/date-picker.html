@@ -3,6 +3,7 @@
   [label]="label()"
   [error]="inputError()"
   errorText="Invalid date"
+  [supportingText]="dateFormatHint()"
 >
   <input
     guiTextFieldInput
@@ -38,23 +39,55 @@
   <div class="gui-date-picker-panel" role="dialog" aria-modal="true">
     @if (variant() === 'modal' || variant() === 'modal-input') {
       <div class="gui-date-picker-header">
-        <span class="gui-date-picker-headline">{{ label() }}</span>
+        <div class="gui-date-picker-header-text">
+          <span class="gui-date-picker-supporting">{{ label() }}</span>
+          <span class="gui-date-picker-headline">{{ headlineText() }}</span>
+        </div>
+        @if (variant() === 'modal') {
+          <button
+            gui-icon-button
+            type="button"
+            class="gui-date-picker-edit"
+            [attr.aria-label]="
+              inputMode() ? 'Switch to calendar' : 'Switch to text input'
+            "
+            [guiTooltip]="
+              inputMode() ? 'Switch to calendar' : 'Switch to text input'
+            "
+            (click)="toggleModalMode()"
+          >
+            <gui-icon
+              ><svg
+                viewBox="0 -960 960 960"
+                width="24"
+                height="24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T846-642L319-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"
+                /></svg
+            ></gui-icon>
+          </button>
+        }
       </div>
       <div class="gui-date-picker-divider"></div>
     }
 
-    @if (variant() === 'modal-input') {
+    @if (inputMode()) {
       <div class="gui-date-picker-input">
         <gui-text-field
           variant="outlined"
-          label="Date"
+          [label]="label()"
           [error]="inputError()"
           errorText="Invalid date"
+          [supportingText]="dateFormatHint()"
         >
           <input
             guiTextFieldInput
             [value]="displayValue()"
-            (change)="onInput($any($event.target).value)"
+            [attr.aria-label]="label()"
+            (change)="onModalInput($any($event.target).value)"
           />
         </gui-text-field>
       </div>

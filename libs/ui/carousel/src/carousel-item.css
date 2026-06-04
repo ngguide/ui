@@ -1,11 +1,54 @@
 /* M3 carousel item: extra-large (28dp) corners, clipped content, snap target.
    Falls back to the carousel's large width (inherited custom prop) when the
-   engine has not assigned an explicit width (SSR / first frame). */
+   engine has not assigned an explicit width (SSR / first frame). The shared
+   interaction surface (state layer ::before + ripple span) is positioned and
+   clipped by GuiStateLayer/GuiRipple; we only add the carousel-specific shape,
+   color role and parallax here. */
 :host {
+  display: block;
+  position: relative;
   flex: 0 0 auto;
   box-sizing: border-box;
   width: var(--gui-carousel-large, 186px);
   overflow: hidden;
+  /* Container color role (M3: Carousel container -> Surface). */
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
   border-radius: var(--md-sys-shape-corner-extra-large);
+  outline: none;
   scroll-snap-align: start;
+  /* Pressed shape morph is a non-essential, motion-gated transition. */
+  transition: border-radius var(--md-sys-motion-duration-short2)
+    var(--md-sys-motion-easing-standard);
+}
+
+/* Touch / pointer press morphs the shape slightly (extra-large -> large). */
+:host([data-gui-state~='pressed']:not([data-disabled])) {
+  border-radius: var(--md-sys-shape-corner-large);
+}
+
+:host([data-disabled]) {
+  cursor: default;
+}
+
+/* Parallax: the content layer translates relative to scroll so it moves at a
+   different speed than the item frame (Req / spec "Motion: parallax"). The
+   frame clips it via the host's overflow:hidden. Horizontal layouts shift on X;
+   full-screen items fill the viewport and carry no parallax offset (0px). */
+.gui-carousel-item-content {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: translateX(var(--gui-carousel-parallax, 0px));
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    transition: none;
+  }
+  /* No parallax under reduced motion (Req 15 / spec "Reduced motion"). */
+  .gui-carousel-item-content {
+    transform: none;
+  }
 }

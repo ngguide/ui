@@ -65,7 +65,9 @@ describe('DateRangePickerComponent', () => {
     const range = host.ctrl.value;
     expect(range.start?.getDate()).toBe(10);
     expect(range.end?.getDate()).toBe(20);
-    expect(range.start!.getTime()).toBeLessThanOrEqual(range.end!.getTime());
+    expect(range.start?.getTime() ?? 0).toBeLessThanOrEqual(
+      range.end?.getTime() ?? 0,
+    );
   });
 
   it('selecting end BEFORE start swaps them so the committed range is ordered', () => {
@@ -83,7 +85,9 @@ describe('DateRangePickerComponent', () => {
     const range = host.ctrl.value;
     expect(range.start?.getDate()).toBe(10);
     expect(range.end?.getDate()).toBe(20);
-    expect(range.start!.getTime()).toBeLessThanOrEqual(range.end!.getTime());
+    expect(range.start?.getTime() ?? 0).toBeLessThanOrEqual(
+      range.end?.getTime() ?? 0,
+    );
   });
 
   it('marks in-range cells with data-in-range while staging', () => {

@@ -1,4 +1,13 @@
-import { Directive, ElementRef, OnDestroy, inject } from '@angular/core';
+import {
+  Directive,
+  DestroyRef,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  booleanAttribute,
+  inject,
+  input,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
 
@@ -18,15 +27,25 @@ import { FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
   selector: '[guiFocusRing]',
   host: { class: 'gui-focus-ring' },
 })
-export class GuiFocusRingDirective implements OnDestroy {
+export class GuiFocusRingDirective implements OnInit, OnDestroy {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly focusMonitor = inject(FocusMonitor);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly el = this.host.nativeElement;
 
-  constructor() {
+  /**
+   * Report keyboard focus that lands on a focusable DESCENDANT (not just the
+   * host) — needed when the real focus target is a visually-hidden control
+   * nested inside the ring host (e.g. the native `<input>` of a radio/checkbox).
+   * Defaults off, so every host whose own element is the focus target keeps the
+   * exact prior behaviour.
+   */
+  readonly monitorDescendants = input(false, { transform: booleanAttribute });
+
+  ngOnInit(): void {
     this.focusMonitor
-      .monitor(this.el)
-      .pipe(takeUntilDestroyed())
+      .monitor(this.el, this.monitorDescendants())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((origin: FocusOrigin) =>
         this.el.classList.toggle('gui-focus-visible', origin === 'keyboard'),
       );

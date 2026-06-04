@@ -88,7 +88,7 @@ Full-screen dialog padding and size measurements
 | --- | --- |
 | Container shape | 0dp corner radius |
 | Container height | Dynamic |
-| Container width | Container width; Max 560dp |
+| Container width | Full-screen (window width) |
 | Header height | 56dp |
 | Header width | Container width |
 | Headline text alignment | Start-aligned |

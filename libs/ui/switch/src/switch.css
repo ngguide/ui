@@ -15,6 +15,53 @@
   border-radius: var(--md-sys-shape-corner-full);
 }
 
+/* The 40dp M3 state layer is larger than the 32dp-tall track and overhangs it,
+   so the host must not clip its ::before to the host box. The interaction
+   foundation defaults `.gui-state-layer`/`.gui-ripple-host` to overflow:hidden;
+   override that here (higher-specificity host+class selector) so the circle
+   renders at full size centered on the handle. */
+:host(.gui-state-layer),
+:host(.gui-ripple-host) {
+  overflow: visible;
+}
+
+/* M3 state layer: a 40dp / corner.full circle centered on the handle, NOT the
+   whole inline-flex host. GuiStateLayerDirective paints the tint into :host's
+   ::before (inset:0, border-radius:inherit over track + label); we reshape that
+   same pseudo-element here into the spec circle and track it to the handle
+   center as it slides between the unselected and selected positions. The
+   combined host-attribute + class selector outranks the global
+   `.gui-state-layer::before` rule regardless of stylesheet injection order. */
+:host(.gui-state-layer)::before {
+  inset: auto;
+  top: 50%;
+  /* handle center (unselected) 14dp − 20dp radius. */
+  left: -6px;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--md-sys-shape-corner-full);
+  transform: translateY(-50%);
+  transition:
+    opacity var(--md-sys-motion-duration-short2)
+      var(--md-sys-motion-easing-standard),
+    left var(--md-sys-motion-duration-short3)
+      var(--md-sys-motion-easing-standard);
+}
+/* Selected: handle center moves to 34dp, so the circle follows (34 − 20). */
+:host(.gui-state-layer[data-checked])::before {
+  left: 14px;
+}
+
+/* The shared ripple span is sized to cover the whole host and was previously
+   contained by the host's overflow:hidden. Now that the host is overflow:visible
+   (so the 40dp state layer can overhang the track), an unclipped host-wide
+   ripple would bleed across the track and label. For the switch, M3 pressed
+   feedback is the handle press-grow plus the 40dp pressed state layer, so the
+   track-spanning ripple is suppressed here. */
+:host ::ng-deep .gui-ripple {
+  display: none;
+}
+
 .gui-switch-track {
   box-sizing: border-box;
   position: relative;
@@ -31,12 +78,17 @@
       var(--md-sys-motion-easing-standard);
 }
 
-/* Visually-hidden native input covering the full track as the hit target. */
+/* Visually-hidden native input. It still receives focus and sits over the track
+   to provide the >=48dp accessible touch target M3 mandates (the track is only
+   32dp tall, below the 48x48 minimum). Spans the full 52dp track width and is
+   centered vertically. */
 input[type='checkbox'] {
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
   width: 100%;
-  height: 100%;
+  height: 48px;
   margin: 0;
   opacity: 0;
   cursor: inherit;
@@ -105,6 +157,9 @@ input[type='checkbox'] {
   /* track 52 - border 2*2 ... handle 24, trailing inset 4 from inner edge. */
   left: 22px;
   background-color: var(--md-sys-color-on-primary);
+  /* M3: the icon on the selected handle uses the on-primary-container role.
+     currentColor is inherited by the projected icon slot. */
+  color: var(--md-sys-color-on-primary-container);
 }
 
 /* Pressed: handle expands to 28px. The state-layer directive sets data-gui-state

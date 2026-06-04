@@ -36,7 +36,7 @@ Elevated card color roles used for light and dark themes:
 
 #### Elevated card states
 Elevated card states:
-- Hovered
+- Hovered (elevation raises to level 2 for whole-surface actionable cards)
 - Focused
 - Pressed
 - Dragged
@@ -51,7 +51,7 @@ Filled card color roles used for light and dark themes:
 
 #### Filled card states
 Filled card states:
-- Hovered
+- Hovered (elevation raises to level 1 for whole-surface actionable cards)
 - Focused
 - Pressed
 - Dragged
@@ -81,7 +81,7 @@ Card padding and size measurements
 | --- | --- |
 | Shape | 12dp corner radius |
 | Left/right padding | 16dp |
-| Padding between cards | 8dp max |
+| Padding between cards | 8dp max (sibling-layout concern; owned by the card list/grid, not the single-card component) |
 | Label text alignment | Start-aligned |
 
 ## Accessibility

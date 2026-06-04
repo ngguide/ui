@@ -5,7 +5,6 @@ export type GuiSnackbarCloseReason =
   | 'action'
   | 'dismiss'
   | 'timeout'
-  | 'swipe'
   | 'programmatic';
 
 export interface GuiSnackbarConfig {
@@ -15,16 +14,16 @@ export interface GuiSnackbarConfig {
   /** Show a trailing close (dismiss) icon. */
   showClose?: boolean;
   /**
-   * Auto-dismiss after ms. `null` disables auto-dismiss (for action-required
-   * snackbars). Defaults to a M3-aligned duration.
+   * Auto-dismiss after ms. `null` disables auto-dismiss. Per M3, actionable
+   * snackbars shouldn't auto-dismiss: when an `action` is set and `duration`
+   * is omitted, auto-dismiss is disabled automatically. Otherwise defaults to
+   * an M3-aligned duration.
    */
   duration?: number | null;
   /** Force two-line layout; otherwise inferred from content length. */
   twoLine?: boolean;
   /** Lift above a bottom-anchored FAB. `true` ⇒ default offset, string ⇒ explicit offset. */
   aboveFab?: boolean | string;
-  /** Live-region politeness. Default `'polite'`. */
-  politeness?: 'polite' | 'assertive';
 }
 
 export interface GuiSnackbarRef {
@@ -37,6 +36,23 @@ export interface GuiSnackbarRef {
 
 /** Default auto-dismiss duration (ms) when `duration` is omitted. M3-aligned. */
 export const GUI_SNACKBAR_DEFAULT_DURATION = 5000;
+
+/**
+ * Resolve the effective auto-dismiss duration (ms), or `null` for no auto-dismiss.
+ *
+ * M3: "Actionable snackbars shouldn't auto-dismiss." So when `duration` is omitted
+ * and the snackbar carries an `action`, auto-dismiss is disabled; otherwise the
+ * M3-aligned default applies. An explicit `duration` (including `null`) always wins.
+ * Pure and deterministic.
+ */
+export function resolveSnackbarDuration(
+  config: GuiSnackbarConfig,
+): number | null {
+  if (config.duration !== undefined) {
+    return config.duration;
+  }
+  return config.action ? null : GUI_SNACKBAR_DEFAULT_DURATION;
+}
 
 /** Heuristic threshold (chars) above which a single-action snackbar wraps to two lines. */
 export const GUI_SNACKBAR_TWO_LINE_THRESHOLD = 50;

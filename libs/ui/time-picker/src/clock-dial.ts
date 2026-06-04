@@ -22,6 +22,8 @@ interface DialNumber {
   unit: number;
   /** Text shown in the SVG. */
   label: string;
+  /** Accessibility label, e.g. "Hour 7 of 12" / "Minute 30 of 60". */
+  ariaLabel: string;
   x: number;
   y: number;
   ring: 'outer' | 'inner';
@@ -37,13 +39,13 @@ interface DialNumber {
   templateUrl: './clock-dial.html',
   styleUrl: './clock-dial.css',
   host: {
-    'role': 'group',
+    role: 'group',
     '[attr.aria-label]': 'ariaLabel()',
     '(pointerdown)': 'onPointerDown($event)',
     '(pointermove)': 'onPointerMove($event)',
     '(pointerup)': 'onPointerUp($event)',
     '(keydown)': 'onKeyDown($event)',
-    'tabindex': '0',
+    tabindex: '0',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -56,8 +58,7 @@ export class ClockDialComponent {
   readonly hour12 = input(true);
   readonly value = model<GuiTime>();
 
-  private readonly svg =
-    viewChild.required<ElementRef<SVGSVGElement>>('svg');
+  private readonly svg = viewChild.required<ElementRef<SVGSVGElement>>('svg');
 
   protected readonly ariaLabel = computed(() =>
     this.mode() === 'hours' ? 'Select hour' : 'Select minute',
@@ -93,7 +94,11 @@ export class ClockDialComponent {
 
   // --- Geometry --------------------------------------------------------------
 
-  private point(index: number, count: number, radius: number): {
+  private point(
+    index: number,
+    count: number,
+    radius: number,
+  ): {
     x: number;
     y: number;
   } {
@@ -106,11 +111,19 @@ export class ClockDialComponent {
 
   private hourNumbers(): DialNumber[] {
     const out: DialNumber[] = [];
+    const total = this.hour12() ? 12 : 24;
     // Outer ring: 12 at top, then 1..11 clockwise.
     for (let i = 0; i < 12; i++) {
       const p = this.point(i, 12, OUTER_R);
       const unit = i === 0 ? 12 : i;
-      out.push({ unit, label: String(unit), x: p.x, y: p.y, ring: 'outer' });
+      out.push({
+        unit,
+        label: String(unit),
+        ariaLabel: `Hour ${unit} of ${total}`,
+        x: p.x,
+        y: p.y,
+        ring: 'outer',
+      });
     }
     if (!this.hour12()) {
       // Inner ring: 00, 13..23.
@@ -120,6 +133,7 @@ export class ClockDialComponent {
         out.push({
           unit,
           label: i === 0 ? '00' : String(unit),
+          ariaLabel: `Hour ${unit} of ${total}`,
           x: p.x,
           y: p.y,
           ring: 'inner',
@@ -137,6 +151,7 @@ export class ClockDialComponent {
       out.push({
         unit,
         label: String(unit).padStart(2, '0'),
+        ariaLabel: `Minute ${unit} of 60`,
         x: p.x,
         y: p.y,
         ring: 'outer',
@@ -235,6 +250,26 @@ export class ClockDialComponent {
   private selectMinuteFromAngle(deg: number): void {
     const minute = Math.round(deg / 6) % 60;
     this.commit({ ...this.base(), minutes: minute });
+  }
+
+  /**
+   * Commit the unit a dial number represents. Backs the per-number Button-role
+   * hit targets (click / Space / Enter), giving each clock number an
+   * individually selectable 48×48dp target as the M3 spec requires.
+   */
+  protected selectUnit(unit: number): void {
+    if (this.mode() === 'hours') {
+      this.commit({ ...this.base(), hours: unit });
+    } else {
+      this.commit({ ...this.base(), minutes: unit });
+    }
+  }
+
+  protected onNumberKey(event: KeyboardEvent, unit: number): void {
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      this.selectUnit(unit);
+    }
   }
 
   // --- Keyboard --------------------------------------------------------------

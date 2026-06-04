@@ -40,6 +40,7 @@ import { GuiListItem } from './list-item';
     '[attr.role]': 'mode() === "listbox" ? "listbox" : "list"',
     '[attr.aria-multiselectable]':
       'mode() === "listbox" ? (multiselectable() ? "true" : "false") : null',
+    '[attr.aria-label]': 'ariaLabel() || null',
     '(keydown)': 'onKeydown($event)',
   },
   providers: [{ provide: GUI_LIST, useExisting: forwardRef(() => GuiList) }],
@@ -47,6 +48,13 @@ import { GuiListItem } from './list-item';
 export class GuiList implements GuiListContext {
   readonly mode = input<GuiListMode>('action');
   readonly multiselectable = input(false, { transform: booleanAttribute });
+  /**
+   * Accessibility label for the container. In `listbox` mode M3 asks the
+   * container label to describe the type of selection that can be made (e.g.
+   * "Choose one fruit" / "Select toppings"). Bound to `aria-label` when set;
+   * consumers may instead supply their own `aria-label`/`aria-labelledby`.
+   */
+  readonly ariaLabel = input<string>('', { alias: 'aria-label' });
 
   private readonly items = contentChildren(forwardRef(() => GuiListItem));
   private readonly destroyRef = inject(DestroyRef);

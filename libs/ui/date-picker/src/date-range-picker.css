@@ -16,12 +16,26 @@
 }
 
 .gui-date-range-picker-header {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
   padding: 16px 24px 12px;
 }
 
+.gui-date-range-picker-supporting {
+  font: var(--md-sys-typescale-label-large, 500 14px/20px system-ui);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
 .gui-date-range-picker-headline {
-  font: var(--md-sys-typescale-headline-small, 400 24px/32px system-ui);
+  font: var(--md-sys-typescale-headline-large, 400 32px/40px system-ui);
   color: var(--md-sys-color-on-surface);
+}
+
+.gui-date-range-picker-subhead {
+  padding: 12px 24px 4px;
+  font: var(--md-sys-typescale-title-small, 500 14px/20px system-ui);
+  color: var(--md-sys-color-on-surface-variant);
 }
 
 .gui-date-range-picker-inputs {

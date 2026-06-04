@@ -78,10 +78,8 @@ To ensure that this density setting can be easily reverted when it's active, kee
 
 | Keys | Actions |
 | --- | --- |
-| Tab | Moves focus to enabled chip or chip group |
-| Space or Enter | Activates, selects, or deselects the focused chip |
-| Backspace or Delete | Removes currently focused input chip |
-| Arrows | Moves focus between chips |
+| Tab | Moves focus to the next enabled checkbox |
+| Space | Toggles the focused checkbox (selects or deselects) |
 
 ### Labeling elements
 If the UI text is correctly linked to the checkbox, assistive tech (such as a screen reader) will read the UI text followed by the component’s role.

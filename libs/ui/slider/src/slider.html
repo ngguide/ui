@@ -7,6 +7,13 @@
   (pointercancel)="onPointerUp()"
   (lostpointercapture)="onPointerUp()"
 >
+  <!-- Optional inset icon (standard slider only), pinned to the leading edge. -->
+  @if (!range()) {
+    <span class="gui-slider-inset-icon" aria-hidden="true">
+      <ng-content select="[gui-slider-icon]" />
+    </span>
+  }
+
   <!-- Inactive track is the full bar; the active segment is overlaid. -->
   <span class="gui-slider-inactive" aria-hidden="true"></span>
 
@@ -14,24 +21,24 @@
     <span
       class="gui-slider-active"
       aria-hidden="true"
-      [style.left.%]="valueToPercent(rangeValue()[0])"
-      [style.right.%]="100 - valueToPercent(rangeValue()[1])"
+      [style.--gui-slider-fill-start.%]="valueToPercent(rangeValue()[0])"
+      [style.--gui-slider-fill-end.%]="100 - valueToPercent(rangeValue()[1])"
     ></span>
   } @else {
     <span
       class="gui-slider-active"
       aria-hidden="true"
-      [style.left.%]="0"
-      [style.right.%]="100 - valueToPercent(singleValue())"
+      [style.--gui-slider-fill-start.%]="singleActiveStart()"
+      [style.--gui-slider-fill-end.%]="100 - singleActiveEnd()"
     ></span>
   }
 
-  <!-- Discrete stop / tick indicators. -->
+  <!-- Stop indicators (the M3 "stops" configuration). -->
   @for (tick of ticks(); track $index) {
     <span
       class="gui-slider-tick"
       aria-hidden="true"
-      [style.left.%]="tick"
+      [style.--gui-slider-pos.%]="tick"
     ></span>
   }
 
@@ -43,16 +50,22 @@
       guiRipple
       guiFocusRing
       role="slider"
-      [style.left.%]="valueToPercent(rangeValue()[0])"
+      [style.--gui-slider-pos.%]="valueToPercent(rangeValue()[0])"
       [tabindex]="disabled() ? -1 : 0"
+      [attr.aria-orientation]="orientation()"
+      [attr.aria-label]="ariaLabel()"
+      [attr.aria-labelledby]="ariaLabelledby()"
       [attr.aria-valuemin]="thumbMin('start')"
       [attr.aria-valuemax]="thumbMax('start')"
       [attr.aria-valuenow]="rangeValue()[0]"
       [attr.aria-valuetext]="rangeValue()[0]"
       [attr.aria-disabled]="disabled() ? 'true' : null"
       (keydown)="onKeyDown($event, 'start')"
+      (keyup)="onKeyUp($event)"
     >
-      <span class="gui-slider-value" aria-hidden="true">{{ rangeValue()[0] }}</span>
+      @if (valueIndicator()) {
+        <span class="gui-slider-value" aria-hidden="true">{{ rangeValue()[0] }}</span>
+      }
     </div>
 
     <!-- End thumb -->
@@ -62,16 +75,22 @@
       guiRipple
       guiFocusRing
       role="slider"
-      [style.left.%]="valueToPercent(rangeValue()[1])"
+      [style.--gui-slider-pos.%]="valueToPercent(rangeValue()[1])"
       [tabindex]="disabled() ? -1 : 0"
+      [attr.aria-orientation]="orientation()"
+      [attr.aria-label]="ariaLabel()"
+      [attr.aria-labelledby]="ariaLabelledby()"
       [attr.aria-valuemin]="thumbMin('end')"
       [attr.aria-valuemax]="thumbMax('end')"
       [attr.aria-valuenow]="rangeValue()[1]"
       [attr.aria-valuetext]="rangeValue()[1]"
       [attr.aria-disabled]="disabled() ? 'true' : null"
       (keydown)="onKeyDown($event, 'end')"
+      (keyup)="onKeyUp($event)"
     >
-      <span class="gui-slider-value" aria-hidden="true">{{ rangeValue()[1] }}</span>
+      @if (valueIndicator()) {
+        <span class="gui-slider-value" aria-hidden="true">{{ rangeValue()[1] }}</span>
+      }
     </div>
   } @else {
     <!-- Single thumb -->
@@ -81,16 +100,22 @@
       guiRipple
       guiFocusRing
       role="slider"
-      [style.left.%]="valueToPercent(singleValue())"
+      [style.--gui-slider-pos.%]="valueToPercent(singleValue())"
       [tabindex]="disabled() ? -1 : 0"
+      [attr.aria-orientation]="orientation()"
+      [attr.aria-label]="ariaLabel()"
+      [attr.aria-labelledby]="ariaLabelledby()"
       [attr.aria-valuemin]="min()"
       [attr.aria-valuemax]="max()"
       [attr.aria-valuenow]="singleValue()"
       [attr.aria-valuetext]="singleValue()"
       [attr.aria-disabled]="disabled() ? 'true' : null"
       (keydown)="onKeyDown($event, 'single')"
+      (keyup)="onKeyUp($event)"
     >
-      <span class="gui-slider-value" aria-hidden="true">{{ singleValue() }}</span>
+      @if (valueIndicator()) {
+        <span class="gui-slider-value" aria-hidden="true">{{ singleValue() }}</span>
+      }
     </div>
   }
 </div>

@@ -44,6 +44,34 @@ describe('GuiBottomSheetSurface (standard)', () => {
     expect(host.getAttribute('aria-hidden')).toBe('true');
   });
 
+  it('renders the drag handle as a focusable, labelled button (M3 a11y)', () => {
+    const fixture = TestBed.createComponent(StandardHost);
+    fixture.detectChanges();
+    const handle = fixture.nativeElement.querySelector(
+      '.gui-bottom-sheet-handle',
+    ) as HTMLButtonElement;
+    expect(handle.tagName).toBe('BUTTON');
+    expect(handle.getAttribute('aria-label')).toBe('Resize bottom sheet');
+    expect(handle.hasAttribute('aria-hidden')).toBe(false);
+  });
+
+  it('cycles preset heights when the handle is activated (Space/Enter)', () => {
+    const fixture = TestBed.createComponent(StandardHost);
+    fixture.detectChanges();
+    const surface = fixture.debugElement.children[0]
+      .componentInstance as GuiBottomSheetSurface;
+    const inner = fixture.nativeElement.querySelector(
+      '.gui-bottom-sheet-surface',
+    ) as HTMLElement;
+    const cycle = surface as unknown as { cycleHeight(e: Event): void };
+    const before = inner.style.getPropertyValue('--gui-bottom-sheet-height');
+    cycle.cycleHeight(new KeyboardEvent('keydown', { key: ' ' }));
+    fixture.detectChanges();
+    const after = inner.style.getPropertyValue('--gui-bottom-sheet-height');
+    expect(before).toBe('50dvh');
+    expect(after).toBe('90dvh');
+  });
+
   it('dismisses when dragged past the threshold (Req 9.4)', () => {
     const fixture = TestBed.createComponent(StandardHost);
     fixture.detectChanges();

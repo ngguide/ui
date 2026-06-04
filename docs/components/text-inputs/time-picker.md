@@ -57,40 +57,40 @@ M3: Time pickers have new color mappings compatible with dynamic color
 ### Color
 
 #### Time picker dial color
-Time picker dial color roles used for light and dark themes:
-- On surface variant
-- On surface
-- Surface container highest
-- On surface
-- Tertiary container
-- On tertiary container
-- Surface container high
-- Outline
-- On surface
-- Primary
-- On primary
-- Primary
-- On surface variant
-- On surface
-- Surface container highest
-- On primary container
-- Primary container
+Time picker dial color roles used for light and dark themes, mapped to each anatomy element/state:
+- Headline — On surface variant
+- Time selector label text — On surface
+- Time selector container — Surface container highest
+- Time selector label text (on container) — On surface
+- Period selector container (selected) — Tertiary container
+- Period selector label text (selected) — On tertiary container
+- Container (surface) — Surface container high
+- Period selector container (outline) — Outline
+- Period selector label text (unselected) — On surface
+- Clock dial selector center / track / handle — Primary
+- Clock dial label text (selected number) — On primary
+- Time selector separator — Primary
+- Clock dial label text (unselected, decorative) — On surface variant
+- Clock dial label text — On surface
+- Clock dial container — Surface container highest
+- Period selector label text (input variant, selected) — On primary container
+- Period selector container (input variant, selected) — Primary container
 
 #### Time picker input color
-Time picker input color roles used for light and dark themes:
-- On surface variant
-- On surface
-- Surface container highest
-- On surface
-- Tertiary container
-- On tertiary container
-- Surface container high
-- Outline
-- On surface
-- Primary
-- On surface variant
-- On primary container
-- Primary container
+Time picker input color roles used for light and dark themes, mapped to each anatomy element/state:
+- Headline — On surface variant
+- Time input field label text — On surface
+- Time input field container — Surface container highest
+- Time input field label text (on container) — On surface
+- Period selector container (selected) — Tertiary container
+- Period selector label text (selected) — On tertiary container
+- Container (surface) — Surface container high
+- Period selector container (outline) — Outline
+- Period selector label text (unselected) — On surface
+- Time input field container (active outline) — Primary
+- Time input field supporting text — On surface variant
+- Period selector label text (selected, Primary container) — On primary container
+- Period selector container (selected, Primary container) — Primary container
 
 ### States
 - Enabled

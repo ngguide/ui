@@ -42,6 +42,8 @@ export class GuiBottomSheet {
     const cdkConfig: DialogConfig<D, DialogRef<R, C>> & {
       guiShowDragHandle?: boolean;
       guiDismissThreshold?: number;
+      guiHeights?: readonly number[];
+      guiDragHandleLabel?: string;
     } = {
       ...normalizeModalConfig<D>(config),
       container: GuiBottomSheetContainer,
@@ -55,6 +57,8 @@ export class GuiBottomSheet {
       panelClass: ['gui-bottom-sheet-pane', ...asArray(config?.panelClass)],
       guiShowDragHandle: config?.showDragHandle ?? true,
       guiDismissThreshold: config?.dismissThreshold ?? 96,
+      guiHeights: config?.heights,
+      guiDragHandleLabel: config?.dragHandleLabel,
     };
 
     const ref = this.cdkDialog.open<R, D, C>(content, cdkConfig);

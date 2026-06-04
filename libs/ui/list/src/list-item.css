@@ -1,13 +1,15 @@
 /* M3 list item. 16dp leading/trailing insets; height driven by line count
    (56 / 72 / 88dp). Headline = body-large, supporting = body-medium, trailing
-   supporting text = label-small. Selected rows use the secondary-container. */
+   supporting text = label-small. Selected rows use the primary-container. */
 
 :host {
   display: flex;
   align-items: center;
   box-sizing: border-box;
   gap: 16px;
-  padding-inline: 16px;
+  /* M3 measurements: leading/label left padding 16dp, trailing right padding
+     24dp (list.md measurements table). */
+  padding-inline: 16px 24px;
   min-height: 56px;
   color: var(--md-sys-color-on-surface);
   background-color: transparent;
@@ -22,16 +24,31 @@
   padding-block: 12px;
 }
 
-/* --- Selected option: secondary-container (Req 6.3) --- */
+/* --- Selected option: primary-container per M3 list color roles (Req 6.3) --- */
 :host([data-selected]) {
-  background-color: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
 }
 
 /* --- Disabled option: dimmed but still present (Req 6.6) --- */
 :host([aria-disabled='true']) {
   opacity: 0.38;
   pointer-events: none;
+}
+
+/* --- M3 state layer (hover / focus / pressed / dragged). GuiStateLayerDirective
+   adds the global `.gui-state-layer` class + the tinted `::before` overlay; here
+   we only gate WHERE it shows. The overlay tints with `currentColor`, so it
+   reads correctly on both plain (on-surface) and selected (on-primary-container)
+   rows. The directive already suppresses the overlay on aria-disabled rows.
+
+   Plain non-interactive `listitem` rows (no `data-interactive`) host their own
+   controls and are not themselves the interactive target, so the row-level state
+   layer is suppressed for them — only listbox options and `interactive` action
+   rows get hover/pressed feedback. The `!important` overrides the higher-
+   specificity per-state rules in the shared interaction stylesheet. --- */
+:host(:not([data-interactive]))::before {
+  opacity: 0 !important;
 }
 
 :host([tabindex]) {
@@ -43,7 +60,7 @@
    `.gui-focus-visible` on keyboard focus (covering the roving programmatic
    focus of listbox options). Inset by the ring thickness so it stays within the
    full-bleed row instead of being clipped by the list's bounds; uses the host
-   content color so it contrasts on both plain and selected (secondary-
+   content color so it contrasts on both plain and selected (primary-
    container) rows. Disabled options never show the ring. --- */
 :host(.gui-focus-visible) {
   outline: var(--md-sys-state-focus-indicator-thickness) solid currentColor;
@@ -53,11 +70,42 @@
   outline: none;
 }
 
-/* --- Leading slot: holds a 24dp icon / 40dp avatar / 56dp image --- */
+/* --- Divider (anatomy: Divider). Drawn as a 1px bottom rule in outline-variant,
+   flush with the row's bottom edge (0dp padding above/below per the M3 divider
+   measurements). `data-divider="full"` spans the full width (100%);
+   `data-divider="inset"` insets it 16dp on the start side (leading left padding)
+   and 24dp on the end side (trailing right padding). It sits inside the host's
+   `overflow: hidden` (state-layer) box, so a bottom-edge rule is not clipped. --- */
+:host([data-divider])::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--md-sys-color-outline-variant);
+  pointer-events: none;
+}
+:host([data-divider]) {
+  position: relative;
+}
+:host([data-divider='full'])::after {
+  inset-inline: 0;
+}
+:host([data-divider='inset'])::after {
+  inset-inline: 16px 24px;
+}
+
+/* --- Leading slot: holds the M3 leading element (avatar / icon / image), sized
+   by the consumer's projected content per the M3 slot model. M3 aligns the
+   leading element to Center for 56/72dp rows and to Top when the row is 88dp or
+   taller (3-line). The 3-line regime gets the documented 12dp leading-icon top
+   padding from the host's padding-block (see :host([data-lines='3'])). --- */
 .gui-list-item-leading {
   display: flex;
   align-items: center;
   flex: 0 0 auto;
+}
+:host([data-lines='3']) .gui-list-item-leading {
+  align-items: flex-start;
 }
 .gui-list-item-leading:empty {
   display: none;
@@ -121,4 +169,13 @@
 }
 .gui-list-item-trailing:empty {
   display: none;
+}
+
+/* --- Non-color selection cue: a 24dp trailing checkmark on selected options
+   (M3 a11y guidance). Tints with the row's content color (on-primary-container
+   on the selected row). --- */
+.gui-list-item-check {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
 }

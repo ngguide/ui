@@ -47,7 +47,14 @@ export type GuiButtonShape = 'round' | 'square';
     '[attr.disabled]': 'isButton && disabled() ? "" : null',
     '[attr.aria-disabled]': '!isButton && disabled() ? "true" : null',
     '[class.gui-disabled]': 'disabled()',
+    // A linkless <a gui-button> has no implicit button role and is not in the
+    // tab order, so it cannot be reached by Tab or activated by Space/Enter.
+    // Give it role="button" and a tabindex (-1 when disabled) so assistive
+    // technology can navigate to and activate it (M3 keyboard navigation).
+    '[attr.role]': 'needsButtonRole ? "button" : null',
+    '[attr.tabindex]': 'needsButtonRole ? (disabled() ? -1 : 0) : null',
     '(click)': 'onActivate($event)',
+    '(keydown)': 'onKeydown($event)',
   },
   exportAs: 'guiButton',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,10 +69,19 @@ export class ButtonComponent {
   /** Two-way selected state; only meaningful when `toggle` is true. No toggle text button (M3). */
   selected = model(false);
 
+  private readonly host =
+    inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+
   /** True when the host is a <button> (native disabled) vs an <a> (aria-disabled). */
-  protected readonly isButton =
-    inject<ElementRef<HTMLElement>>(ElementRef).nativeElement.tagName ===
-    'BUTTON';
+  protected readonly isButton = this.host.tagName === 'BUTTON';
+
+  /**
+   * True for an anchor host with no href: such an <a> has no implicit button
+   * role and is not focusable, so it needs a synthetic role + tabindex and
+   * keyboard activation to be reachable/operable (M3 keyboard navigation).
+   */
+  protected readonly needsButtonRole =
+    !this.isButton && !this.host.hasAttribute('href');
 
   protected isToggleSelected(): boolean {
     return this.toggle() && this.selected() && this.variant() !== 'text';
@@ -79,6 +95,21 @@ export class ButtonComponent {
     }
     if (this.toggle() && this.variant() !== 'text') {
       this.selected.update((v) => !v);
+    }
+  }
+
+  /**
+   * Space/Enter activation for a linkless anchor host (native <button> and a
+   * real link already handle their own keyboard activation). Space is consumed
+   * to prevent the page scrolling.
+   */
+  protected onKeydown(event: Event): void {
+    if (!this.needsButtonRole || !(event instanceof KeyboardEvent)) {
+      return;
+    }
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      this.host.click();
     }
   }
 }

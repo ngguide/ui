@@ -42,6 +42,8 @@ Bottom sheets span the full window width up to 640dp. When the window width exce
 
 | Attribute | Value |
 | --- | --- |
+| Drag handle width | 32dp |
+| Drag handle height | 4dp |
 | Drag handle alignment (horizontal) | Center |
 | Drag handle padding top/bottom | 22dp |
 | Top margin | 72dp |

@@ -1,38 +1,144 @@
-<div class="gui-calendar-row gui-calendar-weekdays" role="row">
-  @for (wd of weekdays(); track $index) {
-    <span class="gui-calendar-weekday" role="columnheader" [attr.abbr]="wd.long">
-      {{ wd.narrow }}
-    </span>
+<div class="gui-calendar-header">
+  <div class="gui-calendar-menus">
+    <button
+      type="button"
+      class="gui-calendar-menu-button"
+      data-header="month"
+      [attr.aria-label]="'Month: ' + monthLabel()"
+      guiStateLayer
+      guiFocusRing
+      (click)="showDayView()"
+    >
+      <span class="gui-calendar-menu-label">{{ monthLabel() }}</span>
+    </button>
+    <button
+      type="button"
+      class="gui-calendar-menu-button"
+      data-header="year"
+      [attr.aria-label]="'Year: ' + yearLabel()"
+      [attr.aria-expanded]="view() === 'year'"
+      guiStateLayer
+      guiFocusRing
+      (click)="toggleYearView()"
+    >
+      <span class="gui-calendar-menu-label">{{ yearLabel() }}</span>
+      <gui-icon class="gui-calendar-menu-caret"
+        ><svg
+          viewBox="0 -960 960 960"
+          width="18"
+          height="18"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path [attr.d]="view() === 'year' ? 'M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z' : 'm480-344 240-240 56 56-296 296-296-296 56-56 240 240Z'" /></svg
+      ></gui-icon>
+    </button>
+  </div>
+
+  @if (view() === 'day') {
+    <div class="gui-calendar-nav">
+      <button
+        gui-icon-button
+        type="button"
+        aria-label="Previous month"
+        guiTooltip="Previous month"
+        (click)="prevMonth()"
+      >
+        <gui-icon
+          ><svg
+            viewBox="0 -960 960 960"
+            width="24"
+            height="24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" /></svg
+        ></gui-icon>
+      </button>
+      <button
+        gui-icon-button
+        type="button"
+        aria-label="Next month"
+        guiTooltip="Next month"
+        (click)="nextMonth()"
+      >
+        <gui-icon
+          ><svg
+            viewBox="0 -960 960 960"
+            width="24"
+            height="24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" /></svg
+        ></gui-icon>
+      </button>
+    </div>
   }
 </div>
 
-@for (week of weeks(); track $index) {
-  <div class="gui-calendar-row" role="row">
-    @for (cell of week; track cellKey(cell.date)) {
+@if (view() === 'year') {
+  <div class="gui-calendar-years" role="grid" aria-label="Year selection">
+    @for (year of years(); track year) {
       <button
         type="button"
-        class="gui-calendar-cell"
+        class="gui-calendar-year"
         role="gridcell"
-        [attr.data-ts]="cellKey(cell.date)"
-        [attr.data-outside]="!cell.inCurrentMonth ? '' : null"
-        [attr.data-selected]="isSelected(cell.date) ? '' : null"
-        [attr.data-range-start]="isRangeStart(cell.date) ? '' : null"
-        [attr.data-range-end]="isRangeEnd(cell.date) ? '' : null"
-        [attr.data-in-range]="isInRange(cell.date) ? '' : null"
-        [attr.data-today]="isToday(cell.date) ? '' : null"
-        [attr.tabindex]="isFocused(cell.date) ? 0 : -1"
-        [attr.aria-selected]="isSelected(cell.date) ? 'true' : null"
-        [attr.aria-current]="isToday(cell.date) ? 'date' : null"
-        [attr.aria-disabled]="
-          isDisabled(cell.date, cell.inCurrentMonth) ? 'true' : null
-        "
+        [attr.data-selected]="isSelectedYear(year) ? '' : null"
+        [attr.aria-selected]="isSelectedYear(year) ? 'true' : null"
         guiStateLayer
         guiRipple
         guiFocusRing
-        (click)="onCellClick(cell.date, cell.inCurrentMonth)"
+        (click)="onYearClick(year)"
       >
-        <span class="gui-calendar-day">{{ cell.date.getDate() }}</span>
+        {{ year }}
       </button>
+    }
+  </div>
+} @else {
+  <div class="gui-calendar-grid" role="grid" [attr.aria-label]="monthYearLabel()">
+    <div class="gui-calendar-row gui-calendar-weekdays" role="row">
+      @for (wd of weekdays(); track $index) {
+        <span
+          class="gui-calendar-weekday"
+          role="columnheader"
+          [attr.abbr]="wd.long"
+          [attr.title]="wd.long"
+        >
+          {{ wd.narrow }}
+        </span>
+      }
+    </div>
+
+    @for (week of weeks(); track $index) {
+      <div class="gui-calendar-row" role="row">
+        @for (cell of week; track cellKey(cell.date)) {
+          <button
+            type="button"
+            class="gui-calendar-cell"
+            role="gridcell"
+            [attr.data-ts]="cellKey(cell.date)"
+            [attr.data-outside]="!cell.inCurrentMonth ? '' : null"
+            [attr.data-selected]="isSelected(cell.date) ? '' : null"
+            [attr.data-range-start]="isRangeStart(cell.date) ? '' : null"
+            [attr.data-range-end]="isRangeEnd(cell.date) ? '' : null"
+            [attr.data-in-range]="isInRange(cell.date) ? '' : null"
+            [attr.data-today]="isToday(cell.date) ? '' : null"
+            [attr.tabindex]="isFocused(cell.date) ? 0 : -1"
+            [attr.aria-selected]="isSelected(cell.date) ? 'true' : null"
+            [attr.aria-current]="isToday(cell.date) ? 'date' : null"
+            [attr.aria-disabled]="
+              isDisabled(cell.date, cell.inCurrentMonth) ? 'true' : null
+            "
+            guiFocusRing
+            (click)="onCellClick(cell.date, cell.inCurrentMonth)"
+          >
+            <span class="gui-calendar-day" guiStateLayer guiRipple>{{
+              cell.date.getDate()
+            }}</span>
+          </button>
+        }
+      </div>
     }
   </div>
 }

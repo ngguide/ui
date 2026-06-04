@@ -1,4 +1,4 @@
-/* M3 loading indicator — 48dp overall, ~38dp shape, spinning + morphing cookie. */
+/* M3 loading indicator — 48dp overall size, 38dp shape container, spinning + morphing cookie. */
 :host {
   display: inline-block;
   inline-size: 48px;
@@ -17,10 +17,13 @@
   fill: var(--md-sys-color-primary);
 }
 
-/* Contained — shape sits on a filled circular container. */
+/* Contained — shape sits on a filled 38dp circular container centered in the 48dp size. */
 :host([data-variant='contained']) {
-  background-color: var(--md-sys-color-primary-container);
-  border-radius: 50%;
+  background-image: radial-gradient(
+    circle 19px at center,
+    var(--md-sys-color-primary-container) 100%,
+    transparent 0
+  );
 }
 
 :host([data-variant='contained']) .gui-loading-shape {

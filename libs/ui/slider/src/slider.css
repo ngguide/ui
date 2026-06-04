@@ -13,7 +13,21 @@
   --gui-slider-track-height: 40px;
   --gui-slider-handle-height: 52px;
   --gui-slider-track-shape: 12px;
+  --gui-slider-inset-icon-size: 24px;
+  /* M3 disabled opacities (on-surface): 38% content, 12% container. */
+  --gui-slider-disabled-content-opacity: 0.38;
+  --gui-slider-disabled-container-opacity: 0.12;
   padding-block: calc((var(--gui-slider-handle-height) - var(--gui-slider-track-height)) / 2);
+}
+
+/* Vertical orientation: the track runs top-to-bottom; reserve handle width
+   on the inline axis instead of the block axis. */
+:host([data-orientation='vertical']) {
+  display: inline-block;
+  width: auto;
+  height: 100%;
+  padding-block: 0;
+  padding-inline: calc((var(--gui-slider-handle-height) - var(--gui-slider-track-height)) / 2);
 }
 
 .gui-slider-track {
@@ -22,6 +36,11 @@
   height: var(--gui-slider-track-height);
   touch-action: none;
   cursor: pointer;
+}
+
+:host([data-orientation='vertical']) .gui-slider-track {
+  width: var(--gui-slider-track-height);
+  height: 100%;
 }
 
 /* Inactive track = full bar. Active track is overlaid on top of it. */
@@ -39,14 +58,26 @@
   background-color: var(--md-sys-color-secondary-container);
 }
 
+/* Active fill spans from --gui-slider-fill-start (leading inset) to
+   --gui-slider-fill-end (trailing inset), defaulting to a full bar. */
 .gui-slider-active {
+  left: var(--gui-slider-fill-start, 0%);
+  right: var(--gui-slider-fill-end, 0%);
   background-color: var(--md-sys-color-primary);
 }
 
-/* Discrete stop indicators (small dots) on the track. */
+:host([data-orientation='vertical']) .gui-slider-active {
+  left: 0;
+  right: 0;
+  bottom: var(--gui-slider-fill-start, 0%);
+  top: var(--gui-slider-fill-end, 0%);
+}
+
+/* Stop indicators (small dots) on the track. */
 .gui-slider-tick {
   position: absolute;
   top: 50%;
+  left: var(--gui-slider-pos, 0%);
   width: 4px;
   height: 4px;
   border-radius: 50%;
@@ -56,10 +87,45 @@
   pointer-events: none;
 }
 
+:host([data-orientation='vertical']) .gui-slider-tick {
+  top: auto;
+  left: 50%;
+  bottom: var(--gui-slider-pos, 0%);
+}
+
+/* Optional inset icon (standard slider only), pinned to the leading edge. */
+.gui-slider-inset-icon {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  width: var(--gui-slider-inset-icon-size);
+  height: var(--gui-slider-inset-icon-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--md-sys-color-on-primary);
+  pointer-events: none;
+  z-index: 1;
+}
+
+:host([data-orientation='vertical']) .gui-slider-inset-icon {
+  top: auto;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+}
+
+/* Hide the icon slot when empty (no projected content). */
+.gui-slider-inset-icon:empty {
+  display: none;
+}
+
 /* Handle: a 4px-wide rounded bar centered on its value position. */
 .gui-slider-thumb {
   position: absolute;
   top: 50%;
+  left: var(--gui-slider-pos, 0%);
   width: 4px;
   height: var(--gui-slider-handle-height);
   border-radius: var(--md-sys-shape-corner-full);
@@ -73,11 +139,29 @@
       var(--md-sys-motion-easing-standard, ease);
 }
 
-/* Handle shrinks on press / while dragging. */
+/* Vertical handle: a 4px-tall bar that spans the track width. */
+:host([data-orientation='vertical']) .gui-slider-thumb {
+  top: auto;
+  left: 50%;
+  bottom: var(--gui-slider-pos, 0%);
+  width: var(--gui-slider-handle-height);
+  height: 4px;
+  transform: translate(-50%, 50%);
+}
+
+/* Handle shrinks on press / while dragging (width on horizontal). */
 :host([data-active]) .gui-slider-thumb:active,
 .gui-slider-thumb[data-gui-state~='pressed'],
 .gui-slider-thumb[data-gui-state~='dragged'] {
   width: 2px;
+}
+
+/* On a vertical slider the handle is rotated, so it shrinks in height. */
+:host([data-orientation='vertical'][data-active]) .gui-slider-thumb:active,
+:host([data-orientation='vertical']) .gui-slider-thumb[data-gui-state~='pressed'],
+:host([data-orientation='vertical']) .gui-slider-thumb[data-gui-state~='dragged'] {
+  width: var(--gui-slider-handle-height);
+  height: 2px;
 }
 
 /* Value indicator (label container), shown on press/drag/focus. */
@@ -87,8 +171,8 @@
   left: 50%;
   transform: translateX(-50%) scale(0);
   transform-origin: bottom center;
-  min-width: 44px;
-  height: 48px;
+  min-width: 48px;
+  height: 44px;
   padding-inline: 8px;
   display: inline-flex;
   align-items: center;
@@ -114,6 +198,20 @@
   transform: translateX(-50%) scale(1);
 }
 
+/* Vertical: value indicator sits to the leading side of the handle. */
+:host([data-orientation='vertical']) .gui-slider-value {
+  bottom: auto;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  transform-origin: center left;
+}
+:host([data-orientation='vertical'][data-active]) .gui-slider-value,
+:host([data-orientation='vertical']) .gui-slider-thumb:focus-within .gui-slider-value,
+:host([data-orientation='vertical']) .gui-slider-thumb:focus .gui-slider-value {
+  transform: translateY(-50%) scale(1);
+}
+
 /* --- Sizes (track height / handle height / track shape per GUI_SLIDER_SIZES) --- */
 :host([data-size='xs']) {
   --gui-slider-track-height: 16px;
@@ -129,16 +227,19 @@
   --gui-slider-track-height: 40px;
   --gui-slider-handle-height: 52px;
   --gui-slider-track-shape: 12px;
+  --gui-slider-inset-icon-size: 24px;
 }
 :host([data-size='lg']) {
   --gui-slider-track-height: 56px;
   --gui-slider-handle-height: 68px;
   --gui-slider-track-shape: 16px;
+  --gui-slider-inset-icon-size: 24px;
 }
 :host([data-size='xl']) {
   --gui-slider-track-height: 96px;
   --gui-slider-handle-height: 108px;
   --gui-slider-track-shape: 28px;
+  --gui-slider-inset-icon-size: 32px;
 }
 
 /* --- Disabled (M3 disabled treatment via tokens). --- */
@@ -149,16 +250,21 @@
 :host(.gui-disabled) .gui-slider-thumb {
   background-color: color-mix(
     in srgb,
-    var(--md-sys-color-on-surface),
-    transparent 62%
+    var(--md-sys-color-on-surface)
+      calc(var(--gui-slider-disabled-content-opacity) * 100%),
+    transparent
   );
 }
 :host(.gui-disabled) .gui-slider-inactive {
   background-color: color-mix(
     in srgb,
-    var(--md-sys-color-on-surface),
-    transparent 88%
+    var(--md-sys-color-on-surface)
+      calc(var(--gui-slider-disabled-container-opacity) * 100%),
+    transparent
   );
+}
+:host(.gui-disabled) .gui-slider-inset-icon {
+  opacity: var(--gui-slider-disabled-content-opacity);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -36,7 +36,10 @@ import { GuiFabColor, GuiFabSize } from './fab';
 })
 export class ExtendedFabComponent {
   color = input<GuiFabColor>('primary-container');
-  size = input<GuiFabSize>('md');
+  // M3 Expressive deprecates the baseline extended FAB in favour of the small
+  // extended FAB (title-medium label, reduced inner padding) — so `sm` is the
+  // recommended default.
+  size = input<GuiFabSize>('sm');
   expanded = input(true, { transform: booleanAttribute });
   disabled = input(false, { transform: booleanAttribute });
 

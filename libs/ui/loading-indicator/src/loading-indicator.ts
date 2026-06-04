@@ -28,9 +28,10 @@ function cookiePath(baseR: number, amp: number, lobes: number): string {
 }
 
 // Two M3-inspired shapes the indicator morphs between. Same segment count/type so
-// SMIL can interpolate `d` point-for-point.
-const SHAPE_A = cookiePath(14, 4, 7);
-const SHAPE_B = cookiePath(15, 3, 4);
+// SMIL can interpolate `d` point-for-point. Max radius baseR+amp = 19 in both, so
+// the shape spans the M3 38dp shape container (38dp diameter) inside the 48dp size.
+const SHAPE_A = cookiePath(15, 4, 7);
+const SHAPE_B = cookiePath(16, 3, 4);
 
 /**
  * M3 loading indicator (SVG morphing shapes).

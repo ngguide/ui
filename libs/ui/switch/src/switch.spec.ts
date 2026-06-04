@@ -48,6 +48,18 @@ describe('SwitchComponent', () => {
     expect(input.getAttribute('aria-checked')).toBe('false');
   });
 
+  it('toggles on Enter (M3 keyboard contract is Space or Enter)', () => {
+    expect(host.checked()).toBe(false);
+
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
+    );
+    fixture.detectChanges();
+
+    expect(host.checked()).toBe(true);
+    expect(input.getAttribute('aria-checked')).toBe('true');
+  });
+
   it('blocks toggling when disabled', () => {
     host.disabled.set(true);
     fixture.detectChanges();

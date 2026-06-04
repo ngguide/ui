@@ -35,7 +35,11 @@
   display: none;
 }
 
-/* --- Sizes (height, leading/trailing padding, icon→label gap, label type) --- */
+/* --- Sizes (height, leading/trailing padding, icon→label gap, label type) ---
+   Each size sets the leading/trailing icon size via --gui-comp-icon-size so a
+   nested <gui-icon> scales. The M3 standard leading/trailing icon size is 20dp
+   for the baseline small sizes (xs/sm); the larger Expressive sizes scale the
+   icon up alongside the taller container and larger label type. */
 :host([data-size='xs']) {
   height: 32px;
   padding: 0 16px;
@@ -43,6 +47,7 @@
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.1px;
+  --gui-comp-icon-size: 20px;
 }
 
 :host([data-size='sm']) {
@@ -52,6 +57,7 @@
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.1px;
+  --gui-comp-icon-size: 20px;
 }
 
 :host([data-size='md']) {
@@ -61,6 +67,7 @@
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
+  --gui-comp-icon-size: 24px;
 }
 
 :host([data-size='lg']) {
@@ -72,6 +79,7 @@
   font-size: 24px;
   line-height: 32px;
   letter-spacing: 0;
+  --gui-comp-icon-size: 32px;
 }
 
 :host([data-size='xl']) {
@@ -83,6 +91,7 @@
   font-size: 32px;
   line-height: 40px;
   letter-spacing: 0;
+  --gui-comp-icon-size: 40px;
 }
 
 /* --- Shape + expressive morph (per-size radii) ---
@@ -106,8 +115,12 @@
 :host([data-size='sm'][data-shape='square'][data-selected]) {
   border-radius: var(--md-sys-shape-corner-full);
 }
-:host([data-size='xs'][data-gui-state~='pressed']),
-:host([data-size='sm'][data-gui-state~='pressed']) {
+/* Pressed wins over the selected resting radius: the selected rules above use
+   three attributes (size+shape+selected), so the pressed rules match that
+   specificity by adding [data-variant] (always present) and rely on source
+   order to win the tie — keeping the pressed shape-morph on a selected toggle. */
+:host([data-size='xs'][data-variant][data-gui-state~='pressed']),
+:host([data-size='sm'][data-variant][data-gui-state~='pressed']) {
   border-radius: var(--md-sys-shape-corner-small);
 }
 
@@ -124,7 +137,7 @@
 :host([data-size='md'][data-shape='square'][data-selected]) {
   border-radius: var(--md-sys-shape-corner-full);
 }
-:host([data-size='md'][data-gui-state~='pressed']) {
+:host([data-size='md'][data-variant][data-gui-state~='pressed']) {
   border-radius: var(--md-sys-shape-corner-medium);
 }
 
@@ -145,8 +158,8 @@
 :host([data-size='xl'][data-shape='square'][data-selected]) {
   border-radius: var(--md-sys-shape-corner-full);
 }
-:host([data-size='lg'][data-gui-state~='pressed']),
-:host([data-size='xl'][data-gui-state~='pressed']) {
+:host([data-size='lg'][data-variant][data-gui-state~='pressed']),
+:host([data-size='xl'][data-variant][data-gui-state~='pressed']) {
   border-radius: var(--md-sys-shape-corner-large);
 }
 

@@ -57,6 +57,16 @@ describe('arrange', () => {
     });
   });
 
+  describe('center-aligned hero', () => {
+    it('centers one large item with a small peek on each side (Req 11.1)', () => {
+      const a = arrange('center-aligned-hero', 360, OPTS);
+      expect(a.largeCount).toBe(1);
+      // Two small peeks (leading + trailing) frame the centered focal item.
+      expect(a.smallCount).toBe(2);
+      expect(a.large + 2 * (a.small + OPTS.itemSpacing)).toBeCloseTo(360, 5);
+    });
+  });
+
   describe('uncontained', () => {
     it('fits whole items and resizes the cut-off trailing item (Req 11.3)', () => {
       const a = arrange('uncontained', 420, OPTS);
@@ -64,6 +74,14 @@ describe('arrange', () => {
       expect(a.largeCount).toBeGreaterThanOrEqual(1);
       // A partial item peeks when there is leftover room and more items.
       expect(a.smallCount).toBeLessThanOrEqual(1);
+    });
+  });
+
+  describe('uncontained multi-aspect', () => {
+    it('lays out uniform-width items like uncontained (Req 11.3)', () => {
+      const a = arrange('uncontained-multi-aspect', 420, OPTS);
+      expect(a.large).toBe(186);
+      expect(a.largeCount).toBeGreaterThanOrEqual(1);
     });
   });
 });

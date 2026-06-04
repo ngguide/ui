@@ -55,6 +55,10 @@ type Period = 'AM' | 'PM';
       outputs: ['valueChange: timeChange'],
     },
   ],
+  host: {
+    '[attr.data-layout]': 'layout()',
+    '[attr.data-hour12]': 'effectiveHour12()',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimePickerComponent {
@@ -63,6 +67,8 @@ export class TimePickerComponent {
   private readonly vcr = inject(ViewContainerRef);
 
   readonly variant = input<'dial' | 'input'>('dial');
+  /** Dial layout: `vertical` (mobile default) or `horizontal`. */
+  readonly orientation = input<'vertical' | 'horizontal'>('vertical');
   readonly hour12 = input<boolean | null>(null);
   readonly locale = input('en-US');
   readonly label = input('Time');
@@ -71,8 +77,20 @@ export class TimePickerComponent {
     () => this.hour12() ?? prefersHour12(this.locale()),
   );
 
-  private readonly panelTpl =
-    viewChild.required<TemplateRef<unknown>>('panel');
+  /**
+   * M3 supporting headline shown above the picker: "Select time" for the dial
+   * variant, "Enter time" for the input variant.
+   */
+  protected readonly headline = computed(() =>
+    this.activeVariant() === 'dial' ? 'Select time' : 'Enter time',
+  );
+
+  /** Period selector size + the 24h wide field rule are driven by these. */
+  protected readonly layout = computed(() =>
+    this.activeVariant() === 'dial' ? this.orientation() : 'input',
+  );
+
+  private readonly panelTpl = viewChild.required<TemplateRef<unknown>>('panel');
 
   /** Variant shown inside the open dialog (toggled by the keyboard icon). */
   protected readonly activeVariant = signal<'dial' | 'input'>('dial');
@@ -110,7 +128,9 @@ export class TimePickerComponent {
   protected readonly displayMinute = computed(() => this.pendingTime().minutes);
 
   protected readonly hourMin = computed(() => (this.effectiveHour12() ? 1 : 0));
-  protected readonly hourMax = computed(() => (this.effectiveHour12() ? 12 : 23));
+  protected readonly hourMax = computed(() =>
+    this.effectiveHour12() ? 12 : 23,
+  );
 
   protected readonly hourText = computed(() =>
     String(this.displayHour()).padStart(2, '0'),

@@ -87,15 +87,17 @@ M3: Sliders have new color mappings and support dynamic color
 - Inset icon (optional)
 
 ### Color
-Slider color roles used for light and dark schemes:
-- Inverse surface
-- Inverse on surface
-- Primary
-- On primary
-- Primary
-- Secondary container
-- On secondary container
-- On primary
+Slider color roles used for light and dark schemes (element → role):
+
+| Element | Role |
+| --- | --- |
+| Active track | Primary |
+| Handle | Primary |
+| Inactive track | Secondary container |
+| Stop indicator | On secondary container |
+| Inset icon | On primary |
+| Value indicator container | Inverse surface |
+| Value indicator label | Inverse on surface |
 
 ### States
 - Enabled

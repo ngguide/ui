@@ -45,8 +45,11 @@ describe('CalendarComponent', () => {
       grid.querySelectorAll<HTMLButtonElement>('button[role="gridcell"]'),
     );
 
-  it('has role=grid', () => {
-    expect(grid.getAttribute('role')).toBe('grid');
+  it('has role=group on the host and role=grid on the day grid', () => {
+    expect(grid.getAttribute('role')).toBe('group');
+    expect(
+      grid.querySelector('.gui-calendar-grid')?.getAttribute('role'),
+    ).toBe('grid');
   });
 
   it('renders 7 columnheaders', () => {

@@ -23,7 +23,9 @@
   align-items: center;
   gap: 8px;
   height: 32px;
-  padding: 0 8px;
+  /* M3: 16dp left/right padding without a leading icon. The `:has()` rules
+     below tighten this to 8dp once a leading icon/avatar is present. */
+  padding: 0 16px;
   position: relative;
   cursor: pointer;
 
@@ -39,6 +41,25 @@
       var(--md-sys-motion-easing-standard),
     border-color var(--md-sys-motion-duration-short4)
       var(--md-sys-motion-easing-standard);
+}
+
+/* M3: when a leading icon (or the filter checkmark) is present the left padding
+   tightens to 8dp; likewise the right padding when a trailing/remove icon is
+   present. Each side is resolved independently so an icon-less side keeps 16dp. */
+:host(:has(.gui-chip-leading > *)) {
+  padding-left: 8px;
+}
+:host(:has(.gui-chip-remove)) {
+  /* The remove button supplies its own touch-target inset, so collapse the
+     host's right padding to the M3 8dp between-elements value. */
+  padding-right: 8px;
+}
+
+/* M3 input-chip avatar: 24dp avatar with 4dp left / 8dp right padding. The
+   leading-icon `:has()` rule above already handles the 8dp left, but an avatar
+   sits flush to the container with only 4dp of breathing room. */
+:host(:has(.gui-chip-avatar > *)) {
+  padding-left: 4px;
 }
 
 /* The shared :host block above is sized for a single chip (fixed 32px height).
@@ -66,9 +87,41 @@
   cursor: inherit;
 }
 
+/* M3 close/remove affordance: the visible icon is 18dp but the hit target must
+   be at least 48dp (accessibility best practice). The button keeps the chip's
+   18dp visual footprint, and an absolutely-positioned ::before pseudo-element
+   provides the centered 48x48 CSS-pixel touch target without growing the 32dp
+   container or disturbing layout. */
 .gui-chip-remove {
+  position: relative;
   width: 18px;
   justify-content: center;
+}
+
+.gui-chip-remove::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+}
+
+.gui-chip-remove-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+/* M3: leading and remove icons render at the 18dp icon size for every variant.
+   Constrains projected SVG/icon content that does not size itself. */
+.gui-chip-leading > *,
+.gui-chip-remove-icon > * {
+  width: 18px;
+  height: 18px;
 }
 
 /* M3 label-large applied to the chip label. */
@@ -97,6 +150,24 @@
   height: 18px;
 }
 
+/* M3 input-chip avatar: 24dp, 12dp corner radius. The slot collapses when
+   empty so non-input chips reserve no space for it. */
+.gui-chip-avatar {
+  display: inline-flex;
+  align-items: center;
+}
+
+.gui-chip-avatar:empty {
+  display: none;
+}
+
+.gui-chip-avatar > * {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
 /* Selected (filter/input) chip — M3 secondary-container treatment plus space
    for a leading checkmark. */
 :host([data-selected]) {
@@ -105,18 +176,33 @@
   border-color: transparent;
 }
 
-/* Elevated chip — level-1 elevation and no border. */
+/* Elevated chip — level-1 elevation, no border, and the optional M3
+   Surface container low container fill. */
 :host([data-elevated]) {
   border: none;
+  background-color: var(--md-sys-color-surface-container-low);
   box-shadow: var(--md-sys-elevation-level1);
 }
 
-/* Per-type nuances: assist/suggestion are display-only defaults; input/filter
-   are selectable. The selectable families pick up the selected rule above; the
-   defaults keep the resting outline. */
-:host([data-type='assist']),
+/* Per-variant M3 color roles.
+   The resting :host default (On surface variant label + Outline variant stroke)
+   already matches filter and input chips, so only assist and suggestion override.
+
+   Assist chip — label uses On surface, stroke uses Outline, and the leading icon
+   uses Primary. */
+:host([data-type='assist']) {
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline);
+}
+
+:host([data-type='assist']) .gui-chip-leading > * {
+  color: var(--md-sys-color-primary);
+}
+
+/* Suggestion chip — On surface variant label with the Outline stroke role. */
 :host([data-type='suggestion']) {
   color: var(--md-sys-color-on-surface-variant);
+  border-color: var(--md-sys-color-outline);
 }
 
 /* Disabled — M3 disabled treatment via token color-mix. */

@@ -99,7 +99,6 @@ For keyboard navigation, Tab focuses on an individual segment.
 For single-select segments, Space or Enter will select or unselect the focused segment.
 For multi-select segments, Space or Enter will:
 - select an un-selected segment
-- select all of the segments
 - un-select a selected segment
 Use Tab to navigate through segments and Space/Enter to select/unselect.
 

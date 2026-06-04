@@ -11,6 +11,9 @@
   /* Corner: medium (12dp). Content is clipped to the rounded corners. */
   border-radius: var(--md-sys-shape-corner-medium);
   overflow: hidden;
+  /* Left/right container padding: 16dp (M3 Measurements). Vertical padding is
+     left to the consumer so media can bleed to the top/bottom edges. */
+  padding-inline: 16px;
   color: var(--md-sys-color-on-surface);
   transition:
     box-shadow var(--md-sys-motion-duration-short4)

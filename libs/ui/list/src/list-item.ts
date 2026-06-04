@@ -9,15 +9,20 @@ import {
   model,
   signal,
 } from '@angular/core';
-import { GuiFocusRingDirective } from '@ngguide/ui/interaction';
+import {
+  GuiFocusRingDirective,
+  GuiStateLayerDirective,
+} from '@ngguide/ui/interaction';
 import { GUI_LIST, GuiListMode } from './list-context';
 
 /**
  * A single M3 list row. Anatomy slots projected by the consumer:
- * `[guiListItemLeading]` (icon 24 / avatar 40 / image 56dp), the default slot
- * (headline, `body-large`), `[guiListItemSupporting]` (`body-medium`), and
- * `[guiListItemTrailing]` (`label-small` text or a control). Height follows the
- * `lines` count: 56 / 72 / 88dp (Req 4.2).
+ * `[guiListItemLeading]` (M3 leading element — an avatar, icon, or image; its
+ * size is owned by the projected content per the M3 slot model, e.g. a 24dp
+ * icon, 40dp avatar, or 56dp image), the default slot (headline, `body-large`),
+ * `[guiListItemSupporting]` (`body-medium`), and `[guiListItemTrailing]`
+ * (`label-small` text or a control). Height follows the `lines` count:
+ * 56 / 72 / 88dp (Req 4.2).
  *
  * Behavior depends on the parent {@link GuiList} mode (Req 6.5):
  * - `action` — the row hosts its own native control(s); the item carries
@@ -40,6 +45,21 @@ import { GUI_LIST, GuiListMode } from './list-context';
     <span class="gui-list-item-trailing"
       ><ng-content select="[guiListItemTrailing]"
     /></span>
+    @if (showSelectionCheck()) {
+      <!-- M3 a11y: a non-color selection cue (leading/trailing checkmark) so
+           selection isn't conveyed by the container color alone. -->
+      <svg
+        class="gui-list-item-check"
+        viewBox="0 -960 960 960"
+        focusable="false"
+        aria-hidden="true"
+      >
+        <path
+          d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"
+          fill="currentColor"
+        />
+      </svg>
+    }
   `,
   styleUrl: './list-item.css',
   // Keyboard focus indicator (Req 14.4): GuiFocusRingDirective marks keyboard
@@ -47,7 +67,15 @@ import { GUI_LIST, GuiListMode } from './list-context';
   // roving programmatic focus of a listbox option. The ring visual lives in
   // list-item.css. Non-focusable rows (action items with no tabindex) never
   // receive host focus, so it shows only on selectable/roving options.
-  hostDirectives: [GuiFocusRingDirective],
+  //
+  // M3 state layer (hover / focus / pressed / dragged): GuiStateLayerDirective
+  // renders the tinted `::before` overlay from the --md-sys-state-* opacity
+  // tokens, tinted with the row's content color and clipped to the full-bleed
+  // row. It self-suppresses on aria-disabled rows. The overlay is gated to
+  // interactive rows only (listbox options and action+interactive rows) via the
+  // `data-interactive` attribute in list-item.css, so plain `listitem` rows that
+  // merely host their own controls stay flat.
+  hostDirectives: [GuiFocusRingDirective, GuiStateLayerDirective],
   host: {
     class: 'gui-list-item',
     '[attr.data-lines]': 'lines()',
@@ -55,6 +83,8 @@ import { GUI_LIST, GuiListMode } from './list-context';
     '[attr.aria-selected]': 'isListbox() ? (selected() ? "true" : "false") : null',
     '[attr.aria-disabled]': 'disabled() ? "true" : null',
     '[attr.data-selected]': 'selected() ? "" : null',
+    '[attr.data-interactive]': 'interactiveRow() ? "" : null',
+    '[attr.data-divider]': 'divider()',
     '[attr.tabindex]': 'isListbox() ? (active() ? 0 : -1) : null',
     '(click)': 'onClick()',
   },
@@ -70,6 +100,19 @@ export class GuiListItem {
   readonly selected = model(false);
   /** Disabled options stay focusable but are not activatable (Req 6.6). */
   readonly disabled = input(false, { transform: booleanAttribute });
+  /**
+   * Renders an M3 bottom divider on the row (anatomy: Divider). `'full'` is the
+   * full-width 100% divider; `'inset'` insets it by the leading-content left
+   * padding (16dp) on the start side and the trailing right padding (24dp) on
+   * the end side, per the M3 divider measurements.
+   */
+  readonly divider = input<'full' | 'inset' | null>(null);
+  /**
+   * Renders a trailing checkmark on a selected option as a built-in non-color
+   * selection cue (M3 a11y: "don't rely on color as the only visual cue"). Opt
+   * in when the row has no other selection indicator (radio/checkbox/icon).
+   */
+  readonly selectionIndicator = input(false, { transform: booleanAttribute });
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly list = inject(GUI_LIST, { optional: true });
@@ -82,12 +125,24 @@ export class GuiListItem {
     () => this.list?.mode() ?? 'action',
   );
   protected readonly isListbox = computed(() => this.mode() === 'listbox');
+  /**
+   * Whether the row itself is the interactive target — a listbox option, or an
+   * action row flagged `interactive`. Only such rows get the M3 state layer;
+   * plain `listitem` rows that just host their own controls stay flat.
+   */
+  protected readonly interactiveRow = computed(
+    () => this.isListbox() || this.interactive(),
+  );
   protected readonly role = computed(() => {
     if (this.isListbox()) {
       return 'option';
     }
     return this.interactive() ? null : 'listitem';
   });
+  /** Non-color selection cue: a trailing checkmark on a selected option. */
+  protected readonly showSelectionCheck = computed(
+    () => this.isListbox() && this.selectionIndicator() && this.selected(),
+  );
 
   /** {@link FocusableOption}: move DOM focus to this row (roving focus). */
   focus(): void {

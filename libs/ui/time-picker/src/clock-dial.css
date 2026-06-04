@@ -42,8 +42,27 @@
 .gui-clock-number {
   fill: var(--md-sys-color-on-surface);
   font: var(--md-sys-typescale-body-large, 400 16px/24px system-ui);
+  pointer-events: none;
 }
 
 .gui-clock-number-selected {
   fill: var(--md-sys-color-on-primary);
+}
+
+/*
+ * 48×48dp transparent Button-role target sitting over each number. Pointer
+ * interaction stays angle-based on the dial host, so these targets opt out of
+ * pointer hit-testing; they exist for keyboard focus and screen-reader labels
+ * (each is an individually selectable Button per the M3 spec). Keyboard
+ * Enter/Space and Tab focus are unaffected by pointer-events: none.
+ */
+.gui-clock-target {
+  fill: transparent;
+  outline: none;
+  pointer-events: none;
+}
+
+.gui-clock-target:focus-visible {
+  pointer-events: auto;
+  fill: color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent);
 }

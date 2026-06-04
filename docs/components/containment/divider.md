@@ -33,11 +33,17 @@ Measurements
 
 | Attribute | Value |
 | --- | --- |
+| Divider thickness | 1dp |
 | Divider full-width | 100% |
 | Divider inset left margin | 16dp |
 | Divider inset right margin | 0dp |
 | Divider middle-inset left margin | 16dp |
 | Divider middle-inset right margin | 16dp |
+
+The following spacings are owned by the consuming list/layout context (not intrinsic divider geometry) and are therefore applied by the host layout rather than baked into the divider component:
+
+| Attribute (list/layout context) | Value |
+| --- | --- |
 | Space between divider & supporting-text | 4dp |
 | Divider right margin | 8dp |
 | Divider bottom margin | 8dp |

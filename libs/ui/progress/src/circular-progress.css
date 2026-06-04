@@ -1,4 +1,6 @@
-/* M3 circular progress — 48dp diameter, 4dp stroke, rounded active cap. */
+/* M3 circular progress — 48dp diameter, 4dp stroke (default, configurable via the
+   host `--_stroke` custom property for M3 Expressive variable thickness),
+   rounded active cap. */
 :host {
   --_size: 48px;
   --_stroke: 4px;
@@ -14,6 +16,7 @@
   block-size: 100%;
   /* Start the determinate arc at 12 o'clock. */
   transform: rotate(-90deg);
+  overflow: visible;
 }
 
 .gui-circular-track {
@@ -28,22 +31,43 @@
   transition: stroke-dashoffset 0.2s var(--md-sys-motion-easing-standard, ease);
 }
 
-/* Indeterminate — rotate the whole SVG; the arc length is a fixed fraction. */
+/* Indeterminate — the whole SVG rotates continuously while the active arc grows
+   and shrinks (M3 motion behavior). The two animations compose into a sweeping,
+   pulsing arc rather than a fixed-length spinner. */
 :host([data-mode='indeterminate']) .gui-circular-svg {
   animation: gui-circular-rotate 1.4s linear infinite;
 }
 
 :host([data-mode='indeterminate']) .gui-circular-active {
-  /* ~25% visible arc that the rotation sweeps around the track. */
-  stroke-dasharray: 34.56 103.67;
-  stroke-dashoffset: 0;
   transition: none;
+  stroke-dasharray: 138.23; /* ≈ circumference (2π·22) */
+  animation: gui-circular-grow-shrink 1.4s
+    var(--md-sys-motion-easing-standard, ease-in-out) infinite;
 }
 
 @keyframes gui-circular-rotate {
   to {
-    transform: rotate(270deg);
+    transform: rotate(630deg); /* -90 + 720; whole turns keep the start at 12 o'clock */
   }
+}
+
+/* Grow/shrink: dashoffset sweeps from a near-full arc to a short arc and back,
+   making the visible arc length pulse as it rotates. */
+@keyframes gui-circular-grow-shrink {
+  0% {
+    stroke-dashoffset: 124; /* short arc (~10%) */
+  }
+  50% {
+    stroke-dashoffset: 35; /* long arc (~75%) */
+  }
+  100% {
+    stroke-dashoffset: 124;
+  }
+}
+
+/* --- Wavy shape (M3 Expressive) --- */
+:host([data-shape='wavy']) .gui-circular-active {
+  stroke-linecap: round;
 }
 
 @media (prefers-reduced-motion: reduce) {

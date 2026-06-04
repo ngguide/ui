@@ -10,12 +10,32 @@
 }
 
 .gui-date-picker-header {
-  padding: 16px 24px 12px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 12px 12px 24px;
+}
+
+.gui-date-picker-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.gui-date-picker-supporting {
+  font: var(--md-sys-typescale-label-large, 500 14px/20px system-ui);
+  color: var(--md-sys-color-on-surface-variant);
 }
 
 .gui-date-picker-headline {
-  font: var(--md-sys-typescale-headline-small, 400 24px/32px system-ui);
+  font: var(--md-sys-typescale-headline-large, 400 32px/40px system-ui);
   color: var(--md-sys-color-on-surface);
+}
+
+.gui-date-picker-edit {
+  flex: none;
+  align-self: flex-end;
 }
 
 .gui-date-picker-divider {

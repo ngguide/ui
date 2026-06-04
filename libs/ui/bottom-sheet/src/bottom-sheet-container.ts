@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CdkDialogContainer, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
@@ -10,10 +10,15 @@ import {
 } from '@angular/cdk/drag-drop';
 import { GuiReducedMotion } from '@ngguide/ui/interaction';
 
+/** Preset heights (fractions of the viewport) the drag handle cycles through. */
+const GUI_BOTTOM_SHEET_DEFAULT_HEIGHTS = [0.5, 0.9] as const;
+
 /** Config shape the service passes through; CDK preserves the extra fields. */
 export interface GuiBottomSheetContainerConfig extends DialogConfig {
   guiShowDragHandle?: boolean;
   guiDismissThreshold?: number;
+  guiHeights?: readonly number[];
+  guiDragHandleLabel?: string;
 }
 
 /**
@@ -33,13 +38,21 @@ export interface GuiBottomSheetContainerConfig extends DialogConfig {
   template: `
     <div
       class="gui-bottom-sheet-surface"
+      [style.--gui-bottom-sheet-height]="currentHeight()"
       cdkDrag
       cdkDragLockAxis="y"
       (cdkDragMoved)="onDragMoved($event)"
       (cdkDragEnded)="onDragEnded($event)"
     >
       @if (showDragHandle) {
-        <div class="gui-bottom-sheet-handle" cdkDragHandle aria-hidden="true"></div>
+        <button
+          type="button"
+          class="gui-bottom-sheet-handle"
+          cdkDragHandle
+          [attr.aria-label]="dragHandleLabel"
+          (keydown.space)="cycleHeight($event)"
+          (keydown.enter)="cycleHeight($event)"
+        ></button>
       }
       <div class="gui-bottom-sheet-body">
         <ng-template cdkPortalOutlet />
@@ -70,10 +83,50 @@ export class GuiBottomSheetContainer extends CdkDialogContainer {
     );
   }
 
+  /** Accessible label for the drag-handle button (role `button` per M3). */
+  protected get dragHandleLabel(): string {
+    return (
+      (this._config as GuiBottomSheetContainerConfig).guiDragHandleLabel ??
+      'Resize bottom sheet'
+    );
+  }
+
   private get dismissThreshold(): number {
     return (
       (this._config as GuiBottomSheetContainerConfig).guiDismissThreshold ?? 96
     );
+  }
+
+  /** Preset heights (fractions of the viewport) cycled by the drag handle. */
+  private get heights(): readonly number[] {
+    const configured = (this._config as GuiBottomSheetContainerConfig)
+      .guiHeights;
+    return configured && configured.length > 0
+      ? configured
+      : GUI_BOTTOM_SHEET_DEFAULT_HEIGHTS;
+  }
+
+  /** Index into `heights` of the currently selected preset. */
+  private readonly heightIndex = signal(0);
+
+  /** Current resting height as a CSS length (e.g. `50dvh`). */
+  protected currentHeight(): string {
+    const presets = this.heights;
+    const fraction = presets[this.heightIndex() % presets.length];
+    return `${Math.round(fraction * 100)}dvh`;
+  }
+
+  /**
+   * Cycle to the next preset height (Space/Enter on the drag handle). M3
+   * requires a non-touch way to resize the sheet through its available heights.
+   */
+  protected cycleHeight(event: Event): void {
+    event.preventDefault();
+    const count = this.heights.length;
+    if (count <= 1) {
+      return;
+    }
+    this.heightIndex.update((index) => (index + 1) % count);
   }
 
   /** Fade the scrim proportionally to the downward drag distance (Req 9.3). */

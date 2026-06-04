@@ -12,6 +12,9 @@ import {
   GuiStateLayerDirective,
 } from '@ngguide/ui/interaction';
 
+/** Deterministic, SSR-safe id source for label/input association. */
+let nextId = 0;
+
 @Component({
   selector: 'gui-checkbox',
   exportAs: 'guiCheckbox',
@@ -19,6 +22,7 @@ import {
     <input
       #native
       type="checkbox"
+      [id]="inputId"
       [checked]="control.value() === true"
       [indeterminate]="indeterminate()"
       [attr.aria-checked]="indeterminate() ? 'mixed' : control.value() === true"
@@ -27,7 +31,9 @@ import {
       (blur)="control.markTouched()"
     />
     <span class="gui-checkbox-box" aria-hidden="true"></span>
-    <span class="gui-checkbox-label"><ng-content /></span>
+    <!-- M3: the adjacent text label toggles the checkbox. The <label for> binds
+         the projected text to the native input so clicking it toggles the box. -->
+    <label class="gui-checkbox-label" [attr.for]="inputId"><ng-content /></label>
   `,
   styleUrl: './checkbox.css',
   hostDirectives: [
@@ -49,6 +55,9 @@ import {
 export class CheckboxComponent {
   readonly indeterminate = input(false, { transform: booleanAttribute });
   readonly error = input(false, { transform: booleanAttribute });
+
+  /** Stable id linking the projected <label> to the native input. */
+  protected readonly inputId = `gui-checkbox-${nextId++}`;
 
   protected readonly control = inject(GuiFormControl<boolean>);
 

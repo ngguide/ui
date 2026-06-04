@@ -24,7 +24,7 @@
       var(--md-sys-motion-easing-standard);
 }
 
-/* --- Sizes (M3 FAB) --- */
+/* --- Sizes (M3 FAB scale: Small 40 / FAB 56 / Medium 80 / Large 96) --- */
 :host([data-size='sm']) {
   width: 40px;
   height: 40px;
@@ -33,6 +33,7 @@
   --gui-comp-icon-size: 24px;
 }
 
+:host,
 :host([data-size='md']) {
   width: 56px;
   height: 56px;
@@ -42,11 +43,19 @@
 }
 
 :host([data-size='lg']) {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--md-sys-shape-corner-large-increased);
+
+  --gui-comp-icon-size: 28px;
+}
+
+:host([data-size='xl']) {
   width: 96px;
   height: 96px;
   border-radius: var(--md-sys-shape-corner-extra-large);
 
-  --gui-comp-icon-size: 32px;
+  --gui-comp-icon-size: 36px;
 }
 
 /* --- Colors (container + on-color). Default = primary-container. --- */
@@ -81,10 +90,9 @@
   color: var(--md-sys-color-on-tertiary);
 }
 
-/* --- Lowered FAB (drops container + elevation; keeps icon color). --- */
-:host([data-lowered]) {
-  background-color: var(--md-sys-color-surface-container-low);
-  box-shadow: var(--md-sys-elevation-level1);
+/* --- Hovered: M3 raises the FAB from resting elevation 3 to elevation 4. --- */
+:host(:hover) {
+  box-shadow: var(--md-sys-elevation-level4);
 }
 
 /* --- Disabled (M3 disabled treatment via tokens). The interaction layer

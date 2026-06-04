@@ -20,6 +20,9 @@ import {
 /** Which thumb is currently being driven (range mode). */
 type ActiveThumb = 'single' | 'start' | 'end';
 
+/** Slider layout orientation (M3 Expressive). */
+export type GuiSliderOrientation = 'horizontal' | 'vertical';
+
 /**
  * M3 slider. Single value (`number`) or, with `range`, a `[number, number]`
  * tuple. Built from a custom track + thumb(s) wired to raw pointer events and
@@ -46,8 +49,10 @@ type ActiveThumb = 'single' | 'start' | 'end';
   ],
   host: {
     '[attr.data-size]': 'size()',
-    '[attr.data-discrete]': 'discrete() ? "" : null',
+    '[attr.data-stops]': 'showStops() ? "" : null',
     '[attr.data-range]': 'range() ? "" : null',
+    '[attr.data-centered]': 'centered() ? "" : null',
+    '[attr.data-orientation]': 'orientation()',
     '[attr.data-active]': 'active() ? "" : null',
     '[class.gui-disabled]': 'control.effectiveDisabled()',
   },
@@ -60,8 +65,49 @@ export class SliderComponent {
   readonly max = input(100);
   readonly step = input(1);
   readonly size = input<GuiSize>('md');
+
+  /**
+   * Render stop indicators on the track (M3 "stops" configuration —
+   * the former "discrete" slider). Defaults to `No`.
+   */
+  readonly stops = input(false, { transform: booleanAttribute });
+  /**
+   * @deprecated Use {@link stops}. Retained as the legacy M2/M3 "discrete"
+   * alias; if set it enables stop indicators just like `stops`.
+   */
   readonly discrete = input(false, { transform: booleanAttribute });
+
   readonly range = input(false, { transform: booleanAttribute });
+
+  /**
+   * Centered variant: the active track fills outward from the track's
+   * midpoint instead of the leading edge (standard, single-thumb only).
+   */
+  readonly centered = input(false, { transform: booleanAttribute });
+
+  /** Layout orientation (M3 Expressive). Defaults to `horizontal`. */
+  readonly orientation = input<GuiSliderOrientation>('horizontal');
+
+  /**
+   * Show the value indicator (label container) on press/drag/focus.
+   * M3 lists this as optional with `No` as the default.
+   */
+  readonly valueIndicator = input(false, { transform: booleanAttribute });
+
+  /**
+   * Accessibility label for the slider handle(s). Per M3 this should match
+   * the slider's adjacent UI text. Use {@link ariaLabelledby} to reference
+   * that text by id instead of duplicating it.
+   */
+  readonly ariaLabel = input<string | null>(null, { alias: 'aria-label' });
+  readonly ariaLabelledby = input<string | null>(null, {
+    alias: 'aria-labelledby',
+  });
+
+  /** Effective stop-indicator state: either the canonical or legacy input. */
+  protected readonly showStops = computed(
+    () => this.stops() || this.discrete(),
+  );
 
   private readonly track =
     viewChild.required<ElementRef<HTMLElement>>('track');
@@ -93,9 +139,9 @@ export class SliderComponent {
     return [start, end];
   });
 
-  /** Stop positions (percent) for discrete tick rendering. */
+  /** Stop positions (percent) for stop-indicator (tick) rendering. */
   protected readonly ticks = computed<number[]>(() => {
-    if (!this.discrete()) {
+    if (!this.showStops()) {
       return [];
     }
     const step = this.step();
@@ -120,6 +166,25 @@ export class SliderComponent {
     return ((this.clamp(value) - min) / (max - min)) * 100;
   }
 
+  /**
+   * Leading edge (percent) of the single active track. For a standard slider
+   * this is the track start (0%); for a centered slider it is the midpoint,
+   * so the fill grows outward from the center toward the value.
+   */
+  protected readonly singleActiveStart = computed(() => {
+    if (!this.centered()) {
+      return 0;
+    }
+    const valuePct = this.valueToPercent(this.singleValue());
+    return Math.min(50, valuePct);
+  });
+
+  /** Trailing edge (percent) of the single active track. */
+  protected readonly singleActiveEnd = computed(() => {
+    const valuePct = this.valueToPercent(this.singleValue());
+    return this.centered() ? Math.max(50, valuePct) : valuePct;
+  });
+
   /** Effective min/max for a given thumb (range thumbs clamp to each other). */
   protected thumbMin(thumb: ActiveThumb): number {
     return thumb === 'end' ? this.rangeValue()[0] : this.min();
@@ -134,7 +199,7 @@ export class SliderComponent {
     if (this.disabled()) {
       return;
     }
-    const value = this.clientXToValue(event.clientX);
+    const value = this.pointerToValue(event);
     const thumb = this.pickThumb(value);
     this.dragging.set(thumb);
     try {
@@ -150,7 +215,7 @@ export class SliderComponent {
     if (thumb === null) {
       return;
     }
-    this.commit(thumb, this.clientXToValue(event.clientX));
+    this.commit(thumb, this.pointerToValue(event));
   }
 
   protected onPointerUp(): void {
@@ -162,28 +227,34 @@ export class SliderComponent {
 
   // --- Keyboard --------------------------------------------------------------
 
+  /** True while the Space key is held — promotes arrows to interval steps. */
+  private readonly spaceHeld = signal(false);
+
   protected onKeyDown(event: KeyboardEvent, thumb: ActiveThumb): void {
     if (this.disabled()) {
       return;
     }
-    const step = this.step();
-    const page = step * 10;
+
+    // Space modifies the arrow keys (M3 "Space & Arrows"): pressing Space
+    // alone is a no-op that arms interval stepping for the next arrow.
+    if (event.key === ' ' || event.key === 'Spacebar') {
+      this.spaceHeld.set(true);
+      event.preventDefault();
+      return;
+    }
+
+    // "Arrows" move by one value/stop; "Space & Arrows" move by one interval.
+    const delta = this.spaceHeld() ? this.interval() : this.step();
     let next: number | null = null;
 
     switch (event.key) {
       case 'ArrowRight':
       case 'ArrowUp':
-        next = this.current(thumb) + step;
+        next = this.current(thumb) + delta;
         break;
       case 'ArrowLeft':
       case 'ArrowDown':
-        next = this.current(thumb) - step;
-        break;
-      case 'PageUp':
-        next = this.current(thumb) + page;
-        break;
-      case 'PageDown':
-        next = this.current(thumb) - page;
+        next = this.current(thumb) - delta;
         break;
       case 'Home':
         next = this.thumbMin(thumb);
@@ -199,6 +270,17 @@ export class SliderComponent {
     this.commit(thumb, next);
   }
 
+  protected onKeyUp(event: KeyboardEvent): void {
+    if (event.key === ' ' || event.key === 'Spacebar') {
+      this.spaceHeld.set(false);
+    }
+  }
+
+  /** One "interval" for Space-modified arrow stepping (ten steps). */
+  private interval(): number {
+    return this.step() * 10;
+  }
+
   // --- Internals -------------------------------------------------------------
 
   /** Current numeric value for a given thumb. */
@@ -209,10 +291,19 @@ export class SliderComponent {
     return thumb === 'start' ? this.rangeValue()[0] : this.rangeValue()[1];
   }
 
-  /** Map a clientX coordinate to a raw (un-snapped) slider value. */
-  private clientXToValue(clientX: number): number {
+  /**
+   * Map a pointer position to a raw (un-snapped) slider value. Horizontal
+   * sliders read clientX along the track width; vertical sliders read clientY
+   * along the height with the value increasing upward.
+   */
+  private pointerToValue(event: PointerEvent): number {
     const rect = this.track().nativeElement.getBoundingClientRect();
-    const ratio = rect.width > 0 ? (clientX - rect.left) / rect.width : 0;
+    let ratio: number;
+    if (this.orientation() === 'vertical') {
+      ratio = rect.height > 0 ? (rect.bottom - event.clientY) / rect.height : 0;
+    } else {
+      ratio = rect.width > 0 ? (event.clientX - rect.left) / rect.width : 0;
+    }
     return this.min() + ratio * (this.max() - this.min());
   }
 

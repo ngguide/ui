@@ -14,10 +14,12 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  width: clamp(256px, 25vw, 400px);
+  /* M3: max-width 400dp, no minimum width. */
+  width: min(100vw, 400px);
   height: 100%;
   pointer-events: auto;
-  background-color: var(--md-sys-color-surface-container-low);
+  /* M3 standard side sheet container color role: Surface. */
+  background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
   border-start-start-radius: var(--md-sys-shape-corner-large);
   border-end-start-radius: var(--md-sys-shape-corner-large);
@@ -25,6 +27,17 @@
   transform: translateX(100%);
   transition: transform var(--md-sys-motion-duration-medium4)
     var(--md-sys-motion-easing-emphasized);
+}
+
+/* M3: when detached, a 16dp margin separates the sheet from the viewport edges
+   and all four corners are rounded. */
+:host([data-detached]) {
+  inset-block: 16px;
+  inset-inline-end: 16px;
+}
+
+:host([data-detached]) .gui-side-sheet-surface {
+  border-radius: var(--md-sys-shape-corner-large);
 }
 
 :host([data-open]) .gui-side-sheet-surface {

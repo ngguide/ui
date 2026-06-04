@@ -19,7 +19,13 @@ describe('GuiBottomSheet (modal)', () => {
     expect(container?.getAttribute('role')).toBe('dialog');
     expect(container?.getAttribute('aria-modal')).toBe('true');
     expect(document.querySelector('.cdk-overlay-backdrop.gui-scrim')).not.toBeNull();
-    expect(document.querySelector('.gui-bottom-sheet-handle')).not.toBeNull();
+    const handle = document.querySelector(
+      '.gui-bottom-sheet-handle',
+    ) as HTMLButtonElement | null;
+    expect(handle).not.toBeNull();
+    // M3: the drag handle is a focusable, labelled button (role "button").
+    expect(handle?.tagName).toBe('BUTTON');
+    expect(handle?.getAttribute('aria-label')).toBe('Resize bottom sheet');
     ref.close();
     flush();
   });

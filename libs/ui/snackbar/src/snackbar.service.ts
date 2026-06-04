@@ -6,18 +6,16 @@ import { Observable, Subject } from 'rxjs';
 import {
   GUI_SNACKBAR_CONTROLLER,
   GUI_SNACKBAR_DATA,
-  GUI_SNACKBAR_DEFAULT_DURATION,
   GuiSnackbarCloseReason,
   GuiSnackbarConfig,
   GuiSnackbarController,
   GuiSnackbarData,
   GuiSnackbarRef,
   normalizeSnackbarConfig,
+  resolveSnackbarDuration,
 } from './snackbar-config';
 import { GuiSnackbarSurface } from './snackbar';
 
-/** Pixels of horizontal drag past which a pointer gesture dismisses the snackbar. */
-const SWIPE_THRESHOLD = 80;
 /** Bottom offset (px) used when lifting above a default-size bottom FAB. */
 const ABOVE_FAB_OFFSET = '88px';
 /** Viewport width (px) at/above which the snackbar aligns leading instead of centered. */
@@ -79,8 +77,9 @@ interface ActiveSnackbar {
  * M3 snackbar service. Shows one snackbar at a time (FIFO queue), anchored at the
  * bottom via {@link GuiPickerOverlay.openGlobalBottom} (no backdrop, no focus
  * theft). Announces politely through CDK `LiveAnnouncer`, auto-dismisses after a
- * configurable duration, pauses the timer while hovered/focused, and supports
- * swipe-to-dismiss.
+ * configurable duration (actionable snackbars never auto-dismiss by default), and
+ * pauses the timer while hovered/focused. Pressing `Esc` while the snackbar holds
+ * focus dismisses it; `Alt+G` moves focus to an actionable snackbar's action.
  */
 @Injectable({ providedIn: 'root' })
 export class GuiSnackbar {
@@ -147,15 +146,12 @@ export class GuiSnackbar {
     };
     this.active = active;
 
-    this.announcer.announce(
-      entry.data.message,
-      entry.config.politeness ?? 'polite',
-    );
+    // M3: announce politely (queued) — never assertive — and don't move focus.
+    this.announcer.announce(entry.data.message, 'polite');
 
-    const duration =
-      entry.config.duration === undefined
-        ? GUI_SNACKBAR_DEFAULT_DURATION
-        : entry.config.duration;
+    // M3: actionable snackbars shouldn't auto-dismiss (resolved when no explicit
+    // duration is given). `null` ⇒ no auto-dismiss.
+    const duration = resolveSnackbarDuration(entry.config);
 
     const clearTimer = () => {
       if (active.timerId != null) {
@@ -187,20 +183,33 @@ export class GuiSnackbar {
     overlayEl.addEventListener('pointerleave', onResume);
     overlayEl.addEventListener('focusout', onResume);
 
-    let dragStartX = 0;
-    let dragging = false;
-    const onDown = (e: PointerEvent) => {
-      dragging = true;
-      dragStartX = e.clientX;
-    };
-    const onUp = (e: PointerEvent) => {
-      if (dragging && Math.abs(e.clientX - dragStartX) > SWIPE_THRESHOLD) {
-        entry.ref.dismiss('swipe');
+    // M3 keyboard: Esc dismisses the snackbar while it holds focus.
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        entry.ref.dismiss('dismiss');
       }
-      dragging = false;
     };
-    overlayEl.addEventListener('pointerdown', onDown);
-    overlayEl.addEventListener('pointerup', onUp);
+    overlayEl.addEventListener('keydown', onKeydown);
+
+    // M3 a11y: a documented shortcut (Alt+G) moves focus to an actionable
+    // snackbar. Registered globally only while an action is present, since the
+    // snackbar never steals focus on its own.
+    let onShortcut: ((e: KeyboardEvent) => void) | null = null;
+    if (entry.data.action) {
+      onShortcut = (e: KeyboardEvent) => {
+        if (e.altKey && (e.key === 'g' || e.key === 'G')) {
+          const actionEl = overlayEl.querySelector<HTMLElement>(
+            '.gui-snackbar-action',
+          );
+          if (actionEl) {
+            e.preventDefault();
+            actionEl.focus();
+          }
+        }
+      };
+      document.addEventListener('keydown', onShortcut);
+    }
 
     active.cleanup = () => {
       clearTimer();
@@ -208,8 +217,10 @@ export class GuiSnackbar {
       overlayEl.removeEventListener('focusin', onPause);
       overlayEl.removeEventListener('pointerleave', onResume);
       overlayEl.removeEventListener('focusout', onResume);
-      overlayEl.removeEventListener('pointerdown', onDown);
-      overlayEl.removeEventListener('pointerup', onUp);
+      overlayEl.removeEventListener('keydown', onKeydown);
+      if (onShortcut) {
+        document.removeEventListener('keydown', onShortcut);
+      }
     };
   }
 

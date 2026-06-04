@@ -1,23 +1,43 @@
 /* M3 carousel: native scroll + scroll-snap for momentum and snapping. The
-   engine sizes the items; this file only lays out the track. */
+   engine sizes the items; this file lays out the track (per-layout padding,
+   alignment, inter-item gap) and applies the container Surface color role. */
 
 :host {
   display: block;
   width: 100%;
   overflow: hidden;
+  /* Container color role (M3: Carousel container -> Surface). */
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
 }
 
 .gui-carousel-track {
   display: flex;
   flex-direction: row;
-  gap: 8px;
-  padding: 8px;
+  /* Inter-item spacing is driven by the `itemSpacing` input (default 8dp). */
+  gap: var(--gui-carousel-gap, 8px);
+  /* M3 default: 16dp leading/trailing, 8dp top/bottom (multi-browse / hero /
+     center-aligned hero). Per-layout rules below override the inline padding. */
+  padding: 8px 16px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
 .gui-carousel-track::-webkit-scrollbar {
   display: none;
+}
+
+/* --- Center alignment: the focal item is centered with peeks framing it. The
+   leading/trailing scroll padding centers the snapped item in the viewport. --- */
+:host([data-alignment='center']) .gui-carousel-track {
+  justify-content: center;
+}
+
+/* --- Uncontained / uncontained multi-aspect: only LEADING padding; items bleed
+   over the trailing edge while scrolling (M3 measurements). --- */
+:host([data-layout='uncontained']) .gui-carousel-track,
+:host([data-layout='uncontained-multi-aspect']) .gui-carousel-track {
+  padding: 8px 0 8px 16px;
 }
 
 /* --- Full-screen on compact: vertical orientation (Req 11.6) --- */
@@ -33,7 +53,12 @@
   height: 100dvh;
 }
 
-/* --- Full-screen horizontal: each item fills the viewport width --- */
+/* --- Full-screen: edge-to-edge — 0dp padding on all sides, 16dp between items
+   (M3 measurements). Each item fills the viewport. --- */
+:host([data-layout='full-screen']) .gui-carousel-track {
+  padding: 0;
+  gap: 16px;
+}
 :host([data-layout='full-screen'][data-orientation='horizontal'])
   ::ng-deep
   .gui-carousel-item {

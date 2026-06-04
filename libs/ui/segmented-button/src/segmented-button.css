@@ -14,9 +14,16 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  position: relative;
   box-sizing: border-box;
   cursor: pointer;
-  height: 40px;
+  /* M3: 40dp height, reduced 4dp per density step (clamped so it never
+     collapses below the −3 step / 28dp). */
+  height: calc(
+    40px +
+      4px *
+      max(-3, min(0, var(--gui-comp-segmented-button-density, 0)))
+  );
   padding: 0 12px;
   background: transparent;
   color: var(--md-sys-color-on-surface);
@@ -31,6 +38,20 @@
 
   transition: background-color var(--md-sys-motion-duration-short4)
     var(--md-sys-motion-easing-standard);
+}
+
+/* M3 48dp touch target. The visual segment can be shorter than 48dp (and the
+   density steps make it shorter still), so a centered pseudo-element extends the
+   interactive area to a minimum of 48dp tall without affecting layout. */
+:host::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  height: max(48px, 100%);
+  min-height: 48px;
 }
 
 /* Collapse interior dividers to a single 1px line. */
@@ -57,11 +78,37 @@
 }
 
 /* Leading checkmark (only rendered when selected) and label live in the
-   segment's own template, so they are content-scoped and match normally. */
+   segment's own template, so they are content-scoped and match normally. The
+   check is an inline SVG sized at the M3 18dp icon size — not a font glyph. */
 .gui-segment-check {
   display: inline-flex;
+  width: var(--gui-comp-icon-size, 18px);
+  height: var(--gui-comp-icon-size, 18px);
 }
 
 .gui-segment-label {
   white-space: nowrap;
+}
+
+/* Disabled (M3 disabled treatment via tokens): content fades to on-surface at
+   ~38% (transparent 62%) and the outline to ~12% (transparent 88%). The
+   interaction layer already suppresses the state layer / focus ring for
+   disabled hosts. */
+:host(.gui-disabled) {
+  cursor: default;
+  pointer-events: none;
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+  border-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 88%
+  );
+}
+
+:host(.gui-disabled[data-selected]) {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface),
+    transparent 88%
+  );
 }

@@ -2,7 +2,6 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   TemplateRef,
   ViewContainerRef,
   computed,
@@ -16,6 +15,8 @@ import {
   GuiDateRange,
   compareDate,
   formatDate,
+  monthNames,
+  parseDate,
   startOfDay,
 } from '@ngguide/ui/datetime';
 import { GuiFormControl } from '@ngguide/ui/forms';
@@ -69,6 +70,10 @@ export class DateRangePickerComponent {
   readonly min = input<Date | null>(null);
   readonly max = input<Date | null>(null);
   readonly dateFilter = input<((d: Date) => boolean) | null>(null);
+  /**
+   * Helper text stating the accepted date format (M3 default MM/DD/YYYY).
+   */
+  readonly dateFormatHint = input('MM/DD/YYYY');
 
   /** Captured once — this is the component root, not the pure date layer. */
   protected readonly today = startOfDay(new Date());
@@ -81,6 +86,9 @@ export class DateRangePickerComponent {
   /** Staged range endpoints, committed on OK. */
   protected readonly pendingStart = signal<Date | null>(null);
   protected readonly pendingEnd = signal<Date | null>(null);
+  /** Parse error for typed start/end input. */
+  protected readonly startError = signal(false);
+  protected readonly endError = signal(false);
 
   private handle: GuiOverlayHandle | null = null;
 
@@ -92,6 +100,37 @@ export class DateRangePickerComponent {
   protected readonly displayEnd = computed(() => {
     const value = this.control.value()?.end ?? null;
     return value ? formatDate(value, this.locale()) : '';
+  });
+
+  /** Staged endpoints formatted for the in-dialog modal text inputs. */
+  protected readonly pendingStartDisplay = computed(() => {
+    const value = this.pendingStart();
+    return value ? formatDate(value, this.locale()) : '';
+  });
+
+  protected readonly pendingEndDisplay = computed(() => {
+    const value = this.pendingEnd();
+    return value ? formatDate(value, this.locale()) : '';
+  });
+
+  /**
+   * Month subhead above the range grid (M3 range-selector anatomy): the
+   * displayed month and year, labelling the scrolling month section.
+   */
+  protected readonly monthSubhead = computed(() => {
+    const month = this.activeMonth();
+    return `${monthNames(this.locale())[month.getMonth()]} ${month.getFullYear()}`;
+  });
+
+  /** Modal Headline: the staged range, with the label as Supporting text. */
+  protected readonly headlineText = computed(() => {
+    const start = this.pendingStart();
+    const end = this.pendingEnd();
+    const fmt = (d: Date) =>
+      formatDate(d, this.locale(), { month: 'short', day: 'numeric' });
+    if (start && end) return `${fmt(start)} – ${fmt(end)}`;
+    if (start) return `${fmt(start)} – End`;
+    return 'Select range';
   });
 
   protected open(): void {
@@ -148,5 +187,72 @@ export class DateRangePickerComponent {
     });
     this.control.markTouched();
     this.close();
+  }
+
+  /** Direct text entry on the trigger start field — commits to the control. */
+  protected onStartInput(raw: string): void {
+    const parsed = this.parseEndpoint(raw, 'start');
+    if (parsed === undefined) return;
+    this.control.emit({ start: parsed, end: this.control.value()?.end ?? null });
+    this.control.markTouched();
+  }
+
+  protected onEndInput(raw: string): void {
+    const parsed = this.parseEndpoint(raw, 'end');
+    if (parsed === undefined) return;
+    this.control.emit({
+      start: this.control.value()?.start ?? null,
+      end: parsed,
+    });
+    this.control.markTouched();
+  }
+
+  /** Direct text entry on the in-dialog modal fields — stages until OK. */
+  protected onModalStartInput(raw: string): void {
+    const parsed = this.parseEndpoint(raw, 'start');
+    if (parsed === undefined) return;
+    this.pendingStart.set(parsed);
+    if (parsed) this.activeMonth.set(parsed);
+  }
+
+  protected onModalEndInput(raw: string): void {
+    const parsed = this.parseEndpoint(raw, 'end');
+    if (parsed === undefined) return;
+    this.pendingEnd.set(parsed);
+    if (parsed) this.activeMonth.set(parsed);
+  }
+
+  /**
+   * Parse a typed endpoint. Returns the date (or null when cleared), or
+   * `undefined` when the text is unparseable/out of range (error flagged, no
+   * commit).
+   */
+  private parseEndpoint(
+    raw: string,
+    which: 'start' | 'end',
+  ): Date | null | undefined {
+    const errorSignal = which === 'start' ? this.startError : this.endError;
+    const trimmed = raw.trim();
+    if (trimmed === '') {
+      errorSignal.set(false);
+      return null;
+    }
+    const parsed = parseDate(trimmed, this.locale());
+    if (!parsed || this.outOfRange(parsed)) {
+      errorSignal.set(true);
+      return undefined;
+    }
+    errorSignal.set(false);
+    return startOfDay(parsed);
+  }
+
+  private outOfRange(date: Date): boolean {
+    const min = this.min();
+    if (min && compareDate(date, min) < 0) return true;
+    const max = this.max();
+    if (max && compareDate(date, max) > 0) return true;
+    const filter = this.dateFilter();
+    if (filter && !filter(date)) return true;
+    return false;
   }
 }

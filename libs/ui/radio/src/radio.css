@@ -1,18 +1,46 @@
 /* M3 radio button. Hover/focus/pressed state layers, the ripple and the focus
    ring are drawn by the composed interaction foundation
-   (GuiStateLayer/GuiRipple/GuiFocusRing via hostDirectives) — never re-implement
-   them here. This file styles the resting ring, selected dot and color roles
+   (GuiStateLayer/GuiRipple/GuiFocusRing) — never re-implement them here. Those
+   directives are scoped to the 40dp `.gui-radio-state` circle around the icon so
+   the state layer and focus ring stay on the radio button, not the label. This
+   file styles the control geometry, resting ring, selected dot and color roles
    only. Values trace to --md-sys-* tokens. */
 
 :host {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  position: relative;
   cursor: pointer;
   /* M3 control content color for the label. */
   color: var(--md-sys-color-on-surface);
-  /* The control region drives the state-layer/focus-ring shape. */
+}
+
+/* 48dp target region (M3 "Target size | 48dp"). A <label> so a pointer anywhere
+   in the target — not only on the 20dp ring — selects the radio. Centers the
+   40dp state layer over the icon. */
+.gui-radio-control {
+  box-sizing: border-box;
+  position: relative;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  cursor: inherit;
+}
+
+/* 40dp state-layer / focus-ring / ripple circle, centered on the icon (M3
+   "State layer size | 40dp"). The interaction directives draw the hover/focus/
+   pressed tint and the focus ring here, so they stay scoped to the radio button
+   instead of wrapping the adjacent label. */
+.gui-radio-state {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   border-radius: var(--md-sys-shape-corner-full);
 }
 
@@ -49,19 +77,24 @@
       var(--md-sys-motion-easing-standard);
 }
 
-/* Visually-hidden native input. It still receives focus and sits over the ring
-   to provide the >=48px accessible hit target. */
-input[type='radio'] {
+/* Native radio: visually hidden but kept in the DOM so it stays focusable, part
+   of the browser radio group, and the keyboard-focus target. The <label> control
+   forwards pointer activation, so the input itself takes no pointer events. */
+.gui-radio-native {
   position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
+  width: 1px;
+  height: 1px;
   margin: 0;
-  /* Center the 48px hit target over the 20px ring. */
-  margin-left: -14px;
+  padding: 0;
+  border: 0;
   opacity: 0;
+  pointer-events: none;
+  clip-path: inset(50%);
+}
+
+/* Adjacent text label (M3: color role on surface; clickable and linked via
+   for/id + aria-labelledby so selecting the text selects the radio). */
+.gui-radio-label {
   cursor: inherit;
 }
 
@@ -72,14 +105,6 @@ input[type='radio'] {
 :host(:has(input:checked)) .gui-radio-circle::after {
   opacity: 1;
   transform: scale(1);
-}
-
-/* Error state uses the M3 error role for the ring and dot. */
-:host([data-error]) .gui-radio-circle {
-  border-color: var(--md-sys-color-error);
-}
-:host([data-error]) .gui-radio-circle::after {
-  background-color: var(--md-sys-color-error);
 }
 
 /* Disabled (M3 disabled treatment via tokens). The interaction layer already

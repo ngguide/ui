@@ -7,9 +7,87 @@
   width: max-content;
 }
 
+/* Header: Month/Year menu buttons + previous/next navigation icon buttons. */
+.gui-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 48px;
+  padding: 4px 8px 4px 12px;
+}
+
+.gui-calendar-menus {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gui-calendar-menu-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 48px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 100px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  font: var(--md-sys-typescale-label-large, 500 14px/20px system-ui);
+  --gui-state-layer-shape: 100px;
+  --gui-focus-ring-shape: 100px;
+}
+
+.gui-calendar-menu-caret {
+  display: inline-flex;
+}
+
+.gui-calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Year-selection grid (M3 Year selection configuration). */
+.gui-calendar-years {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px 8px;
+  padding: 8px 12px;
+  width: 336px;
+  box-sizing: border-box;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.gui-calendar-year {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  border: none;
+  border-radius: 100px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  font: var(--md-sys-typescale-body-large, 400 16px/24px system-ui);
+  --gui-state-layer-shape: 100px;
+  --gui-focus-ring-shape: 100px;
+}
+
+.gui-calendar-year[data-selected] {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.gui-calendar-grid {
+  padding: 0 12px;
+}
+
 .gui-calendar-row {
   display: grid;
-  grid-template-columns: repeat(7, 40px);
+  grid-template-columns: repeat(7, 48px);
   gap: 0;
 }
 
@@ -21,18 +99,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px;
+  height: 48px;
   font: var(--md-sys-typescale-body-small, 500 12px/16px system-ui);
   color: var(--md-sys-color-on-surface-variant);
 }
 
+/*
+ * 48x48dp interactive touch target (M3 minimum). The 40dp circular visual is
+ * centered inside via the ::before/state-layer; the button fills the cell so
+ * the whole 48dp area is tappable.
+ */
 .gui-calendar-cell {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   margin: 0;
   padding: 0;
   border: none;
@@ -41,8 +124,22 @@
   color: inherit;
   cursor: pointer;
   font: var(--md-sys-typescale-body-large, 400 14px/20px system-ui);
+}
+
+/*
+ * The visible 40dp day circle, centered within the 48dp hit area. The state
+ * layer + ripple ride this circle (M3 shows them on the 40dp day shape).
+ */
+.gui-calendar-cell .gui-calendar-day {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   --gui-state-layer-shape: 50%;
-  --gui-focus-ring-shape: 50%;
 }
 
 .gui-calendar-cell[data-outside] {
@@ -57,27 +154,33 @@
   cursor: default;
 }
 
-.gui-calendar-cell[data-today]::before {
+.gui-calendar-cell[data-today] .gui-calendar-day::after {
   content: '';
   position: absolute;
-  inset: 1px;
+  inset: 0;
   border-radius: 50%;
   border: 1px solid var(--md-sys-color-primary);
   pointer-events: none;
 }
 
-.gui-calendar-cell[data-selected] {
+.gui-calendar-cell[data-selected] .gui-calendar-day {
   background: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
 }
 
-/* In-range fill: a rectangular secondary-container band behind the day. */
+/*
+ * In-range fill: a continuous secondary-container band behind the day, rounded
+ * into a pill at the leading/trailing endpoints (M3 in-range active indicator).
+ */
 .gui-calendar-cell[data-in-range]::after,
 .gui-calendar-cell[data-range-start]::after,
 .gui-calendar-cell[data-range-end]::after {
   content: '';
   position: absolute;
-  inset: 0;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  right: 0;
   background: var(--md-sys-color-secondary-container);
   z-index: 0;
 }
@@ -86,27 +189,26 @@
   color: var(--md-sys-color-on-secondary-container);
 }
 
-/* Round the band on the leading/trailing endpoints. */
+/* Round the band into a pill end and clip it on the leading/trailing edges. */
 .gui-calendar-cell[data-range-start]::after {
   left: 50%;
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
 }
 
 .gui-calendar-cell[data-range-end]::after {
   right: 50%;
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
 }
 
 /* Endpoints sit on the primary circle above the band. */
-.gui-calendar-cell[data-range-start],
-.gui-calendar-cell[data-range-end] {
+.gui-calendar-cell[data-range-start] .gui-calendar-day,
+.gui-calendar-cell[data-range-end] .gui-calendar-day {
   background: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
 }
 
-.gui-calendar-cell[data-selected][data-today]::before {
+.gui-calendar-cell[data-selected][data-today] .gui-calendar-day::after {
   border-color: var(--md-sys-color-on-primary);
-}
-
-.gui-calendar-day {
-  position: relative;
-  z-index: 1;
 }

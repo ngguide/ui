@@ -5,13 +5,7 @@ import { FabComponent, GuiFabColor, GuiFabSize } from './fab';
 @Component({
   imports: [FabComponent],
   template: `
-    <button
-      gui-fab
-      [color]="color"
-      [size]="size"
-      [lowered]="lowered"
-      [disabled]="disabled"
-    >
+    <button gui-fab [color]="color" [size]="size" [disabled]="disabled">
       FAB
     </button>
   `,
@@ -19,7 +13,6 @@ import { FabComponent, GuiFabColor, GuiFabSize } from './fab';
 class ButtonHostComponent {
   color: GuiFabColor = 'primary-container';
   size: GuiFabSize = 'md';
-  lowered = false;
   disabled = false;
 }
 
@@ -57,22 +50,22 @@ describe('FabComponent', () => {
     expect(el.getAttribute('data-size')).toBe('md');
   });
 
-  it('adds the data-lowered attribute when lowered=true', () => {
+  it('reflects the medium FAB size (lg) to data-size', () => {
     const fixture = TestBed.createComponent(ButtonHostComponent);
-    fixture.componentInstance.lowered = true;
+    fixture.componentInstance.size = 'lg';
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement.querySelector('button');
-    expect(el.hasAttribute('data-lowered')).toBe(true);
+    expect(el.getAttribute('data-size')).toBe('lg');
   });
 
-  it('omits the data-lowered attribute when lowered=false', () => {
+  it('reflects the large FAB size (xl) to data-size', () => {
     const fixture = TestBed.createComponent(ButtonHostComponent);
-    fixture.componentInstance.lowered = false;
+    fixture.componentInstance.size = 'xl';
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement.querySelector('button');
-    expect(el.hasAttribute('data-lowered')).toBe(false);
+    expect(el.getAttribute('data-size')).toBe('xl');
   });
 
   it('uses native disabled on a button host', () => {

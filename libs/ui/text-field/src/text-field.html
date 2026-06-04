@@ -26,7 +26,11 @@
 </div>
 
 <div class="gui-text-field-supporting">
-  <span class="gui-text-field-supporting-text" [id]="supportingId">
+  <span
+    class="gui-text-field-supporting-text"
+    [id]="supportingId"
+    [attr.role]="error() && errorText() ? 'alert' : null"
+  >
     @if (error() && errorText()) {
       {{ errorText() }}
     } @else {

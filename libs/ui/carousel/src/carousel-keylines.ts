@@ -11,8 +11,17 @@
 export type GuiCarouselLayout =
   | 'multi-browse'
   | 'uncontained'
+  | 'uncontained-multi-aspect'
   | 'hero'
+  | 'center-aligned-hero'
   | 'full-screen';
+
+/**
+ * How a layout distributes its items along the scroll axis. Most layouts are
+ * `start`-aligned; the hero layout can be `center`-aligned (the focal item
+ * centered with a small peek on each side) and full-screen is always centered.
+ */
+export type GuiCarouselAlignment = 'start' | 'center';
 
 /** dp — smallest a small carousel item may shrink to (verified). */
 export const MIN_SMALL_ITEM = 40;
@@ -101,6 +110,27 @@ export function arrange(
       };
     }
 
+    case 'center-aligned-hero': {
+      // One large focal item centered with a small peek on *each* side
+      // (M3 center-aligned hero shows at least one large + two small).
+      const small = Math.min(smallFor(preferredLargeWidth), viewportWidth);
+      const canPeek =
+        itemCount > 1 &&
+        viewportWidth - 2 * (small + itemSpacing) > small;
+      const large = canPeek
+        ? viewportWidth - 2 * (small + itemSpacing)
+        : viewportWidth;
+      return {
+        ...EMPTY,
+        large: Math.max(0, large),
+        small: canPeek ? small : 0,
+        largeCount: 1,
+        // Two small peeks (leading + trailing) frame the centered focal item.
+        smallCount: canPeek ? 2 : 0,
+      };
+    }
+
+    case 'uncontained-multi-aspect':
     case 'uncontained': {
       // Repeat the preferred width; the last visible item is cut off (resized).
       const large = Math.min(preferredLargeWidth, viewportWidth);

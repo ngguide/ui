@@ -42,7 +42,8 @@ Radio button color roles used for light and dark themes:
 
 #### Adjacent text label color
 Use the color role on surface for adjacent text labels. This remains the same even if interacting with the label or component.
-The text color remains the same regardless if the button is selected or not
+The text color remains the same regardless if the button is selected or not.
+(Invariance applies to the hover/focus/pressed and selected states; the standard M3 disabled treatment still dims the label with the rest of the disabled component.)
 
 ### States
 - Enabled
