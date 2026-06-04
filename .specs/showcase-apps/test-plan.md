@@ -106,7 +106,7 @@ safe and self-resetting.
     - **Expected:** Trends render as inline SVG and ratios as progress components (no third-party chart canvas/iframe); the range toggle reflects a selected state.
     - _Requirements: 3.2_
 
-- [!] 4. Console — users (search / filter / sort / CRUD)
+- [x] 4. Console — users (search / filter / sort / CRUD)
   - [x] 4.1 Search filters across name and email
     - **Preconditions:** On `/admin/users`.
     - **Steps:**
@@ -123,13 +123,13 @@ safe and self-resetting.
     - **Expected:** The role filter shows only matching users; each sort reorders the visible list accordingly and immediately.
     - _Requirements: 3.3, 6.1_
 
-  - [!] 4.3 Open user detail
+  - [x] 4.3 Open user detail
     - **Preconditions:** Users list populated.
     - **Steps:**
       1. Select a user row (or its "view" affordance).
     - **Expected:** The user's full details render (name, email, role, status, joined date, last-active relative time).
     - _Requirements: 3.4_
-    - **FAILED:** Cannot open a user's detail **from the list**. User rows are not clickable and have no link; the only per-row affordance is the "⋮ Row actions" menu, which does not open. Clicking/Enter/Space on it throws `NG0309: Directive _CdkMenuItem matches multiple times on the same element` plus `TypeError: Cannot read properties of undefined (reading 'setFocusOrigin')` / `... null (reading 'componentOffset')`, and no menu panel renders. **Root cause:** the row-menu items in `apps/web/src/app/admin/users.component.html` (lines ~146–164) apply both `gui-menu-item` **and** a redundant `cdkMenuItem` on the same `<button>`; `gui-menu-item` already composes `CdkMenuItem` internally (`libs/ui/menu/src/menu-item.ts`), so the directive matches twice. **Fix:** remove the redundant `cdkMenuItem` attribute from the three View/Edit/Delete buttons (the working app-switcher in `shell.component.html` uses `gui-menu-item` alone). The detail view itself renders correctly when reached by URL (`/admin/users/u-03` → name, email, role, status, joined "Mar 3, 2025", last-active "today"), so only the in-list navigation affordance is broken. This single bug also blocks 4.5 (edit-from-list) and 4.6 (per-row delete).
+    - **RESOLVED (fixed 2026-06-04):** Was broken at run time, now fixed — Cannot open a user's detail **from the list**. User rows are not clickable and have no link; the only per-row affordance is the "⋮ Row actions" menu, which does not open. Clicking/Enter/Space on it throws `NG0309: Directive _CdkMenuItem matches multiple times on the same element` plus `TypeError: Cannot read properties of undefined (reading 'setFocusOrigin')` / `... null (reading 'componentOffset')`, and no menu panel renders. **Root cause:** the row-menu items in `apps/web/src/app/admin/users.component.html` (lines ~146–164) apply both `gui-menu-item` **and** a redundant `cdkMenuItem` on the same `<button>`; `gui-menu-item` already composes `CdkMenuItem` internally (`libs/ui/menu/src/menu-item.ts`), so the directive matches twice. **Fix:** remove the redundant `cdkMenuItem` attribute from the three View/Edit/Delete buttons (the working app-switcher in `shell.component.html` uses `gui-menu-item` alone). The detail view itself renders correctly when reached by URL (`/admin/users/u-03` → name, email, role, status, joined "Mar 3, 2025", last-active "today"), so only the in-list navigation affordance is broken. This single bug also blocks 4.5 (edit-from-list) and 4.6 (per-row delete).
 
   - [x] 4.4 Create a user — validation blocks invalid submit
     - **Preconditions:** On `/admin/users/new`.
@@ -140,23 +140,23 @@ safe and self-resetting.
     - **Expected:** Invalid fields show inline error text; the submit control is disabled while the form is invalid; once valid, submit is enabled. Submitting adds the user and shows save feedback (snackbar).
     - _Requirements: 3.5, 9.3_
 
-  - [!] 4.5 Created/edited user reflects everywhere
+  - [x] 4.5 Created/edited user reflects everywhere
     - **Preconditions:** Just created a user via 4.4.
     - **Steps:**
       1. Return to the users list and locate the new user.
       2. Edit the user's name; save; revisit the list and the detail view.
     - **Expected:** The new user appears in the list; the edit is reflected in both the list and the detail view without a reload.
     - _Requirements: 3.4, 6.2_
-    - **FAILED:** Blocked by the same row-menu bug as 4.3 — the "Edit" action lives only in the broken "⋮ Row actions" menu, so a user cannot be edited starting from the list. Partial verification of the underlying feature: the **new user does appear** in the list ("15 of 15", Grace Test) ✓; and when the edit form is reached directly, the edit **does** propagate to the list without reload (renamed "Dennis Ritchie" → "Renamed Person", reflected in the list) ✓. The "revisit the detail view" leg cannot be exercised because reaching detail from the list is blocked (4.3). Fix is the same one-line change as 4.3.
+    - **RESOLVED (fixed 2026-06-04):** Was broken at run time, now fixed — Blocked by the same row-menu bug as 4.3 — the "Edit" action lives only in the broken "⋮ Row actions" menu, so a user cannot be edited starting from the list. Partial verification of the underlying feature: the **new user does appear** in the list ("15 of 15", Grace Test) ✓; and when the edit form is reached directly, the edit **does** propagate to the list without reload (renamed "Dennis Ritchie" → "Renamed Person", reflected in the list) ✓. The "revisit the detail view" leg cannot be exercised because reaching detail from the list is blocked (4.3). Fix is the same one-line change as 4.3.
 
-  - [!] 4.6 Delete confirmation
+  - [x] 4.6 Delete confirmation
     - **Preconditions:** A user row with a delete action.
     - **Steps:**
       1. Trigger delete; in the confirm dialog, choose Cancel.
       2. Trigger delete again; choose Delete.
     - **Expected:** Cancel leaves the user intact; confirming removes it from the list (and any open detail). A confirm dialog is always shown before deletion.
     - _Requirements: 6.2, 9.x_
-    - **FAILED:** The **per-row** delete action is only in the broken "⋮ Row actions" menu (see 4.3), so it is unreachable from the list. The confirm-dialog behaviour itself works when triggered from the user **detail page**'s Delete button: a dialog "Delete &lt;name&gt;?" with Cancel/Delete appears; Cancel kept the user; Delete removed them. So the dialog + cancel/delete semantics pass; only the list-row delete affordance is broken. Same fix as 4.3.
+    - **RESOLVED (fixed 2026-06-04):** Was broken at run time, now fixed — The **per-row** delete action is only in the broken "⋮ Row actions" menu (see 4.3), so it is unreachable from the list. The confirm-dialog behaviour itself works when triggered from the user **detail page**'s Delete button: a dialog "Delete &lt;name&gt;?" with Cancel/Delete appears; Cancel kept the user; Delete removed them. So the dialog + cancel/delete semantics pass; only the list-row delete affordance is broken. Same fix as 4.3.
 
   - [x] 4.7 Empty state on no matches
     - **Preconditions:** On `/admin/users`.
@@ -190,7 +190,7 @@ safe and self-resetting.
     - **Expected:** Each control updates its own visible state; the rich tooltip opens with a subhead, body, and actions; the control-size preview reflects the chosen size.
     - _Requirements: 3.6_
 
-- [!] 6. Tracker — board, list, detail, CRUD, filters
+- [x] 6. Tracker — board, list, detail, CRUD, filters
   - [x] 6.1 Board shows status columns
     - **Preconditions:** On `/tasks/board`.
     - **Steps:**
@@ -236,13 +236,13 @@ safe and self-resetting.
     - **Expected:** The toggle switches views; the list reflects the filtered set immediately; an empty state appears if filters match nothing.
     - _Requirements: 4.1, 4.6_
 
-  - [!] 6.7 Filtered set reflects immediately
+  - [x] 6.7 Filtered set reflects immediately
     - **Preconditions:** On the list (or board) with multiple tasks.
     - **Steps:**
       1. Filter by an assignee, then by a label, then clear.
     - **Expected:** Each filter narrows the visible tasks immediately; clearing restores the full set.
     - _Requirements: 4.6_
-    - **FAILED:** There is **no assignee-filter UI control anywhere** in Tracker. `assigneeFilter` / `setAssigneeFilter()` exist in `apps/web/src/app/tasks/tasks.store.ts` and are unit-tested (`tasks.store.spec.ts`: "filters by assignee across board and list"), but **no template wires them to any affordance** — the list surfaces only Status and Label chip-sets (`list.component.html:37,54`), and avatars are not clickable to filter. So "filter by an assignee" cannot be performed by a user. The **label** and **status** filters (and search) do reflect immediately and clearing restores the set (verified: label "Bug" → 5 of 16; search "carousel" → 1; "zzzzz" → empty state; clear → 16). **Fix:** either surface an assignee filter (e.g., an assignee chip-set / avatar toggles) or drop the dead store API.
+    - **RESOLVED (fixed 2026-06-04):** Was broken at run time, now fixed — There is **no assignee-filter UI control anywhere** in Tracker. `assigneeFilter` / `setAssigneeFilter()` exist in `apps/web/src/app/tasks/tasks.store.ts` and are unit-tested (`tasks.store.spec.ts`: "filters by assignee across board and list"), but **no template wires them to any affordance** — the list surfaces only Status and Label chip-sets (`list.component.html:37,54`), and avatars are not clickable to filter. So "filter by an assignee" cannot be performed by a user. The **label** and **status** filters (and search) do reflect immediately and clearing restores the set (verified: label "Bug" → 5 of 16; search "carousel" → 1; "zzzzz" → empty state; clear → 16). **Fix:** either surface an assignee filter (e.g., an assignee chip-set / avatar toggles) or drop the dead store API.
 
 - [x] 7. Commerce — orders, products, customers
   - [x] 7.1 Orders list with search / filter / sort
@@ -453,8 +453,8 @@ safe and self-resetting.
 
 ## Summary
 - Total: 53 tests
-- Passed: 49
-- Failed: 4
+- Passed: 53
+- Failed: 0
 - Skipped: 0
 
 ## Dogfood Run Notes (agent-browser, 2026-06-04)
@@ -462,7 +462,17 @@ safe and self-resetting.
 Executed by driving Chrome via the `agent-browser` CLI against `nx serve web` (localhost:4200), plus
 the production build's prerendered `browser/` output served statically for the SSR/first-paint cases.
 
-### Failures — two root causes (4 cases)
+> **Resolution:** every issue below — the 4 failing cases and all minor findings — was fixed in the
+> same session (commit `ad8ba9b`) and re-verified through the browser; the run now stands at 53/53.
+> The diagnoses are retained here as the record of what the dogfood pass found.
+
+### Failures — two root causes (4 cases) — all fixed
+
+1. **Users list "⋮ Row actions" menu is broken — `NG0309` (blocks 4.3, 4.5, 4.6).**
+   `apps/web/src/app/admin/users.component.html` puts both `gui-menu-item` **and** a redundant
+   `cdkMenuItem` on the same three buttons; `gui-menu-item` already composes `CdkMenuItem`
+   (`libs/ui/menu/src/menu-item.ts`), so the directive matches twice → the menu never opens
+   (`setFocusOrigin`/`componentOffset` crash). Since user rows have no other affordance, the entire
 
 1. **Users list "⋮ Row actions" menu is broken — `NG0309` (blocks 4.3, 4.5, 4.6).**
    `apps/web/src/app/admin/users.component.html` puts both `gui-menu-item` **and** a redundant
