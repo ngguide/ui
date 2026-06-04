@@ -1,0 +1,85 @@
+<a class="back" routerLink="/shop/orders">
+  <gui-icon class="sym">arrow_back</gui-icon>
+  Back to orders
+</a>
+
+@if (order(); as o) {
+  <header class="page-head">
+    <div>
+      <h1 class="page-title">{{ o.number }}</h1>
+      <p class="page-subtitle">
+        Placed {{ formatDate(o.placedAt) }} · {{ relative(o.placedAt) }}
+      </p>
+    </div>
+    <gui-chip type="assist" [value]="o.status" [label]="statusLabel(o.status)" [attr.data-status]="o.status">{{ statusLabel(o.status) }}</gui-chip>
+  </header>
+
+  <section class="panels">
+    <gui-card variant="outlined">
+      <div class="panel">
+        <div class="panel-head">
+          <gui-icon class="sym">person</gui-icon>
+          <span class="panel-title">Customer</span>
+        </div>
+        <gui-divider />
+        <div class="customer">
+          @if (customer(); as c) {
+            <span class="avatar lg" [style.background]="'oklch(70% 0.12 ' + (c.name.length * 17) + 'deg)'">{{ initials(c.name) }}</span>
+            <div>
+              <a class="link" [routerLink]="['/shop/customers', c.id]">{{ c.name }}</a>
+              <div class="muted">{{ c.email }}</div>
+            </div>
+          } @else {
+            <div class="muted">Customer not found.</div>
+          }
+        </div>
+      </div>
+    </gui-card>
+
+    <gui-card variant="outlined">
+      <div class="panel">
+        <div class="panel-head">
+          <gui-icon class="sym">shopping_bag</gui-icon>
+          <span class="panel-title">Line items</span>
+        </div>
+        <gui-divider />
+        <div class="table">
+          <div class="row head" role="row">
+            <span class="col-name">Product</span>
+            <span class="col-qty">Qty</span>
+            <span class="col-unit">Unit price</span>
+            <span class="col-sub">Subtotal</span>
+          </div>
+          <gui-divider />
+          @for (l of o.lines; track trackLine($index, l); let last = $last) {
+            <div class="row" role="row">
+              <span class="col-name">{{ productName(l.productId) }}</span>
+              <span class="col-qty">{{ l.qty }}</span>
+              <span class="col-unit">{{ formatCurrency(l.unitPrice) }}</span>
+              <span class="col-sub">{{ formatCurrency(lineSubtotal(l)) }}</span>
+            </div>
+            @if (!last) {
+              <gui-divider inset="inset" />
+            }
+          }
+          <gui-divider />
+          <div class="row total-row" role="row">
+            <span class="col-name">Grand total</span>
+            <span class="col-qty"></span>
+            <span class="col-unit"></span>
+            <span class="col-sub grand">{{ formatCurrency(total()) }}</span>
+          </div>
+        </div>
+      </div>
+    </gui-card>
+  </section>
+} @else {
+  <gui-card variant="outlined">
+    <div class="empty">
+      <gui-icon class="sym">search_off</gui-icon>
+      <p class="empty-title">Order not found</p>
+      <p class="muted">We couldn't find an order for this id.</p>
+      <a gui-button variant="tonal" routerLink="/shop/orders">Back to orders</a>
+    </div>
+  </gui-card>
+}

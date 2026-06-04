@@ -1,0 +1,56 @@
+<a class="back" routerLink="/shop/customers">
+  <gui-icon class="sym">arrow_back</gui-icon>
+  Back to customers
+</a>
+
+@if (customer(); as c) {
+  <header class="page-head">
+    <span class="avatar lg" [style.background]="avatar(c.name)">{{ initials(c.name) }}</span>
+    <div>
+      <h1 class="page-title">{{ c.name }}</h1>
+      <p class="page-subtitle">{{ c.email }}</p>
+    </div>
+  </header>
+
+  <gui-card variant="outlined">
+    <div class="panel">
+      <div class="panel-head">
+        <gui-icon class="sym">receipt_long</gui-icon>
+        <span class="panel-title">Orders ({{ orders().length }})</span>
+      </div>
+      <gui-divider />
+      @if (orders().length) {
+        <div class="table">
+          @for (o of orders(); track trackById($index, o); let last = $last) {
+            <div class="row" role="row">
+              <a class="col-number link" [routerLink]="['/shop/orders', o.id]">{{ o.number }}</a>
+              <span class="col-status">
+                <gui-chip type="assist" [value]="o.status" [label]="statusLabel(o.status)" [attr.data-status]="o.status">{{ statusLabel(o.status) }}</gui-chip>
+              </span>
+              <span class="col-total">{{ formatCurrency(store.totalOf(o)) }}</span>
+              <span class="col-date">{{ formatDate(o.placedAt) }} · {{ relative(o.placedAt) }}</span>
+            </div>
+            @if (!last) {
+              <gui-divider inset="inset" />
+            }
+          }
+        </div>
+      } @else {
+        <div class="empty">
+          <gui-icon class="sym">shopping_bag</gui-icon>
+          <p class="empty-title">No orders yet</p>
+          <p class="muted">This customer hasn't placed an order.</p>
+        </div>
+      }
+    </div>
+  </gui-card>
+} @else {
+  <gui-card variant="outlined">
+    <div class="empty">
+      <gui-icon class="sym">search_off</gui-icon>
+      <p class="empty-title">Customer not found</p>
+      <p class="muted">We couldn't find a customer for this id.</p>
+      <a gui-button variant="tonal" routerLink="/shop/customers">Back to customers</a>
+    </div>
+  </gui-card>
+}

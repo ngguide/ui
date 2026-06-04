@@ -17,6 +17,16 @@ export const appRoutes: Route[] = [
         loadChildren: () =>
           import('./admin/admin.routes').then((m) => m.adminRoutes),
       },
+      {
+        path: 'tasks',
+        loadChildren: () =>
+          import('./tasks/tasks.routes').then((m) => m.tasksRoutes),
+      },
+      {
+        path: 'shop',
+        loadChildren: () =>
+          import('./shop/shop.routes').then((m) => m.shopRoutes),
+      },
     ],
   },
 ];

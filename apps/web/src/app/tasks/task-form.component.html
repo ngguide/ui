@@ -1,0 +1,68 @@
+<form class="task-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="field">
+    <gui-text-field
+      variant="outlined"
+      label="Title"
+      [required]="true"
+      [error]="titleInvalid"
+      errorText="A title is required (max 80 characters)."
+    >
+      <input guiTextFieldInput formControlName="title" />
+    </gui-text-field>
+  </div>
+
+  <div class="field">
+    <gui-text-field variant="outlined" label="Description">
+      <textarea guiTextFieldInput rows="3" formControlName="description"></textarea>
+    </gui-text-field>
+  </div>
+
+  <div class="field">
+    <span class="field-label">Status</span>
+    <gui-radio-group formControlName="status" class="radio-row">
+      @for (s of statuses; track s) {
+        <gui-radio [value]="s">{{ statusLabel[s] }}</gui-radio>
+      }
+    </gui-radio-group>
+  </div>
+
+  <div class="field">
+    <span class="field-label">Priority</span>
+    <gui-radio-group formControlName="priority" class="radio-row">
+      @for (p of priorities; track p) {
+        <gui-radio [value]="p">{{ priorityLabel[p] }}</gui-radio>
+      }
+    </gui-radio-group>
+  </div>
+
+  <div class="field">
+    <span class="field-label">Assignees</span>
+    <gui-chip-set select="multiple" formControlName="assigneeIds">
+      @for (m of store.members(); track m.id) {
+        <gui-chip type="filter" [value]="m.id" [label]="m.name">{{ m.name }}</gui-chip>
+      }
+    </gui-chip-set>
+  </div>
+
+  <div class="field">
+    <span class="field-label">Labels</span>
+    <gui-chip-set select="multiple" formControlName="labelIds">
+      @for (l of store.labels(); track l.id) {
+        <gui-chip type="filter" [value]="l.id" [label]="l.name">{{ l.name }}</gui-chip>
+      }
+    </gui-chip-set>
+  </div>
+
+  <div class="field due-row">
+    <gui-date-picker label="Due date" variant="modal-input" formControlName="dueAt" />
+    <gui-time-picker label="Due time" variant="input" [hour12]="false" formControlName="dueTime" />
+  </div>
+
+  <div class="form-actions">
+    <button gui-button variant="text" type="button" (click)="cancel()">Cancel</button>
+    <button gui-button variant="filled" type="submit" [disabled]="form.invalid">
+      <gui-icon class="sym">check</gui-icon>
+      {{ isEdit() ? 'Save changes' : 'Create task' }}
+    </button>
+  </div>
+</form>

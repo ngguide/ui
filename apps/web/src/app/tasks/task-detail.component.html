@@ -1,0 +1,92 @@
+@let t = task();
+
+@if (!t) {
+  <div class="detail-empty">
+    <gui-icon class="sym">task_alt</gui-icon>
+    <p>Select a task to see its details.</p>
+  </div>
+} @else if (editing()) {
+  <app-task-form [task]="t" (saved)="onSaved()" (cancelled)="onCancelEdit()" />
+} @else {
+  <div class="detail">
+    <div class="detail-head">
+      <h2 class="detail-title">{{ t.title }}</h2>
+      <button gui-button variant="tonal" size="sm" (click)="startEdit()">
+        <gui-icon class="sym">edit</gui-icon>
+        Edit
+      </button>
+    </div>
+
+    @if (t.description) {
+      <p class="detail-desc">{{ t.description }}</p>
+    }
+
+    <gui-divider inset="none" />
+
+    <section class="detail-section">
+      <span class="section-label">Status</span>
+      <gui-segmented-buttons [value]="t.status" (valueChange)="onStatusChange($event)">
+        @for (s of statuses; track s) {
+          <button gui-segmented-button [value]="s">{{ statusLabel[s] }}</button>
+        }
+      </gui-segmented-buttons>
+    </section>
+
+    <section class="detail-section">
+      <span class="section-label">Priority</span>
+      <span class="priority-pill" [attr.data-priority]="t.priority">
+        <gui-icon class="sym">{{ priorityIcon[t.priority] }}</gui-icon>
+        {{ priorityLabel[t.priority] }}
+      </span>
+    </section>
+
+    <section class="detail-section">
+      <span class="section-label">Assignees</span>
+      @if (assignees().length) {
+        <div class="assignee-list">
+          @for (m of assignees(); track m.id) {
+            <span class="assignee">
+              <span
+                class="avatar"
+                [style.background]="avatarColor(m.avatarHue)"
+                [style.color]="avatarInk(m.avatarHue)"
+                >{{ initials(m.name) }}</span
+              >
+              {{ m.name }}
+            </span>
+          }
+        </div>
+      } @else {
+        <span class="section-empty">Unassigned</span>
+      }
+    </section>
+
+    <section class="detail-section">
+      <span class="section-label">Labels</span>
+      @if (taskLabels().length) {
+        <div class="chip-row">
+          @for (l of taskLabels(); track l.id) {
+            <gui-chip type="assist" [value]="l.id" [label]="l.name">
+              <span guiChipLeading class="dot" [style.background]="labelColor(l.hue)"></span>
+              {{ l.name }}
+            </gui-chip>
+          }
+        </div>
+      } @else {
+        <span class="section-empty">No labels</span>
+      }
+    </section>
+
+    <section class="detail-section">
+      <span class="section-label">Due</span>
+      @if (dueLabel()) {
+        <span class="due-value">
+          <gui-icon class="sym">event</gui-icon>
+          {{ dueLabel() }}
+        </span>
+      } @else {
+        <span class="section-empty">No due date</span>
+      }
+    </section>
+  </div>
+}

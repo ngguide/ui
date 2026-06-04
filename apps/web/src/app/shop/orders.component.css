@@ -1,0 +1,166 @@
+:host {
+  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  margin: 0;
+  font-family: var(--md-sys-typescale-headline-small-font);
+  font-size: var(--md-sys-typescale-headline-small-size);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.page-subtitle {
+  margin: 4px 0 0;
+  font-size: var(--md-sys-typescale-body-medium-size);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.toolbar {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.search {
+  flex: 1 1 260px;
+  min-width: 220px;
+}
+
+.status-filter {
+  margin-bottom: 16px;
+}
+
+/* ── Table ──────────────────────────────────────────────────────────────── */
+
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr 0.9fr 0.9fr 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  font-size: var(--md-sys-typescale-body-medium-size);
+  color: var(--md-sys-color-on-surface);
+}
+
+.row.head {
+  font-size: var(--md-sys-typescale-label-medium-size);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.col-total {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.col-customer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.col-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--md-sys-color-on-primary, #fff);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: 600;
+  flex: 0 0 auto;
+}
+
+.link {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Status chip accent driven by data-status (M3 tokens only). */
+gui-chip[data-status='paid'] {
+  --md-comp-assist-chip-label-text-color: var(--md-sys-color-primary);
+}
+
+gui-chip[data-status='shipped'] {
+  --md-comp-assist-chip-label-text-color: var(--md-sys-color-tertiary);
+}
+
+gui-chip[data-status='refunded'] {
+  --md-comp-assist-chip-label-text-color: var(--md-sys-color-error);
+}
+
+/* ── Empty ──────────────────────────────────────────────────────────────── */
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 16px;
+  text-align: center;
+}
+
+.empty .sym {
+  --gui-comp-icon-size: 40px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.empty-title {
+  margin: 0;
+  font-size: var(--md-sys-typescale-title-medium-size);
+  color: var(--md-sys-color-on-surface);
+}
+
+@media (max-width: 720px) {
+  .row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'number actions'
+      'customer customer'
+      'status total'
+      'date date';
+  }
+
+  .row.head {
+    display: none;
+  }
+
+  .col-number { grid-area: number; }
+  .col-customer { grid-area: customer; }
+  .col-status { grid-area: status; }
+  .col-total { grid-area: total; justify-self: end; }
+  .col-date { grid-area: date; }
+  .col-actions { grid-area: actions; }
+}

@@ -1,0 +1,104 @@
+<header class="page-head">
+  <a gui-button variant="text" routerLink="/shop/products">
+    <gui-icon class="sym">arrow_back</gui-icon>
+    Products
+  </a>
+  <h1 class="page-title">{{ isEdit ? 'Edit product' : 'New product' }}</h1>
+  <p class="page-subtitle">
+    {{ isEdit ? 'Update this item’s details, price, and stock.' : 'Add a new item to the catalog.' }}
+  </p>
+</header>
+
+@if (notFound) {
+  <gui-card variant="outlined">
+    <div class="empty">
+      <gui-icon class="sym">search_off</gui-icon>
+      <p class="empty-title">Product not found</p>
+      <p class="muted">We couldn't find a product for this id.</p>
+      <a gui-button variant="tonal" routerLink="/shop/products">Back to products</a>
+    </div>
+  </gui-card>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <gui-card variant="outlined" class="form-card">
+      <div class="inner form-body">
+        <gui-text-field
+          variant="outlined"
+          label="Name"
+          supportingText="Shown across the storefront"
+          [required]="true"
+          [error]="showError('name')"
+          [errorText]="nameError()"
+        >
+          <gui-icon guiTextFieldLeading class="sym">label</gui-icon>
+          <input guiTextFieldInput type="text" formControlName="name" />
+        </gui-text-field>
+
+        <div class="field">
+          <gui-text-field
+            variant="outlined"
+            label="Category"
+            supportingText="Pick a category or type a new one"
+            [required]="true"
+            [error]="showError('category')"
+            [errorText]="categoryError()"
+          >
+            <gui-icon guiTextFieldLeading class="sym">category</gui-icon>
+            <input guiTextFieldInput type="text" formControlName="category" />
+          </gui-text-field>
+          @if (categories().length) {
+            <gui-chip-set select="single" [(value)]="categoryPick" class="category-picks">
+              @for (c of categories(); track c) {
+                <gui-chip type="filter" [value]="c" [label]="c">{{ c }}</gui-chip>
+              }
+            </gui-chip-set>
+          }
+        </div>
+
+        <gui-divider inset="none" />
+
+        <div class="two-up">
+          <gui-text-field
+            variant="outlined"
+            label="Price"
+            prefix="$"
+            [required]="true"
+            [error]="showError('price')"
+            [errorText]="priceError()"
+          >
+            <input guiTextFieldInput inputmode="decimal" formControlName="price" />
+          </gui-text-field>
+
+          <gui-text-field
+            variant="outlined"
+            label="Stock"
+            [required]="true"
+            [error]="showError('stock')"
+            [errorText]="stockError()"
+          >
+            <input guiTextFieldInput inputmode="numeric" formControlName="stock" />
+          </gui-text-field>
+        </div>
+
+        <gui-divider inset="none" />
+
+        <fieldset class="field">
+          <legend class="field-label">Status</legend>
+          <p class="field-help">Draft items are hidden from the storefront.</p>
+          <gui-radio-group formControlName="status">
+            <gui-radio value="active">Active</gui-radio>
+            <gui-radio value="draft">Draft</gui-radio>
+          </gui-radio-group>
+        </fieldset>
+      </div>
+    </gui-card>
+
+    <div class="form-actions">
+      <a gui-button variant="text" routerLink="/shop/products">Cancel</a>
+      <button gui-button variant="filled" type="submit" [disabled]="form.invalid">
+        <gui-icon class="sym">check</gui-icon>
+        Save product
+      </button>
+    </div>
+  </form>
+}
