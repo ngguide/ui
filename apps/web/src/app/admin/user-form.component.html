@@ -1,0 +1,85 @@
+<header class="page-head">
+  <a gui-button variant="text" routerLink="/admin/users">
+    <gui-icon guiIcon class="sym">arrow_back</gui-icon>
+    Users
+  </a>
+  <h1 class="page-title">{{ isEdit ? 'Edit user' : 'New user' }}</h1>
+  <p class="page-subtitle">
+    {{ isEdit ? 'Update this member’s profile and access.' : 'Invite a new member to the workspace.' }}
+  </p>
+</header>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <gui-card variant="outlined" class="form-card">
+    <div class="inner form-body">
+      <gui-text-field
+        variant="outlined"
+        label="Full name"
+        supportingText="As it appears across the workspace"
+        [required]="true"
+        [maxLength]="50"
+        [error]="showError('name')"
+        [errorText]="nameError()"
+      >
+        <gui-icon guiTextFieldLeading class="sym">person</gui-icon>
+        <input guiTextFieldInput type="text" formControlName="name" />
+      </gui-text-field>
+
+      <gui-text-field
+        variant="outlined"
+        label="Email"
+        supportingText="Used for sign-in and notifications"
+        [required]="true"
+        [error]="showError('email')"
+        [errorText]="emailError()"
+      >
+        <gui-icon guiTextFieldLeading class="sym">mail</gui-icon>
+        <input guiTextFieldInput type="email" formControlName="email" />
+      </gui-text-field>
+
+      <gui-divider inset="none" />
+
+      <fieldset class="field">
+        <legend class="field-label">Role</legend>
+        <p class="field-help">Controls what this member can see and change.</p>
+        <gui-radio-group formControlName="role">
+          <gui-radio value="admin">Admin</gui-radio>
+          <gui-radio value="editor">Editor</gui-radio>
+          <gui-radio value="viewer">Viewer</gui-radio>
+        </gui-radio-group>
+      </fieldset>
+
+      <gui-divider inset="none" />
+
+      <div class="field switch-field">
+        <div>
+          <span class="field-label">Active</span>
+          <p class="field-help">Suspended members keep their data but can’t sign in.</p>
+        </div>
+        <gui-switch formControlName="active">
+          {{ form.controls.active.value ? 'Active' : 'Suspended' }}
+        </gui-switch>
+      </div>
+
+      <gui-divider inset="none" />
+
+      <div class="field">
+        <span class="field-label">Joined</span>
+        <p class="field-help">When this member was added.</p>
+        <gui-date-picker
+          label="Joined"
+          variant="modal-input"
+          formControlName="joinedAt"
+        />
+      </div>
+    </div>
+  </gui-card>
+
+  <div class="form-actions">
+    <a gui-button variant="text" routerLink="/admin/users">Cancel</a>
+    <button gui-button variant="filled" type="submit" [disabled]="form.invalid">
+      <gui-icon guiIcon class="sym">check</gui-icon>
+      Save user
+    </button>
+  </div>
+</form>

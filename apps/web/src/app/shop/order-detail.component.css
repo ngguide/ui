@@ -1,0 +1,195 @@
+:host {
+  display: block;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+  font-size: var(--md-sys-typescale-label-large-size);
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+.back .sym {
+  --gui-comp-icon-size: 18px;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  margin: 0;
+  font-family: var(--md-sys-typescale-headline-small-font);
+  font-size: var(--md-sys-typescale-headline-small-size);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.page-subtitle {
+  margin: 4px 0 0;
+  font-size: var(--md-sys-typescale-body-medium-size);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+}
+
+.panel-head .sym {
+  --gui-comp-icon-size: 20px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.panel-title {
+  font-family: var(--md-sys-typescale-title-medium-font);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  color: var(--md-sys-color-on-surface);
+}
+
+.customer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--md-sys-color-on-primary, #fff);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: 600;
+  flex: 0 0 auto;
+}
+
+.avatar.lg {
+  width: 44px;
+  height: 44px;
+  font-size: var(--md-sys-typescale-label-large-size);
+}
+
+.link {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.muted {
+  font-size: var(--md-sys-typescale-body-small-size);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ── Line-items table ───────────────────────────────────────────────────── */
+
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 0.4fr 0.7fr 0.7fr;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  font-size: var(--md-sys-typescale-body-medium-size);
+  color: var(--md-sys-color-on-surface);
+}
+
+.row.head {
+  font-size: var(--md-sys-typescale-label-medium-size);
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.col-qty,
+.col-unit,
+.col-sub {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.row.head .col-qty,
+.row.head .col-unit,
+.row.head .col-sub {
+  justify-self: end;
+}
+
+.total-row .col-name {
+  font-weight: 600;
+}
+
+.grand {
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+gui-chip[data-status='paid'] {
+  --md-comp-assist-chip-label-text-color: var(--md-sys-color-primary);
+}
+
+gui-chip[data-status='shipped'] {
+  --md-comp-assist-chip-label-text-color: var(--md-sys-color-tertiary);
+}
+
+gui-chip[data-status='refunded'] {
+  --md-comp-assist-chip-label-text-color: var(--md-sys-color-error);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 16px;
+  text-align: center;
+}
+
+.empty .sym {
+  --gui-comp-icon-size: 40px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.empty-title {
+  margin: 0;
+  font-size: var(--md-sys-typescale-title-medium-size);
+  color: var(--md-sys-color-on-surface);
+}

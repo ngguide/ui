@@ -1,0 +1,109 @@
+<header class="page-head">
+  <div>
+    <h1 class="page-title">Orders</h1>
+    <p class="page-subtitle">Track and update orders across every status.</p>
+  </div>
+  <a gui-button variant="tonal" routerLink="/shop/products">
+    <gui-icon class="sym">inventory_2</gui-icon>
+    Products
+  </a>
+</header>
+
+<section class="toolbar" aria-label="Order filters">
+  <gui-text-field variant="outlined" label="Search orders" class="search">
+    <gui-icon guiTextFieldLeading class="sym">search</gui-icon>
+    <input guiTextFieldInput [formControl]="search" />
+    @if (search.value) {
+      <button
+        gui-icon-button
+        guiTextFieldTrailing
+        variant="standard"
+        aria-label="Clear search"
+        (click)="clearSearch()"
+      >
+        <gui-icon class="sym">close</gui-icon>
+      </button>
+    }
+  </gui-text-field>
+
+  <gui-date-range-picker
+    label="Placed between"
+    variant="modal"
+    [formControl]="dateRange"
+  />
+
+  <gui-segmented-buttons [(value)]="sortBy" aria-label="Sort orders">
+    <button gui-segmented-button value="recent">Recent</button>
+    <button gui-segmented-button value="total-desc">Total ↓</button>
+    <button gui-segmented-button value="total-asc">Total ↑</button>
+  </gui-segmented-buttons>
+
+  <button gui-button variant="text" (click)="clearFilters()">Clear</button>
+</section>
+
+<gui-chip-set select="single" [(value)]="statusFilter" class="status-filter">
+  <gui-chip type="filter" value="all" label="All">All</gui-chip>
+  @for (s of statuses; track s) {
+    <gui-chip type="filter" [value]="s" [label]="statusLabel(s)">{{ statusLabel(s) }}</gui-chip>
+  }
+</gui-chip-set>
+
+@if (store.ordersEmpty()) {
+  <gui-card variant="outlined">
+    <div class="empty">
+      <gui-icon class="sym">receipt_long</gui-icon>
+      <p class="empty-title">No orders match your filters</p>
+      <button gui-button variant="text" (click)="clearFilters()">Clear filters</button>
+    </div>
+  </gui-card>
+} @else {
+  <gui-card variant="outlined">
+    <div class="table">
+      <div class="row head" role="row">
+        <span class="col-number">Order</span>
+        <span class="col-customer">Customer</span>
+        <span class="col-status">Status</span>
+        <span class="col-total">Total</span>
+        <span class="col-date">Placed</span>
+        <span class="col-actions"></span>
+      </div>
+      <gui-divider />
+      @for (o of store.visibleOrders(); track trackById($index, o); let last = $last) {
+        <div class="row" role="row">
+          <a class="col-number link" [routerLink]="['/shop/orders', o.id]">{{ o.number }}</a>
+          <span class="col-customer">
+            <span class="avatar" [style.background]="'oklch(70% 0.12 ' + (o.placedAt.getDate() * 7) + 'deg)'">{{ initials(store.customerName(o.customerId)) }}</span>
+            {{ store.customerName(o.customerId) }}
+          </span>
+          <span class="col-status">
+            <gui-chip-set>
+              <gui-chip type="assist" [value]="o.status" [label]="statusLabel(o.status)" [attr.data-status]="o.status">{{ statusLabel(o.status) }}</gui-chip>
+            </gui-chip-set>
+          </span>
+          <span class="col-total">{{ formatCurrency(store.totalOf(o)) }}</span>
+          <span class="col-date">{{ formatDate(o.placedAt) }}</span>
+          <span class="col-actions">
+            <button
+              gui-icon-button
+              variant="standard"
+              [cdkMenuTriggerFor]="statusMenu"
+              aria-label="Order actions"
+            >
+              <gui-icon class="sym">more_vert</gui-icon>
+            </button>
+            <ng-template #statusMenu>
+              <div gui-menu cdkMenu>
+                @for (s of statuses; track s) {
+                  <button gui-menu-item (click)="setStatus(s, o.id)">Mark {{ statusLabel(s) }}</button>
+                }
+              </div>
+            </ng-template>
+          </span>
+        </div>
+        @if (!last) {
+          <gui-divider inset="inset" />
+        }
+      }
+    </div>
+  </gui-card>
+}

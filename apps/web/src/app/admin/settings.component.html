@@ -1,0 +1,132 @@
+<header class="page-head">
+  <div>
+    <h1 class="page-title">Settings</h1>
+    <p class="page-subtitle">Personal preferences for the Console. Changes are local to this demo.</p>
+  </div>
+</header>
+
+<gui-card variant="filled" class="settings-card">
+  <div class="inner">
+    <h2 class="group-title">Notifications</h2>
+
+    <div class="row">
+      <div class="row-text">
+        <span class="row-label">Email digest</span>
+        <p class="row-help">A weekly summary of workspace activity.</p>
+      </div>
+      <gui-switch [(checked)]="emailDigest" aria-label="Email digest" />
+    </div>
+
+    <gui-divider inset="none" />
+
+    <div class="row">
+      <div class="row-text">
+        <span class="row-label">
+          Compact density
+          <button
+            gui-icon-button
+            variant="standard"
+            aria-label="About density"
+            guiTooltip="Reduces row height across lists and tables."
+            position="above"
+          >
+            <gui-icon class="sym">help</gui-icon>
+          </button>
+        </span>
+        <p class="row-help">Show more rows by tightening vertical spacing.</p>
+      </div>
+      <gui-switch [(checked)]="compactDensity" aria-label="Compact density" />
+    </div>
+  </div>
+</gui-card>
+
+<gui-card variant="filled" class="settings-card">
+  <div class="inner">
+    <h2 class="group-title">Layout</h2>
+
+    <div class="row column">
+      <div class="row-text">
+        <span class="row-label">Default landing view</span>
+        <p class="row-help">Where the Console opens after sign-in.</p>
+      </div>
+      <gui-radio-group [(value)]="landingView">
+        <gui-radio value="dashboard">Dashboard</gui-radio>
+        <gui-radio value="users">Users</gui-radio>
+        <gui-radio value="settings">Settings</gui-radio>
+      </gui-radio-group>
+    </div>
+
+    <gui-divider inset="none" />
+
+    <div class="row column">
+      <div class="row-text">
+        <span class="row-label">Items per page: {{ itemsPerPage() }}</span>
+        <p class="row-help">How many users to show before paginating.</p>
+      </div>
+      <gui-slider
+        class="row-slider"
+        [(value)]="itemsPerPage"
+        [min]="10"
+        [max]="100"
+        [step]="5"
+        discrete
+        aria-label="Items per page"
+      />
+    </div>
+
+    <gui-divider inset="none" />
+
+    <div class="row column">
+      <div class="row-text">
+        <span class="row-label">
+          Contrast
+          <button
+            gui-icon-button
+            variant="standard"
+            [guiRichTooltipTrigger]="contrastTip"
+            aria-label="About contrast"
+          >
+            <gui-icon class="sym">info</gui-icon>
+          </button>
+        </span>
+        <p class="row-help">Adjust foreground/background separation.</p>
+      </div>
+      <gui-segmented-buttons [(value)]="contrast">
+        <button gui-segmented-button value="standard">Standard</button>
+        <button gui-segmented-button value="medium">Medium</button>
+        <button gui-segmented-button value="high">High</button>
+      </gui-segmented-buttons>
+    </div>
+
+    <gui-divider inset="none" />
+
+    <div class="row column">
+      <div class="row-text">
+        <span class="row-label">Control size</span>
+        <p class="row-help">Preview the shared <code>GuiSize</code> scale on a sample control.</p>
+      </div>
+      <div class="size-row">
+        <gui-segmented-buttons
+          [value]="controlSize()"
+          (valueChange)="setControlSize($event)"
+        >
+          @for (s of sizes; track s) {
+            <button gui-segmented-button [value]="s">{{ s }}</button>
+          }
+        </gui-segmented-buttons>
+        <button gui-button variant="tonal" [size]="controlSize()" type="button">
+          Sample
+        </button>
+      </div>
+    </div>
+  </div>
+</gui-card>
+
+<gui-rich-tooltip #contrastTip>
+  <span guiRichTooltipSubhead>Contrast modes</span>
+  Higher contrast strengthens text and outline colors for readability in bright
+  environments. This is a local demo preference and does not change the theme.
+  <div guiRichTooltipActions>
+    <button gui-button variant="text">Got it</button>
+  </div>
+</gui-rich-tooltip>

@@ -1,0 +1,18 @@
+<header class="tracker-head">
+  <gui-segmented-buttons
+    aria-label="Tracker view"
+    [value]="view()"
+    (valueChange)="onView($event)"
+  >
+    <button gui-segmented-button value="board">
+      <gui-icon class="sym">view_kanban</gui-icon>
+      Board
+    </button>
+    <button gui-segmented-button value="list">
+      <gui-icon class="sym">view_list</gui-icon>
+      List
+    </button>
+  </gui-segmented-buttons>
+</header>
+
+<router-outlet />

@@ -1,0 +1,146 @@
+<header class="page-head">
+  <div>
+    <h1 class="page-title">Tasks</h1>
+    <p class="page-subtitle">Browse and filter every task across the board.</p>
+  </div>
+</header>
+
+<section class="toolbar">
+  <gui-text-field
+    class="search"
+    variant="outlined"
+    label="Search tasks"
+    supportingText="Filter by title or description"
+  >
+    <gui-icon guiTextFieldLeading class="sym">search</gui-icon>
+    <input
+      guiTextFieldInput
+      type="search"
+      [formControl]="search"
+    />
+    @if (search.value) {
+      <button
+        gui-icon-button
+        guiTextFieldTrailing
+        variant="standard"
+        aria-label="Clear search"
+        (click)="clearSearch()"
+      >
+        <gui-icon class="sym">close</gui-icon>
+      </button>
+    }
+  </gui-text-field>
+
+  <div class="filters">
+    <div class="filter-group">
+      <span class="filter-label">Status</span>
+      <gui-chip-set
+        select="single"
+        [value]="store.statusFilter()"
+        (valueChange)="onStatus($event)"
+      >
+        <gui-chip type="filter" value="all" label="All">All</gui-chip>
+        @for (s of statuses; track s) {
+          <gui-chip type="filter" [value]="s" [label]="statusLabel[s]">
+            <gui-icon guiChipLeading class="sym">{{ statusIcon[s] }}</gui-icon>
+            {{ statusLabel[s] }}
+          </gui-chip>
+        }
+      </gui-chip-set>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Label</span>
+      <gui-chip-set
+        select="single"
+        [value]="store.labelFilter()"
+        (valueChange)="onLabel($event)"
+      >
+        <gui-chip type="filter" value="all" label="All">All</gui-chip>
+        @for (l of store.labels(); track l.id) {
+          <gui-chip type="filter" [value]="l.id" [label]="l.name">
+            <span guiChipLeading class="dot" [style.background]="labelColor(l.hue)"></span>
+            {{ l.name }}
+          </gui-chip>
+        }
+      </gui-chip-set>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Assignee</span>
+      <gui-chip-set
+        select="single"
+        [value]="store.assigneeFilter()"
+        (valueChange)="onAssignee($event)"
+      >
+        <gui-chip type="filter" value="all" label="All">All</gui-chip>
+        @for (m of store.members(); track m.id) {
+          <gui-chip type="filter" [value]="m.id" [label]="m.name">
+            <span
+              guiChipLeading
+              class="chip-avatar"
+              [style.background]="avatarColor(m.avatarHue)"
+              [style.color]="avatarInk(m.avatarHue)"
+              >{{ initials(m.name) }}</span
+            >
+            {{ m.name }}
+          </gui-chip>
+        }
+      </gui-chip-set>
+    </div>
+  </div>
+</section>
+
+@if (store.isEmptyList()) {
+  <div class="empty">
+    <gui-icon class="sym empty-icon">search_off</gui-icon>
+    <p class="empty-title">No tasks match your filters</p>
+    <p class="empty-text">Try a different search term or clear the active filters.</p>
+    <button gui-button variant="tonal" (click)="clearFilters()">
+      <gui-icon guiIcon class="sym">filter_alt_off</gui-icon>
+      Clear filters
+    </button>
+  </div>
+} @else {
+  <div class="list-head">
+    <span class="list-count">{{ store.visibleList().length }} tasks</span>
+  </div>
+
+  <gui-list mode="action">
+    @for (task of store.visibleList(); track trackById($index, task); let last = $last) {
+      <gui-list-item [lines]="2">
+        <span
+          guiListItemLeading
+          class="priority-dot"
+          [attr.data-priority]="task.priority"
+          [attr.title]="priorityLabel[task.priority]"
+          aria-hidden="true"
+        ></span>
+
+        {{ task.title }}
+        <span guiListItemSupporting>{{ supporting(task) }}</span>
+
+        <span guiListItemTrailing class="row-trail">
+          <span class="avatars">
+            @for (m of assigneesOf(task); track m.id) {
+              <span
+                class="avatar"
+                [style.background]="avatarColor(m.avatarHue)"
+                [style.color]="avatarInk(m.avatarHue)"
+                [attr.title]="m.name"
+                >{{ initials(m.name) }}</span
+              >
+            }
+          </span>
+          <span class="priority" [attr.data-priority]="task.priority">
+            <gui-icon class="sym">{{ priorityIcon[task.priority] }}</gui-icon>
+          </span>
+        </span>
+      </gui-list-item>
+
+      @if (!last) {
+        <gui-divider inset="inset" />
+      }
+    }
+  </gui-list>
+}

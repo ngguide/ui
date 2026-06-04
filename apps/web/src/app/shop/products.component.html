@@ -1,0 +1,131 @@
+<header class="page-head">
+  <div>
+    <h1 class="page-title">Products</h1>
+    <p class="page-subtitle">Browse the catalog, tune visibility, and add new stock.</p>
+  </div>
+  <div class="head-actions">
+    <gui-split-button (action)="publish()">
+      <span guiLeading>Publish</span>
+      <gui-icon guiTrailingIcon class="sym">arrow_drop_down</gui-icon>
+      <ng-template>
+        <div gui-menu cdkMenu>
+          <button gui-menu-item (click)="saveDraft()">Save as draft</button>
+        </div>
+      </ng-template>
+    </gui-split-button>
+    <a gui-button variant="filled" routerLink="/shop/products/new">
+      <gui-icon class="sym">add</gui-icon>
+      New product
+    </a>
+  </div>
+</header>
+
+<section class="featured" aria-label="Featured products">
+  <div class="featured-head">
+    <h2 class="section-title">Featured</h2>
+    <gui-segmented-buttons [(value)]="layout" aria-label="Carousel layout">
+      <button gui-segmented-button value="multi-browse">Multi</button>
+      <button gui-segmented-button value="uncontained">Uncontained</button>
+      <button gui-segmented-button value="hero">Hero</button>
+      <button gui-segmented-button value="full-screen">Full</button>
+    </gui-segmented-buttons>
+  </div>
+
+  @if (featured().length) {
+    <gui-carousel [layout]="layout()">
+      @for (p of featured(); track trackById($index, p)) {
+        <gui-carousel-item>
+          <a class="featured-card" [routerLink]="['/shop/products', p.id]" [style.background]="gradient(p)">
+            <span class="featured-name">{{ p.name }}</span>
+            <span class="featured-price">{{ formatCurrency(p.price) }}</span>
+          </a>
+        </gui-carousel-item>
+      }
+    </gui-carousel>
+  }
+</section>
+
+<section class="toolbar" aria-label="Product filters">
+  <gui-text-field variant="outlined" label="Search products" class="search">
+    <gui-icon guiTextFieldLeading class="sym">search</gui-icon>
+    <input guiTextFieldInput [formControl]="search" />
+    @if (search.value) {
+      <button
+        gui-icon-button
+        guiTextFieldTrailing
+        variant="standard"
+        aria-label="Clear search"
+        (click)="clearSearch()"
+      >
+        <gui-icon class="sym">close</gui-icon>
+      </button>
+    }
+  </gui-text-field>
+
+  <div class="price-filter">
+    <span class="price-label">
+      Price {{ formatCurrency(price()[0]) }} – {{ formatCurrency(price()[1]) }}
+    </span>
+    <gui-slider [(value)]="price" range [min]="priceMin" [max]="priceMax" [step]="10" />
+  </div>
+
+  <gui-segmented-buttons [(value)]="view" aria-label="Layout">
+    <button gui-segmented-button value="grid">Grid</button>
+    <button gui-segmented-button value="list">List</button>
+  </gui-segmented-buttons>
+
+  <button gui-button variant="text" (click)="clearFilters()">Clear</button>
+</section>
+
+<gui-chip-set select="single" [(value)]="category" class="category-filter">
+  <gui-chip type="filter" value="all" label="All">All</gui-chip>
+  @for (c of store.categories(); track c) {
+    <gui-chip type="filter" [value]="c" [label]="c">{{ c }}</gui-chip>
+  }
+</gui-chip-set>
+
+@if (store.productsEmpty()) {
+  <gui-card variant="outlined">
+    <div class="empty">
+      <gui-icon class="sym">inventory_2</gui-icon>
+      <p class="empty-title">No products match your filters</p>
+      <button gui-button variant="text" (click)="clearFilters()">Clear filters</button>
+    </div>
+  </gui-card>
+} @else {
+  <div class="grid" [attr.data-view]="view()">
+    @for (p of store.visibleProducts(); track trackById($index, p)) {
+      <gui-card variant="outlined" class="product">
+        <div class="inner">
+          <div class="thumb-wrap">
+            <a class="thumb" [routerLink]="['/shop/products', p.id]" [style.background]="gradient(p)" [attr.aria-label]="'Edit ' + p.name"></a>
+            <gui-chip-set class="status-chip">
+              <gui-chip
+                type="assist"
+                [value]="p.status"
+                [label]="statusLabel(p.status)"
+                [attr.data-status]="p.status"
+              >{{ statusLabel(p.status) }}</gui-chip>
+            </gui-chip-set>
+          </div>
+          <div class="body">
+            <div class="meta">
+              <a class="name link" [routerLink]="['/shop/products', p.id]">{{ p.name }}</a>
+              <span class="category">{{ p.category }}</span>
+            </div>
+            <div class="figures">
+              <span class="price">{{ formatCurrency(p.price) }}</span>
+              <span class="stock" [class.out]="p.stock === 0">{{ stockLabel(p.stock) }}</span>
+            </div>
+            <div class="actions">
+              <a gui-button variant="text" [routerLink]="['/shop/products', p.id]">
+                <gui-icon class="sym">edit</gui-icon>
+                Edit
+              </a>
+            </div>
+          </div>
+        </div>
+      </gui-card>
+    }
+  </div>
+}

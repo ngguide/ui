@@ -1,7 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block');
 @import 'tailwindcss';
 
 
 @source "../../../libs/ui";
 
 @import '../../../libs/ui/src/styles/theme.css';
+
+/*
+ * Material Symbols icon class (Decision 5A). Authored as
+ * `<gui-icon class="sym">dashboard</gui-icon>` (ligature). The class — rather
+ * than an ancestor selector — ensures icons rendered inside CDK overlays
+ * (dialogs, sheets, menus) are styled too. Sizes from the icon component's own
+ * `--gui-comp-icon-size` custom property so it tracks `gui-icon`'s size input.
+ */
+.sym {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  font-size: var(--gui-comp-icon-size, 24px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  letter-spacing: normal;
+  text-transform: none;
+  word-wrap: normal;
+  direction: ltr;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

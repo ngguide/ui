@@ -1,0 +1,29 @@
+<header class="page-head">
+  <div>
+    <h1 class="page-title">Customers</h1>
+    <p class="page-subtitle">Everyone who has placed an order in your store.</p>
+  </div>
+  <a gui-button variant="tonal" routerLink="/shop/orders">
+    <gui-icon class="sym">receipt_long</gui-icon>
+    Orders
+  </a>
+</header>
+
+<gui-card variant="outlined">
+  <gui-list>
+    @for (c of store.customers(); track trackById($index, c)) {
+      <gui-list-item [lines]="2">
+        <span guiListItemLeading class="avatar" [style.background]="avatar(c)">{{ initials(c.name) }}</span>
+        <a class="name link" [routerLink]="['/shop/customers', c.id]">{{ c.name }}</a>
+        <span guiListItemSupporting>{{ c.email }}</span>
+        <a
+          gui-button
+          guiListItemTrailing
+          variant="text"
+          [routerLink]="['/shop/customers', c.id]"
+          [attr.aria-label]="'View ' + c.name"
+        >View</a>
+      </gui-list-item>
+    }
+  </gui-list>
+</gui-card>

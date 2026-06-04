@@ -1,0 +1,125 @@
+<div class="board">
+  @for (status of statuses; track status) {
+    <section class="column" [attr.data-status]="status">
+      <header class="column-head">
+        <gui-icon class="sym status-icon">{{ statusIcon[status] }}</gui-icon>
+        <span class="column-title">{{ statusLabel[status] }}</span>
+        <span class="column-count">{{ store.byStatus()[status].length }}</span>
+      </header>
+
+      <div class="column-cards">
+        @for (task of store.byStatus()[status]; track task.id) {
+          <gui-card variant="elevated" class="task-card">
+            <div
+              class="card-inner"
+              guiCardPrimaryAction
+              (primaryAction)="openTask(task)"
+            >
+              <div class="card-top">
+                <span class="priority-dot" [attr.data-priority]="task.priority" aria-hidden="true"></span>
+                <span class="card-title">{{ task.title }}</span>
+                <button
+                  gui-icon-button
+                  variant="standard"
+                  class="card-menu-btn"
+                  [cdkMenuTriggerFor]="statusMenu"
+                  aria-label="Change status"
+                  (click)="$event.stopPropagation()"
+                >
+                  <gui-icon class="sym">more_vert</gui-icon>
+                </button>
+              </div>
+
+              @if (labelsOf(task).length) {
+                <gui-chip-set class="card-labels">
+                  @for (l of labelsOf(task); track l.id) {
+                    <gui-chip type="assist" [value]="l.id" [label]="l.name">
+                      <span guiChipLeading class="dot" [style.background]="labelColor(l.hue)"></span>
+                      {{ l.name }}
+                    </gui-chip>
+                  }
+                </gui-chip-set>
+              }
+
+              <div class="card-foot">
+                <div class="avatars">
+                  @for (m of assigneesOf(task).slice(0, maxAvatars); track m.id) {
+                    <span
+                      class="avatar"
+                      [style.background]="avatarColor(m.avatarHue)"
+                      [style.color]="avatarInk(m.avatarHue)"
+                      [attr.title]="m.name"
+                      >{{ initials(m.name) }}</span
+                    >
+                  }
+                  @if (overflow(task) > 0) {
+                    <span class="avatar-overflow-wrap" [guiBadge]="overflow(task)">
+                      <span class="avatar more">+</span>
+                    </span>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <ng-template #statusMenu>
+              <div gui-menu cdkMenu class="status-menu">
+                @for (s of statuses; track s) {
+                  <button gui-menu-item (click)="setStatus(task.id, s)">
+                    <gui-icon guiMenuItemLeading class="sym">{{ statusIcon[s] }}</gui-icon>
+                    {{ statusLabel[s] }}
+                  </button>
+                }
+              </div>
+            </ng-template>
+          </gui-card>
+        }
+
+        @if (!store.byStatus()[status].length) {
+          <p class="column-empty">No tasks</p>
+        }
+      </div>
+    </section>
+  }
+</div>
+
+<button gui-fab color="primary-container" class="board-fab" aria-label="New task" (click)="newTask()">
+  <gui-icon class="sym">add</gui-icon>
+</button>
+
+<!-- Detail / new-task sheet — side sheet on expanded, bottom sheet on compact -->
+@if (compact()) {
+  <gui-bottom-sheet [(open)]="detailOpen">
+    <div class="sheet-inner">
+      <header class="sheet-head">
+        <span class="sheet-title">{{ creating() ? 'New task' : 'Task details' }}</span>
+        <button gui-icon-button variant="standard" aria-label="Close" (click)="closeDetail()">
+          <gui-icon class="sym">close</gui-icon>
+        </button>
+      </header>
+      <ng-container *ngTemplateOutlet="sheetBody" />
+    </div>
+  </gui-bottom-sheet>
+} @else {
+  <gui-side-sheet [(open)]="detailOpen">
+    <gui-side-sheet-header>
+      {{ creating() ? 'New task' : 'Task details' }}
+      <button gui-icon-button guiSideSheetClose variant="standard" aria-label="Close" (click)="closeDetail()">
+        <gui-icon class="sym">close</gui-icon>
+      </button>
+    </gui-side-sheet-header>
+    <gui-side-sheet-content>
+      <ng-container *ngTemplateOutlet="sheetBody" />
+    </gui-side-sheet-content>
+    <gui-side-sheet-actions>
+      <button gui-button variant="text" (click)="closeDetail()">Close</button>
+    </gui-side-sheet-actions>
+  </gui-side-sheet>
+}
+
+<ng-template #sheetBody>
+  @if (creating()) {
+    <app-task-form (saved)="onSaved($event)" (cancelled)="closeDetail()" />
+  } @else {
+    <app-task-detail [task]="selectedTask()" (closed)="closeDetail()" />
+  }
+</ng-template>

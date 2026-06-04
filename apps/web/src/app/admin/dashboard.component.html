@@ -1,0 +1,117 @@
+<header class="page-head">
+  <div>
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Overview of activity across your workspace.</p>
+  </div>
+  <div class="head-actions">
+    <button gui-button variant="tonal" size="sm" type="button" (click)="sync()">
+      <gui-icon guiIcon class="sym">sync</gui-icon>
+      Sync
+    </button>
+    <gui-button-group connected aria-label="Time range">
+      @for (r of ranges; track r) {
+        <button
+          gui-button
+          size="sm"
+          [variant]="range() === r ? 'filled' : 'outlined'"
+          (click)="range.set(r)"
+        >
+          {{ r }}
+        </button>
+      }
+    </gui-button-group>
+  </div>
+</header>
+
+@if (syncError()) {
+  <div class="error-banner" role="alert">
+    <gui-icon class="sym">cloud_off</gui-icon>
+    <span class="error-text">Last sync failed. Your changes are saved locally.</span>
+    <button gui-button variant="text" size="sm" type="button" (click)="sync()">
+      Retry
+    </button>
+  </div>
+}
+
+<section class="kpi-grid" aria-label="Key metrics">
+  @for (m of store.metrics(); track m.key; let i = $index) {
+    <gui-card variant="elevated">
+      <div class="kpi">
+        <div class="kpi-top">
+          <span class="kpi-label">{{ m.label }}</span>
+          <span
+            class="kpi-delta"
+            [class.up]="m.deltaPct >= 0"
+            [class.down]="m.deltaPct < 0"
+          >
+            <gui-icon class="sym">{{
+              m.deltaPct >= 0 ? 'trending_up' : 'trending_down'
+            }}</gui-icon>
+            {{ formatDelta(m.deltaPct) }}
+          </span>
+        </div>
+
+        <div class="kpi-value">{{ formatValue(m) }}</div>
+
+        <app-sparkline
+          class="kpi-spark"
+          [values]="m.spark"
+          [ariaLabel]="m.label + ' trend over the selected range'"
+        />
+
+        <div class="kpi-goal">
+          @if (i % 2 === 1) {
+            <gui-circular-progress
+              [value]="ratio(m)"
+              [label]="m.label + ' goal attainment'"
+            />
+          } @else {
+            <gui-linear-progress
+              class="kpi-bar"
+              [value]="ratio(m)"
+              [label]="m.label + ' goal attainment'"
+            />
+          }
+          <span class="kpi-goal-text">{{ ratioPct(m) }} of goal</span>
+        </div>
+      </div>
+    </gui-card>
+  }
+</section>
+
+<section class="panels">
+  <gui-card variant="outlined">
+    <div class="panel">
+      <div class="panel-head">
+        <gui-icon class="sym">history</gui-icon>
+        <span class="panel-title">Recent activity</span>
+      </div>
+      <gui-divider />
+      <gui-list mode="action">
+        @for (e of store.activity(); track e.id; let last = $last) {
+          <gui-list-item [lines]="2">
+            <gui-icon class="sym" guiListItemLeading>bolt</gui-icon>
+            {{ e.actor }}
+            <span guiListItemSupporting>{{ e.action }}</span>
+            <span guiListItemTrailing>{{ relative(e.at) }}</span>
+          </gui-list-item>
+          @if (!last) {
+            <gui-divider inset="inset" />
+          }
+        }
+      </gui-list>
+    </div>
+  </gui-card>
+</section>
+
+<!-- Multi-action "create" FAB (fab-menu) -->
+<gui-fab-menu class="create-fab" ariaLabel="Create">
+  <gui-icon guiFabIcon class="sym">add</gui-icon>
+  <ng-template>
+    <div class="gui-fab-menu-list" cdkMenu>
+      <button gui-fab-menu-item routerLink="/admin/users/new">New user</button>
+      <button gui-fab-menu-item routerLink="/admin/settings">Open settings</button>
+      <button gui-fab-menu-item (click)="sync()">Sync workspace</button>
+    </div>
+  </ng-template>
+</gui-fab-menu>
