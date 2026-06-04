@@ -25,7 +25,9 @@
             <div class="row" role="row">
               <a class="col-number link" [routerLink]="['/shop/orders', o.id]">{{ o.number }}</a>
               <span class="col-status">
-                <gui-chip type="assist" [value]="o.status" [label]="statusLabel(o.status)" [attr.data-status]="o.status">{{ statusLabel(o.status) }}</gui-chip>
+                <gui-chip-set>
+                  <gui-chip type="assist" [value]="o.status" [label]="statusLabel(o.status)" [attr.data-status]="o.status">{{ statusLabel(o.status) }}</gui-chip>
+                </gui-chip-set>
               </span>
               <span class="col-total">{{ formatCurrency(store.totalOf(o)) }}</span>
               <span class="col-date">{{ formatDate(o.placedAt) }} · {{ relative(o.placedAt) }}</span>

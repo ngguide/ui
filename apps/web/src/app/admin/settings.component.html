@@ -97,6 +97,28 @@
         <button gui-segmented-button value="high">High</button>
       </gui-segmented-buttons>
     </div>
+
+    <gui-divider inset="none" />
+
+    <div class="row column">
+      <div class="row-text">
+        <span class="row-label">Control size</span>
+        <p class="row-help">Preview the shared <code>GuiSize</code> scale on a sample control.</p>
+      </div>
+      <div class="size-row">
+        <gui-segmented-buttons
+          [value]="controlSize()"
+          (valueChange)="setControlSize($event)"
+        >
+          @for (s of sizes; track s) {
+            <button gui-segmented-button [value]="s">{{ s }}</button>
+          }
+        </gui-segmented-buttons>
+        <button gui-button variant="tonal" [size]="controlSize()" type="button">
+          Sample
+        </button>
+      </div>
+    </div>
   </div>
 </gui-card>
 

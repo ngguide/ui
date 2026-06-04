@@ -11,7 +11,9 @@
         Placed {{ formatDate(o.placedAt) }} · {{ relative(o.placedAt) }}
       </p>
     </div>
-    <gui-chip type="assist" [value]="o.status" [label]="statusLabel(o.status)" [attr.data-status]="o.status">{{ statusLabel(o.status) }}</gui-chip>
+    <gui-chip-set>
+      <gui-chip type="assist" [value]="o.status" [label]="statusLabel(o.status)" [attr.data-status]="o.status">{{ statusLabel(o.status) }}</gui-chip>
+    </gui-chip-set>
   </header>
 
   <section class="panels">

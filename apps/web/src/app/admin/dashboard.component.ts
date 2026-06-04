@@ -1,11 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { CdkMenu } from '@angular/cdk/menu';
 import { GuiCard } from '@ngguide/ui/card';
 import { GuiDivider } from '@ngguide/ui/divider';
 import { GuiList, GuiListItem } from '@ngguide/ui/list';
 import { GuiCircularProgress, GuiLinearProgress } from '@ngguide/ui/progress';
 import { ButtonComponent } from '@ngguide/ui/button';
 import { ButtonGroupComponent } from '@ngguide/ui/button-group';
+import { FabMenuComponent, FabMenuItemComponent } from '@ngguide/ui/fab-menu';
 import { IconComponent } from '@ngguide/ui/icon';
+import { GuiSnackbar } from '@ngguide/ui/snackbar';
 
 import { Metric } from '../core/models';
 import {
@@ -30,6 +34,8 @@ type Range = '7d' | '30d' | '90d';
   selector: 'app-dashboard',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    RouterLink,
+    CdkMenu,
     GuiCard,
     GuiDivider,
     GuiList,
@@ -38,6 +44,8 @@ type Range = '7d' | '30d' | '90d';
     GuiLinearProgress,
     ButtonComponent,
     ButtonGroupComponent,
+    FabMenuComponent,
+    FabMenuItemComponent,
     IconComponent,
     SparklineComponent,
   ],
@@ -46,11 +54,33 @@ type Range = '7d' | '30d' | '90d';
 })
 export class DashboardComponent {
   protected readonly store = inject(AdminStore);
+  private readonly snackbar = inject(GuiSnackbar);
 
   protected readonly ranges: readonly Range[] = ['7d', '30d', '90d'];
   protected readonly range = signal<Range>('30d');
 
+  /** Recoverable-error demo (R9.4): the first sync fails, a retry succeeds. */
+  protected readonly syncError = signal(false);
+  private syncAttempts = 0;
+
   protected formatDelta = formatDelta;
+
+  protected sync(): void {
+    this.syncAttempts += 1;
+    if (this.syncAttempts === 1) {
+      this.syncError.set(true);
+      const ref = this.snackbar.open({
+        message: 'Sync failed — workspace is offline',
+        action: 'Retry',
+        showClose: true,
+        duration: null,
+      });
+      ref.onAction.subscribe(() => this.sync());
+    } else {
+      this.syncError.set(false);
+      this.snackbar.open({ message: 'Workspace synced', duration: 3000 });
+    }
+  }
 
   protected formatValue(m: Metric): string {
     switch (m.format) {

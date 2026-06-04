@@ -8,7 +8,7 @@ import {
 import { NgTemplateOutlet } from '@angular/common';
 import { CdkMenu, CdkMenuTrigger } from '@angular/cdk/menu';
 import { GuiCard, GuiCardPrimaryAction } from '@ngguide/ui/card';
-import { ChipComponent } from '@ngguide/ui/chip';
+import { ChipComponent, ChipSetComponent } from '@ngguide/ui/chip';
 import { FabComponent } from '@ngguide/ui/fab';
 import { IconComponent } from '@ngguide/ui/icon';
 import { IconButtonComponent } from '@ngguide/ui/icon-button';
@@ -57,6 +57,7 @@ const MAX_AVATARS = 2;
     GuiCard,
     GuiCardPrimaryAction,
     ChipComponent,
+    ChipSetComponent,
     FabComponent,
     IconComponent,
     IconButtonComponent,

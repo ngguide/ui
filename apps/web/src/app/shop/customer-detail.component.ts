@@ -12,7 +12,7 @@ import { ButtonComponent } from '@ngguide/ui/button';
 import { IconComponent } from '@ngguide/ui/icon';
 import { GuiCard } from '@ngguide/ui/card';
 import { GuiDivider } from '@ngguide/ui/divider';
-import { ChipComponent } from '@ngguide/ui/chip';
+import { ChipComponent, ChipSetComponent } from '@ngguide/ui/chip';
 
 import { Order, OrderStatus } from '../core/models';
 import { formatCurrency, formatDate, formatRelative, initials } from '../core/formatters';
@@ -28,7 +28,7 @@ import { ShopStore } from './shop.store';
 @Component({
   selector: 'app-customer-detail',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, ButtonComponent, IconComponent, GuiCard, GuiDivider, ChipComponent],
+  imports: [RouterLink, ButtonComponent, IconComponent, GuiCard, GuiDivider, ChipComponent, ChipSetComponent],
   templateUrl: './customer-detail.component.html',
   styleUrl: './customer-detail.component.css',
 })

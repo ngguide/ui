@@ -134,3 +134,39 @@
   font-weight: var(--md-sys-typescale-title-medium-weight);
   color: var(--md-sys-color-on-surface);
 }
+
+/* ── Header actions, recoverable-error banner, create FAB ───────────────── */
+
+.head-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px 10px 16px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.error-banner .sym {
+  --gui-comp-icon-size: 20px;
+}
+
+.error-text {
+  flex: 1 1 auto;
+  font-size: var(--md-sys-typescale-body-medium-size);
+}
+
+.create-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 96px;
+  z-index: 5;
+}

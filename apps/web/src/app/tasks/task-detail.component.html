@@ -64,14 +64,14 @@
     <section class="detail-section">
       <span class="section-label">Labels</span>
       @if (taskLabels().length) {
-        <div class="chip-row">
+        <gui-chip-set class="chip-row">
           @for (l of taskLabels(); track l.id) {
             <gui-chip type="assist" [value]="l.id" [label]="l.name">
               <span guiChipLeading class="dot" [style.background]="labelColor(l.hue)"></span>
               {{ l.name }}
             </gui-chip>
           }
-        </div>
+        </gui-chip-set>
       } @else {
         <span class="section-empty">No labels</span>
       }

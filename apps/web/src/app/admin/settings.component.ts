@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
+import { GuiSize } from '@ngguide/ui';
 import { ButtonComponent } from '@ngguide/ui/button';
 import { IconButtonComponent } from '@ngguide/ui/icon-button';
 import { IconComponent } from '@ngguide/ui/icon';
@@ -48,4 +49,14 @@ export class SettingsComponent {
   protected readonly landingView = signal<string | null>('dashboard');
   protected readonly itemsPerPage = signal(25);
   protected readonly contrast = signal<string | null>('standard');
+
+  /** Demo "control size" preference, typed with the kit's shared {@link GuiSize}. */
+  protected readonly sizes: readonly GuiSize[] = ['sm', 'md', 'lg'];
+  protected readonly controlSize = signal<GuiSize>('md');
+
+  protected setControlSize(value: string | string[] | null): void {
+    if (typeof value === 'string') {
+      this.controlSize.set(value as GuiSize);
+    }
+  }
 }

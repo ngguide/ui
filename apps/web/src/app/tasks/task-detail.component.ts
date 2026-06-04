@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { ButtonComponent } from '@ngguide/ui/button';
-import { ChipComponent } from '@ngguide/ui/chip';
+import { ChipComponent, ChipSetComponent } from '@ngguide/ui/chip';
 import { GuiDivider } from '@ngguide/ui/divider';
 import { IconComponent } from '@ngguide/ui/icon';
 import { SegmentedButtonGroupComponent, SegmentedButtonComponent } from '@ngguide/ui/segmented-button';
@@ -38,6 +38,7 @@ import { TaskFormComponent } from './task-form.component';
   imports: [
     ButtonComponent,
     ChipComponent,
+    ChipSetComponent,
     GuiDivider,
     IconComponent,
     SegmentedButtonGroupComponent,

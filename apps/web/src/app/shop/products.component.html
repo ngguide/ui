@@ -99,13 +99,14 @@
         <div class="inner">
           <div class="thumb-wrap">
             <a class="thumb" [routerLink]="['/shop/products', p.id]" [style.background]="gradient(p)" [attr.aria-label]="'Edit ' + p.name"></a>
-            <gui-chip
-              type="assist"
-              [value]="p.status"
-              [label]="statusLabel(p.status)"
-              [attr.data-status]="p.status"
-              class="status-chip"
-            >{{ statusLabel(p.status) }}</gui-chip>
+            <gui-chip-set class="status-chip">
+              <gui-chip
+                type="assist"
+                [value]="p.status"
+                [label]="statusLabel(p.status)"
+                [attr.data-status]="p.status"
+              >{{ statusLabel(p.status) }}</gui-chip>
+            </gui-chip-set>
           </div>
           <div class="body">
             <div class="meta">

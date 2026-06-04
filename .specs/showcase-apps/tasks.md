@@ -196,19 +196,19 @@ Additive `/shop` branch. Blast radius: safe.
 Closes the empty/loading/error story across all apps and guarantees every entry point is used.
 Blast radius: safe (additive states + a coverage manifest doc).
 
-- [ ] 30. Empty / loading / error states pass
+- [x] 30. Empty / loading / error states pass
   - Ensure every list/result in all three apps has an explicit empty state, a loading indication (`gui-loading-indicator`/`gui-linear-progress`) on an explicit "Reload" action (client-only; SSR renders the loaded state), and at least one recoverable error: a "Sync" action that fails first then succeeds, surfaced via a `gui-snackbar` with `Retry` and/or an inline error banner.
   - _Requirements: 9.1, 9.2, 9.4_
 
-- [ ] 31. Coverage audit + fill gaps
+- [x] 31. Coverage audit + fill gaps
   - Walk the design's coverage manifest against the implemented apps; add any missing entry-point usages (e.g. `gui-fab-menu` create menu, `gui-rich-tooltip`, additional `[guiBadge]` spots, `gui-divider`, `gui-loading-indicator`). Confirm `forms` (`GuiFormControl` via reactive forms), `datetime` (`GuiTime`/`GuiDateRange`), `overlay` (`GuiBreakpoint`), and root `GuiSize` are each consumed.
   - _Requirements: 2.1, 2.2, 2.3_
 
-- [ ] 32. Coverage manifest document
+- [x] 32. Coverage manifest document
   - Create `apps/web/src/app/COVERAGE.md` (or `.specs/showcase-apps/coverage.md`): table mapping each `@ngguide/ui/*` entry point → the concrete file/component where it is used, for test-plan verification.
   - _Requirements: 2.4_
 
-- [ ] 33. Final checkpoint — everything green
+- [x] 33. Final checkpoint — everything green
   - Run: `NX_NO_CLOUD=true pnpm exec nx run-many -t lint test build -p web` and `pnpm exec nx run-many -t lint test build -p ui` (ensure the library is untouched/green).
   - Manual: all three apps work end-to-end; theming (dark + brand) persists across navigation; adaptivity at compact/expanded; empty/loading/error states; every entry point in the coverage manifest is present; `nx serve web` boots and prerender/hydration is error-free.
   - Confirm every requirement (R1–R10) traces to a shipped task.

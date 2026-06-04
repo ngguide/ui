@@ -31,14 +31,14 @@
               </div>
 
               @if (labelsOf(task).length) {
-                <div class="card-labels">
+                <gui-chip-set class="card-labels">
                   @for (l of labelsOf(task); track l.id) {
                     <gui-chip type="assist" [value]="l.id" [label]="l.name">
                       <span guiChipLeading class="dot" [style.background]="labelColor(l.hue)"></span>
                       {{ l.name }}
                     </gui-chip>
                   }
-                </div>
+                </gui-chip-set>
               }
 
               <div class="card-foot">

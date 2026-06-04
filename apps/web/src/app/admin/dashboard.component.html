@@ -3,19 +3,35 @@
     <h1 class="page-title">Dashboard</h1>
     <p class="page-subtitle">Overview of activity across your workspace.</p>
   </div>
-  <gui-button-group connected aria-label="Time range">
-    @for (r of ranges; track r) {
-      <button
-        gui-button
-        size="sm"
-        [variant]="range() === r ? 'filled' : 'outlined'"
-        (click)="range.set(r)"
-      >
-        {{ r }}
-      </button>
-    }
-  </gui-button-group>
+  <div class="head-actions">
+    <button gui-button variant="tonal" size="sm" type="button" (click)="sync()">
+      <gui-icon guiIcon class="sym">sync</gui-icon>
+      Sync
+    </button>
+    <gui-button-group connected aria-label="Time range">
+      @for (r of ranges; track r) {
+        <button
+          gui-button
+          size="sm"
+          [variant]="range() === r ? 'filled' : 'outlined'"
+          (click)="range.set(r)"
+        >
+          {{ r }}
+        </button>
+      }
+    </gui-button-group>
+  </div>
 </header>
+
+@if (syncError()) {
+  <div class="error-banner" role="alert">
+    <gui-icon class="sym">cloud_off</gui-icon>
+    <span class="error-text">Last sync failed. Your changes are saved locally.</span>
+    <button gui-button variant="text" size="sm" type="button" (click)="sync()">
+      Retry
+    </button>
+  </div>
+}
 
 <section class="kpi-grid" aria-label="Key metrics">
   @for (m of store.metrics(); track m.key; let i = $index) {
@@ -87,3 +103,15 @@
     </div>
   </gui-card>
 </section>
+
+<!-- Multi-action "create" FAB (fab-menu) -->
+<gui-fab-menu class="create-fab" ariaLabel="Create">
+  <gui-icon guiFabIcon class="sym">add</gui-icon>
+  <ng-template>
+    <div class="gui-fab-menu-list" cdkMenu>
+      <button gui-fab-menu-item routerLink="/admin/users/new">New user</button>
+      <button gui-fab-menu-item routerLink="/admin/settings">Open settings</button>
+      <button gui-fab-menu-item (click)="sync()">Sync workspace</button>
+    </div>
+  </ng-template>
+</gui-fab-menu>
