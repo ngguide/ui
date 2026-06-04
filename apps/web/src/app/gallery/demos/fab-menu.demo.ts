@@ -1,0 +1,215 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CdkMenu } from '@angular/cdk/menu';
+import { FabMenuComponent, FabMenuItemComponent } from '@ngguide/ui/fab-menu';
+import { IconComponent } from '@ngguide/ui/icon';
+import { GuiFabColor } from '@ngguide/ui/fab';
+import { GALLERY_DEMO_UI } from '../demo-block.component';
+
+/**
+ * Vitrine demo for the M3 FAB menu (`@ngguide/ui/fab-menu`).
+ *
+ * The FAB menu is a single-variant component: one menu size that pairs with any
+ * FAB, opened by a 56dp close button. The implemented `FabMenuComponent` exposes
+ * a single `color: GuiFabColor` input (the coupled, contrasting color set shared
+ * by the close button and the items) plus an `ariaLabel`. The menu panel is the
+ * consumer's `<ng-template>` carrying a `<div cdkMenu class="gui-fab-menu-list">`
+ * whose `data-color` mirrors the FAB color so the close button and items read as
+ * one contrasting set. Each block clicks the FAB to open its live menu.
+ */
+@Component({
+  selector: 'app-demo-fab-menu',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ...GALLERY_DEMO_UI,
+    FabMenuComponent,
+    FabMenuItemComponent,
+    IconComponent,
+    CdkMenu,
+  ],
+  template: `
+    <app-demo-component
+      name="FAB menu"
+      entry="@ngguide/ui/fab-menu"
+      docHref="https://m3.material.io/components/fab-menu"
+    >
+      <!-- The six color sets the component accepts (GuiFabColor). M3 lists the
+           primary / secondary / tertiary sets; the implementation also supports
+           their container counterparts. The FAB (close button) takes the named
+           color; the panel mirrors it as data-color so the items adopt the
+           contrasting paired role. -->
+      <app-demo-block
+        heading="Color sets"
+        hint="Six GuiFabColor sets — contrasting close button + items. Click a FAB to open."
+      >
+        @for (color of colors; track color) {
+          <app-demo-specimen [label]="color">
+            <gui-fab-menu [color]="color" ariaLabel="Compose">
+              <gui-icon guiFabIcon class="sym">edit</gui-icon>
+              <ng-template>
+                <div
+                  cdkMenu
+                  class="gui-fab-menu-list"
+                  [attr.data-color]="color"
+                >
+                  <button gui-fab-menu-item>
+                    <gui-icon guiMenuItemLeading class="sym">share</gui-icon>
+                    Share
+                  </button>
+                  <button gui-fab-menu-item>
+                    <gui-icon guiMenuItemLeading class="sym">link</gui-icon>
+                    Add link
+                  </button>
+                  <button gui-fab-menu-item>
+                    <gui-icon guiMenuItemLeading class="sym">edit</gui-icon>
+                    Edit
+                  </button>
+                </div>
+              </ng-template>
+            </gui-fab-menu>
+          </app-demo-specimen>
+        }
+      </app-demo-block>
+
+      <!-- Anatomy: close button (the 56dp FAB) + up to six menu items. M3:
+           "The FAB menu can have up to six items." Items carry a leading icon
+           plus the UI text label, per the menu-item labelling guidance. -->
+      <app-demo-block
+        heading="Anatomy"
+        hint="Close button + up to six menu items, each with a leading icon and label."
+      >
+        <app-demo-specimen label="six items">
+          <gui-fab-menu color="primary" ariaLabel="Create">
+            <gui-icon guiFabIcon class="sym">add</gui-icon>
+            <ng-template>
+              <div cdkMenu class="gui-fab-menu-list" data-color="primary">
+                <button gui-fab-menu-item>
+                  <gui-icon guiMenuItemLeading class="sym">add_photo_alternate</gui-icon>
+                  Photo
+                </button>
+                <button gui-fab-menu-item>
+                  <gui-icon guiMenuItemLeading class="sym">videocam</gui-icon>
+                  Video
+                </button>
+                <button gui-fab-menu-item>
+                  <gui-icon guiMenuItemLeading class="sym">mic</gui-icon>
+                  Audio
+                </button>
+                <button gui-fab-menu-item>
+                  <gui-icon guiMenuItemLeading class="sym">description</gui-icon>
+                  Document
+                </button>
+                <button gui-fab-menu-item>
+                  <gui-icon guiMenuItemLeading class="sym">location_on</gui-icon>
+                  Location
+                </button>
+                <button gui-fab-menu-item>
+                  <gui-icon guiMenuItemLeading class="sym">event</gui-icon>
+                  Event
+                </button>
+              </div>
+            </ng-template>
+          </gui-fab-menu>
+        </app-demo-specimen>
+
+        <app-demo-specimen label="label only">
+          <gui-fab-menu color="secondary-container" ariaLabel="Sort">
+            <gui-icon guiFabIcon class="sym">sort</gui-icon>
+            <ng-template>
+              <div
+                cdkMenu
+                class="gui-fab-menu-list"
+                data-color="secondary-container"
+              >
+                <button gui-fab-menu-item>Newest first</button>
+                <button gui-fab-menu-item>Oldest first</button>
+                <button gui-fab-menu-item>By name</button>
+              </div>
+            </ng-template>
+          </gui-fab-menu>
+        </app-demo-specimen>
+      </app-demo-block>
+
+      <!-- Menu item states. The item is the shared M3 menu item: it supports a
+           selected state (menuitemradio + checkmark cue) and a disabled state
+           (owned by CdkMenuItem). Enabled / hovered / focused / pressed are the
+           pointer states from the spec and are exercised live in the open menu. -->
+      <app-demo-block
+        heading="Item states"
+        hint="Enabled (default), selected (checkmark cue), and disabled menu items."
+      >
+        <app-demo-specimen label="selected + disabled">
+          <gui-fab-menu color="tertiary" ariaLabel="View options">
+            <gui-icon guiFabIcon class="sym">tune</gui-icon>
+            <ng-template>
+              <div cdkMenu class="gui-fab-menu-list" data-color="tertiary">
+                <button gui-fab-menu-item [selected]="true">List view</button>
+                <button gui-fab-menu-item [guiMenuItemSelectable]="true">
+                  Grid view
+                </button>
+                <button gui-fab-menu-item>Compact view</button>
+                <button gui-fab-menu-item [disabled]="true">
+                  <gui-icon guiMenuItemLeading class="sym">lock</gui-icon>
+                  Archived (disabled)
+                </button>
+              </div>
+            </ng-template>
+          </gui-fab-menu>
+        </app-demo-specimen>
+      </app-demo-block>
+
+      <!-- Scrolling: when the menu can scroll, items scroll within the panel
+           while the close button (FAB) stays anchored and unobstructed (M3 a11y:
+           "Allow the menu items to scroll behind the close button"). -->
+      <app-demo-block
+        heading="Scrolling"
+        hint="Long menus scroll within the panel; the close button stays unobstructed."
+      >
+        <app-demo-specimen label="scrollable">
+          <gui-fab-menu color="primary-container" ariaLabel="Apply label">
+            <gui-icon guiFabIcon class="sym">label</gui-icon>
+            <ng-template>
+              <div
+                cdkMenu
+                class="gui-fab-menu-list"
+                data-color="primary-container"
+                style="--gui-fab-menu-max-height: 220px"
+              >
+                @for (label of manyLabels; track label) {
+                  <button gui-fab-menu-item>
+                    <gui-icon guiMenuItemLeading class="sym">label</gui-icon>
+                    {{ label }}
+                  </button>
+                }
+              </div>
+            </ng-template>
+          </gui-fab-menu>
+        </app-demo-specimen>
+      </app-demo-block>
+    </app-demo-component>
+  `,
+})
+export class FabMenuDemo {
+  /** The six color sets accepted by the FAB menu (GuiFabColor). */
+  protected readonly colors: GuiFabColor[] = [
+    'primary-container',
+    'secondary-container',
+    'tertiary-container',
+    'primary',
+    'secondary',
+    'tertiary',
+  ];
+
+  /** Deterministic label list for the scrolling specimen (no RNG/clock). */
+  protected readonly manyLabels = [
+    'Inbox',
+    'Starred',
+    'Important',
+    'Sent',
+    'Drafts',
+    'Spam',
+    'Trash',
+    'Receipts',
+    'Travel',
+    'Work',
+  ];
+}

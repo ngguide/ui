@@ -27,6 +27,11 @@ export const appRoutes: Route[] = [
         loadChildren: () =>
           import('./shop/shop.routes').then((m) => m.shopRoutes),
       },
+      {
+        path: 'gallery',
+        loadChildren: () =>
+          import('./gallery/gallery.routes').then((m) => m.galleryRoutes),
+      },
     ],
   },
 ];
