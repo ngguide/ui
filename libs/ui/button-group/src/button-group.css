@@ -31,6 +31,32 @@
   gap: 2px;
 }
 
+/* Full-round outer-cap radius for round connected groups = HALF the connected
+ * button height. Using the real half-height (not corner-full / 9999px) is
+ * essential, not cosmetic: a corner radius is visually capped at half its box,
+ * but when the two radii on one SIDE exceed that side's length the browser
+ * scales DOWN every corner of the box by one global factor (CSS Backgrounds
+ * "corner overlap" rule). Two 9999px caps on the short outer side drive that
+ * factor toward zero, which silently crushes the small INNER corners to ~0 — so
+ * they render square even though their computed radius still reads 8/16px.
+ * Half-height caps make each outer side sum to exactly the height (factor = 1,
+ * no scaling), so the inner corners render at their intended per-size radius.
+ * XS/S are bumped to a 48dp min target, so their half-height is 24px (not the
+ * button's own pill, which is half the un-bumped height). */
+:host([data-connected][data-size='xs']),
+:host([data-connected][data-size='sm']) {
+  --gui-bg-cap: 24px;
+}
+:host([data-connected][data-size='md']) {
+  --gui-bg-cap: 28px;
+}
+:host([data-connected][data-size='lg']) {
+  --gui-bg-cap: 48px;
+}
+:host([data-connected][data-size='xl']) {
+  --gui-bg-cap: 68px;
+}
+
 /* Connected: children square off their shared (inner) edges; outer edges are
  * shaped per the round/square default-shape config. `::ng-deep` reaches the
  * projected child components; `!important` overrides their intrinsic radius. */
@@ -43,13 +69,13 @@
  * shared inner edges get the per-size radius and the first/last outer caps are
  * fully round (pill end caps whose radius equals half the button height). */
 :host([data-connected][data-shape='round']) ::ng-deep > *:first-child {
-  border-start-start-radius: var(--md-sys-shape-corner-full) !important;
-  border-end-start-radius: var(--md-sys-shape-corner-full) !important;
+  border-start-start-radius: var(--gui-bg-cap) !important;
+  border-end-start-radius: var(--gui-bg-cap) !important;
 }
 
 :host([data-connected][data-shape='round']) ::ng-deep > *:last-child {
-  border-start-end-radius: var(--md-sys-shape-corner-full) !important;
-  border-end-end-radius: var(--md-sys-shape-corner-full) !important;
+  border-start-end-radius: var(--gui-bg-cap) !important;
+  border-end-end-radius: var(--gui-bg-cap) !important;
 }
 
 /* --- Square connected: the OUTER caps use the per-size corner size; inner
@@ -222,17 +248,28 @@
   --gui-button-press-pad-end: calc(-0.5 * var(--gui-bg-press-grow));
 }
 
-/* Connected: selecting a button morphs only that button's shape (no adjacent
- * interaction). Morph to the child's per-size PILL (half-height), NOT
- * corner-full (9999px): a browser caps border-radius at half the box height, so
- * animating to 9999px makes the visible morph finish within a few ms (reads as
- * "no animation"). The child exposes --gui-button-pill / --gui-icon-button-pill
- * (half-height); fall back to corner-full only if neither is present. */
-:host([data-connected]) ::ng-deep > *[data-selected] {
-  border-radius: var(
-    --gui-button-pill,
-    var(--gui-icon-button-pill, var(--md-sys-shape-corner-full))
-  ) !important;
+/* Connected: selecting a button morphs ONLY that button's shape to a full round
+ * so it "pops" out of the connected row (M3 — connected selection changes the
+ * shape of the selected button without affecting its neighbours). Morph to
+ * --gui-bg-cap (HALF the connected button height), NOT corner-full (9999px):
+ * 9999px both snaps the animation (the visible morph caps at half-height in a
+ * few ms) and overlaps the corners on the short side, so the real half-height is
+ * the correct full-round value.
+ *
+ * Specificity note: the resting per-corner rules above are position/shape/size
+ * specific and !important (up to 0,6,0 for the round middle-inner rule). To win,
+ * these selected rules qualify the host with its always-present [data-shape] and
+ * [data-size] attributes (mirroring the resting selectors) — the general rule
+ * reaches 0,5,0 (ties the first/last-inner rules and wins on source order); the
+ * middle variant adds the structural :not()s to reach 0,7,0 and beat the
+ * 0,6,0 middle-inner rule. */
+:host([data-connected][data-shape][data-size]) ::ng-deep > *[data-selected] {
+  border-radius: var(--gui-bg-cap) !important;
+}
+:host([data-connected][data-shape][data-size])
+  ::ng-deep
+  > *[data-selected]:not(:first-child):not(:last-child) {
+  border-radius: var(--gui-bg-cap) !important;
 }
 
 /* Respect reduced-motion: drop the expressive press width change entirely.

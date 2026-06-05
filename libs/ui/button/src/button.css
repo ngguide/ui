@@ -52,11 +52,14 @@
    NOT match it — `::ng-deep` pierces the scoping. The two rules are symmetric:
    hide the selected glyph while unselected, and hide the leading glyph while
    selected, so only ever ONE icon shows (M3: a button has one optional icon —
-   the selected state replaces the leading icon, it does not add a second one). */
+   the selected state replaces the leading icon, it does not add a second one).
+   The leading glyph is hidden on select ONLY when a [guiSelectedIcon] exists to
+   replace it (guarded by :has) — a toggle button whose single [guiIcon] merely
+   recolours on select must keep showing it, not blank out. */
 :host(:not([data-selected])) ::ng-deep [guiSelectedIcon] {
   display: none;
 }
-:host([data-selected]) ::ng-deep [guiIcon] {
+:host([data-selected]:has([guiSelectedIcon])) ::ng-deep [guiIcon] {
   display: none;
 }
 

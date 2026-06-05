@@ -35,8 +35,12 @@
 }
 
 /* When selected, hide the default (non-selected) projected content so the
-   selected glyph swaps in cleanly. */
-:host([data-selected]) ::ng-deep > :not([guiSelectedIcon]) {
+   selected glyph swaps in cleanly — but ONLY when a dedicated [guiSelectedIcon]
+   actually exists to replace it. A toggle icon button with a SINGLE icon and no
+   selected variant (the icon merely recolours on select) must keep showing that
+   icon, not blank out. `:has()` inspects the host's light-DOM children, so it
+   sees the projected [guiSelectedIcon] without needing `::ng-deep`. */
+:host([data-selected]:has([guiSelectedIcon])) ::ng-deep > :not([guiSelectedIcon]) {
   display: none;
 }
 
