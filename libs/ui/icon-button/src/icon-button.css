@@ -1,20 +1,51 @@
-/* Resting container styling only. Hover/focus/pressed tints, the ripple and the
-   focus ring are drawn by the composed interaction foundation
-   (GuiStateLayer/GuiRipple/GuiFocusRing via hostDirectives) — never re-implement
-   them here. This file sets per-variant/size container background, color, border,
-   shape and the expressive shape morph only. Values trace to --md-sys-* tokens. */
+/* The OUTER host (<button>/<a>) is the M3 *touch target* — a transparent frame
+   that centers the visible container. The INNER `.ib-container` is the *visible
+   container*: it carries the per-variant/size background, color, border, shape
+   and the expressive shape morph, plus the composed interaction foundation
+   (GuiStateLayer/GuiRipple via host directives on the inner element; the focus
+   ring is bridged from the host's keyboard focus by the component). Splitting the
+   two lets xs/sm keep their exact M3 container size (32/40dp) while the host frame
+   still satisfies the 48dp accessible target. Hover/focus/pressed tints, the
+   ripple and the focus ring are drawn by the foundation — never re-implemented
+   here. Values trace to --md-sys-* tokens and the M3 icon-button size set
+   (container height, icon size, width spacing, outline width per size). */
 
+/* --- Host = touch-target frame (transparent; centers the visible container). --- */
 :host {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  cursor: pointer;
+  padding: 0;
   border: none;
   background: transparent;
+  cursor: pointer;
   position: relative;
+}
+
+/* M3 target sizes: extra-small and small icon buttons must have a >=48x48dp
+   target to be accessible. The visible container stays at its size-token
+   dimensions; only the transparent host frame grows to 48 and centers it. */
+:host([data-size='xs']),
+:host([data-size='sm']) {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+:host(.gui-disabled) {
+  pointer-events: none;
+  cursor: default;
+}
+
+/* --- Inner = the visible container. --- */
+.ib-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   /* Standard icon button default content color. */
   color: var(--md-sys-color-on-surface-variant);
+  background: transparent;
   /* Icon buttons default to a round (full) shape. */
   border-radius: var(--gui-icon-button-pill);
   transition:
@@ -27,9 +58,9 @@
 }
 
 /* The selected-icon slot only shows in the selected (toggle) state. Projected
-   content is projected via <ng-content>, so it carries the CONSUMER's
-   encapsulation id — a plain content-scoped descendant selector would NOT match
-   it. `::ng-deep` pierces the scoping so the swap actually fires. */
+   content carries the CONSUMER's encapsulation id, so a plain content-scoped
+   descendant selector would NOT match it. `::ng-deep` pierces the scoping so the
+   swap actually fires; `:host(...)` keeps each rule scoped to this instance. */
 :host(:not([data-selected])) ::ng-deep [guiSelectedIcon] {
   display: none;
 }
@@ -38,218 +69,211 @@
    selected glyph swaps in cleanly — but ONLY when a dedicated [guiSelectedIcon]
    actually exists to replace it. A toggle icon button with a SINGLE icon and no
    selected variant (the icon merely recolours on select) must keep showing that
-   icon, not blank out. `:has()` inspects the host's light-DOM children, so it
-   sees the projected [guiSelectedIcon] without needing `::ng-deep`. */
-:host([data-selected]:has([guiSelectedIcon])) ::ng-deep > :not([guiSelectedIcon]) {
+   icon, not blank out. `:has()` inspects the host's light-DOM children. */
+:host([data-selected]:has([guiSelectedIcon]))
+  ::ng-deep
+  .ib-container
+  > :not([guiSelectedIcon]) {
   display: none;
 }
 
-/* --- Sizes (square visual container per the M3 icon-button ladder) ---
-   Each size sets the visual width/height and the nested icon size via the
-   --gui-comp-icon-size custom property so any nested <gui-icon> scales. --- */
-:host([data-size='xs']) {
-  min-width: 32px;
-  min-height: 32px;
+/* --- Sizes (visible container). Each size sets the container width/height, the
+   pill radius (= half height) and the nested icon size via --gui-comp-icon-size,
+   all from the M3 icon-button size set. Default width = a square container. --- */
+:host([data-size='xs']) .ib-container {
   width: 32px;
   height: 32px;
   --gui-comp-icon-size: 20px;
+  --gui-icon-button-pill: 16px;
 }
-
-:host([data-size='sm']) {
-  min-width: 40px;
-  min-height: 40px;
+:host([data-size='sm']) .ib-container {
   width: 40px;
   height: 40px;
-  --gui-comp-icon-size: 20px;
+  --gui-comp-icon-size: 24px;
+  --gui-icon-button-pill: 20px;
 }
-
-:host([data-size='md']) {
-  min-width: 56px;
-  min-height: 56px;
+:host([data-size='md']) .ib-container {
   width: 56px;
   height: 56px;
   --gui-comp-icon-size: 24px;
+  --gui-icon-button-pill: 28px;
 }
-
-:host([data-size='lg']) {
-  min-width: 96px;
-  min-height: 96px;
+:host([data-size='lg']) .ib-container {
   width: 96px;
   height: 96px;
   --gui-comp-icon-size: 32px;
+  --gui-icon-button-pill: 48px;
 }
-
-:host([data-size='xl']) {
-  min-width: 136px;
-  min-height: 136px;
+:host([data-size='xl']) .ib-container {
   width: 136px;
   height: 136px;
   --gui-comp-icon-size: 40px;
-}
-
-/* Guarantee the M3 minimum 48x48dp accessible touch target for the two small
-   sizes. The visual icon container stays centered; only the hit area grows. */
-:host([data-size='xs']),
-:host([data-size='sm']) {
-  min-width: 48px;
-  min-height: 48px;
-}
-
-/* --- Widths: adjust horizontal size relative to the square via padding.
-   These small spacing literals are the M3 width spacing for icon buttons. --- */
-:host([data-width='narrow']) {
-  padding-inline: 4px;
-}
-/* default = standard square, no horizontal padding adjustment. */
-:host([data-width='default']) {
-  padding-inline: 0;
-}
-:host([data-width='wide']) {
-  padding-inline: 12px;
-}
-
-/* Per-size "pill" radius = half the container height. The round (and
-   selected-square inversion) state morphs to THIS, not corner-full (9999px):
-   the browser caps radius at half-height, so animating to 9999px makes the
-   VISIBLE corner morph finish in a few ms regardless of duration. Animating to
-   the real half-height keeps it in motion across the whole transition. */
-:host([data-size='xs']) {
-  --gui-icon-button-pill: 16px;
-}
-:host([data-size='sm']) {
-  --gui-icon-button-pill: 20px;
-}
-:host([data-size='md']) {
-  --gui-icon-button-pill: 28px;
-}
-:host([data-size='lg']) {
-  --gui-icon-button-pill: 48px;
-}
-:host([data-size='xl']) {
   --gui-icon-button-pill: 68px;
 }
 
+/* --- Widths: M3 narrow/default/wide change the horizontal size only (the M3
+   leading+trailing space per size). Height stays the container height; the
+   border-radius is half-height, so every width renders a full stadium. --- */
+:host([data-size='xs'][data-width='narrow']) .ib-container {
+  width: 28px;
+}
+:host([data-size='sm'][data-width='narrow']) .ib-container {
+  width: 32px;
+}
+:host([data-size='md'][data-width='narrow']) .ib-container {
+  width: 48px;
+}
+:host([data-size='lg'][data-width='narrow']) .ib-container {
+  width: 64px;
+}
+:host([data-size='xl'][data-width='narrow']) .ib-container {
+  width: 104px;
+}
+
+:host([data-size='xs'][data-width='wide']) .ib-container {
+  width: 40px;
+}
+:host([data-size='sm'][data-width='wide']) .ib-container {
+  width: 52px;
+}
+:host([data-size='md'][data-width='wide']) .ib-container {
+  width: 72px;
+}
+:host([data-size='lg'][data-width='wide']) .ib-container {
+  width: 128px;
+}
+:host([data-size='xl'][data-width='wide']) .ib-container {
+  width: 184px;
+}
+
 /* --- Shape + expressive morph (per-size radii) ---
-   The base :host is round (full). A button shows its size-specific SQUARE radius
-   when it is either a round-resting button that is selected, OR a square-resting
-   button that is NOT selected — i.e. M3's "toggle morphs round -> square" and the
-   "if the resting shape is square, the selected shape should be round" inversion.
-   A square-resting button that IS selected flips back to round (full).
-   Pressed always overrides with the size-specific pressed radius (same value for
-   round and square per M3). --- */
+   The base .ib-container is round (full). It shows its size-specific SQUARE
+   radius when it is either a round-resting button that is selected, OR a
+   square-resting button that is NOT selected — i.e. M3's "toggle morphs round ->
+   square" and the "if the resting shape is square, the selected shape should be
+   round" inversion. A square-resting button that IS selected flips back to round
+   (full). Pressed always overrides with the size-specific pressed radius (same
+   value for round and square per M3). --- */
 
 /* xs / sm: square = medium (12dp), pressed = small (8dp) */
-:host([data-size='xs'][data-shape='round'][data-selected]),
-:host([data-size='sm'][data-shape='round'][data-selected]),
-:host([data-size='xs'][data-shape='square']:not([data-selected])),
-:host([data-size='sm'][data-shape='square']:not([data-selected])) {
+:host([data-size='xs'][data-shape='round'][data-selected]) .ib-container,
+:host([data-size='sm'][data-shape='round'][data-selected]) .ib-container,
+:host([data-size='xs'][data-shape='square']:not([data-selected])) .ib-container,
+:host([data-size='sm'][data-shape='square']:not([data-selected])) .ib-container {
   border-radius: var(--md-sys-shape-corner-medium);
 }
 
 /* md: square = large (16dp), pressed = medium (12dp) */
-:host([data-size='md'][data-shape='round'][data-selected]),
-:host([data-size='md'][data-shape='square']:not([data-selected])) {
+:host([data-size='md'][data-shape='round'][data-selected]) .ib-container,
+:host([data-size='md'][data-shape='square']:not([data-selected])) .ib-container {
   border-radius: var(--md-sys-shape-corner-large);
 }
 
 /* lg / xl: square = extra-large (28dp), pressed = large (16dp) */
-:host([data-size='lg'][data-shape='round'][data-selected]),
-:host([data-size='xl'][data-shape='round'][data-selected]),
-:host([data-size='lg'][data-shape='square']:not([data-selected])),
-:host([data-size='xl'][data-shape='square']:not([data-selected])) {
+:host([data-size='lg'][data-shape='round'][data-selected]) .ib-container,
+:host([data-size='xl'][data-shape='round'][data-selected]) .ib-container,
+:host([data-size='lg'][data-shape='square']:not([data-selected])) .ib-container,
+:host([data-size='xl'][data-shape='square']:not([data-selected])) .ib-container {
   border-radius: var(--md-sys-shape-corner-extra-large);
 }
 
 /* Square-resting toggle, selected -> invert back to round (full). Placed after
    the square rules so it wins at equal specificity via source order. */
-:host([data-shape='square'][data-selected]) {
+:host([data-shape='square'][data-selected]) .ib-container {
   border-radius: var(--gui-icon-button-pill);
 }
 
-/* Pressed (last, so it overrides every resting/selected radius above). */
-:host([data-size='xs'][data-gui-state~='pressed']),
-:host([data-size='sm'][data-gui-state~='pressed']) {
+/* Pressed (last, so it overrides every resting/selected radius above). The
+   pressed flag (`data-gui-state`) lives on the inner container's state layer. */
+:host([data-size='xs']) .ib-container[data-gui-state~='pressed'],
+:host([data-size='sm']) .ib-container[data-gui-state~='pressed'] {
   border-radius: var(--md-sys-shape-corner-small);
 }
-:host([data-size='md'][data-gui-state~='pressed']) {
+:host([data-size='md']) .ib-container[data-gui-state~='pressed'] {
   border-radius: var(--md-sys-shape-corner-medium);
 }
-:host([data-size='lg'][data-gui-state~='pressed']),
-:host([data-size='xl'][data-gui-state~='pressed']) {
+:host([data-size='lg']) .ib-container[data-gui-state~='pressed'],
+:host([data-size='xl']) .ib-container[data-gui-state~='pressed'] {
   border-radius: var(--md-sys-shape-corner-large);
 }
 
 /* --- Variant colors (resting), with toggle color roles --- */
 
 /* Standard */
-:host([data-variant='standard']) {
+:host([data-variant='standard']) .ib-container {
   background: transparent;
   color: var(--md-sys-color-on-surface-variant);
 }
-:host([data-variant='standard'][data-toggle][data-selected]) {
+:host([data-variant='standard'][data-toggle][data-selected]) .ib-container {
   color: var(--md-sys-color-primary);
 }
 
 /* Filled */
-:host([data-variant='filled']) {
+:host([data-variant='filled']) .ib-container {
   background-color: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
 }
-:host([data-variant='filled'][data-toggle]:not([data-selected])) {
+:host([data-variant='filled'][data-toggle]:not([data-selected])) .ib-container {
   background-color: var(--md-sys-color-surface-container);
   color: var(--md-sys-color-on-surface-variant);
 }
-:host([data-variant='filled'][data-toggle][data-selected]) {
+:host([data-variant='filled'][data-toggle][data-selected]) .ib-container {
   background-color: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
 }
 
 /* Tonal */
-:host([data-variant='tonal']) {
+:host([data-variant='tonal']) .ib-container {
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
 }
-:host([data-variant='tonal'][data-toggle]:not([data-selected])) {
+:host([data-variant='tonal'][data-toggle]:not([data-selected])) .ib-container {
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
 }
-:host([data-variant='tonal'][data-toggle][data-selected]) {
+:host([data-variant='tonal'][data-toggle][data-selected]) .ib-container {
   background-color: var(--md-sys-color-secondary);
   color: var(--md-sys-color-on-secondary);
 }
 
-/* Outlined */
-:host([data-variant='outlined']) {
+/* Outlined. The outline width grows with the size per the M3 size set
+   (xs/sm/md 1dp, lg 2dp, xl 3dp); border-box keeps the footprint exact. */
+:host([data-variant='outlined']) .ib-container {
   background: transparent;
   color: var(--md-sys-color-on-surface-variant);
   border: 1px solid var(--md-sys-color-outline-variant);
 }
-:host([data-variant='outlined'][data-toggle]:not([data-selected])) {
+:host([data-variant='outlined'][data-toggle]:not([data-selected])) .ib-container {
   background: transparent;
   color: var(--md-sys-color-on-surface-variant);
   border: 1px solid var(--md-sys-color-outline-variant);
 }
-:host([data-variant='outlined'][data-toggle][data-selected]) {
+:host([data-variant='outlined'][data-toggle][data-selected]) .ib-container {
   background-color: var(--md-sys-color-inverse-surface);
   color: var(--md-sys-color-inverse-on-surface);
   border-color: transparent;
 }
+:host([data-size='lg'][data-variant='outlined']) .ib-container {
+  border-width: 2px;
+}
+:host([data-size='xl'][data-variant='outlined']) .ib-container {
+  border-width: 3px;
+}
 
 /* --- Disabled (M3 disabled treatment via tokens). The interaction layer
    already suppresses the state layer for disabled hosts. --- */
-:host(.gui-disabled) {
-  pointer-events: none;
+:host(.gui-disabled) .ib-container {
   color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
 }
-:host([data-variant='filled'].gui-disabled),
-:host([data-variant='tonal'].gui-disabled) {
+:host([data-variant='filled'].gui-disabled) .ib-container,
+:host([data-variant='tonal'].gui-disabled) .ib-container {
   background-color: color-mix(
     in srgb,
     var(--md-sys-color-on-surface),
     transparent 88%
   );
 }
-:host([data-variant='outlined'].gui-disabled) {
+:host([data-variant='outlined'].gui-disabled) .ib-container {
   border-color: color-mix(
     in srgb,
     var(--md-sys-color-outline-variant),

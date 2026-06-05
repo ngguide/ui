@@ -190,12 +190,33 @@ A. Extra small B. Small C. Medium D. Large E. Extra large
 - Narrow width size
 - Wide width size
 
+Per-size values transcribed from the `Icon button - Size - *` token sets (captured
+2026-06-05 via agent-browser). Widths are expressed as **leading + trailing space**
+around the icon; the container width = icon size + leading + trailing, and the
+container height is fixed per size (so default width = a square container).
+
+| Size | Container height | Icon size | Narrow L/T | Default L/T | Wide L/T | Outline width |
+| --- | --- | --- | --- | --- | --- | --- |
+| XS | 32dp | 20dp | 4dp | 6dp | 10dp | 1dp |
+| S  | 40dp | 24dp | 4dp | 8dp | 14dp | 1dp |
+| M  | 56dp | 24dp | 12dp | 16dp | 24dp | 1dp |
+| L  | 96dp | 32dp | 16dp | 32dp | 48dp | 2dp |
+| XL | 136dp | 40dp | 32dp | 48dp | 72dp | 3dp |
+
+Resulting container widths (icon + 2× space): narrow 28/32/48/64/104dp ·
+default 32/40/56/96/136dp · wide 40/52/72/128/184dp (XS/S/M/L/XL).
+
 #### Target sizes
 Extra small and small icon buttons must have a target size of 48x48dp or larger to be accessible.
 A. Extra small icon button size B. Small icon button size
 - Narrow width
 - Default width
 - Wide width
+
+The 48x48dp **target** is distinct from the **visible container** (XS 32dp, S 40dp):
+the container keeps its size token while the touch target grows to 48 around it. In
+this library the host `<button>`/`<a>` is the transparent 48dp frame and the inner
+`.ib-container` is the visible container that carries the shape, color and ripple.
 
 #### Button corner radius
 

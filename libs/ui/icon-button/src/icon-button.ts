@@ -2,13 +2,16 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   inject,
   input,
   model,
+  signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
 import {
-  GuiFocusRingDirective,
   GuiRippleDirective,
   GuiStateLayerDirective,
 } from '@ngguide/ui/interaction';
@@ -22,13 +25,29 @@ export type GuiIconButtonShape = 'round' | 'square';
   selector:
     // eslint-disable-next-line @angular-eslint/component-selector
     'button[gui-icon-button], button[guiIconButton], a[gui-icon-button], a[guiIconButton]',
-  template: `<ng-content /><ng-content select="[guiSelectedIcon]" />`,
+  // The host <button>/<a> is the M3 *touch target* (a transparent frame); the
+  // inner `.ib-container` is the *visible container* that carries the shape,
+  // color, state layer and ripple. Separating them lets xs/sm keep their exact
+  // M3 container size (32/40dp) while the host frame still meets the 48dp
+  // accessible target. The interaction foundation (state layer + ripple) is
+  // applied to the inner element so its overflow clips the ripple to the visible
+  // pill, not the larger frame. The focus ring also belongs on the visible
+  // container, but keyboard focus lands on the outer button — so the component
+  // monitors the host (CDK FocusMonitor) and bridges the signal in as a class.
+  template: `
+    <span
+      class="ib-container gui-focus-ring"
+      guiStateLayer
+      guiRipple
+      [disabled]="disabled()"
+      [class.gui-focus-visible]="focusVisible()"
+    >
+      <ng-content />
+      <ng-content select="[guiSelectedIcon]" />
+    </span>
+  `,
+  imports: [GuiStateLayerDirective, GuiRippleDirective],
   styleUrl: './icon-button.css',
-  hostDirectives: [
-    GuiStateLayerDirective,
-    GuiRippleDirective,
-    GuiFocusRingDirective,
-  ],
   host: {
     '[attr.data-variant]': 'variant()',
     '[attr.data-size]': 'size()',
@@ -70,6 +89,8 @@ export class IconButtonComponent {
 
   private readonly host =
     inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+  private readonly focusMonitor = inject(FocusMonitor);
+  private readonly destroyRef = inject(DestroyRef);
 
   /** True when host is a <button> (native disabled) vs <a> (aria-disabled). */
   protected readonly isButton = this.host.tagName === 'BUTTON';
@@ -81,6 +102,26 @@ export class IconButtonComponent {
    */
   protected readonly needsButtonRole =
     !this.isButton && !this.host.hasAttribute('href');
+
+  /**
+   * Keyboard-focus signal mirrored onto the inner container so the M3 focus
+   * ring (and the focus state-layer tint) render on the *visible* container
+   * rather than the transparent touch frame. The focusable element is the outer
+   * button, so we monitor it with the same CDK {@link FocusMonitor} signal the
+   * interaction foundation uses — keeping the ring in lock-step with programmatic
+   * / roving focus, and SSR-safe (no class is toggled on the server).
+   */
+  protected readonly focusVisible = signal(false);
+
+  constructor() {
+    this.focusMonitor
+      .monitor(this.host)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((origin: FocusOrigin) =>
+        this.focusVisible.set(origin === 'keyboard'),
+      );
+    this.destroyRef.onDestroy(() => this.focusMonitor.stopMonitoring(this.host));
+  }
 
   protected onActivate(event: Event): void {
     if (this.disabled()) {
