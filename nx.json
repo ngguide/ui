@@ -110,5 +110,6 @@
     "version": {
       "preVersionCommand": "pnpm exec nx run-many -t build"
     }
-  }
+  },
+  "analytics": false
 }

@@ -49,6 +49,7 @@ vitest.config.*.timestamp*
 .github/instructions/nx.instructions.md
 
 .claude/worktrees
+.claude/scheduled_tasks.lock
 .nx/polygraph
 .nx/self-healing
 
