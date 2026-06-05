@@ -168,43 +168,80 @@
   min-height: 48px;
 }
 
-/* M3 expressive press. The state-layer directive sets data-gui-state="pressed"
- * on the active child; the pressed button grows. In a STANDARD group the press
- * also briefly changes the width of adjacent buttons (they compress); a
- * CONNECTED group must NOT add any interaction between adjacent buttons, so the
- * sibling compression is scoped to standard groups only. */
-:host ::ng-deep > * {
-  transform-origin: center;
-  transition: transform var(--md-sys-motion-duration-short4)
-    var(--md-sys-motion-easing-standard);
+/* M3 expressive press — STANDARD groups only. The state-layer directive sets
+ * data-gui-state="pressed" on the active child. Per M3 a press "changes the
+ * WIDTH of itself and adjacent buttons" and "adjusts the width of buttons
+ * directly next to it": the pressed button widens and the buttons DIRECTLY
+ * NEXT TO IT compress, so the pressed button pushes into the space its
+ * neighbours give up.
+ *
+ * This is REAL width (not transform: scaleX, which would stretch the label
+ * glyph). The button composes its inline padding from a per-size base plus two
+ * press offsets (--gui-button-press-pad-start / -end, default 0) and animates
+ * `padding` itself, so here the group only drives those offsets — no transform,
+ * and no transition override (the child keeps its own background/shape
+ * transitions intact).
+ *
+ * Conservation keeps the GROUP's total width constant and its outer edges
+ * anchored — the group must never appear to collapse inward:
+ *   - a middle pressed button grows by `grow` on BOTH sides (+2·grow);
+ *   - a first/last pressed button grows by `grow` on its INNER side only, so
+ *     its outer cap stays put;
+ *   - each immediate neighbour shrinks by grow/2 on EACH side (−grow total),
+ *     so the neighbours give back exactly what the pressed button takes.
+ * The neighbour rule is scoped to the IMMEDIATE siblings via the combinators,
+ * not every other button (M3: "directly next to it").
+ *
+ * Connected groups add NO adjacent interaction on press (M3 — they only morph
+ * the SHAPE of the selected button), so the entire width effect is scoped to
+ * standard groups. */
+:host(:not([data-connected])) {
+  /* Per-side width the pressed button gains; tune the expressive press here. */
+  --gui-bg-press-grow: 6px;
 }
 
-:host ::ng-deep > *[data-gui-state~='pressed'] {
-  transform: scaleX(1.15);
+/* Pressed button widens. Middle: symmetric (both sides). */
+:host(:not([data-connected])) ::ng-deep > *[data-gui-state~='pressed'] {
+  --gui-button-press-pad-start: var(--gui-bg-press-grow);
+  --gui-button-press-pad-end: var(--gui-bg-press-grow);
+}
+/* First/last pressed: grow inward only so the group's outer cap is anchored. */
+:host(:not([data-connected])) ::ng-deep > *[data-gui-state~='pressed']:first-child {
+  --gui-button-press-pad-start: 0px;
+}
+:host(:not([data-connected])) ::ng-deep > *[data-gui-state~='pressed']:last-child {
+  --gui-button-press-pad-end: 0px;
 }
 
-/* Standard-only neighbor compression: when any child is pressed, slightly shrink
- * its siblings. Connected groups are excluded (no adjacent interaction in M3). */
-:host(:not([data-connected]):has(> *[data-gui-state~='pressed'])) ::ng-deep > *:not([data-gui-state~='pressed']) {
-  transform: scaleX(0.95);
+/* The two buttons directly adjacent to the pressed one compress by grow/2 on
+ * each side (−grow total each), conserving the group width. Next sibling via
+ * `+`, previous sibling via `:has(+ …)`. */
+:host(:not([data-connected])) ::ng-deep > *[data-gui-state~='pressed'] + *,
+:host(:not([data-connected])) ::ng-deep > *:has(+ *[data-gui-state~='pressed']) {
+  --gui-button-press-pad-start: calc(-0.5 * var(--gui-bg-press-grow));
+  --gui-button-press-pad-end: calc(-0.5 * var(--gui-bg-press-grow));
 }
 
 /* Connected: selecting a button morphs only that button's shape (no adjacent
- * interaction). The child carries its own `data-selected`; in a connected group
- * round off all of the selected button's corners to morph it from the squared
- * shared-edge shape toward round (shape morph on select, M3). */
+ * interaction). Morph to the child's per-size PILL (half-height), NOT
+ * corner-full (9999px): a browser caps border-radius at half the box height, so
+ * animating to 9999px makes the visible morph finish within a few ms (reads as
+ * "no animation"). The child exposes --gui-button-pill / --gui-icon-button-pill
+ * (half-height); fall back to corner-full only if neither is present. */
 :host([data-connected]) ::ng-deep > *[data-selected] {
-  border-radius: var(--md-sys-shape-corner-full) !important;
+  border-radius: var(
+    --gui-button-pill,
+    var(--gui-icon-button-pill, var(--md-sys-shape-corner-full))
+  ) !important;
 }
 
-/* Respect reduced-motion: no transitions, no expressive transforms. */
+/* Respect reduced-motion: drop the expressive press width change entirely.
+ * Same selectors (and later source order) as the press rules so these win. */
 @media (prefers-reduced-motion: reduce) {
-  :host ::ng-deep > * {
-    transition: none;
-  }
-
-  :host ::ng-deep > *[data-gui-state~='pressed'],
-  :host:has(> *[data-gui-state~='pressed']) ::ng-deep > * {
-    transform: none;
+  :host(:not([data-connected])) ::ng-deep > *[data-gui-state~='pressed'],
+  :host(:not([data-connected])) ::ng-deep > *[data-gui-state~='pressed'] + *,
+  :host(:not([data-connected])) ::ng-deep > *:has(+ *[data-gui-state~='pressed']) {
+    --gui-button-press-pad-start: 0px;
+    --gui-button-press-pad-end: 0px;
   }
 }

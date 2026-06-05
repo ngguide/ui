@@ -15,6 +15,19 @@
   text-decoration: none;
   border: none;
   background: transparent;
+  /* Inline padding composes a per-size base (--gui-button-pad-inline, set by the
+     size rules below) with optional press offsets that default to 0. A standard
+     button group animates these offsets to widen the pressed button and narrow
+     its immediate neighbours with REAL width — never transform: scaleX, which
+     would distort the label glyph. Outside a group the offsets stay 0, so this
+     composition is inert. */
+  padding-block: 0;
+  padding-inline-start: calc(
+    var(--gui-button-pad-inline, 16px) + var(--gui-button-press-pad-start, 0px)
+  );
+  padding-inline-end: calc(
+    var(--gui-button-pad-inline, 16px) + var(--gui-button-press-pad-end, 0px)
+  );
   transition:
     background-color var(--md-sys-motion-duration-short4)
       var(--md-sys-motion-easing-standard),
@@ -23,7 +36,11 @@
     /* Expressive shape morph (press squish + toggle select): a legible,
        emphasized-eased corner transition rather than a near-instant snap. */
     border-radius var(--md-sys-motion-duration-short4)
-      var(--md-sys-motion-easing-emphasized);
+      var(--md-sys-motion-easing-emphasized),
+    /* Standard-group press width morph: animate the inline padding the group
+       drives via the press offsets above (real width, no glyph distortion). */
+    padding var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard);
 }
 
 .gui-button-label {
@@ -50,7 +67,7 @@
    icon up alongside the taller container and larger label type. */
 :host([data-size='xs']) {
   height: 32px;
-  padding: 0 16px;
+  --gui-button-pad-inline: 16px;
   gap: 8px;
   font-size: 14px;
   line-height: 20px;
@@ -60,7 +77,7 @@
 
 :host([data-size='sm']) {
   height: 40px;
-  padding: 0 16px;
+  --gui-button-pad-inline: 16px;
   gap: 8px;
   font-size: 14px;
   line-height: 20px;
@@ -70,7 +87,7 @@
 
 :host([data-size='md']) {
   height: 56px;
-  padding: 0 24px;
+  --gui-button-pad-inline: 24px;
   gap: 8px;
   font-size: 16px;
   line-height: 24px;
@@ -80,7 +97,7 @@
 
 :host([data-size='lg']) {
   height: 96px;
-  padding: 0 48px;
+  --gui-button-pad-inline: 48px;
   gap: 12px;
   font-family: var(--md-ref-typeface-brand);
   font-weight: var(--md-ref-typeface-weight-regular);
@@ -92,7 +109,7 @@
 
 :host([data-size='xl']) {
   height: 136px;
-  padding: 0 64px;
+  --gui-button-pad-inline: 64px;
   gap: 16px;
   font-family: var(--md-ref-typeface-brand);
   font-weight: var(--md-ref-typeface-weight-regular);
