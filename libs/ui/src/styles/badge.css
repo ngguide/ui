@@ -24,30 +24,68 @@
 }
 
 /* Small dot — 6dp, 3dp corner, pinned to the icon's top-trailing corner so the
-   6×6dp dot sits fully inside the icon bounding box (M3 small-badge offset). */
+   6×6dp dot sits fully inside the icon bounding box (M3 small-badge offset). The
+   anchor inset (0 by default; non-zero only when the host wraps an icon button,
+   see below) shifts the dot in from the host corner onto the icon corner. */
 .gui-badge-host[data-gui-badge-variant='small'] .gui-badge {
   width: 6px;
   height: 6px;
   min-width: 0;
   padding: 0;
   border-radius: 3px;
-  top: 0;
-  inset-inline-end: 0;
+  top: var(--gui-badge-anchor-inset, 0px);
+  inset-inline-end: var(--gui-badge-anchor-inset, 0px);
   transform: none;
 }
 
 /* Large numeric — 16dp min/tall, 8dp corner, 4dp horizontal padding, capped at
-   the 34dp max-character width. Anchored at the icon's top-trailing corner with
-   the M3 14×12dp offset (bottom-leading corner 14dp down / 12dp leading). */
+   the 34dp max-character width. M3 measures the offset to the badge's bottom-
+   *leading* corner (14dp down / 12dp leading from the icon's top-trailing
+   corner), so that LEADING corner is the fixed anchor: the badge's leading edge
+   stays 12dp inside the icon's trailing edge and the badge grows trailing-ward
+   (its trailing edge moves further out) as the content widens — the leading
+   edge never moves. `100%` resolves to the host width, so `100% − 12dp` lands the
+   leading edge 12dp in from the icon's trailing edge for any host size; the
+   anchor inset shifts that onto the icon box when the host wraps an icon button
+   (see below). The vertical offset keeps the bottom edge 14dp below the icon top. */
 .gui-badge-host[data-gui-badge-variant='large'] .gui-badge {
   min-width: 16px;
   max-width: 34px;
   height: 16px;
   padding: 0 4px;
   border-radius: 8px;
-  top: -2px;
-  inset-inline-end: -4px;
+  top: calc(var(--gui-badge-anchor-inset, 0px) - 2px);
+  inset-inline-start: calc(100% - var(--gui-badge-anchor-inset, 0px) - 12px);
+  inset-inline-end: auto;
   transform: none;
+}
+
+/* --- Anchor to the ICON box when the host wraps an icon button ---
+   An icon button is a transparent ≥48dp *touch-target frame* that centers a
+   smaller visible icon, so a `<span guiBadge>` wrapping it (the documented
+   non-clipping host) has a box much larger than the icon. Per M3 the badge
+   anchors to the *icon bounding box* at the upper-trailing edge — not the touch
+   target — so without correction the badge floats out at the frame corner
+   ((frame − icon) / 2 too far, e.g. 12dp for the default small button).
+   Inset the badge inward by that frame→icon gap per icon-button size: the small
+   dot then lands fully inside the icon, and the large badge overlaps the icon's
+   top-trailing corner exactly (the 6×6 / 14×12dp offsets are measured from the
+   icon corner — M3 Measurements). Bare-icon / avatar / text hosts leave the
+   variable unset, so they keep anchoring to their own (icon-sized) corner. */
+.gui-badge-host:has(> [gui-icon-button][data-size='xs'], > [guiIconButton][data-size='xs']) {
+  --gui-badge-anchor-inset: 14px;
+}
+.gui-badge-host:has(> [gui-icon-button][data-size='sm'], > [guiIconButton][data-size='sm']) {
+  --gui-badge-anchor-inset: 12px;
+}
+.gui-badge-host:has(> [gui-icon-button][data-size='md'], > [guiIconButton][data-size='md']) {
+  --gui-badge-anchor-inset: 16px;
+}
+.gui-badge-host:has(> [gui-icon-button][data-size='lg'], > [guiIconButton][data-size='lg']) {
+  --gui-badge-anchor-inset: 32px;
+}
+.gui-badge-host:has(> [gui-icon-button][data-size='xl'], > [guiIconButton][data-size='xl']) {
+  --gui-badge-anchor-inset: 48px;
 }
 
 .gui-badge-host[data-gui-badge-hidden='true'] .gui-badge {
