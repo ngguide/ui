@@ -46,7 +46,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
           <app-demo-specimen [label]="v">
             <gui-split-button [variant]="v" (action)="lastAction.set(v)">
               <span guiLeading>Save</span>
-              <gui-icon class="sym" guiTrailingIcon>arrow_drop_down</gui-icon>
+              <gui-icon class="sym" guiTrailingIcon>keyboard_arrow_down</gui-icon>
               <ng-template>
                 <div gui-menu cdkMenu>
                   <button gui-menu-item>Save as…</button>
@@ -71,7 +71,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
               (action)="lastAction.set('filled ' + s)"
             >
               <span guiLeading>Watch</span>
-              <gui-icon class="sym" guiTrailingIcon>arrow_drop_down</gui-icon>
+              <gui-icon class="sym" guiTrailingIcon>keyboard_arrow_down</gui-icon>
               <ng-template>
                 <div gui-menu cdkMenu>
                   <button gui-menu-item>Watch later</button>
@@ -95,7 +95,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
               (action)="lastAction.set('tonal ' + s)"
             >
               <span guiLeading>Edit</span>
-              <gui-icon class="sym" guiTrailingIcon>arrow_drop_down</gui-icon>
+              <gui-icon class="sym" guiTrailingIcon>keyboard_arrow_down</gui-icon>
               <ng-template>
                 <div gui-menu cdkMenu>
                   <button gui-menu-item>Rename</button>
@@ -115,7 +115,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
           <app-demo-specimen [label]="v + ' · unselected'">
             <gui-split-button [variant]="v" (action)="lastAction.set(v)">
               <span guiLeading>Share</span>
-              <gui-icon class="sym" guiTrailingIcon>arrow_drop_down</gui-icon>
+              <gui-icon class="sym" guiTrailingIcon>keyboard_arrow_down</gui-icon>
               <ng-template>
                 <div gui-menu cdkMenu>
                   <button gui-menu-item>Copy link</button>
@@ -132,7 +132,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
               (action)="lastAction.set(v)"
             >
               <span guiLeading>Share</span>
-              <gui-icon class="sym" guiTrailingIcon>arrow_drop_down</gui-icon>
+              <gui-icon class="sym" guiTrailingIcon>keyboard_arrow_down</gui-icon>
               <ng-template>
                 <div gui-menu cdkMenu>
                   <button gui-menu-item>Copy link</button>
@@ -158,7 +158,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
             <span guiLeading
               ><gui-icon class="sym">edit</gui-icon>&nbsp;Edit</span
             >
-            <gui-icon class="sym" guiTrailingIcon>arrow_drop_down</gui-icon>
+            <gui-icon class="sym" guiTrailingIcon>keyboard_arrow_down</gui-icon>
             <ng-template>
               <div gui-menu cdkMenu>
                 <button gui-menu-item>

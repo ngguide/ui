@@ -3,12 +3,17 @@ import {
   ChangeDetectionStrategy,
   Component,
   contentChild,
+  effect,
+  inject,
   input,
   output,
   signal,
   TemplateRef,
+  viewChild,
 } from '@angular/core';
-import { CdkMenuTrigger } from '@angular/cdk/menu';
+import { CdkMenuTrigger, MENU_SCROLL_STRATEGY } from '@angular/cdk/menu';
+import { Overlay } from '@angular/cdk/overlay';
+import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { ButtonComponent, GuiButtonVariant } from '@ngguide/ui/button';
 import { GuiSize } from '@ngguide/ui';
 
@@ -18,6 +23,17 @@ import { GuiSize } from '@ngguide/ui';
  * so it is excluded here.
  */
 export type GuiSplitButtonVariant = Exclude<GuiButtonVariant, 'text'>;
+
+/**
+ * Keep the overlay still on scroll (don't reposition it to follow). We close the
+ * menu on scroll ourselves — see the `scrolled()` subscription in the constructor
+ * — *through the trigger* rather than via CDK's `close` scroll strategy, because
+ * that strategy detaches the overlay directly and so never fires `cdkMenuClosed`,
+ * which would leave the trailing button stuck in its open state (round shape + the
+ * flipped/spun icon). Overriding the app-wide `close` strategy (provided in
+ * app.config for plain menus) to a no-op here avoids that. Same fix as gui-fab-menu.
+ */
+const noopScroll = (overlay: Overlay) => () => overlay.scrollStrategies.noop();
 
 /**
  * M3 split button: a leading primary action + a trailing toggle that opens a
@@ -60,6 +76,12 @@ export type GuiSplitButtonVariant = Exclude<GuiButtonVariant, 'text'>;
   `,
   styleUrl: './split-button.css',
   host: { 'role': 'group' },
+  providers: [
+    // Override the app-wide `close` menu scroll strategy: we close on scroll via
+    // the trigger instead (see constructor), keeping the trailing button's open
+    // state synced. Same fix as gui-fab-menu.
+    { provide: MENU_SCROLL_STRATEGY, useFactory: noopScroll, deps: [Overlay] },
+  ],
   exportAs: 'guiSplitButton',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -83,4 +105,25 @@ export class SplitButtonComponent {
   protected readonly opened = signal(false);
   /** Consumer-provided menu panel (`<ng-template>` with cdkMenu + cdkMenuItem buttons). */
   protected readonly menu = contentChild.required(TemplateRef);
+
+  /** The trailing button's CDK menu trigger (used to close the menu on scroll). */
+  private readonly trigger = viewChild.required(CdkMenuTrigger);
+  private readonly scrollDispatcher = inject(ScrollDispatcher);
+
+  constructor() {
+    // Close the menu when the page scrolls. Routing the close through the trigger
+    // fires `cdkMenuClosed`, so `opened` flips back and the trailing button leaves
+    // its open state (round shape morphs back, icon spins back) — unlike a `close`
+    // scroll strategy, which detaches the overlay silently and desyncs that state.
+    // Subscribe only while open; the cleanup unsubscribes on close/destroy.
+    effect((onCleanup) => {
+      if (!this.opened()) {
+        return;
+      }
+      const sub = this.scrollDispatcher
+        .scrolled()
+        .subscribe(() => this.trigger().close());
+      onCleanup(() => sub.unsubscribe());
+    });
+  }
 }
