@@ -39,14 +39,19 @@
   gap: 12px;
   box-sizing: border-box;
   width: 100%;
-  height: 48px;
+  /* Height / background / label color / radius are parameterized so a wrapping
+     surface can re-skin the item purely via inherited custom properties (the
+     FAB menu does this — see @ngguide/ui/fab-menu). The fallbacks reproduce the
+     baseline menu look, so plain menus are unaffected. */
+  height: var(--gui-menu-item-height, 48px);
   padding: 0 12px;
   cursor: pointer;
-  background: transparent;
+  background: var(--gui-menu-item-bg, transparent);
   border: none;
+  border-radius: var(--gui-menu-item-radius, 0);
   text-align: left;
   text-decoration: none;
-  color: var(--md-sys-color-on-surface);
+  color: var(--gui-menu-item-fg, var(--md-sys-color-on-surface));
   /* M3 menu-item label uses the label-large typescale. */
   font-family: var(--md-sys-typescale-label-large-font);
   font-weight: var(--md-sys-typescale-label-large-weight);
@@ -103,7 +108,9 @@
 .gui-menu-item-trailing {
   display: inline-flex;
   align-items: center;
-  color: var(--md-sys-color-on-surface-variant);
+  /* Follows the item's own icon color when a surface re-skins it (FAB menu),
+     otherwise the baseline dimmer on-surface-variant. */
+  color: var(--gui-menu-item-icon-fg, var(--md-sys-color-on-surface-variant));
 }
 
 /* The checkmark selection cue (M3 recommends an icon in addition to color and

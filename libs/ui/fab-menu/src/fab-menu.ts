@@ -36,17 +36,18 @@ const FAB_MENU_POSITIONS: ConnectedPosition[] = [
 
 /**
  * M3 FAB menu. The FAB toggles a menu of related actions. The consumer supplies
- * the menu panel as an `<ng-template>` containing a `<div cdkMenu>` with
- * `gui-fab-menu-item` items (DI-correct: cdkMenu + items share the consumer
- * template, so CdkMenuItem resolves its CdkMenu). When open, the FAB exposes
- * `aria-expanded` and the "Toggle menu" label (M3 close-button semantics).
+ * the menu panel as an `<ng-template>` containing a `<gui-fab-menu-list>` with
+ * `gui-fab-menu-item` items. `gui-fab-menu-list` hosts `CdkMenu` as a host
+ * directive, so the items resolve their menu through it (no manual `cdkMenu`).
+ * When open, the FAB exposes `aria-expanded` and the "Toggle menu" label (M3
+ * close-button semantics).
  *
  * The FAB trigger is pinned to the medium FAB size (56dp) — M3 requires the
- * close button to always be 56dp. The `color` input is the single FAB-menu
- * color set for the close button (the FAB). The consumer's menu panel adopts
- * the matching color set by mirroring it as `data-color` on the
- * `.gui-fab-menu-list` element, which `fab-menu.css` styles so the close button
- * and items read as one coupled, contrasting color set.
+ * close button to always be 56dp. The `color` input is the FAB-menu color set
+ * for the close button (the FAB); `gui-fab-menu-list` takes the matching `color`
+ * for the panel + items so the close button and items read as one coupled,
+ * contrasting color set. The panel carries its own (`:host`-scoped) styling, so
+ * no `ViewEncapsulation.None` / global stylesheet is needed for the overlay.
  */
 @Component({
   selector: 'gui-fab-menu',
@@ -66,7 +67,6 @@ const FAB_MENU_POSITIONS: ConnectedPosition[] = [
       <ng-content select="[guiFabIcon]" />
     </button>
   `,
-  styleUrl: './fab-menu.css',
   exportAs: 'guiFabMenu',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -77,6 +77,6 @@ export class FabMenuComponent {
   protected readonly opened = signal(false);
   /** M3 top-trailing anchor with the recommended 4dp gap. */
   protected readonly positions = FAB_MENU_POSITIONS;
-  /** Consumer-provided menu panel (`<ng-template>` with cdkMenu + items). */
+  /** Consumer-provided menu panel (`<ng-template>` with `gui-fab-menu-list`). */
   protected readonly menu = contentChild.required(TemplateRef);
 }

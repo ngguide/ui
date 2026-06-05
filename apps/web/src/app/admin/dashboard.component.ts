@@ -1,13 +1,16 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CdkMenu } from '@angular/cdk/menu';
 import { GuiCard } from '@ngguide/ui/card';
 import { GuiDivider } from '@ngguide/ui/divider';
 import { GuiList, GuiListItem } from '@ngguide/ui/list';
 import { GuiCircularProgress, GuiLinearProgress } from '@ngguide/ui/progress';
 import { ButtonComponent } from '@ngguide/ui/button';
 import { ButtonGroupComponent } from '@ngguide/ui/button-group';
-import { FabMenuComponent, FabMenuItemComponent } from '@ngguide/ui/fab-menu';
+import {
+  FabMenuComponent,
+  FabMenuItemComponent,
+  FabMenuListComponent,
+} from '@ngguide/ui/fab-menu';
 import { IconComponent } from '@ngguide/ui/icon';
 import { GuiSnackbar } from '@ngguide/ui/snackbar';
 
@@ -35,7 +38,6 @@ type Range = '7d' | '30d' | '90d';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
-    CdkMenu,
     GuiCard,
     GuiDivider,
     GuiList,
@@ -46,6 +48,7 @@ type Range = '7d' | '30d' | '90d';
     ButtonGroupComponent,
     FabMenuComponent,
     FabMenuItemComponent,
+    FabMenuListComponent,
     IconComponent,
     SparklineComponent,
   ],

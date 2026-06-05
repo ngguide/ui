@@ -167,6 +167,16 @@
 .create-fab {
   position: fixed;
   right: 24px;
+  /* Compact (bottom-bar) layout: clear the 80px bottom navigation bar. */
   bottom: 96px;
   z-index: 5;
+}
+
+/* Expanded layout swaps the bottom bar for the side rail, so the FAB nestles
+   into the corner with a symmetric 24px margin (matches `right`) instead of
+   floating 96px up. The breakpoint mirrors the shell rail query. */
+@container (min-width: 840px) {
+  .create-fab {
+    bottom: 24px;
+  }
 }

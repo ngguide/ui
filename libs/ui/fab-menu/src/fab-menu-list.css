@@ -1,0 +1,95 @@
+/* M3 FAB menu panel. Styled via `:host` — the host element is the CdkMenu
+   surface, and emulated encapsulation rides on it into the CDK overlay, so no
+   global stylesheet / ViewEncapsulation.None is needed. The FAB menu uses the
+   container-large surface (more rounded + more elevated than a baseline menu).
+
+   The items are the consumer's projected `gui-fab-menu-item` buttons, which
+   carry the consumer's encapsulation id — component-scoped descendant rules
+   can't reach them. Instead the contrasting item color set, height and radius
+   are published as INHERITED custom properties (`--gui-menu-item-*`) that the
+   shared `.gui-menu-item` (in @ngguide/ui/menu) reads, with the baseline menu
+   defaults as fallbacks. Custom properties inherit through projection, so each
+   item adopts the FAB-menu look without ::ng-deep. */
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 8px;
+  margin: 0;
+  border-radius: var(--md-sys-shape-corner-large);
+  box-shadow: var(--md-sys-elevation-level3);
+  list-style: none;
+  /* When the menu can scroll, items scroll within the panel while the FAB
+     (the close button) stays anchored above it, unobstructed (M3 a11y). */
+  max-height: var(--gui-fab-menu-max-height, 60vh);
+  overflow-y: auto;
+
+  /* Default color set = primary-container (matches the FAB default). Items take
+     the *contrasting* paired role so the close button and items read as one
+     coupled, contrasting color set (M3: "Contrasting close button and item
+     colors"). FAB menu items also share the medium-button measurements (56dp). */
+  background: var(--md-sys-color-primary-container);
+  --gui-menu-item-bg: var(--md-sys-color-primary);
+  --gui-menu-item-fg: var(--md-sys-color-on-primary);
+  --gui-menu-item-icon-fg: var(--md-sys-color-on-primary);
+  --gui-menu-item-height: 56px;
+  --gui-menu-item-radius: var(--md-sys-shape-corner-large);
+}
+
+:host([data-color='secondary-container']) {
+  background: var(--md-sys-color-secondary-container);
+  --gui-menu-item-bg: var(--md-sys-color-secondary);
+  --gui-menu-item-fg: var(--md-sys-color-on-secondary);
+  --gui-menu-item-icon-fg: var(--md-sys-color-on-secondary);
+}
+
+:host([data-color='tertiary-container']) {
+  background: var(--md-sys-color-tertiary-container);
+  --gui-menu-item-bg: var(--md-sys-color-tertiary);
+  --gui-menu-item-fg: var(--md-sys-color-on-tertiary);
+  --gui-menu-item-icon-fg: var(--md-sys-color-on-tertiary);
+}
+
+:host([data-color='primary']) {
+  background: var(--md-sys-color-primary);
+  --gui-menu-item-bg: var(--md-sys-color-primary-container);
+  --gui-menu-item-fg: var(--md-sys-color-on-primary-container);
+  --gui-menu-item-icon-fg: var(--md-sys-color-on-primary-container);
+}
+
+:host([data-color='secondary']) {
+  background: var(--md-sys-color-secondary);
+  --gui-menu-item-bg: var(--md-sys-color-secondary-container);
+  --gui-menu-item-fg: var(--md-sys-color-on-secondary-container);
+  --gui-menu-item-icon-fg: var(--md-sys-color-on-secondary-container);
+}
+
+:host([data-color='tertiary']) {
+  background: var(--md-sys-color-tertiary);
+  --gui-menu-item-bg: var(--md-sys-color-tertiary-container);
+  --gui-menu-item-fg: var(--md-sys-color-on-tertiary-container);
+  --gui-menu-item-icon-fg: var(--md-sys-color-on-tertiary-container);
+}
+
+/* --- Open animation. The FAB menu animates from the top trailing edge of the
+   FAB; the panel is anchored above the FAB and trailing-aligned, so it grows
+   out of its bottom-trailing corner (M3 measurements). --- */
+@media (prefers-reduced-motion: no-preference) {
+  :host {
+    transform-origin: bottom right;
+    animation: gui-fab-menu-in var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard);
+  }
+
+  @keyframes gui-fab-menu-in {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

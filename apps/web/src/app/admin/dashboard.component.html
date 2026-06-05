@@ -108,10 +108,10 @@
 <gui-fab-menu class="create-fab" ariaLabel="Create">
   <gui-icon guiFabIcon class="sym">add</gui-icon>
   <ng-template>
-    <div class="gui-fab-menu-list" cdkMenu>
+    <gui-fab-menu-list>
       <button gui-fab-menu-item routerLink="/admin/users/new">New user</button>
       <button gui-fab-menu-item routerLink="/admin/settings">Open settings</button>
       <button gui-fab-menu-item (click)="sync()">Sync workspace</button>
-    </div>
+    </gui-fab-menu-list>
   </ng-template>
 </gui-fab-menu>

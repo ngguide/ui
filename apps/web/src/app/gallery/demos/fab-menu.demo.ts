@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CdkMenu } from '@angular/cdk/menu';
-import { FabMenuComponent, FabMenuItemComponent } from '@ngguide/ui/fab-menu';
+import {
+  FabMenuComponent,
+  FabMenuItemComponent,
+  FabMenuListComponent,
+} from '@ngguide/ui/fab-menu';
 import { IconComponent } from '@ngguide/ui/icon';
 import { GuiFabColor } from '@ngguide/ui/fab';
 import { GALLERY_DEMO_UI } from '../demo-block.component';
@@ -12,9 +15,9 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  * FAB, opened by a 56dp close button. The implemented `FabMenuComponent` exposes
  * a single `color: GuiFabColor` input (the coupled, contrasting color set shared
  * by the close button and the items) plus an `ariaLabel`. The menu panel is the
- * consumer's `<ng-template>` carrying a `<div cdkMenu class="gui-fab-menu-list">`
- * whose `data-color` mirrors the FAB color so the close button and items read as
- * one contrasting set. Each block clicks the FAB to open its live menu.
+ * consumer's `<ng-template>` carrying a `<gui-fab-menu-list [color]>` (which
+ * hosts `CdkMenu` as a host directive) so the close button and items read as one
+ * contrasting set. Each block clicks the FAB to open its live menu.
  */
 @Component({
   selector: 'app-demo-fab-menu',
@@ -23,8 +26,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
     ...GALLERY_DEMO_UI,
     FabMenuComponent,
     FabMenuItemComponent,
+    FabMenuListComponent,
     IconComponent,
-    CdkMenu,
   ],
   template: `
     <app-demo-component
@@ -35,7 +38,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <!-- The six color sets the component accepts (GuiFabColor). M3 lists the
            primary / secondary / tertiary sets; the implementation also supports
            their container counterparts. The FAB (close button) takes the named
-           color; the panel mirrors it as data-color so the items adopt the
+           color; the panel takes the matching color so the items adopt the
            contrasting paired role. -->
       <app-demo-block
         heading="Color sets"
@@ -46,11 +49,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
             <gui-fab-menu [color]="color" ariaLabel="Compose">
               <gui-icon guiFabIcon class="sym">edit</gui-icon>
               <ng-template>
-                <div
-                  cdkMenu
-                  class="gui-fab-menu-list"
-                  [attr.data-color]="color"
-                >
+                <gui-fab-menu-list [color]="color">
                   <button gui-fab-menu-item>
                     <gui-icon guiMenuItemLeading class="sym">share</gui-icon>
                     Share
@@ -63,7 +62,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
                     <gui-icon guiMenuItemLeading class="sym">edit</gui-icon>
                     Edit
                   </button>
-                </div>
+                </gui-fab-menu-list>
               </ng-template>
             </gui-fab-menu>
           </app-demo-specimen>
@@ -81,7 +80,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
           <gui-fab-menu color="primary" ariaLabel="Create">
             <gui-icon guiFabIcon class="sym">add</gui-icon>
             <ng-template>
-              <div cdkMenu class="gui-fab-menu-list" data-color="primary">
+              <gui-fab-menu-list color="primary">
                 <button gui-fab-menu-item>
                   <gui-icon guiMenuItemLeading class="sym">add_photo_alternate</gui-icon>
                   Photo
@@ -106,7 +105,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
                   <gui-icon guiMenuItemLeading class="sym">event</gui-icon>
                   Event
                 </button>
-              </div>
+              </gui-fab-menu-list>
             </ng-template>
           </gui-fab-menu>
         </app-demo-specimen>
@@ -115,15 +114,11 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
           <gui-fab-menu color="secondary-container" ariaLabel="Sort">
             <gui-icon guiFabIcon class="sym">sort</gui-icon>
             <ng-template>
-              <div
-                cdkMenu
-                class="gui-fab-menu-list"
-                data-color="secondary-container"
-              >
+              <gui-fab-menu-list color="secondary-container">
                 <button gui-fab-menu-item>Newest first</button>
                 <button gui-fab-menu-item>Oldest first</button>
                 <button gui-fab-menu-item>By name</button>
-              </div>
+              </gui-fab-menu-list>
             </ng-template>
           </gui-fab-menu>
         </app-demo-specimen>
@@ -141,7 +136,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
           <gui-fab-menu color="tertiary" ariaLabel="View options">
             <gui-icon guiFabIcon class="sym">tune</gui-icon>
             <ng-template>
-              <div cdkMenu class="gui-fab-menu-list" data-color="tertiary">
+              <gui-fab-menu-list color="tertiary">
                 <button gui-fab-menu-item [selected]="true">List view</button>
                 <button gui-fab-menu-item [guiMenuItemSelectable]="true">
                   Grid view
@@ -151,7 +146,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
                   <gui-icon guiMenuItemLeading class="sym">lock</gui-icon>
                   Archived (disabled)
                 </button>
-              </div>
+              </gui-fab-menu-list>
             </ng-template>
           </gui-fab-menu>
         </app-demo-specimen>
@@ -168,10 +163,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
           <gui-fab-menu color="primary-container" ariaLabel="Apply label">
             <gui-icon guiFabIcon class="sym">label</gui-icon>
             <ng-template>
-              <div
-                cdkMenu
-                class="gui-fab-menu-list"
-                data-color="primary-container"
+              <gui-fab-menu-list
+                color="primary-container"
                 style="--gui-fab-menu-max-height: 220px"
               >
                 @for (label of manyLabels; track label) {
@@ -180,7 +173,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
                     {{ label }}
                   </button>
                 }
-              </div>
+              </gui-fab-menu-list>
             </ng-template>
           </gui-fab-menu>
         </app-demo-specimen>
