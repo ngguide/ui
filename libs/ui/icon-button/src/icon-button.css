@@ -16,12 +16,14 @@
   /* Standard icon button default content color. */
   color: var(--md-sys-color-on-surface-variant);
   /* Icon buttons default to a round (full) shape. */
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: var(--gui-icon-button-pill);
   transition:
     background-color var(--md-sys-motion-duration-short4)
       var(--md-sys-motion-easing-standard),
-    border-radius var(--md-sys-motion-duration-short2)
-      var(--md-sys-motion-easing-standard);
+    /* Expressive shape morph (press squish + toggle select): legible,
+       emphasized-eased corner transition rather than a near-instant snap. */
+    border-radius var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-emphasized);
 }
 
 /* The selected-icon slot only shows in the selected (toggle) state. Projected
@@ -102,6 +104,27 @@
   padding-inline: 12px;
 }
 
+/* Per-size "pill" radius = half the container height. The round (and
+   selected-square inversion) state morphs to THIS, not corner-full (9999px):
+   the browser caps radius at half-height, so animating to 9999px makes the
+   VISIBLE corner morph finish in a few ms regardless of duration. Animating to
+   the real half-height keeps it in motion across the whole transition. */
+:host([data-size='xs']) {
+  --gui-icon-button-pill: 16px;
+}
+:host([data-size='sm']) {
+  --gui-icon-button-pill: 20px;
+}
+:host([data-size='md']) {
+  --gui-icon-button-pill: 28px;
+}
+:host([data-size='lg']) {
+  --gui-icon-button-pill: 48px;
+}
+:host([data-size='xl']) {
+  --gui-icon-button-pill: 68px;
+}
+
 /* --- Shape + expressive morph (per-size radii) ---
    The base :host is round (full). A button shows its size-specific SQUARE radius
    when it is either a round-resting button that is selected, OR a square-resting
@@ -136,7 +159,7 @@
 /* Square-resting toggle, selected -> invert back to round (full). Placed after
    the square rules so it wins at equal specificity via source order. */
 :host([data-shape='square'][data-selected]) {
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: var(--gui-icon-button-pill);
 }
 
 /* Pressed (last, so it overrides every resting/selected radius above). */

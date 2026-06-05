@@ -37,8 +37,8 @@
     --gui-split-inner-radius,
     var(--md-sys-shape-corner-extra-small)
   ) !important;
-  transition: border-radius var(--md-sys-motion-duration-short2)
-    var(--md-sys-motion-easing-standard);
+  transition: border-radius var(--md-sys-motion-duration-short4)
+    var(--md-sys-motion-easing-emphasized);
 }
 
 /* Per-size inner corner radius (the 2dp gap is fixed; only the radius varies). */

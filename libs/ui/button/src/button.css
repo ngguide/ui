@@ -20,8 +20,10 @@
       var(--md-sys-motion-easing-standard),
     box-shadow var(--md-sys-motion-duration-short4)
       var(--md-sys-motion-easing-standard),
-    border-radius var(--md-sys-motion-duration-short2)
-      var(--md-sys-motion-easing-standard);
+    /* Expressive shape morph (press squish + toggle select): a legible,
+       emphasized-eased corner transition rather than a near-instant snap. */
+    border-radius var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-emphasized);
 }
 
 .gui-button-label {
@@ -94,14 +96,36 @@
   --gui-comp-icon-size: 40px;
 }
 
+/* Per-size "pill" radius = half the container height. The round (and
+   selected-square) state morphs to THIS, not corner-full (9999px). A browser
+   caps border-radius at half the box height, so animating to 9999px makes the
+   VISIBLE morph finish within a few ms (the rest of the transition runs past
+   the cap, off-screen) — it reads as "no animation". Animating to the real
+   half-height keeps the corner visibly in motion across the whole duration. */
+:host([data-size='xs']) {
+  --gui-button-pill: 16px;
+}
+:host([data-size='sm']) {
+  --gui-button-pill: 20px;
+}
+:host([data-size='md']) {
+  --gui-button-pill: 28px;
+}
+:host([data-size='lg']) {
+  --gui-button-pill: 48px;
+}
+:host([data-size='xl']) {
+  --gui-button-pill: 68px;
+}
+
 /* --- Shape + expressive morph (per-size radii) ---
-   round = full; square = size-specific token; selected flips round<->square;
-   pressed overrides both with the size-specific pressed radius. --- */
+   round = pill (half-height); square = size-specific token; selected flips
+   round<->square; pressed overrides both with the per-size pressed radius. --- */
 
 /* xs / sm */
 :host([data-size='xs'][data-shape='round']),
 :host([data-size='sm'][data-shape='round']) {
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: var(--gui-button-pill);
 }
 :host([data-size='xs'][data-shape='square']),
 :host([data-size='sm'][data-shape='square']) {
@@ -113,7 +137,7 @@
 }
 :host([data-size='xs'][data-shape='square'][data-selected]),
 :host([data-size='sm'][data-shape='square'][data-selected]) {
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: var(--gui-button-pill);
 }
 /* Pressed wins over the selected resting radius: the selected rules above use
    three attributes (size+shape+selected), so the pressed rules match that
@@ -126,7 +150,7 @@
 
 /* md */
 :host([data-size='md'][data-shape='round']) {
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: var(--gui-button-pill);
 }
 :host([data-size='md'][data-shape='square']) {
   border-radius: var(--md-sys-shape-corner-large);
@@ -135,7 +159,7 @@
   border-radius: var(--md-sys-shape-corner-large);
 }
 :host([data-size='md'][data-shape='square'][data-selected]) {
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: var(--gui-button-pill);
 }
 :host([data-size='md'][data-variant][data-gui-state~='pressed']) {
   border-radius: var(--md-sys-shape-corner-medium);
@@ -144,7 +168,7 @@
 /* lg / xl */
 :host([data-size='lg'][data-shape='round']),
 :host([data-size='xl'][data-shape='round']) {
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: var(--gui-button-pill);
 }
 :host([data-size='lg'][data-shape='square']),
 :host([data-size='xl'][data-shape='square']) {
@@ -156,7 +180,7 @@
 }
 :host([data-size='lg'][data-shape='square'][data-selected]),
 :host([data-size='xl'][data-shape='square'][data-selected]) {
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: var(--gui-button-pill);
 }
 :host([data-size='lg'][data-variant][data-gui-state~='pressed']),
 :host([data-size='xl'][data-variant][data-gui-state~='pressed']) {
