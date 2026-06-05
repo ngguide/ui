@@ -90,9 +90,12 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  margin: 0 12px;
-  padding: 8px 0;
-  border-radius: 28px;
+  /* Near-full rail width so labels up to ~9 chars ("Dashboard", "Customers")
+     fit. The item host carries the state-layer/ripple overflow:hidden, so a too
+     narrow item clips the label. */
+  margin: 0 4px;
+  padding: 8px 2px;
+  border-radius: 16px;
   overflow: hidden;
   color: var(--md-sys-color-on-surface-variant);
   text-decoration: none;
@@ -102,6 +105,13 @@
 
 .shell-rail-icon {
   --gui-comp-icon-size: 24px;
+  /* Center the glyph inside the 56x32 active pill (M3 nav rail). Without an
+     explicit flex display the icon resolves to `display: block` and the glyph
+     is left-aligned in the pill — matches the bottom bar's icon treatment. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
   width: 56px;
   height: 32px;
   border-radius: 16px;
