@@ -12,7 +12,7 @@ import { FabComponent, GuiFabColor, GuiFabSize } from './fab';
 })
 class ButtonHostComponent {
   color: GuiFabColor = 'primary-container';
-  size: GuiFabSize = 'md';
+  size: GuiFabSize = 'sm';
   disabled = false;
 }
 
@@ -41,31 +41,31 @@ describe('FabComponent', () => {
     expect(el.getAttribute('data-size')).toBe('lg');
   });
 
-  it('defaults to data-color="primary-container" and data-size="md"', () => {
+  it('defaults to data-color="primary-container" and data-size="sm" (the 56dp FAB)', () => {
     const fixture = TestBed.createComponent(ButtonHostComponent);
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement.querySelector('button');
     expect(el.getAttribute('data-color')).toBe('primary-container');
+    expect(el.getAttribute('data-size')).toBe('sm');
+  });
+
+  it('reflects the medium FAB size (md) to data-size', () => {
+    const fixture = TestBed.createComponent(ButtonHostComponent);
+    fixture.componentInstance.size = 'md';
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement.querySelector('button');
     expect(el.getAttribute('data-size')).toBe('md');
   });
 
-  it('reflects the medium FAB size (lg) to data-size', () => {
+  it('reflects the large FAB size (lg) to data-size', () => {
     const fixture = TestBed.createComponent(ButtonHostComponent);
     fixture.componentInstance.size = 'lg';
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement.querySelector('button');
     expect(el.getAttribute('data-size')).toBe('lg');
-  });
-
-  it('reflects the large FAB size (xl) to data-size', () => {
-    const fixture = TestBed.createComponent(ButtonHostComponent);
-    fixture.componentInstance.size = 'xl';
-    fixture.detectChanges();
-
-    const el: HTMLElement = fixture.nativeElement.querySelector('button');
-    expect(el.getAttribute('data-size')).toBe('xl');
   });
 
   it('uses native disabled on a button host', () => {

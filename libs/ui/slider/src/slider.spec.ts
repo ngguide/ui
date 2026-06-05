@@ -7,7 +7,7 @@ import { SliderComponent } from './slider';
     [min]="min()"
     [max]="max()"
     [step]="step()"
-    [discrete]="discrete()"
+    [stops]="stops()"
     [range]="range()"
     [disabled]="disabled()"
     [(value)]="value"
@@ -18,7 +18,7 @@ class HostComponent {
   min = signal(0);
   max = signal(100);
   step = signal(1);
-  discrete = signal(false);
+  stops = signal(false);
   range = signal(false);
   disabled = signal(false);
   value = signal<number | [number, number] | null>(0);
@@ -88,8 +88,8 @@ describe('SliderComponent', () => {
     expect(host.value()).toBe(100);
   });
 
-  it('snaps to step in discrete mode', () => {
-    host.discrete.set(true);
+  it('snaps to step with stop indicators on', () => {
+    host.stops.set(true);
     host.step.set(10);
     host.value.set(0);
     fixture.detectChanges();

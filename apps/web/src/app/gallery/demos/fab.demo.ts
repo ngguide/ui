@@ -20,25 +20,20 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       entry="@ngguide/ui/fab"
       docHref="https://m3.material.io/components/floating-action-button"
     >
-      <!-- FAB sizes — M3 Expressive variants are size-based (sm/md/lg/xl). -->
-      <app-demo-block heading="Sizes" hint="M3 FAB variants are based on size (sm 40 · md 56 · lg 96 · xl)">
-        <app-demo-specimen label="sm (deprecated)">
+      <!-- FAB sizes — M3 Expressive recommended set (the 40dp small FAB was dropped). -->
+      <app-demo-block heading="Sizes" hint="M3 Expressive recommended FAB scale: sm = FAB 56 · md = Medium 80 · lg = Large 96">
+        <app-demo-specimen label="sm (FAB · 56)">
           <button gui-fab size="sm" aria-label="Add">
             <gui-icon class="sym">add</gui-icon>
           </button>
         </app-demo-specimen>
-        <app-demo-specimen label="md (FAB)">
+        <app-demo-specimen label="md (Medium · 80)">
           <button gui-fab size="md" aria-label="Add">
             <gui-icon class="sym">add</gui-icon>
           </button>
         </app-demo-specimen>
-        <app-demo-specimen label="lg (large FAB)">
+        <app-demo-specimen label="lg (Large · 96)">
           <button gui-fab size="lg" aria-label="Add">
-            <gui-icon class="sym">add</gui-icon>
-          </button>
-        </app-demo-specimen>
-        <app-demo-specimen label="xl">
-          <button gui-fab size="xl" aria-label="Add">
             <gui-icon class="sym">add</gui-icon>
           </button>
         </app-demo-specimen>
@@ -102,28 +97,22 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         </app-demo-specimen>
       </app-demo-block>
 
-      <!-- Extended FAB — sizes (sm/md/lg/xl). -->
-      <app-demo-block heading="Extended FAB · sizes" hint="Label + icon container; small extended FAB is the M3 Expressive default">
-        <app-demo-specimen label="sm">
+      <!-- Extended FAB — sizes (sm/md/lg; the deprecated baseline was dropped). -->
+      <app-demo-block heading="Extended FAB · sizes" hint="Small 56 (default · title-medium) · Medium 80 · Large 96 (title-large)">
+        <app-demo-specimen label="sm (Small · 56)">
           <button gui-extended-fab size="sm">
             <gui-icon guiIcon class="sym">add</gui-icon>
             Compose
           </button>
         </app-demo-specimen>
-        <app-demo-specimen label="md">
+        <app-demo-specimen label="md (Medium · 80)">
           <button gui-extended-fab size="md">
             <gui-icon guiIcon class="sym">add</gui-icon>
             Compose
           </button>
         </app-demo-specimen>
-        <app-demo-specimen label="lg">
+        <app-demo-specimen label="lg (Large · 96)">
           <button gui-extended-fab size="lg">
-            <gui-icon guiIcon class="sym">add</gui-icon>
-            Compose
-          </button>
-        </app-demo-specimen>
-        <app-demo-specimen label="xl">
-          <button gui-extended-fab size="xl">
             <gui-icon guiIcon class="sym">add</gui-icon>
             Compose
           </button>

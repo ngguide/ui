@@ -13,10 +13,13 @@ import {
 } from '@ngguide/ui/interaction';
 
 /**
- * M3 FAB sizes (container dp): small (40), FAB/baseline (56), medium (80), large (96).
- * `sm` is still available but no longer recommended in M3 Expressive — prefer a larger size.
+ * M3 FAB sizes, monotonic small→large. The M3 Expressive recommended set is
+ * FAB / Medium / Large; the 40dp small FAB (no longer recommended) was dropped,
+ * so the ladder maps `sm`→FAB (56), `md`→Medium (80), `lg`→Large (96).
+ * For the extended FAB the same letters map to Small / Medium / Large extended
+ * FAB (56 / 80 / 96) — the deprecated baseline extended FAB was dropped too.
  */
-export type GuiFabSize = 'sm' | 'md' | 'lg' | 'xl';
+export type GuiFabSize = 'sm' | 'md' | 'lg';
 /** M3 FAB color mappings (default = primary-container; surface FABs are deprecated in M3). */
 export type GuiFabColor =
   | 'primary-container'
@@ -45,7 +48,8 @@ export type GuiFabColor =
 })
 export class FabComponent {
   color = input<GuiFabColor>('primary-container');
-  size = input<GuiFabSize>('md');
+  // Default = the standard 56dp FAB (smallest recommended size in M3 Expressive).
+  size = input<GuiFabSize>('sm');
   disabled = input(false, { transform: booleanAttribute });
 
   protected readonly isButton =

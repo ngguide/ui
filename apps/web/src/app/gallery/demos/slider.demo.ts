@@ -10,7 +10,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  * Per the strict-M3 reference (m3.material.io/components/sliders) the slider has
  * three variants (standard / centered / range), five sizes (XS, S, M, L, XL),
  * two orientations (horizontal / vertical), an optional inset icon (standard
- * only, size M+), optional stop indicators (the M3 "stops"/discrete config),
+ * only, size M+), optional stop indicators (the M3 "stops" config),
  * an optional value indicator, and the enabled/disabled states (hover/focus/
  * pressed are interaction-driven and shown live).
  *
@@ -21,7 +21,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  * - `size` (`GuiSize`: xs|sm|md|lg|xl) — the M3 size ladder; the track corner
  *   shape is derived per size, so the Sizes block also covers Shape.
  * - `orientation` (horizontal|vertical) — M3 Expressive layout.
- * - `stops` (canonical) / `discrete` (legacy alias) — stop indicators.
+ * - `stops` — stop indicators.
  * - `valueIndicator` — the label container shown on press/drag/focus.
  * - `min` / `max` / `step` — the value domain.
  * - `disabled` — the M3 disabled treatment.
@@ -115,10 +115,10 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         </app-demo-specimen>
       </app-demo-block>
 
-      <!-- Stop indicators (the M3 "stops" / former "discrete" configuration). -->
+      <!-- Stop indicators (the M3 "stops" configuration). -->
       <app-demo-block
         heading="Stops"
-        hint="Stop indicators at every step — the M3 stops (discrete) configuration"
+        hint="Stop indicators at every step — the M3 stops configuration"
         [column]="true"
       >
         <app-demo-specimen label="continuous (no stops)" class="fill">
@@ -132,12 +132,12 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
             aria-label="Stepped slider"
           />
         </app-demo-specimen>
-        <app-demo-specimen label="discrete (legacy alias, step 25)" class="fill">
+        <app-demo-specimen label="stops (step 25)" class="fill">
           <gui-slider
-            discrete
+            stops
             [step]="25"
-            [(value)]="discrete"
-            aria-label="Discrete slider"
+            [(value)]="steppedCoarse"
+            aria-label="Coarse stepped slider"
           />
         </app-demo-specimen>
       </app-demo-block>
@@ -268,7 +268,7 @@ export class SliderDemo {
   // Stops.
   protected readonly continuous = signal(45);
   protected readonly stepped = signal(40);
-  protected readonly discrete = signal(50);
+  protected readonly steppedCoarse = signal(50);
 
   // Value indicator.
   protected readonly indicated = signal(60);

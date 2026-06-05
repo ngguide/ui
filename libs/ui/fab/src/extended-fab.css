@@ -42,38 +42,26 @@
       var(--md-sys-motion-easing-standard);
 }
 
-/* --- Sizes (M3 Expressive extended FAB scale: Small 56 / baseline FAB 56 /
-   Medium 80 / Large 96). Expanded width is dynamic with an 80dp minimum.
-   The label type style scales with the variant (small uses title-medium;
-   the deprecated baseline uses label-large). --- */
-/* Small extended FAB (recommended default — inherits :host title-medium). */
+/* --- Sizes (M3 Expressive extended FAB scale: Small 56 / Medium 80 / Large 96).
+   The deprecated baseline extended FAB (label-large, 56dp) was dropped, so the
+   ladder is monotonic. Expanded width is dynamic with an 80dp minimum; the label
+   type style scales with the variant (small/medium use title-medium, large uses
+   title-large). --- */
+/* Small extended FAB (recommended default — inherits :host title-medium).
+   M3 Expressive reduced its icon→label space to 8dp ("the inner padding was
+   reduced"); leading/trailing stay 16dp. */
 :host([data-size='sm']) {
   height: 56px;
   min-width: 80px;
   padding: 0 16px;
+  gap: 8px;
   border-radius: var(--md-sys-shape-corner-large);
 
   --gui-comp-icon-size: 24px;
-}
-
-/* Baseline extended FAB (deprecated in M3 Expressive — kept for back-compat,
-   label-large type, 16dp inner padding). */
-:host([data-size='md']) {
-  height: 56px;
-  min-width: 80px;
-  padding: 0 16px;
-  border-radius: var(--md-sys-shape-corner-large);
-
-  --gui-comp-icon-size: 24px;
-  --gui-comp-label-font: var(--md-sys-typescale-label-large-font);
-  --gui-comp-label-size: var(--md-sys-typescale-label-large-size);
-  --gui-comp-label-weight: var(--md-sys-typescale-label-large-weight);
-  --gui-comp-label-line-height: var(--md-sys-typescale-label-large-line-height);
-  --gui-comp-label-tracking: var(--md-sys-typescale-label-large-tracking);
 }
 
 /* Medium extended FAB (80dp — inherits :host title-medium). */
-:host([data-size='lg']) {
+:host([data-size='md']) {
   height: 80px;
   min-width: 80px;
   padding: 0 24px;
@@ -83,7 +71,7 @@
 }
 
 /* Large extended FAB (96dp). */
-:host([data-size='xl']) {
+:host([data-size='lg']) {
   height: 96px;
   min-width: 80px;
   padding: 0 28px;
@@ -105,11 +93,11 @@
   justify-content: center;
 }
 
-:host([data-size='lg']:not([data-expanded])) {
+:host([data-size='md']:not([data-expanded])) {
   min-width: 80px;
 }
 
-:host([data-size='xl']:not([data-expanded])) {
+:host([data-size='lg']:not([data-expanded])) {
   min-width: 96px;
 }
 

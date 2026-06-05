@@ -71,11 +71,6 @@ export class SliderComponent {
    * the former "discrete" slider). Defaults to `No`.
    */
   readonly stops = input(false, { transform: booleanAttribute });
-  /**
-   * @deprecated Use {@link stops}. Retained as the legacy M2/M3 "discrete"
-   * alias; if set it enables stop indicators just like `stops`.
-   */
-  readonly discrete = input(false, { transform: booleanAttribute });
 
   readonly range = input(false, { transform: booleanAttribute });
 
@@ -104,10 +99,8 @@ export class SliderComponent {
     alias: 'aria-labelledby',
   });
 
-  /** Effective stop-indicator state: either the canonical or legacy input. */
-  protected readonly showStops = computed(
-    () => this.stops() || this.discrete(),
-  );
+  /** Effective stop-indicator state. */
+  protected readonly showStops = computed(() => this.stops());
 
   private readonly track =
     viewChild.required<ElementRef<HTMLElement>>('track');
