@@ -1,79 +1,82 @@
 /* M3 FAB menu panel. Styled via `:host` — the host element is the CdkMenu
    surface, and emulated encapsulation rides on it into the CDK overlay, so no
-   global stylesheet / ViewEncapsulation.None is needed. The FAB menu uses the
-   container-large surface (more rounded + more elevated than a baseline menu).
+   global stylesheet / ViewEncapsulation.None is needed.
+
+   Per the M3 Expressive spec the FAB menu is NOT a card of rows: it has no
+   container surface of its own. The panel is an invisible, right-aligned column
+   and each item is a self-contained, elevated pill (corner-full, its own
+   level-3 shadow), floating above the close button and growing upward.
 
    The items are the consumer's projected `gui-fab-menu-item` buttons, which
    carry the consumer's encapsulation id — component-scoped descendant rules
-   can't reach them. Instead the contrasting item color set, height and radius
-   are published as INHERITED custom properties (`--gui-menu-item-*`) that the
-   shared `.gui-menu-item` (in @ngguide/ui/menu) reads, with the baseline menu
-   defaults as fallbacks. Custom properties inherit through projection, so each
-   item adopts the FAB-menu look without ::ng-deep. */
+   can't reach them. Instead the item look (vibrant color pair, 56dp medium-
+   button height, pill radius, hug-content width, per-pill shadow) is published
+   as INHERITED custom properties (`--gui-menu-item-*`) that the shared
+   `.gui-menu-item` (in @ngguide/ui/menu) reads, with the baseline menu defaults
+   as fallbacks. Custom properties inherit through projection, so each item
+   adopts the FAB-menu look without ::ng-deep. */
 :host {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  /* Pills hug their content and align to the trailing edge (above the close
+     button), per the M3 placement. */
+  align-items: flex-end;
   gap: 8px;
-  padding: 8px;
+  /* No card: transparent, no elevation, no radius. The small padding only keeps
+     the per-pill shadows from being clipped by the scroll container. */
+  padding: 4px;
   margin: 0;
-  border-radius: var(--md-sys-shape-corner-large);
-  box-shadow: var(--md-sys-elevation-level3);
   list-style: none;
-  /* When the menu can scroll, items scroll within the panel while the FAB
-     (the close button) stays anchored above it, unobstructed (M3 a11y). */
+  /* When the menu can scroll, items scroll while the close button (the FAB)
+     stays anchored below, unobstructed (M3 a11y). */
   max-height: var(--gui-fab-menu-max-height, 60vh);
   overflow-y: auto;
 
-  /* Default color set = primary-container (matches the FAB default). Items take
-     the *contrasting* paired role so the close button and items read as one
-     coupled, contrasting color set (M3: "Contrasting close button and item
-     colors"). FAB menu items also share the medium-button measurements (56dp). */
-  background: var(--md-sys-color-primary-container);
+  /* Default color set = primary. Each item takes the vibrant `primary` half of
+     the pair (the close button takes the tonal `primary-container` half) so the
+     two elements read as one coupled, contrasting set (M3: "Contrasting close
+     button and item colors"). Items share the medium-button measurements. */
   --gui-menu-item-bg: var(--md-sys-color-primary);
   --gui-menu-item-fg: var(--md-sys-color-on-primary);
   --gui-menu-item-icon-fg: var(--md-sys-color-on-primary);
   --gui-menu-item-height: 56px;
-  --gui-menu-item-radius: var(--md-sys-shape-corner-large);
+  --gui-menu-item-radius: var(--md-sys-shape-corner-full);
+  --gui-menu-item-width: auto;
+  --gui-menu-item-padding-inline: 24px;
+  --gui-menu-item-shadow: var(--md-sys-elevation-level3);
+
+  /* Disabled pills drop to the M3 filled-disabled treatment (flat, faint
+     container + 38% label) so the label stays legible instead of vibrant-on-
+     low-contrast — the close-button/item color set does not apply when disabled.
+     The disabled tint (on-surface @ 12%) is composited over an OPAQUE elevated
+     surface so the pill reads as a solid (if muted) capsule rather than a
+     see-through one against whatever sits behind the floating menu. */
+  --gui-menu-item-disabled-bg: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface) 12%,
+    var(--md-sys-color-surface-container-high)
+  );
+  --gui-menu-item-disabled-fg: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface) 38%,
+    transparent
+  );
 }
 
-:host([data-color='secondary-container']) {
-  background: var(--md-sys-color-secondary-container);
+:host([data-color='secondary']) {
   --gui-menu-item-bg: var(--md-sys-color-secondary);
   --gui-menu-item-fg: var(--md-sys-color-on-secondary);
   --gui-menu-item-icon-fg: var(--md-sys-color-on-secondary);
 }
 
-:host([data-color='tertiary-container']) {
-  background: var(--md-sys-color-tertiary-container);
+:host([data-color='tertiary']) {
   --gui-menu-item-bg: var(--md-sys-color-tertiary);
   --gui-menu-item-fg: var(--md-sys-color-on-tertiary);
   --gui-menu-item-icon-fg: var(--md-sys-color-on-tertiary);
 }
 
-:host([data-color='primary']) {
-  background: var(--md-sys-color-primary);
-  --gui-menu-item-bg: var(--md-sys-color-primary-container);
-  --gui-menu-item-fg: var(--md-sys-color-on-primary-container);
-  --gui-menu-item-icon-fg: var(--md-sys-color-on-primary-container);
-}
-
-:host([data-color='secondary']) {
-  background: var(--md-sys-color-secondary);
-  --gui-menu-item-bg: var(--md-sys-color-secondary-container);
-  --gui-menu-item-fg: var(--md-sys-color-on-secondary-container);
-  --gui-menu-item-icon-fg: var(--md-sys-color-on-secondary-container);
-}
-
-:host([data-color='tertiary']) {
-  background: var(--md-sys-color-tertiary);
-  --gui-menu-item-bg: var(--md-sys-color-tertiary-container);
-  --gui-menu-item-fg: var(--md-sys-color-on-tertiary-container);
-  --gui-menu-item-icon-fg: var(--md-sys-color-on-tertiary-container);
-}
-
 /* --- Open animation. The FAB menu animates from the top trailing edge of the
-   FAB; the panel is anchored above the FAB and trailing-aligned, so it grows
+   FAB; the column is anchored above the FAB and trailing-aligned, so it grows
    out of its bottom-trailing corner (M3 measurements). --- */
 @media (prefers-reduced-motion: no-preference) {
   :host {

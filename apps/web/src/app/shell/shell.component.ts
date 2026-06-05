@@ -19,6 +19,7 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { CdkMenu, CdkMenuTrigger } from '@angular/cdk/menu';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { FocusKeyManager, FocusableOption } from '@angular/cdk/a11y';
 import { Subscription, filter, map } from 'rxjs';
 import { createRovingFocus } from '@ngguide/ui/interaction';
@@ -59,6 +60,7 @@ import { NavRailItemComponent } from './nav-rail-item.component';
     RouterLinkActive,
     CdkMenu,
     CdkMenuTrigger,
+    CdkScrollable,
     FormsModule,
     IconComponent,
     IconButtonComponent,

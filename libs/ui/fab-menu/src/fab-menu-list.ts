@@ -1,6 +1,13 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CdkMenu } from '@angular/cdk/menu';
-import { GuiFabColor } from '@ngguide/ui/fab';
+
+/**
+ * M3 FAB-menu color set. Per the spec the FAB menu has exactly three color sets;
+ * each set is a *contrasting pair* spread across the two elements — the close
+ * button (FAB) takes the tonal `*-container` role and the items take the vibrant
+ * `*` role. One letter therefore selects both halves of the pair.
+ */
+export type GuiFabMenuColor = 'primary' | 'secondary' | 'tertiary';
 
 /**
  * M3 FAB-menu panel — the container of the FAB menu's action items.
@@ -34,6 +41,6 @@ import { GuiFabColor } from '@ngguide/ui/fab';
 })
 export class FabMenuListComponent {
   /** The FAB-menu color set, shared (as a contrasting pair) by the close button
-   * (the FAB) and the items. Defaults to the FAB default of primary-container. */
-  readonly color = input<GuiFabColor>('primary-container');
+   * (the FAB) and the items. Defaults to the primary set. */
+  readonly color = input<GuiFabMenuColor>('primary');
 }

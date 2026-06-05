@@ -38,17 +38,19 @@
   align-items: center;
   gap: 12px;
   box-sizing: border-box;
-  width: 100%;
-  /* Height / background / label color / radius are parameterized so a wrapping
-     surface can re-skin the item purely via inherited custom properties (the
-     FAB menu does this — see @ngguide/ui/fab-menu). The fallbacks reproduce the
-     baseline menu look, so plain menus are unaffected. */
+  /* Width / height / padding / background / label color / radius / shadow are
+     parameterized so a wrapping surface can re-skin the item purely via
+     inherited custom properties (the FAB menu does this — see
+     @ngguide/ui/fab-menu, where items become hug-content, elevated pills). The
+     fallbacks reproduce the baseline menu look, so plain menus are unaffected. */
+  width: var(--gui-menu-item-width, 100%);
   height: var(--gui-menu-item-height, 48px);
-  padding: 0 12px;
+  padding: 0 var(--gui-menu-item-padding-inline, 12px);
   cursor: pointer;
   background: var(--gui-menu-item-bg, transparent);
   border: none;
   border-radius: var(--gui-menu-item-radius, 0);
+  box-shadow: var(--gui-menu-item-shadow, none);
   text-align: left;
   text-decoration: none;
   color: var(--gui-menu-item-fg, var(--md-sys-color-on-surface));
@@ -198,11 +200,20 @@
   color: var(--md-sys-color-on-tertiary-container);
 }
 
-/* CdkMenuItem reflects disabled as [aria-disabled="true"]. */
+/* CdkMenuItem reflects disabled as [aria-disabled="true"]. A re-skinning surface
+   (the FAB menu) overrides the container/label via `--gui-menu-item-disabled-*`
+   so a filled item dims to the M3 disabled treatment (on-surface 12% container,
+   on-surface 38% label, flat) instead of keeping its vibrant fill with low-
+   contrast text. Plain menus leave the vars unset and dim text only. */
 .gui-menu-item[aria-disabled='true'] {
   pointer-events: none;
   cursor: default;
-  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  background: var(--gui-menu-item-disabled-bg, var(--gui-menu-item-bg, transparent));
+  box-shadow: none;
+  color: var(
+    --gui-menu-item-disabled-fg,
+    color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent)
+  );
 }
 
 .gui-menu-item[aria-disabled='true'] .gui-menu-item-leading,
@@ -210,7 +221,10 @@
 .gui-menu-item[aria-disabled='true'] .gui-menu-item-trailing-text,
 .gui-menu-item[aria-disabled='true'] .gui-menu-item-badge,
 .gui-menu-item[aria-disabled='true'] .gui-menu-item-supporting {
-  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  color: var(
+    --gui-menu-item-disabled-fg,
+    color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent)
+  );
 }
 
 .gui-menu-divider {

@@ -3,21 +3,23 @@ import {
   FabMenuComponent,
   FabMenuItemComponent,
   FabMenuListComponent,
+  GuiFabMenuColor,
 } from '@ngguide/ui/fab-menu';
 import { IconComponent } from '@ngguide/ui/icon';
-import { GuiFabColor } from '@ngguide/ui/fab';
 import { GALLERY_DEMO_UI } from '../demo-block.component';
 
 /**
  * Vitrine demo for the M3 FAB menu (`@ngguide/ui/fab-menu`).
  *
  * The FAB menu is a single-variant component: one menu size that pairs with any
- * FAB, opened by a 56dp close button. The implemented `FabMenuComponent` exposes
- * a single `color: GuiFabColor` input (the coupled, contrasting color set shared
- * by the close button and the items) plus an `ariaLabel`. The menu panel is the
- * consumer's `<ng-template>` carrying a `<gui-fab-menu-list [color]>` (which
- * hosts `CdkMenu` as a host directive) so the close button and items read as one
- * contrasting set. Each block clicks the FAB to open its live menu.
+ * FAB, opened by a 56dp close button that morphs from the resting FAB. The
+ * implemented `FabMenuComponent` exposes a single `color: GuiFabMenuColor` input
+ * — one of the three M3 color sets (primary / secondary / tertiary); each set is
+ * a contrasting pair, tonal close button + vibrant items — plus an `ariaLabel`.
+ * The menu panel is the consumer's `<ng-template>` carrying a
+ * `<gui-fab-menu-list [color]>` (which hosts `CdkMenu` as a host directive); its
+ * items are individual elevated pills floating above the close button. Each
+ * block clicks the FAB to open its live menu.
  */
 @Component({
   selector: 'app-demo-fab-menu',
@@ -35,14 +37,12 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       entry="@ngguide/ui/fab-menu"
       docHref="https://m3.material.io/components/fab-menu"
     >
-      <!-- The six color sets the component accepts (GuiFabColor). M3 lists the
-           primary / secondary / tertiary sets; the implementation also supports
-           their container counterparts. The FAB (close button) takes the named
-           color; the panel takes the matching color so the items adopt the
-           contrasting paired role. -->
+      <!-- The three M3 color sets (primary / secondary / tertiary). Each set is
+           a contrasting pair: the close button (FAB) takes the tonal
+           *-container half, the items take the vibrant * half. -->
       <app-demo-block
         heading="Color sets"
-        hint="Six GuiFabColor sets — contrasting close button + items. Click a FAB to open."
+        hint="Three M3 sets — tonal close button + vibrant items. Click a FAB to open."
       >
         @for (color of colors; track color) {
           <app-demo-specimen [label]="color">
@@ -111,10 +111,10 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         </app-demo-specimen>
 
         <app-demo-specimen label="label only">
-          <gui-fab-menu color="secondary-container" ariaLabel="Sort">
+          <gui-fab-menu color="secondary" ariaLabel="Sort">
             <gui-icon guiFabIcon class="sym">sort</gui-icon>
             <ng-template>
-              <gui-fab-menu-list color="secondary-container">
+              <gui-fab-menu-list color="secondary">
                 <button gui-fab-menu-item>Newest first</button>
                 <button gui-fab-menu-item>Oldest first</button>
                 <button gui-fab-menu-item>By name</button>
@@ -160,11 +160,11 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         hint="Long menus scroll within the panel; the close button stays unobstructed."
       >
         <app-demo-specimen label="scrollable">
-          <gui-fab-menu color="primary-container" ariaLabel="Apply label">
+          <gui-fab-menu color="primary" ariaLabel="Apply label">
             <gui-icon guiFabIcon class="sym">label</gui-icon>
             <ng-template>
               <gui-fab-menu-list
-                color="primary-container"
+                color="primary"
                 style="--gui-fab-menu-max-height: 220px"
               >
                 @for (label of manyLabels; track label) {
@@ -182,11 +182,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
   `,
 })
 export class FabMenuDemo {
-  /** The six color sets accepted by the FAB menu (GuiFabColor). */
-  protected readonly colors: GuiFabColor[] = [
-    'primary-container',
-    'secondary-container',
-    'tertiary-container',
+  /** The three M3 color sets accepted by the FAB menu (GuiFabMenuColor). */
+  protected readonly colors: GuiFabMenuColor[] = [
     'primary',
     'secondary',
     'tertiary',
