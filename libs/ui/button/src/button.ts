@@ -27,9 +27,13 @@ export type GuiButtonShape = 'round' | 'square';
     // eslint-disable-next-line @angular-eslint/component-selector
     'button[gui-button], button[guiButton], a[gui-button], a[guiButton]',
   template: `
+    <!-- Both icon slots sit in the same leading position; CSS shows exactly one
+         (the leading glyph when unselected, the selected glyph when selected) so
+         the icon stays leading across the toggle and never jumps sides (M3: a
+         button's icon is leading in both states). -->
     <ng-content select="[guiIcon]" />
-    <span class="gui-button-label"><ng-content /></span>
     <ng-content select="[guiSelectedIcon]" />
+    <span class="gui-button-label"><ng-content /></span>
   `,
   styleUrl: './button.css',
   hostDirectives: [

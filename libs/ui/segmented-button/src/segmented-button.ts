@@ -30,8 +30,13 @@ import { SegmentedButtonGroupComponent } from './segmented-button-group';
           fill="currentColor"
         />
       </svg>
+    } @else {
+      <!-- M3: the leading icon belongs to the unselected state; when the
+           selected checkmark shows it REPLACES the icon, never sits beside it.
+           With showSelectedIcon=false the check is suppressed and the icon
+           keeps showing (the consumer's escape hatch). -->
+      <ng-content select="[guiIcon]" />
     }
-    <ng-content select="[guiIcon]" />
     <span class="gui-segment-label"><ng-content /></span>
   `,
   styleUrl: './segmented-button.css',

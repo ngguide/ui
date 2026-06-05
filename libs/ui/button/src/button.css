@@ -30,10 +30,16 @@
   display: inline;
 }
 
-/* The selected-icon slot only shows in the selected (toggle) state. Projected
-   content carries the CONSUMER's encapsulation id, so a content-scoped descendant
-   selector would NOT match it — `::ng-deep` pierces the scoping. */
+/* Leading-vs-selected icon swap for a toggle button. Projected content carries
+   the CONSUMER's encapsulation id, so a content-scoped descendant selector would
+   NOT match it — `::ng-deep` pierces the scoping. The two rules are symmetric:
+   hide the selected glyph while unselected, and hide the leading glyph while
+   selected, so only ever ONE icon shows (M3: a button has one optional icon —
+   the selected state replaces the leading icon, it does not add a second one). */
 :host(:not([data-selected])) ::ng-deep [guiSelectedIcon] {
+  display: none;
+}
+:host([data-selected]) ::ng-deep [guiIcon] {
   display: none;
 }
 
