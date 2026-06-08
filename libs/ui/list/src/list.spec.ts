@@ -20,6 +20,18 @@ class ListboxHost {
 @Component({
   imports: [GuiList, GuiListItem],
   template: `
+    <gui-list mode="listbox">
+      <gui-list-item selectable>Apple</gui-list-item>
+      <gui-list-item selectable [selected]="true">Banana</gui-list-item>
+      <gui-list-item selectable>Cherry</gui-list-item>
+    </gui-list>
+  `,
+})
+class PreselectedListboxHost {}
+
+@Component({
+  imports: [GuiList, GuiListItem],
+  template: `
     <gui-list mode="action">
       <gui-list-item><button>One</button></gui-list-item>
       <gui-list-item><button>Two</button></gui-list-item>
@@ -34,6 +46,8 @@ function flush(): void {
 
 const ENTER = 13;
 const ARROW_DOWN = 40;
+const ARROW_RIGHT = 39;
+const ARROW_LEFT = 37;
 
 /**
  * Build a keydown event. CDK's `ListKeyManager` keys off the (deprecated)
@@ -74,6 +88,29 @@ describe('GuiList (listbox)', () => {
     expect(items[1].getAttribute('tabindex')).toBe('0');
   });
 
+  it('navigates with Left/Right arrows like Up/Down (M3 keyboard table)', () => {
+    const { fixture, list, items } = setup();
+    // M3: Down AND Right move to the next option; Up AND Left to the previous.
+    list.dispatchEvent(keydown('ArrowRight', ARROW_RIGHT));
+    fixture.detectChanges();
+    expect(items[1].getAttribute('tabindex')).toBe('0');
+    list.dispatchEvent(keydown('ArrowLeft', ARROW_LEFT));
+    fixture.detectChanges();
+    expect(items[0].getAttribute('tabindex')).toBe('0');
+  });
+
+  it('seeds the tab stop on a pre-selected option, not the first (M3 focus rule)', () => {
+    const fixture = TestBed.createComponent(PreselectedListboxHost);
+    fixture.detectChanges();
+    flush();
+    const items = Array.from(
+      fixture.nativeElement.querySelectorAll('gui-list-item'),
+    ) as HTMLElement[];
+    expect(items[1].getAttribute('tabindex')).toBe('0');
+    expect(items[0].getAttribute('tabindex')).toBe('-1');
+    expect(items[2].getAttribute('tabindex')).toBe('-1');
+  });
+
   it('toggles aria-selected on Enter; single-select clears the previous (Req 6.3)', () => {
     const { fixture, list, items } = setup();
     // Select the first (active) option.
@@ -87,6 +124,18 @@ describe('GuiList (listbox)', () => {
     fixture.detectChanges();
     expect(items[1].getAttribute('aria-selected')).toBe('true');
     expect(items[0].getAttribute('aria-selected')).toBe('false');
+  });
+
+  it('keeps a single-select option selected when re-activated (no deselect, Req 6.3)', () => {
+    const { fixture, list, items } = setup();
+    list.dispatchEvent(keydown('Enter', ENTER));
+    fixture.detectChanges();
+    expect(items[0].getAttribute('aria-selected')).toBe('true');
+    // M3: Enter "selects a list item not yet selected" — re-pressing it on the
+    // already-selected single-select option must NOT clear it to empty.
+    list.dispatchEvent(keydown('Enter', ENTER));
+    fixture.detectChanges();
+    expect(items[0].getAttribute('aria-selected')).toBe('true');
   });
 
   it('allows multiple selections when multiselectable (Req 6.3)', () => {

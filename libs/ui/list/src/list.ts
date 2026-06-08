@@ -97,20 +97,29 @@ export class GuiList implements GuiListContext {
     this.manager?.onKeydown(event);
   }
 
-  /** Toggle selection of an option, honoring single vs multi (Req 6.3). */
+  /** Toggle/select an option, honoring single vs multi (Req 6.3). */
   select(item: GuiListItem): void {
     if (item.disabled()) {
       return;
     }
-    const next = !item.selected();
-    if (next && !this.multiselectable()) {
-      for (const other of this.items()) {
-        if (other !== item) {
-          other.selected.set(false);
-        }
+    // Multi-select: plain toggle.
+    if (this.multiselectable()) {
+      item.selected.set(!item.selected());
+      return;
+    }
+    // Single-select: activating the already-selected option is a no-op — M3's
+    // keyboard rule is "select a list item not yet selected", so Enter/Space (or
+    // a click) never deselects down to an empty selection; switching options
+    // moves the single selection.
+    if (item.selected()) {
+      return;
+    }
+    for (const other of this.items()) {
+      if (other !== item) {
+        other.selected.set(false);
       }
     }
-    item.selected.set(next);
+    item.selected.set(true);
   }
 
   private rebuildManager(): void {
@@ -118,7 +127,10 @@ export class GuiList implements GuiListContext {
     const items = this.items();
     this.manager = createRovingFocus(
       items as readonly FocusableOption[],
-      { orientation: 'vertical' },
+      // M3 keyboard table: Down AND Right move to the next option, Up AND Left
+      // to the previous — so the listbox navigates on both axes (orientation
+      // 'both'), not vertical-only.
+      { orientation: 'both' },
       // Disabled options stay reachable (M3 keeps them discoverable, Req 6.6).
     ).skipPredicate(() => false);
 
@@ -131,10 +143,14 @@ export class GuiList implements GuiListContext {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(syncActive);
 
-    // Seed the first option as the initial tab stop without stealing focus.
+    // Seed the initial tab stop without stealing focus. M3: focus goes to the
+    // first option, UNLESS one is already selected — then the selected option
+    // holds the tab stop so Tab lands on the current selection.
     if (items.length > 0) {
-      this.manager.updateActiveItem(0);
-      syncActive(0);
+      const selectedIndex = items.findIndex((item) => item.selected());
+      const seed = selectedIndex >= 0 ? selectedIndex : 0;
+      this.manager.updateActiveItem(seed);
+      syncActive(seed);
     }
   }
 }

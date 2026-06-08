@@ -50,6 +50,11 @@
 :host(:not([data-interactive]))::before {
   opacity: 0 !important;
 }
+/* Suppress the touch ripple on non-interactive rows too, the same way as the
+   state layer — only listbox options and `interactive` action rows ripple. */
+:host(:not([data-interactive])) ::ng-deep .gui-ripple {
+  display: none;
+}
 
 :host([tabindex]) {
   cursor: pointer;
@@ -107,6 +112,19 @@
 :host([data-lines='3']) .gui-list-item-leading {
   align-items: flex-start;
 }
+/* A leading ICON (leadingKind="icon") is Top-aligned at every height with the
+   documented 8dp top padding (12dp at 88dp+), unlike an avatar/image which is
+   centered until 88dp. `align-self: flex-start` pins the slot to the row's top
+   (the row otherwise centers it); the 8dp top padding is then measured from the
+   row top at 56/72dp. At 88dp the row is already top-aligned and supplies the
+   12dp via its own padding-block, so no extra padding is added. */
+:host([data-leading='icon']) .gui-list-item-leading {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+:host([data-leading='icon']:not([data-lines='3'])) .gui-list-item-leading {
+  padding-block-start: 8px;
+}
 .gui-list-item-leading:empty {
   display: none;
 }
@@ -118,6 +136,23 @@
   justify-content: center;
   flex: 1 1 auto;
   min-width: 0;
+}
+
+/* --- Overline: a small label above the headline (M3 anatomy: Overline),
+   label-small / on-surface-variant. Hidden when no overline is projected. --- */
+.gui-list-item-overline {
+  font-family: var(--md-sys-typescale-label-small-font);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+  color: var(--md-sys-color-on-surface-variant);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gui-list-item-overline:empty {
+  display: none;
 }
 
 .gui-list-item-headline {
@@ -169,6 +204,21 @@
 }
 .gui-list-item-trailing:empty {
   display: none;
+}
+/* A projected trailing ICON takes the row content color (on-surface), not the
+   muted on-surface-variant reserved for trailing supporting text. */
+.gui-list-item-trailing gui-icon {
+  color: var(--md-sys-color-on-surface);
+}
+
+/* --- Selected row: overline / supporting / trailing follow the row's
+   on-primary-container content color (set on :host) for contrast on the
+   primary-container fill, instead of the default on-surface-variant. --- */
+:host([data-selected]) .gui-list-item-overline,
+:host([data-selected]) .gui-list-item-supporting,
+:host([data-selected]) .gui-list-item-trailing,
+:host([data-selected]) .gui-list-item-trailing gui-icon {
+  color: inherit;
 }
 
 /* --- Non-color selection cue: a 24dp trailing checkmark on selected options

@@ -64,4 +64,70 @@ describe('GuiListItem', () => {
     // `.gui-focus-visible` (and thus the outline) on keyboard focus.
     expect(item.classList.contains('gui-focus-ring')).toBe(true);
   });
+
+  it('carries the ripple directive for the M3 touch ripple', () => {
+    const fixture = TestBed.createComponent(ItemHost);
+    fixture.componentInstance.mode.set('listbox');
+    fixture.detectChanges();
+    const item = fixture.nativeElement.querySelector('gui-list-item');
+    // GuiRippleDirective applies `.gui-ripple-host`; CSS gates the visible
+    // ripple to interactive rows via `data-interactive`.
+    expect(item.classList.contains('gui-ripple-host')).toBe(true);
+  });
+
+  it('projects an overline above the headline (M3 anatomy: Overline)', () => {
+    @Component({
+      imports: [GuiList, GuiListItem],
+      template: `
+        <gui-list>
+          <gui-list-item [lines]="3">
+            <span guiListItemOverline>OVERLINE</span>
+            Headline
+            <span guiListItemSupporting>Supporting</span>
+          </gui-list-item>
+        </gui-list>
+      `,
+    })
+    class OverlineHost {}
+    const fixture = TestBed.createComponent(OverlineHost);
+    fixture.detectChanges();
+    const overline = fixture.nativeElement.querySelector(
+      '.gui-list-item-overline',
+    );
+    expect(overline?.textContent?.trim()).toBe('OVERLINE');
+  });
+
+  it('reflects leadingKind onto data-leading for icon-specific alignment', () => {
+    @Component({
+      imports: [GuiList, GuiListItem],
+      template: `
+        <gui-list>
+          <gui-list-item leadingKind="icon">Headline</gui-list-item>
+        </gui-list>
+      `,
+    })
+    class LeadingHost {}
+    const fixture = TestBed.createComponent(LeadingHost);
+    fixture.detectChanges();
+    const item = fixture.nativeElement.querySelector('gui-list-item');
+    expect(item.getAttribute('data-leading')).toBe('icon');
+  });
+
+  it('shows the built-in checkmark cue on a selected option by default (non-color cue)', () => {
+    @Component({
+      imports: [GuiList, GuiListItem],
+      template: `
+        <gui-list mode="listbox">
+          <gui-list-item selectable [selected]="true">Pick</gui-list-item>
+        </gui-list>
+      `,
+    })
+    class SelectedHost {}
+    const fixture = TestBed.createComponent(SelectedHost);
+    fixture.detectChanges();
+    // selectionIndicator now defaults to true, so a selected listbox option
+    // carries the non-color checkmark even without a projected control.
+    const check = fixture.nativeElement.querySelector('.gui-list-item-check');
+    expect(check).not.toBeNull();
+  });
 });
