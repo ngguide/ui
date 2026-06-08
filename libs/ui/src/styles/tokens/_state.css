@@ -1,10 +1,12 @@
 /* M3 state tokens: state-layer opacities and the focus indicator. */
 :root {
   --md-sys-state-hover-state-layer-opacity: 0.08;
-  --md-sys-state-focus-state-layer-opacity: 0.12;
-  --md-sys-state-pressed-state-layer-opacity: 0.12;
+  --md-sys-state-focus-state-layer-opacity: 0.1;
+  --md-sys-state-pressed-state-layer-opacity: 0.1;
   --md-sys-state-dragged-state-layer-opacity: 0.16;
 
   --md-sys-state-focus-indicator-thickness: 3px;
   --md-sys-state-focus-indicator-outer-offset: 2px;
+  /* M3 focus indicator color is the secondary role (md.comp.*.focus.indicator.color). */
+  --md-sys-state-focus-indicator-color: var(--md-sys-color-secondary);
 }

@@ -110,7 +110,7 @@ export const INTERACTION_CSS = `
 
 /* --- Focus indicator. Hidden until GuiFocusRingDirective marks keyboard focus
    with .gui-focus-visible. Drawn as an outline from the focus-indicator tokens
-   (thickness + outer offset) in the host content color role, so it stays
+   (thickness + outer offset + the M3 secondary indicator color), so it stays
    visible in both light and dark schemes (Req 3.4, 3.5). An outline paints
    outside the border box and is not clipped by the host's own overflow, so the
    ring survives the state-layer/ripple clipping. Disabled / aria-disabled hosts
@@ -119,7 +119,8 @@ export const INTERACTION_CSS = `
   outline: none;
 }
 .gui-focus-ring.gui-focus-visible {
-  outline: var(--md-sys-state-focus-indicator-thickness) solid currentColor;
+  outline: var(--md-sys-state-focus-indicator-thickness) solid
+    var(--md-sys-state-focus-indicator-color);
   outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
 }
 .gui-focus-ring:disabled.gui-focus-visible,
