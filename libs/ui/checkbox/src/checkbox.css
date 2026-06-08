@@ -1,23 +1,52 @@
-/* M3 checkbox container. Hover/focus/pressed state layers, the ripple and the
-   focus ring are drawn by the composed interaction foundation
-   (GuiStateLayer/GuiRipple/GuiFocusRing via hostDirectives) — never re-implement
-   them here. This file styles the resting box, checkmark and color roles only.
-   Values trace to --md-sys-* tokens. */
+/* M3 checkbox. Hover/focus/pressed state layers, the ripple and the focus ring
+   are drawn by the composed interaction foundation (GuiStateLayer/GuiRipple/
+   GuiFocusRing) — never re-implement them here. Those directives are scoped to
+   the 40dp `.gui-checkbox-state` circle around the box so the state layer and
+   focus ring stay on the checkbox, not the label. This file styles the control
+   geometry, resting box, checkmark/dash and color roles only. Values trace to
+   --md-sys-* tokens. */
 
 :host {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  position: relative;
   cursor: pointer;
-  /* M3 control content color for the label. */
+  /* M3 control content color for the label; stays on-surface in every state. */
   color: var(--md-sys-color-on-surface);
-  /* The control region drives the state-layer/focus-ring shape. */
+}
+
+/* 48dp target region (M3 "Target size | 48dp"). A <label> so a pointer anywhere
+   in the target — not only on the 18dp box — toggles the checkbox. Centers the
+   40dp state layer over the box. */
+.gui-checkbox-control {
+  box-sizing: border-box;
+  position: relative;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  cursor: inherit;
+}
+
+/* 40dp state-layer / focus-ring / ripple circle, centered on the box (M3
+   "State-layer size | 40dp"). The interaction directives draw the hover/focus/
+   pressed tint and the focus ring here, so they stay scoped to the checkbox
+   rather than wrapping the adjacent label. Its `color` is the state-layer/ripple
+   tint source (currentColor), and follows the control content color per state:
+   on-surface unselected, primary when selected, error in the error state. */
+.gui-checkbox-state {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   border-radius: var(--md-sys-shape-corner-full);
 }
 
-/* Visually-hidden native input. It still receives focus and sits over the box
-   to provide the >=48px accessible hit target. */
+/* Resting 18px box (M3 "Container size | 18dp"). */
 .gui-checkbox-box {
   box-sizing: border-box;
   position: relative;
@@ -36,20 +65,6 @@
       var(--md-sys-motion-easing-standard);
 }
 
-input[type='checkbox'] {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
-  margin: 0;
-  /* Center the 48px hit target over the 18px box. */
-  margin-left: -15px;
-  opacity: 0;
-  cursor: inherit;
-}
-
 /* Checkmark, drawn as a rotated pseudo-element on the box. */
 .gui-checkbox-box::after {
   content: '';
@@ -63,6 +78,27 @@ input[type='checkbox'] {
   border: solid var(--md-sys-color-on-primary);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+
+/* Native checkbox: visually hidden but kept in the DOM so it stays focusable and
+   is the keyboard-focus target. The <label> control forwards pointer activation,
+   so the input itself takes no pointer events. */
+.gui-checkbox-native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  clip-path: inset(50%);
+}
+
+/* Adjacent text label (M3: color role on surface; clickable and linked via
+   for/id + aria-labelledby so selecting the text toggles the checkbox). */
+.gui-checkbox-label {
+  cursor: inherit;
 }
 
 /* Checked: filled box + visible checkmark. */
@@ -90,9 +126,19 @@ input[type='checkbox'] {
   transform: none;
 }
 
-/* Error state uses the M3 error role for the outline and fill. */
+/* Selected/indeterminate: the state-layer/ripple tint follows the control
+   content color → primary (M3: the state layer is not pinned to on-surface). */
+:host(:has(input:checked)) .gui-checkbox-state,
+:host(:has(input:indeterminate)) .gui-checkbox-state {
+  color: var(--md-sys-color-primary);
+}
+
+/* Error state uses the M3 error role for the outline, fill, icon and tint. */
 :host([data-error]) .gui-checkbox-box {
   border-color: var(--md-sys-color-error);
+}
+:host([data-error]) .gui-checkbox-state {
+  color: var(--md-sys-color-error);
 }
 :host([data-error]:has(input:checked)) .gui-checkbox-box,
 :host([data-error]:has(input:indeterminate)) .gui-checkbox-box {
@@ -102,6 +148,11 @@ input[type='checkbox'] {
 :host([data-error]:has(input:checked)) .gui-checkbox-box::after,
 :host([data-error]:has(input:indeterminate)) .gui-checkbox-box::after {
   border-color: var(--md-sys-color-on-error);
+}
+/* Error tint wins over the selected primary tint (higher specificity + later). */
+:host([data-error]:has(input:checked)) .gui-checkbox-state,
+:host([data-error]:has(input:indeterminate)) .gui-checkbox-state {
+  color: var(--md-sys-color-error);
 }
 
 /* Disabled (M3 disabled treatment via tokens). The interaction layer already
@@ -125,4 +176,10 @@ input[type='checkbox'] {
     transparent 62%
   );
   border-color: transparent;
+}
+/* M3 disabled selected icon role is `surface`, not the enabled on-primary. The
+   checkmark border and the indeterminate dash (border-top) both follow it. */
+:host(.gui-disabled:has(input:checked)) .gui-checkbox-box::after,
+:host(.gui-disabled:has(input:indeterminate)) .gui-checkbox-box::after {
+  border-color: var(--md-sys-color-surface);
 }
