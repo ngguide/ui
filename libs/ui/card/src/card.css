@@ -15,6 +15,9 @@
      left to the consumer so media can bleed to the top/bottom edges. */
   padding-inline: 16px;
   color: var(--md-sys-color-on-surface);
+  /* M3 Measurements: card label text is start-aligned (enforced here so it does
+     not depend on an ancestor's text-align). */
+  text-align: start;
   transition:
     box-shadow var(--md-sys-motion-duration-short4)
       var(--md-sys-motion-easing-standard),
@@ -49,10 +52,23 @@
   box-shadow: var(--md-sys-elevation-level1);
 }
 
-/* --- Disabled: 0.38 opacity, no pointer interaction (Req 2.6) --- */
+/* --- Disabled (Req 2.6) — 0.38 container opacity + no pointer interaction.
+   Per the M3 disabled-card tokens the container also recolors
+   (elevated → surface, filled → surface-variant) and the outlined card's
+   outline → outline; resting elevation is retained (M3 keeps a disabled
+   elevated card at level 1, so the box-shadow is intentionally not reset). --- */
 :host([data-disabled]) {
   opacity: 0.38;
   pointer-events: none;
+}
+:host([data-variant='elevated'][data-disabled]) {
+  background-color: var(--md-sys-color-surface);
+}
+:host([data-variant='filled'][data-disabled]) {
+  background-color: var(--md-sys-color-surface-variant);
+}
+:host([data-variant='outlined'][data-disabled]) {
+  border-color: var(--md-sys-color-outline);
 }
 
 /* When the whole surface is the control, it must show the affordance. */

@@ -267,7 +267,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       width: 16rem;
       max-width: 100%;
       padding-block: 1rem;
-      text-align: start;
     }
     .card-title {
       margin: 0;

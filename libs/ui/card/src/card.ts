@@ -75,8 +75,9 @@ export class GuiCardClickable {
   /** Emitted when the card is activated by click or keyboard (Req 2.1). */
   readonly cardActivate = output<Event>();
 
-  protected readonly isAnchor =
-    inject<ElementRef<HTMLElement>>(ElementRef).nativeElement.tagName === 'A';
+  private readonly el =
+    inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+  protected readonly isAnchor = this.el.tagName === 'A';
 
   protected activate(event: Event): void {
     if (this.disabled()) {
@@ -84,8 +85,16 @@ export class GuiCardClickable {
       return;
     }
     if (event.type === 'keydown') {
-      // Prevent the page scrolling on Space / activating twice.
-      event.preventDefault();
+      // Stop Space scrolling the page / Enter activating twice — but let a real
+      // link (`<a href>`) perform its native Enter navigation instead of
+      // cancelling it (Req 2.1: a link-role card must stay keyboard-navigable).
+      const isLinkEnter =
+        this.isAnchor &&
+        this.el.hasAttribute('href') &&
+        (event as KeyboardEvent).key === 'Enter';
+      if (!isLinkEnter) {
+        event.preventDefault();
+      }
     }
     this.cardActivate.emit(event);
   }
@@ -110,6 +119,11 @@ export class GuiCardClickable {
     '[attr.tabindex]': 'disabled() ? null : 0',
     role: 'button',
     '[attr.aria-disabled]': 'disabled() ? "true" : null',
+    // Visually communicate the disabled region (M3 disabled content opacity) so
+    // it is not distinguishable to assistive tech only (Req 2.6, 14.5).
+    // aria-disabled already suppresses the state layer / focus ring.
+    '[style.opacity]': 'disabled() ? "0.38" : null',
+    '[style.pointer-events]': 'disabled() ? "none" : null',
     '(click)': 'activate($event)',
     '(keydown.enter)': 'activate($event)',
     '(keydown.space)': 'activate($event)',
