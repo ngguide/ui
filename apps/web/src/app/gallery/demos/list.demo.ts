@@ -78,7 +78,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       >
         <app-demo-specimen class="fill" label="1 line · 56dp">
           <gui-list aria-label="One-line list">
-            <gui-list-item [lines]="1" leadingKind="icon">
+            <gui-list-item [lines]="1">
               <gui-icon guiListItemLeading class="sym">person</gui-icon>
               Headline only
             </gui-list-item>
@@ -87,7 +87,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
 
         <app-demo-specimen class="fill" label="2 lines · 72dp">
           <gui-list aria-label="Two-line list">
-            <gui-list-item [lines]="2" leadingKind="icon">
+            <gui-list-item [lines]="2">
               <gui-icon guiListItemLeading class="sym">mail</gui-icon>
               Headline
               <span guiListItemSupporting>Supporting text on a second line</span>
@@ -97,7 +97,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
 
         <app-demo-specimen class="fill" label="3 lines · 88dp">
           <gui-list aria-label="Three-line list">
-            <gui-list-item [lines]="3" leadingKind="icon">
+            <gui-list-item [lines]="3">
               <gui-icon guiListItemLeading class="sym">article</gui-icon>
               Headline
               <span guiListItemSupporting>
@@ -123,7 +123,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
 
         <app-demo-specimen class="fill" label="overline + headline + supporting">
           <gui-list aria-label="Overline list">
-            <gui-list-item [lines]="3" leadingKind="icon">
+            <gui-list-item [lines]="3">
               <gui-icon guiListItemLeading class="sym">label</gui-icon>
               <span guiListItemOverline>OVERLINE</span>
               Headline text
@@ -134,7 +134,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
 
         <app-demo-specimen class="fill" label="leading icon + trailing text">
           <gui-list aria-label="Leading icon list">
-            <gui-list-item [lines]="2" leadingKind="icon">
+            <gui-list-item [lines]="2">
               <gui-icon guiListItemLeading class="sym">folder</gui-icon>
               Documents
               <span guiListItemSupporting>14 items</span>
@@ -145,7 +145,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
 
         <app-demo-specimen class="fill" label="trailing icon">
           <gui-list aria-label="Trailing icon list">
-            <gui-list-item leadingKind="icon">
+            <gui-list-item>
               <gui-icon guiListItemLeading class="sym">wifi</gui-icon>
               Wi-Fi
               <gui-icon guiListItemTrailing class="sym">chevron_right</gui-icon>
@@ -155,7 +155,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
 
         <app-demo-specimen class="fill" label="leading avatar + supporting + trailing icon">
           <gui-list aria-label="Avatar list">
-            <gui-list-item [lines]="2" leadingKind="avatar">
+            <gui-list-item [lines]="2">
               <span
                 guiListItemLeading
                 class="demo-avatar"
@@ -179,7 +179,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       >
         <app-demo-specimen class="fill" label="trailing switch">
           <gui-list aria-label="Settings">
-            <gui-list-item leadingKind="icon">
+            <gui-list-item>
               <gui-icon guiListItemLeading class="sym">notifications</gui-icon>
               Notifications
               <input
@@ -256,15 +256,15 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
 
         <app-demo-specimen class="fill" label="inset dividers (aligned to leading icon)">
           <gui-list aria-label="Inset divider list">
-            <gui-list-item divider="inset" leadingKind="icon">
+            <gui-list-item divider="inset">
               <gui-icon guiListItemLeading class="sym">inbox</gui-icon>
               Primary
             </gui-list-item>
-            <gui-list-item divider="inset" leadingKind="icon">
+            <gui-list-item divider="inset">
               <gui-icon guiListItemLeading class="sym">drafts</gui-icon>
               Drafts
             </gui-list-item>
-            <gui-list-item leadingKind="icon">
+            <gui-list-item>
               <gui-icon guiListItemLeading class="sym">send</gui-icon>
               Sent (no divider)
             </gui-list-item>
@@ -295,11 +295,11 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
 
         <app-demo-specimen class="fill" label="interactive action row (state layer on hover)">
           <gui-list aria-label="Interactive action list">
-            <gui-list-item interactive leadingKind="icon">
+            <gui-list-item interactive>
               <gui-icon guiListItemLeading class="sym">bolt</gui-icon>
               Tap me — interactive row shows the M3 state layer
             </gui-list-item>
-            <gui-list-item interactive disabled leadingKind="icon">
+            <gui-list-item interactive disabled>
               <gui-icon guiListItemLeading class="sym">block</gui-icon>
               Disabled interactive row
             </gui-list-item>

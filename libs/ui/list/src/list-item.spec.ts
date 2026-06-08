@@ -97,22 +97,6 @@ describe('GuiListItem', () => {
     expect(overline?.textContent?.trim()).toBe('OVERLINE');
   });
 
-  it('reflects leadingKind onto data-leading for icon-specific alignment', () => {
-    @Component({
-      imports: [GuiList, GuiListItem],
-      template: `
-        <gui-list>
-          <gui-list-item leadingKind="icon">Headline</gui-list-item>
-        </gui-list>
-      `,
-    })
-    class LeadingHost {}
-    const fixture = TestBed.createComponent(LeadingHost);
-    fixture.detectChanges();
-    const item = fixture.nativeElement.querySelector('gui-list-item');
-    expect(item.getAttribute('data-leading')).toBe('icon');
-  });
-
   it('shows the built-in checkmark cue on a selected option by default (non-color cue)', () => {
     @Component({
       imports: [GuiList, GuiListItem],

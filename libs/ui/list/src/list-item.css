@@ -112,19 +112,6 @@
 :host([data-lines='3']) .gui-list-item-leading {
   align-items: flex-start;
 }
-/* A leading ICON (leadingKind="icon") is Top-aligned at every height with the
-   documented 8dp top padding (12dp at 88dp+), unlike an avatar/image which is
-   centered until 88dp. `align-self: flex-start` pins the slot to the row's top
-   (the row otherwise centers it); the 8dp top padding is then measured from the
-   row top at 56/72dp. At 88dp the row is already top-aligned and supplies the
-   12dp via its own padding-block, so no extra padding is added. */
-:host([data-leading='icon']) .gui-list-item-leading {
-  align-self: flex-start;
-  align-items: flex-start;
-}
-:host([data-leading='icon']:not([data-lines='3'])) .gui-list-item-leading {
-  padding-block-start: 8px;
-}
 .gui-list-item-leading:empty {
   display: none;
 }

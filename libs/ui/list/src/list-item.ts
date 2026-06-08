@@ -16,22 +16,16 @@ import {
 } from '@ngguide/ui/interaction';
 import { GUI_LIST, GuiListMode } from './list-context';
 
-/** The kind of element a consumer projects into the leading slot. Only `icon`
- * changes layout (M3 aligns a leading icon to Top with an 8/12dp top padding at
- * every height, unlike an avatar/image/video which is centered then top-aligned
- * at 88dp+). The other values are advisory and documented for sizing. */
-export type GuiListLeadingKind = 'icon' | 'avatar' | 'image' | 'video';
-
 /**
  * A single M3 list row. Anatomy slots projected by the consumer:
  * `[guiListItemOverline]` (M3 overline — a small `label-small` label above the
  * headline), `[guiListItemLeading]` (M3 leading element — an avatar, icon, or
  * image; its size is owned by the projected content per the M3 slot model, e.g.
- * a 24dp icon, 40dp avatar, or 56dp image — and declare a leading icon via
- * `leadingKind="icon"` so it gets the M3 top alignment + 8/12dp top padding),
- * the default slot (headline, `body-large`), `[guiListItemSupporting]`
- * (`body-medium`), and `[guiListItemTrailing]` (`label-small` text or a
- * control). Height follows the `lines` count: 56 / 72 / 88dp (Req 4.2).
+ * a 24dp icon, 40dp avatar, or 56dp image), the default slot (headline,
+ * `body-large`), `[guiListItemSupporting]` (`body-medium`), and
+ * `[guiListItemTrailing]` (`label-small` text or a control). Height follows the
+ * `lines` count: 56 / 72 / 88dp (Req 4.2). Elements are middle-aligned; at 88dp+
+ * (3-line) they top-align, per M3.
  *
  * M3 slot-accessibility note: projected interactive controls in the leading /
  * trailing slots must themselves meet the 48x48dp minimum target — the row is
@@ -106,7 +100,6 @@ export type GuiListLeadingKind = 'icon' | 'avatar' | 'image' | 'video';
   host: {
     class: 'gui-list-item',
     '[attr.data-lines]': 'lines()',
-    '[attr.data-leading]': 'leadingKind()',
     '[attr.role]': 'role()',
     '[attr.aria-selected]': 'isListbox() ? (selected() ? "true" : "false") : null',
     '[attr.aria-disabled]': 'disabled() ? "true" : null',
@@ -120,13 +113,6 @@ export type GuiListLeadingKind = 'icon' | 'avatar' | 'image' | 'video';
 export class GuiListItem {
   /** Visual density: 1, 2 or 3 lines → 56 / 72 / 88dp (Req 4.2). */
   readonly lines = input<1 | 2 | 3>(1);
-  /**
-   * Kind of leading element projected into `[guiListItemLeading]`. Set
-   * `'icon'` for a leading icon so it is top-aligned with the M3 8dp (12dp at
-   * 88dp) top padding at every row height; avatars/images/video stay centered
-   * (top-aligned at 88dp+). Defaults to unset (centered, avatar/image regime).
-   */
-  readonly leadingKind = input<GuiListLeadingKind | null>(null);
   /** Action mode: the row is itself interactive (suppresses `role=listitem`). */
   readonly interactive = input(false, { transform: booleanAttribute });
   /** Listbox mode: the option can be selected (Req 6.1). */
