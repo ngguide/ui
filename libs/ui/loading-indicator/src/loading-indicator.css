@@ -10,17 +10,19 @@
   inline-size: 100%;
   block-size: 100%;
   transform-origin: center;
-  animation: gui-loading-spin 2.5s linear infinite;
+  animation: gui-loading-spin 4s linear infinite;
 }
 
 .gui-loading-shape {
   fill: var(--md-sys-color-primary);
 }
 
-/* Contained — shape sits on a filled 38dp circular container centered in the 48dp size. */
+/* Contained — the morphing shape sits on a filled 48dp circular Container (the M3
+   "Container" anatomy element = the overall 48dp size). The active indicator peaks
+   at ~35dp, so a visible ring of container shows around it, as in the M3 reference. */
 :host([data-variant='contained']) {
   background-image: radial-gradient(
-    circle 19px at center,
+    circle 24px at center,
     var(--md-sys-color-primary-container) 100%,
     transparent 0
   );

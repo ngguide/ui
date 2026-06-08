@@ -65,6 +65,14 @@ Contained loading indicator color roles used for light and dark schemes:
 ### Measurements
 To ensure sufficient margins, the size is 48dp while the shape container is 38dp
 
+### Motion
+The active indicator is a looping sequence of morphs between **7 different shapes**
+while the canvas rotates (overview video alt text: "a looping sequence of morphs
+between 7 different shapes in a darker color, sitting on a circular background
+container in lighter color"). The reference shapes are Material's
+`IndeterminateIndicatorPolygons`: soft burst → 9-sided cookie → pentagon → pill →
+sunny → 4-sided cookie → oval, then back to the start.
+
 ## Accessibility
 
 ### Use cases

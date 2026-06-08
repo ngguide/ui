@@ -6,7 +6,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  * Vitrine demo for the M3 loading indicator (`@ngguide/ui/loading-indicator`).
  *
  * The component is an indeterminate, always-busy SVG indicator that morphs
- * between two deterministic "cookie" shapes while spinning. Its full public
+ * through the seven M3 shapes (soft burst → 9-sided cookie → pentagon → pill →
+ * sunny → 4-sided cookie → oval) while spinning. Its full public
  * API is two inputs:
  * - `variant: 'default' | 'contained'` — the M3 containment configuration.
  * - `label?: string` — the `aria-label` (progress-bar role), defaults to
