@@ -6,7 +6,11 @@
   box-sizing: border-box;
   outline: none;
   min-width: 280px;
-  max-height: inherit;
+  /* Keep a symmetric 24dp viewport margin: the max-width already insets the
+     sides by 24dp each (min(560px, 100% - 48px)); cap the height the same way
+     so a tall, scrolling dialog never touches the top/bottom edges. Full-screen
+     overrides this below. */
+  max-height: calc(100dvh - 48px);
   background-color: var(--md-sys-color-surface-container-high);
   color: var(--md-sys-color-on-surface);
   border-radius: var(--md-sys-shape-corner-extra-large);

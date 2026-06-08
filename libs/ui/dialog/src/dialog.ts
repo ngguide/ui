@@ -147,8 +147,13 @@ export class GuiDialogActions {}
         display: flex;
         align-items: center;
         gap: 8px;
-        height: 56px;
-        padding: 0 24px;
+        box-sizing: border-box;
+        /* M3 56dp header; grow by the top safe-area inset so the bar sits below
+           the status bar / notch on edge-to-edge windows. */
+        height: calc(56px + env(safe-area-inset-top, 0px));
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-inline: max(24px, env(safe-area-inset-left, 0px))
+          max(24px, env(safe-area-inset-right, 0px));
         flex: 0 0 auto;
         background-color: var(--md-sys-color-surface-container-high);
         color: var(--md-sys-color-on-surface);
@@ -196,10 +201,14 @@ export class GuiDialogFullscreenHeader {}
         justify-content: flex-end;
         gap: 8px;
         width: 100%;
-        height: 56px;
-        padding: 0 24px;
-        flex: 0 0 auto;
         box-sizing: border-box;
+        /* M3 56dp bottom action bar; grow by the bottom safe-area inset so it
+           clears the home indicator on edge-to-edge windows. */
+        height: calc(56px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        padding-inline: max(24px, env(safe-area-inset-left, 0px))
+          max(24px, env(safe-area-inset-right, 0px));
+        flex: 0 0 auto;
         background-color: var(--md-sys-color-surface-container-high);
       }
     `,
