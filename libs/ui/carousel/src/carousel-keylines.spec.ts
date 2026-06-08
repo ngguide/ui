@@ -1,105 +1,119 @@
 import {
+  buildStrategy,
+  placeItems,
   MAX_SMALL_ITEM,
   MIN_SMALL_ITEM,
-  arrange,
-  maskForOffset,
+  ArrangeOptions,
 } from './carousel-keylines';
 
-const OPTS = { preferredLargeWidth: 186, itemSpacing: 8, itemCount: 8 };
+const OPTS = (over: Partial<ArrangeOptions> = {}): ArrangeOptions => ({
+  preferredLargeWidth: 186,
+  itemSpacing: 8,
+  itemCount: 8,
+  alignment: 'start',
+  leadingPadding: 16,
+  trailingPadding: 16,
+  ...over,
+});
 
-describe('arrange', () => {
-  it('returns a degenerate arrangement for zero width or no items', () => {
-    expect(arrange('multi-browse', 0, OPTS).largeCount).toBe(0);
+describe('buildStrategy', () => {
+  it('returns an empty strategy for zero width or no items', () => {
+    expect(buildStrategy('multi-browse', 0, OPTS()).snapOffsets.length).toBe(0);
     expect(
-      arrange('multi-browse', 360, { ...OPTS, itemCount: 0 }).largeCount,
+      buildStrategy('multi-browse', 1000, OPTS({ itemCount: 0 })).snapOffsets
+        .length,
     ).toBe(0);
   });
 
   describe('multi-browse', () => {
-    it('keeps small within [40, 56] and medium at the midpoint (Req 11.2)', () => {
-      const a = arrange('multi-browse', 412, OPTS);
-      expect(a.small).toBeGreaterThanOrEqual(MIN_SMALL_ITEM);
-      expect(a.small).toBeLessThanOrEqual(MAX_SMALL_ITEM);
-      expect(a.medium).toBeCloseTo((a.large + a.small) / 2, 5);
-      expect(a.largeCount).toBe(1);
+    it('packs multiple large items plus a small keyline (40-56dp) (Req 11.2/11.3)', () => {
+      const s = buildStrategy('multi-browse', 1022, OPTS());
+      const focal = s.keylines.keylines.filter((k) => k.isFocal);
+      // A wide viewport shows more than one large item ("at least one large").
+      expect(focal.length).toBeGreaterThan(1);
+      expect(focal.every((k) => Math.round(k.size) === 186)).toBe(true);
+      // The smallest non-anchor keyline is a small item within the 40-56dp band.
+      const small = Math.min(
+        ...s.keylines.keylines.filter((k) => !k.isAnchor).map((k) => k.size),
+      );
+      expect(small).toBeGreaterThanOrEqual(MIN_SMALL_ITEM);
+      expect(small).toBeLessThanOrEqual(MAX_SMALL_ITEM);
     });
 
-    it('caps non-focal keylines at two (Req 11.2)', () => {
-      const a = arrange('multi-browse', 1200, OPTS);
-      expect(a.mediumCount + a.smallCount).toBeLessThanOrEqual(2);
-    });
-
-    it('drops small items when the focal width is below 80px (Req 11.2)', () => {
-      const a = arrange('multi-browse', 60, {
-        ...OPTS,
-        preferredLargeWidth: 60,
-      });
-      expect(a.smallCount).toBe(0);
-      expect(a.mediumCount).toBe(0);
-    });
-  });
-
-  describe('full-screen', () => {
-    it('lays out a single item filling the viewport (Req 11.1)', () => {
-      const a = arrange('full-screen', 360, OPTS);
-      expect(a.large).toBe(360);
-      expect(a.largeCount).toBe(1);
-      expect(a.smallCount).toBe(0);
+    it('exposes a snap offset per item and a positive scroll extent', () => {
+      const s = buildStrategy('multi-browse', 1022, OPTS());
+      expect(s.snapOffsets.length).toBe(8);
+      expect(s.maxScrollOffset).toBeGreaterThan(0);
+      // The native spacer is exactly long enough to reach maxScrollOffset.
+      expect(Math.round(s.contentExtent)).toBe(
+        Math.round(s.maxScrollOffset + 1022),
+      );
     });
   });
 
   describe('hero', () => {
-    it('shows one large focal item and a small peek (Req 11.1)', () => {
-      const a = arrange('hero', 360, OPTS);
-      expect(a.largeCount).toBe(1);
-      expect(a.smallCount).toBe(1);
-      expect(a.large + a.small + OPTS.itemSpacing).toBeCloseTo(360, 5);
+    it('uses a dynamic large that fills the viewport beside the peek (Req 11.1)', () => {
+      const s = buildStrategy('hero', 1000, OPTS());
+      // Hero large is dynamic — much larger than the preferred 186 on a wide box.
+      expect(s.large).toBeGreaterThan(186);
+      expect(s.large).toBeLessThan(1000);
+      // One focal large + a trailing small peek.
+      expect(s.keylines.keylines.filter((k) => k.isFocal).length).toBe(1);
     });
   });
 
   describe('center-aligned hero', () => {
-    it('centers one large item with a small peek on each side (Req 11.1)', () => {
-      const a = arrange('center-aligned-hero', 360, OPTS);
-      expect(a.largeCount).toBe(1);
-      // Two small peeks (leading + trailing) frame the centered focal item.
-      expect(a.smallCount).toBe(2);
-      expect(a.large + 2 * (a.small + OPTS.itemSpacing)).toBeCloseTo(360, 5);
+    it('centers a single dynamic large item (Req 11.1)', () => {
+      const s = buildStrategy('center-aligned-hero', 1000, OPTS());
+      const focal = s.keylines.keylines.filter((k) => k.isFocal);
+      expect(focal.length).toBe(1);
+      // The focal item's center sits at the viewport midpoint.
+      expect(focal[0].offset).toBeCloseTo(500, 0);
     });
   });
 
   describe('uncontained', () => {
-    it('fits whole items and resizes the cut-off trailing item (Req 11.3)', () => {
-      const a = arrange('uncontained', 420, OPTS);
-      expect(a.large).toBe(186);
-      expect(a.largeCount).toBeGreaterThanOrEqual(1);
-      // A partial item peeks when there is leftover room and more items.
-      expect(a.smallCount).toBeLessThanOrEqual(1);
-    });
-  });
-
-  describe('uncontained multi-aspect', () => {
-    it('lays out uniform-width items like uncontained (Req 11.3)', () => {
-      const a = arrange('uncontained-multi-aspect', 420, OPTS);
-      expect(a.large).toBe(186);
-      expect(a.largeCount).toBeGreaterThanOrEqual(1);
+    it('lays out uniform large items (no medium/small taper)', () => {
+      const s = buildStrategy('uncontained', 1000, OPTS());
+      const p = placeItems(s, 0, 1000);
+      const visible = p.filter((it) => !it.offscreen).map((it) => Math.round(it.size));
+      // Every visible item is the same (large) width.
+      expect(new Set(visible).size).toBe(1);
+      expect(visible[0]).toBe(186);
     });
   });
 });
 
-describe('maskForOffset', () => {
-  it('renders the focal item at large and distant items toward small', () => {
-    const a = arrange('multi-browse', 412, OPTS);
-    const focal = maskForOffset(a, 0, 0);
-    const distant = maskForOffset(a, 0, 5);
-    expect(focal.width).toBeCloseTo(a.large, 5);
-    expect(distant.width).toBeLessThan(a.large);
-    expect(focal.clipInset).toBe(0);
+describe('placeItems', () => {
+  it('renders the first item large at rest and tapers later items (Req 11.3)', () => {
+    const s = buildStrategy('multi-browse', 1022, OPTS());
+    const p = placeItems(s, 0, 1022);
+    expect(Math.round(p[0].size)).toBe(186);
+    expect(p[7].size).toBeLessThan(p[0].size);
   });
 
-  it('is safe on an empty arrangement', () => {
-    expect(maskForOffset(arrange('multi-browse', 0, OPTS), 0, 0)).toEqual({
-      width: 0,
-      clipInset: 0,
-    });
+  it('keeps content within the frame — mask inset in [0, large/2] (parallax, no blank)', () => {
+    const s = buildStrategy('multi-browse', 1022, OPTS());
+    const p = placeItems(s, 0, 1022);
+    for (const it of p) {
+      expect(it.maskInset).toBeGreaterThanOrEqual(0);
+      expect(it.maskInset).toBeLessThanOrEqual(s.large / 2 + 0.01);
+    }
+  });
+
+  it('moves the focal window as the user scrolls (the M3 size morph)', () => {
+    const s = buildStrategy('multi-browse', 1022, OPTS());
+    const at0 = placeItems(s, 0, 1022);
+    const atMax = placeItems(s, s.maxScrollOffset, 1022);
+    // Later items grow as they scroll into the focal range.
+    const tailRest = at0.slice(4).reduce((a, b) => a + b.size, 0);
+    const tailMax = atMax.slice(4).reduce((a, b) => a + b.size, 0);
+    expect(tailMax).toBeGreaterThan(tailRest);
+  });
+
+  it('is safe on an empty strategy (zero-size placements)', () => {
+    const s = buildStrategy('multi-browse', 0, OPTS());
+    const p = placeItems(s, 0, 0);
+    expect(p.every((it) => it.size === 0)).toBe(true);
   });
 });

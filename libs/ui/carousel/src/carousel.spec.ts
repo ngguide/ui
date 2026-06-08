@@ -24,6 +24,12 @@ function flush(): void {
   TestBed.inject(ApplicationRef).tick();
 }
 
+function itemEls(fixture: { nativeElement: HTMLElement }): HTMLElement[] {
+  return Array.from(
+    fixture.nativeElement.querySelectorAll('gui-carousel-item'),
+  ) as HTMLElement[];
+}
+
 describe('GuiCarousel', () => {
   it('exposes the carousel role and reflects the layout (Req 11.1, 14)', () => {
     const fixture = TestBed.createComponent(CarouselHost);
@@ -36,22 +42,18 @@ describe('GuiCarousel', () => {
     expect(carousel.getAttribute('data-layout')).toBe('hero');
   });
 
-  it('seeds the first item as the only tab stop and labels position/total', () => {
+  it('makes every item Tab-reachable and labels position/total (M3 keyboard + a11y)', () => {
     const fixture = TestBed.createComponent(CarouselHost);
     fixture.detectChanges();
     flush();
-    const items = Array.from(
-      fixture.nativeElement.querySelectorAll('gui-carousel-item'),
-    ) as HTMLElement[];
-    // Exactly one roving tab stop (the first item); the rest are -1.
-    expect(items[0].getAttribute('tabindex')).toBe('0');
-    expect(items.slice(1).every((el) => el.getAttribute('tabindex') === '-1'))
-      .toBe(true);
+    const items = itemEls(fixture);
+    // M3: Tab AND arrows navigate items, so every item is in the tab order.
+    expect(items.every((el) => el.getAttribute('tabindex') === '0')).toBe(true);
     // Each item conveys its 1-based position and the total count.
-    expect(items[0].getAttribute('aria-posinset')).toBe('1');
-    expect(items[0].getAttribute('aria-setsize')).toBe('6');
     expect(items[0].getAttribute('aria-label')).toBe('Item 1 of 6');
     expect(items[5].getAttribute('aria-label')).toBe('Item 6 of 6');
+    expect(items[0].getAttribute('role')).toBe('group');
+    expect(items[0].getAttribute('aria-roledescription')).toBe('carousel item');
   });
 
   it('emits the activated item on click and Enter, but not when disabled', () => {
@@ -84,60 +86,58 @@ describe('GuiCarousel', () => {
     expect(items[1].getAttribute('aria-disabled')).toBe('true');
   });
 
-  it('assigns item widths from the engine after layout (Req 11.2)', () => {
+  it('moves focus between items with the arrow keys (Req 14)', () => {
+    const fixture = TestBed.createComponent(CarouselHost);
+    fixture.detectChanges();
+    flush();
+    const items = itemEls(fixture);
+    items[0].focus();
+    items[0].dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }),
+    );
+    expect(document.activeElement).toBe(items[1]);
+    items[1].dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Home', bubbles: true }),
+    );
+    expect(document.activeElement).toBe(items[0]);
+  });
+
+  it('leaves the carousel on Up/Down in a horizontal layout (no focus trap)', () => {
+    const fixture = TestBed.createComponent(CarouselHost);
+    fixture.detectChanges();
+    flush();
+    const items = itemEls(fixture);
+    items[1].focus();
+    const event = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      bubbles: true,
+      cancelable: true,
+    });
+    items[1].dispatchEvent(event);
+    // The carousel must NOT consume Up/Down — focus stays put so the browser
+    // can move it out of the carousel.
+    expect(event.defaultPrevented).toBe(false);
+    expect(document.activeElement).toBe(items[1]);
+  });
+
+  it('assigns item widths from the engine after measuring (Req 11.2)', () => {
     const fixture = TestBed.createComponent(CarouselHost);
     fixture.detectChanges();
     flush();
     const carousel = fixture.debugElement.children[0]
       .componentInstance as GuiCarousel;
     // jsdom does not compute layout, so drive a viewport width explicitly.
-    (carousel as unknown as { measure(w: number): void }).measure(412);
+    (carousel as unknown as { measure(w: number): void }).measure(1022);
     fixture.detectChanges();
-
-    const items = Array.from(
-      fixture.nativeElement.querySelectorAll('gui-carousel-item'),
-    ) as HTMLElement[];
-    // Focal item renders at the large width (186px).
+    flush();
+    const items = itemEls(fixture);
+    // Focal item renders at the large width (186px); a distant item is smaller.
     expect(items[0].style.width).toBe('186px');
-    // A distant item is narrower than the focal one.
     expect(parseFloat(items[5].style.width)).toBeLessThan(186);
   });
 
-  it('sizes uncontained items uniformly (no per-scroll morph) (Req 11.2)', () => {
-    const fixture = TestBed.createComponent(CarouselHost);
-    fixture.componentInstance.layout.set('uncontained');
-    fixture.detectChanges();
-    flush();
-    const carousel = fixture.debugElement.children[0]
-      .componentInstance as GuiCarousel;
-    (carousel as unknown as { measure(w: number): void }).measure(412);
-    fixture.detectChanges();
-    const widths = Array.from(
-      fixture.nativeElement.querySelectorAll('gui-carousel-item'),
-    ).map((el) => (el as HTMLElement).style.width);
-    // Every item is the same (large) width — the trailing item is cut by the
-    // container's overflow, not resized down per keyline.
-    expect(new Set(widths).size).toBe(1);
-    expect(parseFloat(widths[0])).toBeGreaterThan(56);
-  });
-
-  it('renders full-screen items without an engine width (CSS fills them)', () => {
-    const fixture = TestBed.createComponent(CarouselHost);
-    fixture.componentInstance.layout.set('full-screen');
-    fixture.detectChanges();
-    flush();
-    const carousel = fixture.debugElement.children[0]
-      .componentInstance as GuiCarousel;
-    (carousel as unknown as { measure(w: number): void }).measure(360);
-    fixture.detectChanges();
-    const item = fixture.nativeElement.querySelector(
-      'gui-carousel-item',
-    ) as HTMLElement;
-    expect(item.style.width).toBe('');
-  });
-
   describe('reduced motion', () => {
-    it('makes every item the same (large) size with no morph (Req 15)', () => {
+    it('falls back to a uniform (large) flow with no morph (Req 15)', () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [
@@ -156,14 +156,14 @@ describe('GuiCarousel', () => {
       flush();
       const carousel = fixture.debugElement.children[0]
         .componentInstance as GuiCarousel;
-      (carousel as unknown as { measure(w: number): void }).measure(412);
+      (carousel as unknown as { measure(w: number): void }).measure(1022);
       fixture.detectChanges();
-      const items = Array.from(
-        fixture.nativeElement.querySelectorAll('gui-carousel-item'),
-      ) as HTMLElement[];
-      const widths = items.map((el) => el.style.width);
-      // M3: under reduced motion all items are the same size (no staggered
-      // large/medium/small) and no per-scroll expansion.
+      flush();
+      const carouselEl = fixture.nativeElement.querySelector('gui-carousel');
+      // Reduced motion uses the uniform flow mode (no per-scroll morph).
+      expect(carouselEl.getAttribute('data-mode')).toBe('flow');
+      const widths = itemEls(fixture).map((el) => el.style.width);
+      // Every item is the same (large) size.
       expect(new Set(widths).size).toBe(1);
       expect(widths[0]).toBe('186px');
     });

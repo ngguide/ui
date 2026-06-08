@@ -2,8 +2,8 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   computed,
+  ElementRef,
   inject,
   input,
   signal,
@@ -16,17 +16,24 @@ import {
 import { GUI_CAROUSEL } from './carousel-context';
 
 /**
- * A single M3 carousel item. Its width is assigned by the parent
- * {@link GuiCarousel}'s keyline engine; when unset (SSR / full-screen) it falls
- * back to the inherited large width from CSS. Corner is `extra-large` (28dp);
- * tapping morphs the shape slightly (Req 12 / spec "Touch").
+ * A single M3 carousel item. Its geometry (width, placement, content mask) is
+ * assigned by the parent {@link GuiCarousel}'s keyline engine; when unset
+ * (SSR / first frame) it falls back to the inherited large width from CSS, so
+ * there is no hydration layout shift. Corner is `extra-large` (28dp); pressing
+ * morphs the shape slightly (M3 "Touch").
  *
  * The item is the carousel's interactive unit (the spec keeps focus on items,
- * not the container): it is a {@link FocusableOption} reached through the
- * carousel's roving focus, carries `aria-posinset`/`aria-setsize` so assistive
- * tech reads "item N of M", and renders the shared M3 interaction surface
- * (state layer + pressed ripple + keyboard focus ring). `disabled` models the
- * M3 Disabled state and suppresses activation + feedback.
+ * not the container): it is reachable by Tab and the arrow keys, carries the
+ * APG "carousel item" slide semantics with an "Item N of M" label, and renders
+ * the shared M3 interaction surface (state layer + pressed ripple + keyboard
+ * focus ring). `disabled` models the M3 Disabled state — the item stays
+ * focusable / discoverable but is not activatable.
+ *
+ * Content parallax: in the morphing layouts the projected content is laid out at
+ * the *large* width and the frame is narrowed to the keyline width, so the frame
+ * crops a centered window of the (full-size) content. As the frame shrinks the
+ * content is cropped equally on both sides — it moves at a different speed than
+ * the frame and is never shifted out of view.
  */
 @Component({
   selector: 'gui-carousel-item',
@@ -42,15 +49,21 @@ import { GUI_CAROUSEL } from './carousel-context';
     class: 'gui-carousel-item',
     role: 'group',
     'aria-roledescription': 'carousel item',
+    // Geometry from the engine. `width`/`placeX` null => CSS fallback (SSR).
     '[style.width.px]': 'width()',
-    // Parallax: the engine feeds a content offset (px) the content layer
-    // translates by, so it moves at a different speed than the item frame.
-    '[style.--gui-carousel-parallax.px]': 'parallax()',
+    '[style.position]': "placeX() !== null ? 'absolute' : null",
+    '[style.left.px]': 'placeX()',
+    '[style.top]': "placeX() !== null ? '0' : null",
+    '[style.visibility]': "hidden() ? 'hidden' : null",
+    // Content-mask vars: the content is laid out at `contentWidth` (large) and
+    // shifted by `maskInset` so the narrowed frame crops it symmetrically.
+    '[style.--gui-carousel-content-width.px]': 'contentWidth()',
+    '[style.--gui-carousel-mask-inset.px]': 'maskInset()',
     '[attr.aria-label]': 'ariaLabel()',
-    '[attr.aria-posinset]': 'position()',
-    '[attr.aria-setsize]': 'setSize()',
     '[attr.aria-disabled]': 'disabled() ? "true" : null',
-    '[attr.tabindex]': 'active() ? 0 : -1',
+    // Tab AND the arrow keys navigate items (M3 keyboard contract), so every
+    // item is in the tab order; disabled items stay focusable (discoverable).
+    tabindex: '0',
     '[attr.data-disabled]': 'disabled() ? "" : null',
     '(click)': 'onActivate()',
     '(keydown.enter)': 'onActivate()',
@@ -64,20 +77,20 @@ export class GuiCarouselItem {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly carousel = inject(GUI_CAROUSEL, { optional: true });
 
-  /** Width in px assigned by the engine, or `null` to use the CSS default. */
+  /** Rendered main-axis size (px), or `null` to use the CSS default. */
   readonly width = signal<number | null>(null);
-  /** Content parallax offset (px) assigned by the engine; 0 = no offset. */
-  readonly parallax = signal(0);
-
-  /** Whether this item currently holds the carousel's single roving tab stop. */
-  private readonly activeState = signal(false);
-  protected readonly active = this.activeState.asReadonly();
+  /** Absolute left placement (px) in morphing layouts, or `null` for flow. */
+  readonly placeX = signal<number | null>(null);
+  /** Width (px) the content is laid out at (the large size) for the mask. */
+  readonly contentWidth = signal<number | null>(null);
+  /** Symmetric content crop (px) each side — the M3 parallax. */
+  readonly maskInset = signal(0);
+  /** Whether the item is fully outside the viewport (visually hidden). */
+  readonly hidden = signal(false);
 
   /** 1-based position and total, set by the carousel for assistive tech. */
   private readonly positionState = signal<number | null>(null);
   private readonly setSizeState = signal<number | null>(null);
-  protected readonly position = this.positionState.asReadonly();
-  protected readonly setSize = this.setSizeState.asReadonly();
 
   /** "Item N of M" — read out so the user knows where they are in the set. */
   protected readonly ariaLabel = computed(() => {
@@ -86,19 +99,19 @@ export class GuiCarouselItem {
     return pos != null && size != null ? `Item ${pos} of ${size}` : null;
   });
 
-  /** {@link FocusableOption}: move DOM focus to this item (roving focus). */
+  /** Move DOM focus to this item (arrow / Tab navigation). */
   focus(): void {
     this.host.nativeElement.focus();
   }
 
-  /** {@link FocusableOption}: type-ahead label is the visible text. */
-  getLabel(): string {
-    return this.host.nativeElement.textContent?.trim() ?? '';
+  /** The item's host element — used by the carousel to scroll it into focus. */
+  get element(): HTMLElement {
+    return this.host.nativeElement;
   }
 
-  /** Called by the carousel to grant/withdraw the roving tab stop. */
-  setActive(active: boolean): void {
-    this.activeState.set(active);
+  /** Type-ahead / readout label is the visible text. */
+  getLabel(): string {
+    return this.host.nativeElement.textContent?.trim() ?? '';
   }
 
   /** Called by the carousel to publish this item's 1-based position / total. */

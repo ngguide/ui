@@ -1,66 +1,110 @@
-/* M3 carousel: native scroll + scroll-snap for momentum and snapping. The
-   engine sizes the items; this file lays out the track (per-layout padding,
-   alignment, inter-item gap) and applies the container Surface color role. */
+/* M3 carousel layout. Morphing layouts (multi-browse / hero / center-aligned
+   hero) render items on a position:sticky "stage" pinned over a native scroll
+   spacer (.gui-carousel-extent): the spacer gives the scroller its length and
+   the snap markers, while the stage positions/sizes each item from the keyline
+   engine. Uncontained / full-screen use a plain native flex flow. */
 
 :host {
   display: block;
-  width: 100%;
+  position: relative;
+  inline-size: 100%;
   overflow: hidden;
   /* Container color role (M3: Carousel container -> Surface). */
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
 }
 
-.gui-carousel-track {
-  display: flex;
-  flex-direction: row;
-  /* Inter-item spacing is driven by the `itemSpacing` input (default 8dp). */
-  gap: var(--gui-carousel-gap, 8px);
-  /* M3 default: 16dp leading/trailing, 8dp top/bottom (multi-browse / hero /
-     center-aligned hero). Per-layout rules below override the inline padding. */
-  padding: 8px 16px;
+.gui-carousel-viewport {
+  position: relative;
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
-.gui-carousel-track::-webkit-scrollbar {
+.gui-carousel-viewport::-webkit-scrollbar {
   display: none;
 }
 
-/* --- Center alignment: the focal item is centered with peeks framing it. The
-   leading/trailing scroll padding centers the snapped item in the viewport. --- */
-:host([data-alignment='center']) .gui-carousel-track {
-  justify-content: center;
+/* --- Morph mode: sticky stage over a long spacer. The spacer's inline-size is
+   the full-size scroll extent; the stage is pinned to the start edge and holds
+   the absolutely-placed items (placed by the engine in viewport coords). 8dp
+   top/bottom padding per M3; inline padding is baked into the keyline offsets. */
+:host([data-mode='morph']) .gui-carousel-viewport {
+  padding-block: 8px;
+  block-size: calc(var(--gui-carousel-height, 0px) + 16px);
+}
+:host([data-mode='morph']) .gui-carousel-extent {
+  position: relative;
+  block-size: var(--gui-carousel-height, 0px);
+}
+:host([data-mode='morph']) .gui-carousel-stage {
+  position: sticky;
+  inset-inline-start: 0;
+  inline-size: 0;
+  block-size: 100%;
+}
+.gui-carousel-snap {
+  position: absolute;
+  inset-block-start: 0;
+  inline-size: 1px;
+  block-size: 1px;
+  scroll-snap-align: start;
+  pointer-events: none;
 }
 
-/* --- Uncontained / uncontained multi-aspect: only LEADING padding; items bleed
-   over the trailing edge while scrolling (M3 measurements). --- */
-:host([data-layout='uncontained']) .gui-carousel-track,
-:host([data-layout='uncontained-multi-aspect']) .gui-carousel-track {
+/* --- Flow mode: native flex row (uniform size; trailing item clipped). The
+   extent wrapper is transparent so the stage flows directly in the scroller. */
+:host([data-mode='flow']) .gui-carousel-extent {
+  display: contents;
+}
+:host([data-mode='flow']) .gui-carousel-stage {
+  display: flex;
+  flex-direction: row;
+  gap: var(--gui-carousel-gap, 8px);
+  /* M3 default: 16dp leading/trailing, 8dp top/bottom. */
+  padding: 8px 16px;
+}
+/* Uncontained: only LEADING padding; items bleed over the trailing edge. */
+:host([data-mode='flow'][data-layout='uncontained']) .gui-carousel-stage,
+:host([data-mode='flow'][data-layout='uncontained-multi-aspect'])
+  .gui-carousel-stage {
   padding: 8px 0 8px 16px;
 }
-
-/* --- Full-screen on compact: vertical orientation (Req 11.6) --- */
-:host([data-orientation='vertical']) .gui-carousel-track {
-  flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  height: 100dvh;
-}
-:host([data-orientation='vertical']) ::ng-deep .gui-carousel-item {
-  width: 100% !important;
-  height: 100dvh;
-}
-
-/* --- Full-screen: edge-to-edge — 0dp padding on all sides, 16dp between items
-   (M3 measurements). Each item fills the viewport. --- */
-:host([data-layout='full-screen']) .gui-carousel-track {
+/* Full-screen: edge-to-edge, 0dp padding, 16dp between items. */
+:host([data-mode='flow'][data-layout='full-screen']) .gui-carousel-stage {
   padding: 0;
   gap: 16px;
+}
+/* Full-screen items fill the carousel box on both axes (the host sets the
+   height — 100dvh in real use, a fixed height in the gallery). */
+:host([data-layout='full-screen']) .gui-carousel-viewport {
+  block-size: 100%;
+}
+:host([data-layout='full-screen']) .gui-carousel-stage {
+  block-size: 100%;
 }
 :host([data-layout='full-screen'][data-orientation='horizontal'])
   ::ng-deep
   .gui-carousel-item {
-  width: 100% !important;
+  inline-size: 100% !important;
+  block-size: 100%;
+}
+:host([data-layout='full-screen']) ::ng-deep .gui-carousel-item-content {
+  block-size: 100%;
+}
+
+/* --- Full-screen on compact: vertical orientation (Req 11.6). Items snap to
+   the window edges (M3: full-screen must use snap-scrolling). --- */
+:host([data-orientation='vertical']) .gui-carousel-viewport {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  block-size: 100dvh;
+}
+:host([data-orientation='vertical']) .gui-carousel-stage {
+  flex-direction: column;
+}
+:host([data-orientation='vertical']) ::ng-deep .gui-carousel-item {
+  inline-size: 100% !important;
+  block-size: 100dvh;
 }

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ButtonComponent } from '@ngguide/ui/button';
 import { GuiCarousel, GuiCarouselItem } from '@ngguide/ui/carousel';
 import { IconComponent } from '@ngguide/ui/icon';
 import { GALLERY_DEMO_UI } from '../demo-block.component';
@@ -28,7 +29,13 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
 @Component({
   selector: 'app-demo-carousel',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [...GALLERY_DEMO_UI, GuiCarousel, GuiCarouselItem, IconComponent],
+  imports: [
+    ...GALLERY_DEMO_UI,
+    GuiCarousel,
+    GuiCarouselItem,
+    IconComponent,
+    ButtonComponent,
+  ],
   template: `
     <app-demo-component
       name="Carousel"
@@ -335,6 +342,47 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
           </p>
         </app-demo-specimen>
       </app-demo-block>
+
+      <!-- ACCESSIBILITY: on vertically-scrolling pages M3 recommends a "Show
+           all" affordance BELOW the carousel (not inside it) that opens a
+           dedicated vertically-scrolling view of every item. This lives in the
+           app, not the carousel component (M3: keep buttons out of the
+           container). -->
+      <app-demo-block
+        heading="Show all (accessibility)"
+        hint="M3 recommends a 'Show all' control below the carousel to view every item without horizontal scrolling"
+        [column]="true"
+      >
+        <app-demo-specimen label="carousel + Show all" class="fill">
+          <gui-carousel
+            class="demo-carousel"
+            layout="multi-browse"
+            (activated)="onActivate($event)"
+          >
+            @for (item of items; track item.id) {
+              <gui-carousel-item>
+                <span class="tile" [style.background]="item.color"></span>
+                <span class="caption">{{ item.label }}</span>
+              </gui-carousel-item>
+            }
+          </gui-carousel>
+          <div class="show-all-row">
+            <button gui-button variant="text" size="sm" (click)="toggleShowAll()">
+              {{ showAll() ? 'Hide all' : 'Show all' }}
+            </button>
+          </div>
+          @if (showAll()) {
+            <ul class="show-all-grid">
+              @for (item of items; track item.id) {
+                <li class="show-all-cell">
+                  <span class="tile" [style.background]="item.color"></span>
+                  <span class="caption">{{ item.label }}</span>
+                </li>
+              }
+            </ul>
+          }
+        </app-demo-specimen>
+      </app-demo-block>
     </app-demo-component>
   `,
   styles: `
@@ -378,6 +426,23 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       color: var(--md-sys-color-on-surface, #1c1b1f);
       font-size: var(--md-sys-typescale-body-medium-size, 0.875rem);
     }
+    .show-all-row {
+      display: flex;
+      justify-content: flex-end;
+      /* M3: the Show all button has 4dp of padding. */
+      padding: 4px;
+    }
+    .show-all-grid {
+      list-style: none;
+      margin: 0.5rem 0 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+      gap: 0.75rem;
+    }
+    .show-all-cell {
+      margin: 0;
+    }
   `,
 })
 export class CarouselDemo {
@@ -395,6 +460,13 @@ export class CarouselDemo {
 
   /** Label of the most recently activated item (via the `activated` output). */
   protected readonly lastActivated = signal<string | null>(null);
+
+  /** Whether the "Show all" accessibility view (vertical list) is expanded. */
+  protected readonly showAll = signal(false);
+
+  protected toggleShowAll(): void {
+    this.showAll.update((open) => !open);
+  }
 
   protected onActivate(item: GuiCarouselItem): void {
     // `getLabel()` is the item's visible text (the M3 type-ahead label). It may
