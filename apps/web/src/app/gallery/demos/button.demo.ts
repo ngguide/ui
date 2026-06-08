@@ -136,12 +136,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         hint="Two-way selected state; resting shape morphs round⇄square. Text style has no toggle (M3)."
       >
         <app-demo-specimen label="elevated · {{ tElevated() ? 'on' : 'off' }}">
-          <button
-            gui-button
-            variant="elevated"
-            toggle
-            [(selected)]="tElevated"
-          >
+          <button gui-button variant="elevated" toggle [(selected)]="tElevated">
             <gui-icon guiIcon class="sym">star_outline</gui-icon>
             <gui-icon guiSelectedIcon class="sym">star</gui-icon>
             Star
@@ -162,12 +157,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
           </button>
         </app-demo-specimen>
         <app-demo-specimen label="outlined · {{ tOutlined() ? 'on' : 'off' }}">
-          <button
-            gui-button
-            variant="outlined"
-            toggle
-            [(selected)]="tOutlined"
-          >
+          <button gui-button variant="outlined" toggle [(selected)]="tOutlined">
             <gui-icon guiIcon class="sym">check</gui-icon>
             <gui-icon guiSelectedIcon class="sym">check</gui-icon>
             Select
