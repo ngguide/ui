@@ -1,12 +1,22 @@
 /* M3 chip — tokens only; the interaction host directives (state layer, ripple,
-   focus ring) own the state/ripple/focus visuals on the chip host. This file
+   focus ring) own the state/ripple/focus visuals on the chip host. Because the
+   host IS the roving keyboard-focus target, FocusMonitor watches it directly and
+   the focus ring / focus state-layer render on the chip container. This file
    sets the resting container shape, color and border plus the selected and
    elevated treatments. Values trace to --md-sys-* tokens.
 
    This stylesheet is shared by <gui-chip-set> and <gui-chip>; Angular scopes it
    to each component's own host, so the `gui-chip-set`-only rules (`.gui-chip-row`)
    simply never match inside <gui-chip> and vice versa. The `:host` rules below
-   are written to be harmless for whichever host they land on. */
+   are written to be harmless for whichever host they land on.
+
+   Projected slot content (leading/trailing/remove icons, avatar) cannot be sized
+   by scoped `.slot > *` rules — under Angular emulated encapsulation those never
+   match the projected node's `_ngcontent`. Icon slots therefore size their
+   projected <gui-icon> via the INHERITABLE `--gui-comp-icon-size` custom property
+   and color via inherited `currentColor`; the avatar (whose box metrics are not
+   inheritable) is sized + clipped on the wrapper, with `:host ::ng-deep` covering
+   the projected media. */
 
 /* --- Chip set layout (the grid row) --- */
 .gui-chip-row {
@@ -45,13 +55,16 @@
 
 /* M3: when a leading icon (or the filter checkmark) is present the left padding
    tightens to 8dp; likewise the right padding when a trailing/remove icon is
-   present. Each side is resolved independently so an icon-less side keeps 16dp. */
+   present. Each side is resolved independently so an icon-less side keeps 16dp.
+   (`:has()` arguments are not encapsulation-scoped, so they match projected
+   content — unlike a `.slot > *` rule subject.) */
 :host(:has(.gui-chip-leading > *)) {
   padding-left: 8px;
 }
+:host(:has(.gui-chip-trailing > *)),
 :host(:has(.gui-chip-remove)) {
-  /* The remove button supplies its own touch-target inset, so collapse the
-     host's right padding to the M3 8dp between-elements value. */
+  /* The trailing/remove element supplies its own inset, so collapse the host's
+     right padding to the M3 8dp between-elements value. */
   padding-right: 8px;
 }
 
@@ -62,22 +75,27 @@
   padding-left: 4px;
 }
 
-/* The shared :host block above is sized for a single chip (fixed 32px height).
-   On the chip-set host (role="grid") that clips wrapped chip rows onto whatever
-   follows; let the set grow to fit while keeping the 32px single-row baseline. */
+/* The shared :host block above is sized for a SINGLE chip (fixed height, outline
+   stroke, fill, padding, rounded corners). None of that chip cosmetic applies to
+   the chip-set host (role="grid") — the set is a transparent layout wrapper whose
+   inner `.gui-chip-row` does the real layout. Reset the leaked chip border, fill,
+   padding, radius, height and pointer cursor so the group draws NO box of its own. */
 :host([role='grid']) {
   height: auto;
-  min-height: 32px;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  cursor: default;
 }
 
-/* The primary and remove buttons are borderless, transparent and inherit the
-   chip's color so the chip host owns all container styling. */
-.gui-chip-primary,
+/* The remove button is borderless, transparent and inherits the chip's color so
+   the chip host owns all container styling. */
 .gui-chip-remove {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  height: 100%;
+  justify-content: center;
   margin: 0;
   padding: 0;
   border: none;
@@ -95,7 +113,6 @@
 .gui-chip-remove {
   position: relative;
   width: 18px;
-  justify-content: center;
 }
 
 .gui-chip-remove::before {
@@ -114,63 +131,83 @@
   justify-content: center;
   width: 18px;
   height: 18px;
+  /* Size the projected close <gui-icon> to the M3 18dp icon size (inherited
+     across the projection boundary; a `> *` rule could not reach it). */
+  --gui-comp-icon-size: 18px;
 }
 
-/* M3: leading and remove icons render at the 18dp icon size for every variant.
-   Constrains projected SVG/icon content that does not size itself. */
-.gui-chip-leading > *,
-.gui-chip-remove-icon > * {
-  width: 18px;
-  height: 18px;
-}
-
-/* M3 label-large applied to the chip label. */
+/* M3 label-large applied to the chip label (14sp / 20 line-height / 0.1 tracking
+   / 500 weight). */
 .gui-chip-label {
   white-space: nowrap;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.1px;
+  font-weight: 500;
   color: inherit;
 }
 
 /* The leading slot only reserves space when there is content (e.g. an icon or
-   the selected checkmark). */
+   the selected checkmark). Projected leading icons size to 18dp via the
+   inheritable custom property. */
 .gui-chip-leading {
   display: inline-flex;
   align-items: center;
+  --gui-comp-icon-size: 18px;
 }
 
 .gui-chip-leading:empty {
   display: none;
 }
 
-/* M3 leading selected checkmark (filter chips). */
+/* M3 leading selected checkmark (filter chips) — the chip's own 18dp view SVG. */
 .gui-chip-check {
   width: 18px;
   height: 18px;
 }
 
-/* M3 input-chip avatar: 24dp, 12dp corner radius. The slot collapses when
-   empty so non-input chips reserve no space for it. */
+/* M3 filter-chip trailing icon (a dropdown/menu affordance, not a remove icon).
+   Projected via [guiChipTrailing] and sized to 18dp. */
+.gui-chip-trailing {
+  display: inline-flex;
+  align-items: center;
+  --gui-comp-icon-size: 18px;
+}
+
+.gui-chip-trailing:empty {
+  display: none;
+}
+
+/* M3 input-chip avatar: a 24dp box clipped to a 12dp corner radius. width /
+   height / border-radius are not inheritable, so the WRAPPER is sized + clipped
+   and the projected media is stretched to fill it via :host ::ng-deep. The slot
+   collapses when empty so non-input chips reserve no space for it. */
 .gui-chip-avatar {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .gui-chip-avatar:empty {
   display: none;
 }
 
-.gui-chip-avatar > * {
-  width: 24px;
-  height: 24px;
-  border-radius: 12px;
+:host ::ng-deep .gui-chip-avatar > * {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
   object-fit: cover;
 }
 
 /* Selected (filter/input) chip — M3 secondary-container treatment plus space
-   for a leading checkmark. */
-:host([data-selected]) {
+   for a leading checkmark. Scoped to the variants that have a selected state per
+   spec, so assist/suggestion can never pick up a secondary-container fill. */
+:host([data-type='filter'][data-selected]),
+:host([data-type='input'][data-selected]) {
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   border-color: transparent;
@@ -195,7 +232,12 @@
   border-color: var(--md-sys-color-outline);
 }
 
-:host([data-type='assist']) .gui-chip-leading > * {
+/* Assist and input chips paint the leading icon with the Primary color role.
+   The color is set on the chip-scoped WRAPPER so it inherits (via currentColor)
+   into the projected gui-icon — a `.gui-chip-leading > *` rule would never match
+   projected content. */
+:host([data-type='assist']) .gui-chip-leading,
+:host([data-type='input']) .gui-chip-leading {
   color: var(--md-sys-color-primary);
 }
 

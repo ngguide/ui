@@ -7,7 +7,7 @@ import {
   inject,
   input,
   output,
-  viewChild,
+  signal,
 } from '@angular/core';
 import {
   GuiFocusRingDirective,
@@ -21,9 +21,20 @@ export type GuiChipType = 'assist' | 'filter' | 'input' | 'suggestion';
 
 /**
  * A single M3 chip. Lives inside a {@link ChipSetComponent} as a
- * `role="gridcell"` host containing a primary `button` and an optional trailing
- * remove `button`. Filter chips toggle selection on the owning set; removable
- * chips emit {@link remove} (the consumer owns the actual deletion).
+ * `role="gridcell"` host that is ALSO the interactive target: the host carries
+ * the roving tab stop, the state layer / ripple / focus ring (its keyboard
+ * focus lands on the host directly, so the host directives' default
+ * `monitorDescendants:false` is correct), and the click / Enter / Space
+ * activation. Selection (single/multiple sets) is conveyed by `aria-selected`
+ * on the gridcell per the M3 web a11y table — not a nested `role="checkbox"`.
+ *
+ * Disabled chips use `aria-disabled` (not the native `disabled` attribute) so
+ * they stay focusable and the roving model keeps them discoverable (M3), while
+ * the interaction directives self-suppress via `isHostDisabled`.
+ *
+ * Only an input chip exposes a trailing remove `button`; a filter chip may carry
+ * a non-remove trailing icon via `[guiChipTrailing]`. Removal emits
+ * {@link remove} (the consumer owns the actual deletion).
  */
 @Component({
   selector: 'gui-chip',
@@ -44,23 +55,20 @@ export type GuiChipType = 'assist' | 'filter' | 'input' | 'suggestion';
         <ng-content select="[guiChipLeading]" />
       }
     </span>
-    <button
-      #primary
-      class="gui-chip-primary"
-      type="button"
-      [attr.role]="set.select() === 'none' ? 'button' : 'checkbox'"
-      [attr.aria-checked]="set.select() === 'none' ? null : selected()"
-      [disabled]="disabled()"
-      (click)="onPrimary()"
-    >
-      <span class="gui-chip-label"><ng-content /></span>
-    </button>
-    @if (removable()) {
+    <span class="gui-chip-label"><ng-content /></span>
+    @if (type() === 'filter') {
+      <span class="gui-chip-trailing" aria-hidden="true">
+        <ng-content select="[guiChipTrailing]" />
+      </span>
+    }
+    @if (isRemovable()) {
       <button
         class="gui-chip-remove"
         type="button"
+        tabindex="-1"
         [attr.aria-label]="'Remove ' + label()"
-        (click)="remove.emit()"
+        [disabled]="isDisabled()"
+        (click)="onRemove($event)"
       >
         <span class="gui-chip-remove-icon">
           <ng-content select="[guiChipRemove]" />
@@ -76,13 +84,23 @@ export type GuiChipType = 'assist' | 'filter' | 'input' | 'suggestion';
   ],
   host: {
     'role': 'gridcell',
-    '[attr.tabindex]': '-1',
+    // The host IS the roving focus target: exactly one chip holds tabindex=0.
+    '[attr.tabindex]': 'active() ? 0 : -1',
     '[attr.data-type]': 'type()',
     '[attr.data-selected]': 'selected() ? "" : null',
     '[attr.data-elevated]': 'elevated() ? "" : null',
-    '[class.gui-disabled]': 'disabled()',
+    // M3 web a11y: a selectable chip conveys selection via aria-selected on the
+    // gridcell (not a nested checkbox/radio).
+    '[attr.aria-selected]': 'selectable() ? (selected() ? "true" : "false") : null',
+    // aria-disabled (not native disabled) keeps the chip focusable/discoverable.
+    '[attr.aria-disabled]': 'isDisabled() ? "true" : null',
+    '[class.gui-disabled]': 'isDisabled()',
+    '(click)': 'onActivate()',
+    '(keydown.enter)': 'onActivateKey($event)',
+    '(keydown.space)': 'onActivateKey($event)',
     '(keydown.delete)': 'maybeRemove($event)',
     '(keydown.backspace)': 'maybeRemove($event)',
+    '(blur)': 'control.markTouched()',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -97,14 +115,28 @@ export class ChipComponent {
   readonly remove = output<void>();
 
   protected readonly set = inject(ChipSetComponent);
-  protected readonly selected = computed(() => this.set.isSelected(this.value()));
-
-  private readonly primary =
-    viewChild.required<ElementRef<HTMLButtonElement>>('primary');
+  protected readonly control = this.set.control;
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
 
+  /** The owning set makes chips selectable (single/multiple). */
+  protected readonly selectable = computed(() => this.set.select() !== 'none');
+  protected readonly selected = computed(() => this.set.isSelected(this.value()));
+  /** Own `disabled` OR the whole set being disabled. */
+  protected readonly isDisabled = computed(
+    () => this.disabled() || this.set.disabledState(),
+  );
+  /** Remove affordance is an M3 input-chip feature only. */
+  protected readonly isRemovable = computed(
+    () => this.removable() && this.type() === 'input',
+  );
+
+  /** Roving tab stop: granted/withdrawn by the owning set. */
+  private readonly activeState = signal(false);
+  protected readonly active = this.activeState.asReadonly();
+
+  /** {@link FocusableOption}: roving focus moves DOM focus to the host. */
   focus(): void {
-    this.primary().nativeElement.focus();
+    this.host.nativeElement.focus();
   }
 
   /**
@@ -123,15 +155,42 @@ export class ChipComponent {
     );
   }
 
-  protected onPrimary(): void {
-    if (this.type() === 'filter') {
+  /** Called by the set to grant/withdraw the single roving tab stop. */
+  setActive(active: boolean): void {
+    this.activeState.set(active);
+  }
+
+  protected onActivate(): void {
+    if (this.isDisabled()) {
+      return;
+    }
+    if (this.selectable()) {
       this.set.toggle(this.value());
     }
   }
 
+  protected onActivateKey(event: Event): void {
+    // Enter / Space activate the focused chip (M3 keyboard). Stop the event so
+    // the set's roving key manager (Space type-ahead) does not also consume it.
+    event.preventDefault();
+    event.stopPropagation();
+    this.onActivate();
+  }
+
+  protected onRemove(event: Event): void {
+    // Don't let the remove click bubble up and also toggle the chip.
+    event.stopPropagation();
+    if (this.isDisabled()) {
+      return;
+    }
+    this.remove.emit();
+  }
+
   protected maybeRemove(event: Event): void {
-    if (this.removable()) {
+    // M3: Backspace/Delete removes the currently focused INPUT chip.
+    if (this.isRemovable() && !this.isDisabled()) {
       event.preventDefault();
+      event.stopPropagation();
       this.remove.emit();
     }
   }
