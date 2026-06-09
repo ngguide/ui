@@ -1,65 +1,34 @@
-/* M3 switch container. Hover/focus/pressed state layers, the ripple and the
-   focus ring are drawn by the composed interaction foundation
-   (GuiStateLayer/GuiRipple/GuiFocusRing via hostDirectives) — never re-implement
-   them here. This file styles the resting track, handle morph and color roles
-   only. Values trace to --md-sys-* tokens. */
+/* M3 switch. The hover/focus/pressed state layer, the ripple and the focus ring
+   are drawn by the composed interaction foundation
+   (GuiStateLayer/GuiRipple/GuiFocusRing) — never re-implement them here. Those
+   directives are mounted on the 40dp `.gui-switch-state` circle that slides with
+   the handle (mirroring the radio/checkbox wrapper-mount, adapted for the moving
+   handle), so the state layer + focus ring track the handle and CDK FocusMonitor
+   sees keyboard focus landing on the nested <input>. This file styles the control
+   geometry, track, handle morph and color roles only. Horizontal offsets use
+   logical `inset-inline-start` so the handle mirrors correctly in RTL. Values
+   trace to --md-sys-* tokens. */
 
 :host {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  position: relative;
   cursor: pointer;
-  /* M3 control content color for the label. */
+  /* M3 control content color for the label, and the unselected state-layer tint
+     source (currentColor on .gui-switch-state inherits it). */
   color: var(--md-sys-color-on-surface);
-  border-radius: var(--md-sys-shape-corner-full);
 }
 
-/* The 40dp M3 state layer is larger than the 32dp-tall track and overhangs it,
-   so the host must not clip its ::before to the host box. The interaction
-   foundation defaults `.gui-state-layer`/`.gui-ripple-host` to overflow:hidden;
-   override that here (higher-specificity host+class selector) so the circle
-   renders at full size centered on the handle. */
-:host(.gui-state-layer),
-:host(.gui-ripple-host) {
-  overflow: visible;
-}
-
-/* M3 state layer: a 40dp / corner.full circle centered on the handle, NOT the
-   whole inline-flex host. GuiStateLayerDirective paints the tint into :host's
-   ::before (inset:0, border-radius:inherit over track + label); we reshape that
-   same pseudo-element here into the spec circle and track it to the handle
-   center as it slides between the unselected and selected positions. The
-   combined host-attribute + class selector outranks the global
-   `.gui-state-layer::before` rule regardless of stylesheet injection order. */
-:host(.gui-state-layer)::before {
-  inset: auto;
-  top: 50%;
-  /* handle center (unselected) 14dp − 20dp radius. */
-  left: -6px;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--md-sys-shape-corner-full);
-  transform: translateY(-50%);
-  transition:
-    opacity var(--md-sys-motion-duration-short2)
-      var(--md-sys-motion-easing-standard),
-    left var(--md-sys-motion-duration-short3)
-      var(--md-sys-motion-easing-standard);
-}
-/* Selected: handle center moves to 34dp, so the circle follows (34 − 20). */
-:host(.gui-state-layer[data-checked])::before {
-  left: 14px;
-}
-
-/* The shared ripple span is sized to cover the whole host and was previously
-   contained by the host's overflow:hidden. Now that the host is overflow:visible
-   (so the 40dp state layer can overhang the track), an unclipped host-wide
-   ripple would bleed across the track and label. For the switch, M3 pressed
-   feedback is the handle press-grow plus the 40dp pressed state layer, so the
-   track-spanning ripple is suppressed here. */
-:host ::ng-deep .gui-ripple {
-  display: none;
+/* 48dp target region (M3 "Target size | 48dp"). A <label> so a pointer anywhere
+   over the track — including on the handle — toggles the switch. */
+.gui-switch-control {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  cursor: inherit;
 }
 
 .gui-switch-track {
@@ -78,27 +47,60 @@
       var(--md-sys-motion-easing-standard);
 }
 
-/* Visually-hidden native input. It still receives focus and sits over the track
-   to provide the >=48dp accessible touch target M3 mandates (the track is only
-   32dp tall, below the 48x48 minimum). Spans the full 52dp track width and is
-   centered vertically. */
-input[type='checkbox'] {
+/* 40dp state-layer / focus-ring / ripple circle (M3 "State layer size | 40dp"),
+   centered on the handle and sliding with it between the unselected (center 16dp)
+   and selected (center 36dp) handle positions. The interaction directives paint
+   the hover/focus/pressed tint into ::before and draw the focus ring as an
+   outline here; because this element IS the 40dp circle, no reshaping is needed.
+   It is positioned in the track's padding box (inset by the 2dp border), so
+   inset-inline-start = handleCenter − 20dp radius − 2dp border. */
+.gui-switch-state {
   position: absolute;
   top: 50%;
-  left: 0;
+  inset-inline-start: -6px; /* unselected: center 16dp */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--md-sys-shape-corner-full);
   transform: translateY(-50%);
-  width: 100%;
-  height: 48px;
-  margin: 0;
-  opacity: 0;
-  cursor: inherit;
+  transition: inset-inline-start var(--md-sys-motion-duration-short3)
+    var(--md-sys-motion-easing-standard);
+}
+/* Selected: handle center moves to 36dp, so the circle follows. */
+:host([data-checked]) .gui-switch-state {
+  inset-inline-start: 14px; /* selected: center 36dp */
+  /* Selected: the state-layer/ripple tint follows the control color → primary
+     (M3: Material Web md-switch selected-*-state-layer-color = primary; mirrors
+     the radio/checkbox selected tint). currentColor on .gui-switch-state is the
+     tint source for the overlay and ripple, so this retints both to primary while
+     the unselected switch and the label keep the on-surface tint. */
+  color: var(--md-sys-color-primary);
 }
 
-/* Handle: a centered circle that morphs across states. */
-.gui-switch-handle {
+/* Native switch input: visually hidden but kept in the DOM so it stays focusable,
+   the keyboard-focus target and the form control. The <label> forwards pointer
+   activation, so the input itself takes no pointer events. */
+.gui-switch-native {
   position: absolute;
-  top: 50%;
-  left: 6px;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  clip-path: inset(50%);
+}
+
+/* Handle: a centered circle that morphs (size + color) across states. Flex-
+   centered in the 40dp state circle, so it sits on the circle center in every
+   state and grows IN PLACE on press — no per-state offset, and the 40dp state
+   layer always covers it. */
+.gui-switch-handle {
+  box-sizing: border-box;
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -107,13 +109,10 @@ input[type='checkbox'] {
   border-radius: var(--md-sys-shape-corner-full);
   background-color: var(--md-sys-color-outline);
   color: var(--md-sys-color-surface-container-highest);
-  transform: translate(0, -50%);
   transition:
     width var(--md-sys-motion-duration-short3)
       var(--md-sys-motion-easing-standard),
     height var(--md-sys-motion-duration-short3)
-      var(--md-sys-motion-easing-standard),
-    left var(--md-sys-motion-duration-short3)
       var(--md-sys-motion-easing-standard),
     background-color var(--md-sys-motion-duration-short3)
       var(--md-sys-motion-easing-standard);
@@ -146,7 +145,7 @@ input[type='checkbox'] {
   height: 24px;
 }
 
-/* Selected: filled track + larger handle pushed to the trailing edge. */
+/* Selected: filled track + larger handle. */
 :host([data-checked]) .gui-switch-track {
   background-color: var(--md-sys-color-primary);
   border-color: var(--md-sys-color-primary);
@@ -154,25 +153,44 @@ input[type='checkbox'] {
 :host([data-checked]) .gui-switch-handle {
   width: 24px;
   height: 24px;
-  /* track 52 - border 2*2 ... handle 24, trailing inset 4 from inner edge. */
-  left: 22px;
   background-color: var(--md-sys-color-on-primary);
   /* M3: the icon on the selected handle uses the on-primary-container role.
      currentColor is inherited by the projected icon slot. */
   color: var(--md-sys-color-on-primary-container);
 }
 
-/* Pressed: handle expands to 28px. The state-layer directive sets data-gui-state
-   on the host. */
-:host([data-gui-state~='pressed']) .gui-switch-handle {
+/* Pressed: the handle expands to 28px in place. The 40dp state circle already
+   covers it (handle stays centered on the same point). data-gui-state lives on
+   .gui-switch-state — the element carrying the state-layer directive. */
+.gui-switch-state[data-gui-state~='pressed'] .gui-switch-handle {
   width: 28px;
   height: 28px;
 }
-:host([data-gui-state~='pressed']:not([data-checked])) .gui-switch-handle {
-  left: 4px;
+
+/* Per-state handle color (M3 token contract — Material Web md-switch): while
+   hovered / focused (keyboard) / pressed the handle shifts role — unselected →
+   on-surface-variant, selected → primary-container. The focus and pressed
+   signals key off .gui-switch-state (the directive host), hover off the circle. */
+:host(:not([data-checked])) .gui-switch-state:hover .gui-switch-handle,
+:host(:not([data-checked]))
+  .gui-switch-state.gui-focus-visible
+  .gui-switch-handle,
+:host(:not([data-checked]))
+  .gui-switch-state[data-gui-state~='pressed']
+  .gui-switch-handle {
+  background-color: var(--md-sys-color-on-surface-variant);
 }
-:host([data-gui-state~='pressed'][data-checked]) .gui-switch-handle {
-  left: 18px;
+:host([data-checked]) .gui-switch-state:hover .gui-switch-handle,
+:host([data-checked]) .gui-switch-state.gui-focus-visible .gui-switch-handle,
+:host([data-checked])
+  .gui-switch-state[data-gui-state~='pressed']
+  .gui-switch-handle {
+  background-color: var(--md-sys-color-primary-container);
+}
+
+/* Hide an empty adjacent label (aria-label-only configuration). */
+.gui-switch-label:empty {
+  display: none;
 }
 
 /* Disabled (M3 disabled treatment via tokens). The interaction layer already
@@ -199,6 +217,12 @@ input[type='checkbox'] {
     var(--md-sys-color-on-surface),
     transparent 62%
   );
+  /* M3 disabled unselected handle icon → surface-container-highest @ 38%. */
+  color: color-mix(
+    in srgb,
+    var(--md-sys-color-surface-container-highest),
+    transparent 62%
+  );
 }
 :host(.gui-disabled[data-checked]) .gui-switch-track {
   background-color: color-mix(
@@ -209,9 +233,7 @@ input[type='checkbox'] {
   border-color: transparent;
 }
 :host(.gui-disabled[data-checked]) .gui-switch-handle {
-  background-color: color-mix(
-    in srgb,
-    var(--md-sys-color-surface),
-    transparent 0%
-  );
+  background-color: var(--md-sys-color-surface);
+  /* M3 disabled selected handle icon → on-surface @ 38%. */
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
 }
