@@ -7,114 +7,82 @@
   (pointercancel)="onPointerUp()"
   (lostpointercapture)="onPointerUp()"
 >
-  <!-- Optional inset icon (standard slider only), pinned to the leading edge. -->
-  @if (!range()) {
+  <!-- Optional inset icon — standard variant only, sizes M/L/XL (M3). -->
+  @if (canInsetIcon()) {
     <span class="gui-slider-inset-icon" aria-hidden="true">
       <ng-content select="[gui-slider-icon]" />
     </span>
   }
 
-  <!-- Inactive track is the full bar; the active segment is overlaid. -->
-  <span class="gui-slider-inactive" aria-hidden="true"></span>
-
-  @if (range()) {
+  <!-- Track segments: active fill + inactive remainder as separate rounded pills
+       with a gap on the handle side(s). One renderer covers standard, centered
+       and range; the gap is carved per-edge from --gui-slider-gap. -->
+  @for (seg of segments(); track $index) {
     <span
-      class="gui-slider-active"
+      class="gui-slider-seg"
+      [class.gui-slider-seg-active]="seg.kind === 'active'"
       aria-hidden="true"
-      [style.--gui-slider-fill-start.%]="valueToPercent(rangeValue()[0])"
-      [style.--gui-slider-fill-end.%]="100 - valueToPercent(rangeValue()[1])"
-    ></span>
-  } @else {
-    <span
-      class="gui-slider-active"
-      aria-hidden="true"
-      [style.--gui-slider-fill-start.%]="singleActiveStart()"
-      [style.--gui-slider-fill-end.%]="100 - singleActiveEnd()"
+      [style.--gui-slider-seg-start.%]="seg.start"
+      [style.--gui-slider-seg-end.%]="seg.end"
+      [style.--gui-slider-seg-gap-start]="
+        seg.gapStart ? 'var(--gui-slider-gap)' : '0px'
+      "
+      [style.--gui-slider-seg-gap-end]="
+        seg.gapEnd ? 'var(--gui-slider-gap)' : '0px'
+      "
     ></span>
   }
 
-  <!-- Stop indicators (the M3 "stops" configuration). -->
+  <!-- Stop indicators (the M3 "stops" configuration). Ticks over the active fill
+       read on-primary; ticks over the inactive track read on-secondary-container. -->
   @for (tick of ticks(); track $index) {
     <span
       class="gui-slider-tick"
+      [class.gui-slider-tick-active]="tick.active"
       aria-hidden="true"
-      [style.--gui-slider-pos.%]="tick"
+      [style.--gui-slider-pos.%]="tick.pos"
     ></span>
   }
 
-  @if (range()) {
-    <!-- Start thumb -->
+  <!-- Handles. The interaction layer (state layer / ripple / focus ring) mounts
+       on the rounded handle-state capsule (the role=slider keyboard-focus target),
+       with the 4dp nub as a child — mirroring checkbox/radio/switch so the state
+       layer and focus ring read as a rounded shape around the handle, not a 4dp
+       sliver. The value indicator is a SIBLING of the capsule (not a child) so the
+       capsule's overflow:hidden never clips it. -->
+  @for (h of handles(); track h.thumb) {
     <div
-      class="gui-slider-thumb gui-slider-thumb-start"
-      guiStateLayer
-      guiRipple
-      guiFocusRing
-      role="slider"
-      [style.--gui-slider-pos.%]="valueToPercent(rangeValue()[0])"
-      [tabindex]="disabled() ? -1 : 0"
-      [attr.aria-orientation]="orientation()"
-      [attr.aria-label]="ariaLabel()"
-      [attr.aria-labelledby]="ariaLabelledby()"
-      [attr.aria-valuemin]="thumbMin('start')"
-      [attr.aria-valuemax]="thumbMax('start')"
-      [attr.aria-valuenow]="rangeValue()[0]"
-      [attr.aria-valuetext]="rangeValue()[0]"
-      [attr.aria-disabled]="disabled() ? 'true' : null"
-      (keydown)="onKeyDown($event, 'start')"
-      (keyup)="onKeyUp($event)"
+      class="gui-slider-handle"
+      [class.gui-slider-thumb-dragging]="isDragging(h.thumb)"
+      [style.--gui-slider-pos.%]="h.pos"
     >
+      <div
+        class="gui-slider-thumb-state"
+        guiStateLayer
+        guiRipple
+        guiFocusRing
+        role="slider"
+        [tabindex]="disabled() ? -1 : 0"
+        [attr.aria-orientation]="
+          orientation() === 'vertical' ? 'vertical' : null
+        "
+        [attr.aria-label]="thumbAriaLabel(h.thumb)"
+        [attr.aria-labelledby]="thumbAriaLabelledby(h.thumb)"
+        [attr.aria-valuemin]="h.min"
+        [attr.aria-valuemax]="h.max"
+        [attr.aria-valuenow]="h.value"
+        [attr.aria-valuetext]="valueText(h.value)"
+        [attr.aria-disabled]="disabled() ? 'true' : null"
+        (keydown)="onKeyDown($event, h.thumb)"
+        (keyup)="onKeyUp($event)"
+        (blur)="control.markTouched()"
+      >
+        <span class="gui-slider-thumb" aria-hidden="true"></span>
+      </div>
       @if (valueIndicator()) {
-        <span class="gui-slider-value" aria-hidden="true">{{ rangeValue()[0] }}</span>
-      }
-    </div>
-
-    <!-- End thumb -->
-    <div
-      class="gui-slider-thumb gui-slider-thumb-end"
-      guiStateLayer
-      guiRipple
-      guiFocusRing
-      role="slider"
-      [style.--gui-slider-pos.%]="valueToPercent(rangeValue()[1])"
-      [tabindex]="disabled() ? -1 : 0"
-      [attr.aria-orientation]="orientation()"
-      [attr.aria-label]="ariaLabel()"
-      [attr.aria-labelledby]="ariaLabelledby()"
-      [attr.aria-valuemin]="thumbMin('end')"
-      [attr.aria-valuemax]="thumbMax('end')"
-      [attr.aria-valuenow]="rangeValue()[1]"
-      [attr.aria-valuetext]="rangeValue()[1]"
-      [attr.aria-disabled]="disabled() ? 'true' : null"
-      (keydown)="onKeyDown($event, 'end')"
-      (keyup)="onKeyUp($event)"
-    >
-      @if (valueIndicator()) {
-        <span class="gui-slider-value" aria-hidden="true">{{ rangeValue()[1] }}</span>
-      }
-    </div>
-  } @else {
-    <!-- Single thumb -->
-    <div
-      class="gui-slider-thumb"
-      guiStateLayer
-      guiRipple
-      guiFocusRing
-      role="slider"
-      [style.--gui-slider-pos.%]="valueToPercent(singleValue())"
-      [tabindex]="disabled() ? -1 : 0"
-      [attr.aria-orientation]="orientation()"
-      [attr.aria-label]="ariaLabel()"
-      [attr.aria-labelledby]="ariaLabelledby()"
-      [attr.aria-valuemin]="min()"
-      [attr.aria-valuemax]="max()"
-      [attr.aria-valuenow]="singleValue()"
-      [attr.aria-valuetext]="singleValue()"
-      [attr.aria-disabled]="disabled() ? 'true' : null"
-      (keydown)="onKeyDown($event, 'single')"
-      (keyup)="onKeyUp($event)"
-    >
-      @if (valueIndicator()) {
-        <span class="gui-slider-value" aria-hidden="true">{{ singleValue() }}</span>
+        <span class="gui-slider-value" aria-hidden="true">{{
+          display(h.value)
+        }}</span>
       }
     </div>
   }

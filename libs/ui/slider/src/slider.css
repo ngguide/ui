@@ -1,19 +1,34 @@
-/* M3 slider visuals. Per-size dimensions trace to GUI_SLIDER_SIZES (track
-   height, handle height, track corner shape, inset icon). The interaction
-   foundation (state layer / ripple / focus ring) is composed onto each thumb
-   via the guiStateLayer/guiRipple/guiFocusRing directives — never re-implement
-   those tints/ring here. */
+/* M3 slider visuals. The track is rendered as separate active / inactive pills
+   with a gap on the handle side(s) (M3 Expressive), not a single continuous bar.
+   The hover/focus/pressed state layer, the ripple and the focus ring are drawn by
+   the composed interaction foundation (GuiStateLayer/GuiRipple/GuiFocusRing) —
+   never re-implement them here. Those directives mount on the rounded
+   `.gui-slider-thumb-state` CAPSULE (the role=slider focus target) so the state
+   layer / focus ring read as a shape around the handle, with the 4dp nub as a
+   child. Horizontal offsets use logical `inset-inline-*` so everything mirrors in
+   RTL. Per-size dimensions trace to the M3 measurements table. */
 
 :host {
   display: block;
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  /* Per-size defaults (md); overridden by the data-size blocks below. */
-  --gui-slider-track-height: 40px;
-  --gui-slider-handle-height: 52px;
-  --gui-slider-track-shape: 12px;
-  --gui-slider-inset-icon-size: 24px;
+  /* Per-size defaults = XS (M3 default size); overridden by the data-size blocks. */
+  --gui-slider-track-height: 16px;
+  --gui-slider-handle-height: 44px;
+  --gui-slider-track-shape: 8px;
+  /* Handle nub width — a constant 4dp across every M3 size. */
+  --gui-slider-handle-width: 4px;
+  /* Interactive state-layer / focus-ring capsule width. M3 does not publish a
+     per-size value; since the nub width is constant the capsule width is too. */
+  --gui-slider-state-width: 40px;
+  /* Gap between the handle and each track segment, derived from the handle width
+     (M3 separates active track / handle / inactive track; the exact dp is not
+     published, so it is tied to the handle width and tunable here). */
+  --gui-slider-gap: calc(var(--gui-slider-handle-width) * 1.5);
+  /* Handle travel inset so the nub never overflows the rounded track ends
+     (= half the handle width; mirrored by HANDLE_INSET_PX in slider.ts). */
+  --gui-slider-track-inset: calc(var(--gui-slider-handle-width) / 2);
   /* M3 disabled opacities (on-surface): 38% content, 12% container. */
   --gui-slider-disabled-content-opacity: 0.38;
   --gui-slider-disabled-container-opacity: 0.12;
@@ -30,10 +45,15 @@
   padding-inline: calc((var(--gui-slider-handle-height) - var(--gui-slider-track-height)) / 2);
 }
 
+/* The track is the pointer surface and the positioning context. Its inline
+   padding insets the handle travel so the nub never overflows the rounded ends;
+   segments and handles resolve against this padded box. */
 .gui-slider-track {
   position: relative;
+  box-sizing: border-box;
   width: 100%;
   height: var(--gui-slider-track-height);
+  padding-inline: var(--gui-slider-track-inset);
   touch-action: none;
   cursor: pointer;
 }
@@ -41,63 +61,76 @@
 :host([data-orientation='vertical']) .gui-slider-track {
   width: var(--gui-slider-track-height);
   height: 100%;
+  padding-inline: 0;
+  padding-block: var(--gui-slider-track-inset);
 }
 
-/* Inactive track = full bar. Active track is overlaid on top of it. */
-.gui-slider-inactive,
-.gui-slider-active {
+/* Track segments: separate rounded pills. inset-inline-start/-end place the pill
+   between its --seg-start / --seg-end value positions, shrunk by the per-edge gap
+   on whichever side faces a handle. */
+.gui-slider-seg {
   position: absolute;
   top: 0;
   bottom: 0;
+  inset-inline-start: calc(
+    var(--gui-slider-seg-start, 0%) + var(--gui-slider-seg-gap-start, 0px)
+  );
+  inset-inline-end: calc(
+    100% - var(--gui-slider-seg-end, 100%) + var(--gui-slider-seg-gap-end, 0px)
+  );
   border-radius: var(--gui-slider-track-shape);
-}
-
-.gui-slider-inactive {
-  left: 0;
-  right: 0;
   background-color: var(--md-sys-color-secondary-container);
 }
-
-/* Active fill spans from --gui-slider-fill-start (leading inset) to
-   --gui-slider-fill-end (trailing inset), defaulting to a full bar. */
-.gui-slider-active {
-  left: var(--gui-slider-fill-start, 0%);
-  right: var(--gui-slider-fill-end, 0%);
+.gui-slider-seg-active {
   background-color: var(--md-sys-color-primary);
 }
 
-:host([data-orientation='vertical']) .gui-slider-active {
-  left: 0;
-  right: 0;
-  bottom: var(--gui-slider-fill-start, 0%);
-  top: var(--gui-slider-fill-end, 0%);
+:host([data-orientation='vertical']) .gui-slider-seg {
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  inset-block-end: calc(
+    var(--gui-slider-seg-start, 0%) + var(--gui-slider-seg-gap-start, 0px)
+  );
+  inset-block-start: calc(
+    100% - var(--gui-slider-seg-end, 100%) + var(--gui-slider-seg-gap-end, 0px)
+  );
 }
 
-/* Stop indicators (small dots) on the track. */
+/* Stop indicators (M3 "stops"): solid role color, two-tone by track side. */
 .gui-slider-tick {
   position: absolute;
   top: 50%;
-  left: var(--gui-slider-pos, 0%);
+  inset-inline-start: var(--gui-slider-pos, 0%);
+  /* Center on the value position with a LOGICAL margin (not translateX, which is
+     physical and would mis-center in RTL); translateY handles the cross axis. */
+  margin-inline-start: -2px;
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
   background-color: var(--md-sys-color-on-secondary-container);
-  opacity: 0.4;
   pointer-events: none;
+}
+/* Ticks over the active (primary) fill read on-primary for contrast. */
+.gui-slider-tick-active {
+  background-color: var(--md-sys-color-on-primary);
 }
 
 :host([data-orientation='vertical']) .gui-slider-tick {
   top: auto;
-  left: 50%;
-  bottom: var(--gui-slider-pos, 0%);
+  inset-inline-start: 50%;
+  inset-block-end: var(--gui-slider-pos, 0%);
+  margin-inline-start: 0;
+  margin-block-end: -2px;
+  transform: translateX(-50%);
 }
 
-/* Optional inset icon (standard slider only), pinned to the leading edge. */
+/* Optional inset icon (standard slider only, sizes M/L/XL), pinned to the
+   leading edge. --gui-slider-inset-icon-size is defined only by md/lg/xl. */
 .gui-slider-inset-icon {
   position: absolute;
   top: 50%;
-  left: 8px;
+  inset-inline-start: 8px;
   transform: translateY(-50%);
   width: var(--gui-slider-inset-icon-size);
   height: var(--gui-slider-inset-icon-size);
@@ -111,8 +144,8 @@
 
 :host([data-orientation='vertical']) .gui-slider-inset-icon {
   top: auto;
-  left: 50%;
-  bottom: 8px;
+  inset-inline-start: 50%;
+  inset-block-end: 8px;
   transform: translateX(-50%);
 }
 
@@ -121,17 +154,62 @@
   display: none;
 }
 
-/* Handle: a 4px-wide rounded bar centered on its value position. */
-.gui-slider-thumb {
+/* Handle anchor: a capsule-sized box centered on the value position and sliding
+   with the value. It is NOT an interaction host (no overflow clipping), so the
+   value indicator inside it escapes freely. */
+.gui-slider-handle {
   position: absolute;
   top: 50%;
-  left: var(--gui-slider-pos, 0%);
-  width: 4px;
+  inset-inline-start: var(--gui-slider-pos, 0%);
+  width: var(--gui-slider-state-width);
+  height: var(--gui-slider-handle-height);
+  /* Center on the value position with a LOGICAL margin so it mirrors correctly
+     in RTL (translateX is physical and would offset the wrong way); translateY
+     centers the cross axis. */
+  margin-inline-start: calc(var(--gui-slider-state-width) / -2);
+  transform: translateY(-50%);
+  transition: inset-inline-start var(--md-sys-motion-duration-short2, 100ms)
+    var(--md-sys-motion-easing-standard, ease);
+}
+
+:host([data-orientation='vertical']) .gui-slider-handle {
+  top: auto;
+  inset-inline-start: 50%;
+  inset-block-end: var(--gui-slider-pos, 0%);
+  width: var(--gui-slider-handle-height);
+  height: var(--gui-slider-state-width);
+  margin-inline-start: 0;
+  margin-block-end: calc(var(--gui-slider-state-width) / -2);
+  transform: translateX(-50%);
+  transition: inset-block-end var(--md-sys-motion-duration-short2, 100ms)
+    var(--md-sys-motion-easing-standard, ease);
+}
+
+/* The state-layer / ripple / focus-ring capsule fills the handle anchor. The
+   interaction directives paint hover/focus/pressed into ::before and draw the
+   focus ring as an outline here; corner-full makes both read as a rounded shape
+   around the handle. currentColor (primary) is the state-layer/ripple tint. */
+.gui-slider-thumb-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--md-sys-shape-corner-full);
+  color: var(--md-sys-color-primary);
+  cursor: grab;
+}
+.gui-slider-thumb-state:active {
+  cursor: grabbing;
+}
+
+/* The visible 4dp handle nub, centered in the capsule. Morphs width on press. */
+.gui-slider-thumb {
+  flex: 0 0 auto;
+  width: var(--gui-slider-handle-width);
   height: var(--gui-slider-handle-height);
   border-radius: var(--md-sys-shape-corner-full);
-  transform: translate(-50%, -50%);
   background-color: var(--md-sys-color-primary);
-  cursor: grab;
   transition:
     width var(--md-sys-motion-duration-short2, 100ms)
       var(--md-sys-motion-easing-standard, ease),
@@ -139,32 +217,33 @@
       var(--md-sys-motion-easing-standard, ease);
 }
 
-/* Vertical handle: a 4px-tall bar that spans the track width. */
 :host([data-orientation='vertical']) .gui-slider-thumb {
-  top: auto;
-  left: 50%;
-  bottom: var(--gui-slider-pos, 0%);
   width: var(--gui-slider-handle-height);
-  height: 4px;
-  transform: translate(-50%, 50%);
+  height: var(--gui-slider-handle-width);
 }
 
-/* Handle shrinks on press / while dragging (width on horizontal). */
-:host([data-active]) .gui-slider-thumb:active,
-.gui-slider-thumb[data-gui-state~='pressed'],
-.gui-slider-thumb[data-gui-state~='dragged'] {
+/* Handle nub shrinks while dragged (our pointer-drag signal) or pressed/dragged
+   (the directive's per-handle state) — per-thumb, so a range drag only narrows
+   the handle being moved. */
+.gui-slider-thumb-dragging .gui-slider-thumb,
+.gui-slider-thumb-state[data-gui-state~='pressed'] .gui-slider-thumb,
+.gui-slider-thumb-state[data-gui-state~='dragged'] .gui-slider-thumb {
   width: 2px;
 }
-
-/* On a vertical slider the handle is rotated, so it shrinks in height. */
-:host([data-orientation='vertical'][data-active]) .gui-slider-thumb:active,
-:host([data-orientation='vertical']) .gui-slider-thumb[data-gui-state~='pressed'],
-:host([data-orientation='vertical']) .gui-slider-thumb[data-gui-state~='dragged'] {
+:host([data-orientation='vertical']) .gui-slider-thumb-dragging .gui-slider-thumb,
+:host([data-orientation='vertical'])
+  .gui-slider-thumb-state[data-gui-state~='pressed']
+  .gui-slider-thumb,
+:host([data-orientation='vertical'])
+  .gui-slider-thumb-state[data-gui-state~='dragged']
+  .gui-slider-thumb {
   width: var(--gui-slider-handle-height);
   height: 2px;
 }
 
-/* Value indicator (label container), shown on press/drag/focus. */
+/* Value indicator (label container), shown on hover / focus / press / drag of
+   THIS handle. Anchored to the handle capsule; it is a sibling of the overflow-
+   clipped state capsule so it is never clipped. */
 .gui-slider-value {
   position: absolute;
   bottom: calc(100% + 8px);
@@ -191,9 +270,9 @@
       var(--md-sys-motion-easing-standard, ease);
 }
 
-:host([data-active]) .gui-slider-value,
-.gui-slider-thumb:focus-within .gui-slider-value,
-.gui-slider-thumb:focus .gui-slider-value {
+.gui-slider-handle:hover .gui-slider-value,
+.gui-slider-handle:focus-within .gui-slider-value,
+.gui-slider-thumb-dragging .gui-slider-value {
   opacity: 1;
   transform: translateX(-50%) scale(1);
 }
@@ -206,13 +285,18 @@
   transform: translateY(-50%) scale(0);
   transform-origin: center left;
 }
-:host([data-orientation='vertical'][data-active]) .gui-slider-value,
-:host([data-orientation='vertical']) .gui-slider-thumb:focus-within .gui-slider-value,
-:host([data-orientation='vertical']) .gui-slider-thumb:focus .gui-slider-value {
+:host([data-orientation='vertical']) .gui-slider-handle:hover .gui-slider-value,
+:host([data-orientation='vertical'])
+  .gui-slider-handle:focus-within
+  .gui-slider-value,
+:host([data-orientation='vertical'])
+  .gui-slider-thumb-dragging
+  .gui-slider-value {
   transform: translateY(-50%) scale(1);
 }
 
-/* --- Sizes (track height / handle height / track shape per GUI_SLIDER_SIZES) --- */
+/* --- Sizes (track height / handle height / track shape per the M3 table).
+   md/lg/xl additionally define the inset-icon size; xs/sm have none. --- */
 :host([data-size='xs']) {
   --gui-slider-track-height: 16px;
   --gui-slider-handle-height: 44px;
@@ -242,11 +326,12 @@
   --gui-slider-inset-icon-size: 32px;
 }
 
-/* --- Disabled (M3 disabled treatment via tokens). --- */
+/* --- Disabled (M3 disabled treatment via tokens). The interaction layer already
+   suppresses the state layer for disabled hosts. --- */
 :host(.gui-disabled) {
   pointer-events: none;
 }
-:host(.gui-disabled) .gui-slider-active,
+:host(.gui-disabled) .gui-slider-seg-active,
 :host(.gui-disabled) .gui-slider-thumb {
   background-color: color-mix(
     in srgb,
@@ -255,11 +340,19 @@
     transparent
   );
 }
-:host(.gui-disabled) .gui-slider-inactive {
+:host(.gui-disabled) .gui-slider-seg:not(.gui-slider-seg-active) {
   background-color: color-mix(
     in srgb,
     var(--md-sys-color-on-surface)
       calc(var(--gui-slider-disabled-container-opacity) * 100%),
+    transparent
+  );
+}
+:host(.gui-disabled) .gui-slider-tick {
+  background-color: color-mix(
+    in srgb,
+    var(--md-sys-color-on-surface)
+      calc(var(--gui-slider-disabled-content-opacity) * 100%),
     transparent
   );
 }
@@ -268,6 +361,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .gui-slider-handle,
   .gui-slider-thumb,
   .gui-slider-value {
     transition: none;
