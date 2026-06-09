@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { MenuDirective } from './menu';
 import { MenuItemComponent } from './menu-item';
 import { MenuDividerComponent } from './menu-divider';
+import { MenuSectionComponent } from './menu-section';
 
 @Component({
   imports: [
@@ -118,5 +119,42 @@ describe('Menu', () => {
       .map((de) => de.injector.get(CdkMenuItem));
     const disabled = items.find((item) => item.disabled);
     expect(disabled).toBeTruthy();
+  });
+});
+
+@Component({
+  template: `<gui-menu-section [label]="label()">
+    <span class="child">x</span>
+  </gui-menu-section>`,
+  imports: [MenuSectionComponent],
+})
+class SectionHostComponent {
+  label = signal<string | undefined>('Account');
+}
+
+describe('MenuSection', () => {
+  it('exposes role="group" and renders the optional section label', () => {
+    const fixture = TestBed.createComponent(SectionHostComponent);
+    fixture.detectChanges();
+
+    const section = fixture.nativeElement.querySelector(
+      'gui-menu-section',
+    ) as HTMLElement;
+    // CdkMenuGroup (composed as a host directive) provides the group role.
+    expect(section.getAttribute('role')).toBe('group');
+
+    const label = section.querySelector('.gui-menu-section-label');
+    expect(label?.textContent?.trim()).toBe('Account');
+    // Projected content survives alongside the label.
+    expect(section.querySelector('.child')?.textContent).toBe('x');
+  });
+
+  it('omits the label element when no label is set', () => {
+    const fixture = TestBed.createComponent(SectionHostComponent);
+    fixture.componentInstance.label.set(undefined);
+    fixture.detectChanges();
+
+    const section = fixture.nativeElement.querySelector('gui-menu-section');
+    expect(section.querySelector('.gui-menu-section-label')).toBeNull();
   });
 });

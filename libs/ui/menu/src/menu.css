@@ -12,10 +12,11 @@
 }
 
 /* M3 Expressive vertical menus use rounded corners and a surface-container-low
-   container. */
+   container. Container shape is the large (16dp) corner per
+   md.comp.menus.container.shape. */
 .gui-menu[data-variant='vertical'] {
   background: var(--md-sys-color-surface-container-low);
-  border-radius: var(--md-sys-shape-corner-medium);
+  border-radius: var(--md-sys-shape-corner-large);
 }
 
 /* Vibrant color style — tertiary-based container (Expressive only). */
@@ -23,11 +24,54 @@
   background: var(--md-sys-color-tertiary-container);
 }
 
-/* Grouped layout — extra spacing between grouped sections (Expressive only). */
+/* Grouped layout — extra spacing between grouped sections (Expressive only).
+   Each section is a `gui-menu-section` (role="group" via CDK). */
 .gui-menu[data-layout='grouped'] {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+/* M3 grouped-menu section: a role="group" container carrying the small (8dp)
+   group shape (md.comp.menus.group.shape) with an optional section label. */
+.gui-menu-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.gui-menu[data-variant='vertical'] .gui-menu-section {
+  border-radius: var(--md-sys-shape-corner-small);
+}
+
+/* Section label (md.comp.menus standard.section-label-text): on-surface-variant.
+   The menu tokens pin only the color, not a typescale, so the label follows the
+   M3 subheader convention (title-small). Inline padding aligns with the item. */
+.gui-menu-section-label {
+  display: block;
+  padding: 8px 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-sys-typescale-title-small-font);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+  font-size: var(--md-sys-typescale-title-small-size);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  letter-spacing: var(--md-sys-typescale-title-small-tracking);
+}
+
+.gui-menu-section-label:empty {
+  display: none;
+}
+
+/* Items at the ends of a grouped section tuck their outer corners to the 8dp
+   group radius (md.comp.menus.group.shape) so each section reads as one block.
+   :first-of-type / :last-of-type so the leading section label (a span) is skipped. */
+.gui-menu[data-variant='vertical'] .gui-menu-section .gui-menu-item:first-of-type {
+  border-start-start-radius: var(--md-sys-shape-corner-small);
+  border-start-end-radius: var(--md-sys-shape-corner-small);
+}
+
+.gui-menu[data-variant='vertical'] .gui-menu-section .gui-menu-item:last-of-type {
+  border-end-start-radius: var(--md-sys-shape-corner-small);
+  border-end-end-radius: var(--md-sys-shape-corner-small);
 }
 
 /* Encapsulation is None on MenuItemComponent (see menu-item.ts) so these rules
@@ -63,14 +107,52 @@
   --gui-comp-icon-size: 24px;
 }
 
-/* Vertical menus give items rounded corners; the shape morphs (per M3) when an
-   item is selected. */
+/* M3 menu focus indicator is an INSET ring: offset -3dp
+   (md.comp.menus.menu-item.focus.indicator outline offset = -3dp) so the ring
+   sits inside the packed 48dp row instead of overlapping the neighbouring rows
+   and the panel edge (the shared interaction default is an outer +2px ring). The
+   3dp thickness and the secondary indicator color come from the tokens unchanged.
+   Scoped under `.gui-menu` so the FAB menu (which re-skins the same item) keeps
+   its own focus treatment. */
+.gui-menu .gui-menu-item {
+  --md-sys-state-focus-indicator-outer-offset: -3px;
+}
+
+/* Vertical menus give items the M3 Expressive shape system. A resting item is
+   the extra-small (4dp) corner (md.comp.menus.menu-item.shape); selection morphs
+   the shape to the medium (12dp) corner (md.comp.menus.menu-item.selected.shape).
+   The radius is transitioned so the change reads as an Expressive shape-morph,
+   not an instant swap. */
 .gui-menu[data-variant='vertical'] .gui-menu-item {
-  border-radius: var(--md-sys-shape-corner-large);
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  transition:
+    border-radius var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    background-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard);
 }
 
 .gui-menu[data-variant='vertical'] .gui-menu-item[data-selected] {
-  border-radius: var(--md-sys-shape-corner-extra-large);
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+
+/* M3 first-child / last-child outer-corner morph: in a standard-layout vertical
+   menu the first and last items tuck their OUTER corners to the medium (12dp)
+   corner (md.comp.menus.menu-item.first-child/last-child.shape) while their inner
+   corners stay at the resting 4dp, so the item stack reads as one connected block
+   nested in the 16dp panel. Uses :first-of-type / :last-of-type (not :first-child)
+   so an optional leading element — e.g. a divider — does not steal the match.
+   Grouped sections do their own tucking at the 8dp group radius (see below). */
+.gui-menu[data-variant='vertical']:not([data-layout='grouped'])
+  .gui-menu-item:first-of-type {
+  border-start-start-radius: var(--md-sys-shape-corner-medium);
+  border-start-end-radius: var(--md-sys-shape-corner-medium);
+}
+
+.gui-menu[data-variant='vertical']:not([data-layout='grouped'])
+  .gui-menu-item:last-of-type {
+  border-end-start-radius: var(--md-sys-shape-corner-medium);
+  border-end-end-radius: var(--md-sys-shape-corner-medium);
 }
 
 /* The label column. Wraps the label and optional two-line supporting text. */
@@ -88,18 +170,20 @@
   text-overflow: ellipsis;
 }
 
-/* Optional two-line supporting text (body-medium, on-surface-variant). Hidden
-   unless the consumer projects content into it. */
+/* Optional two-line supporting text. M3 menu supporting-text is 12sp
+   (md.comp.menus.menu-item.supporting-text size = 12sp) — the body-small
+   typescale — on-surface-variant. Hidden unless the consumer projects content.
+   (The trailing-supporting-text below stays at 14sp / label-large per spec.) */
 .gui-menu-item-supporting {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: var(--md-sys-typescale-body-medium-font);
-  font-weight: var(--md-sys-typescale-body-medium-weight);
-  font-size: var(--md-sys-typescale-body-medium-size);
-  line-height: var(--md-sys-typescale-body-medium-line-height);
-  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+  font-family: var(--md-sys-typescale-body-small-font);
+  font-weight: var(--md-sys-typescale-body-small-weight);
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  letter-spacing: var(--md-sys-typescale-body-small-tracking);
 }
 
 .gui-menu-item-supporting:empty {

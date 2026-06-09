@@ -4,6 +4,7 @@ import {
   MenuDirective,
   MenuItemComponent,
   MenuDividerComponent,
+  MenuSectionComponent,
 } from '@ngguide/ui/menu';
 import { ButtonComponent } from '@ngguide/ui/button';
 import { IconButtonComponent } from '@ngguide/ui/icon-button';
@@ -38,6 +39,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
     MenuDirective,
     MenuItemComponent,
     MenuDividerComponent,
+    MenuSectionComponent,
     ButtonComponent,
     IconButtonComponent,
     IconComponent,
@@ -163,10 +165,14 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
           </button>
           <ng-template #groupedLayoutM>
             <div gui-menu variant="vertical" layout="grouped" cdkMenu>
-              <button gui-menu-item>Profile</button>
-              <button gui-menu-item>Settings</button>
-              <button gui-menu-item>Help</button>
-              <button gui-menu-item>Sign out</button>
+              <gui-menu-section label="Account">
+                <button gui-menu-item>Profile</button>
+                <button gui-menu-item>Settings</button>
+              </gui-menu-section>
+              <gui-menu-section label="More">
+                <button gui-menu-item>Help</button>
+                <button gui-menu-item>Sign out</button>
+              </gui-menu-section>
             </div>
           </ng-template>
         </app-demo-specimen>
