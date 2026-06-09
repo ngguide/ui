@@ -107,6 +107,16 @@
   transform: scale(1);
 }
 
+/* Selected: the state-layer/ripple tint follows the control content color →
+   primary (M3: the state layer is not pinned to on-surface — Material Web
+   md-radio uses selected-*-state-layer-color = primary). Mirrors the selected
+   ring/dot switch above; currentColor on .gui-radio-state is the tint source for
+   the interaction overlay and ripple, so this retints both to primary while the
+   unselected radio keeps the on-surface tint inherited from :host. */
+:host(:has(input:checked)) .gui-radio-state {
+  color: var(--md-sys-color-primary);
+}
+
 /* Disabled (M3 disabled treatment via tokens). The interaction layer already
    suppresses the state layer for disabled hosts. */
 :host(.gui-disabled) {

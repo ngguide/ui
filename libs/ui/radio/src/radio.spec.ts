@@ -106,6 +106,22 @@ describe('RadioComponent', () => {
     expect(radios[0].classList.contains('gui-state-layer')).toBe(false);
   });
 
+  it('retints the selected state layer to the primary role (not on-surface)', () => {
+    // M3: a selected radio's hover/focus/pressed state layer + ripple tint with
+    // primary, not on-surface (Material Web md-radio selected-*-state-layer-color
+    // = primary). The interaction overlay/ripple key off currentColor, so the
+    // selected state must switch .gui-radio-state's color to the primary token.
+    // jsdom cannot resolve a :has()-driven computed color, so assert the rule is
+    // present in the component's injected styles (mirrors the checkbox parity).
+    const css = Array.from(document.querySelectorAll('style'))
+      .map((s) => s.textContent ?? '')
+      .join('\n');
+
+    expect(css).toMatch(
+      /:has\(input:checked\)[^{]*\.gui-radio-state[^{]*\{[^}]*--md-sys-color-primary/,
+    );
+  });
+
   it('does not expose an error variant (not part of the M3 radio spec)', () => {
     for (const radio of radios) {
       expect(radio.hasAttribute('data-error')).toBe(false);
