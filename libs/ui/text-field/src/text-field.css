@@ -44,6 +44,10 @@
   align-items: center;
   flex: 0 0 auto;
   color: var(--md-sys-color-on-surface-variant);
+  /* Pin the M3 24dp icon box regardless of the projected content: gui-icon
+     reads --gui-comp-icon-size, font-glyph icons read font-size. */
+  --gui-comp-icon-size: 24px;
+  font-size: 24px;
 }
 .gui-text-field-leading:empty,
 .gui-text-field-trailing:empty {
@@ -115,8 +119,9 @@
   color: var(--md-sys-color-primary);
 }
 
-/* Hover: the label darkens to on-surface (M3 hovered states). Focus wins. */
-:host(:not([data-disabled]):not([data-focused]):not([data-error]):hover)
+/* Hover: the OUTLINED label darkens to on-surface (M3 hovered states). The
+   FILLED label stays on-surface-variant on hover per spec. Focus wins. */
+:host([data-variant='outlined']:not([data-disabled]):not([data-focused]):not([data-error]):hover)
   .gui-text-field-label {
   color: var(--md-sys-color-on-surface);
 }
@@ -139,7 +144,8 @@
   background-color: var(--md-sys-color-on-surface-variant);
 }
 :host([data-variant='filled'][data-focused]) .gui-text-field-container::after {
-  height: 2px;
+  /* M3: focused filled active indicator is 3dp (current .thickness token). */
+  height: 3px;
   background-color: var(--md-sys-color-primary);
 }
 
@@ -187,11 +193,11 @@
   border-radius: var(--md-sys-shape-corner-extra-small, 4px);
 }
 :host([data-variant='outlined'][data-focused]) .gui-text-field-container {
-  /* M3: focused outlined container outline is 2dp. */
-  border-width: 2px;
+  /* M3: focused outlined container outline is 3dp (current focus.outline.width). */
+  border-width: 3px;
   border-color: var(--md-sys-color-primary);
-  /* Compensate the thicker border so the layout doesn't shift. */
-  margin: -1px;
+  /* Compensate the +2px (1dp→3dp) growth per side so the layout doesn't shift. */
+  margin: -2px;
 }
 
 /* Hover (outlined): outline darkens to on-surface (M3 hovered states).
@@ -229,6 +235,15 @@
 :host([data-error]) .gui-text-field-supporting-text {
   color: var(--md-sys-color-error);
 }
+/* Error: the trailing icon adopts the error role (the leading icon stays
+   on-surface-variant in every error state per M3). The caret turns error too. */
+:host([data-error]) .gui-text-field-trailing {
+  color: var(--md-sys-color-error);
+}
+:host([data-error]) .gui-text-field-middle ::ng-deep input,
+:host([data-error]) .gui-text-field-middle ::ng-deep textarea {
+  caret-color: var(--md-sys-color-error);
+}
 
 /* Error + hover (M3 error hovered states): label, active indicator and outline
    darken to on-error-container. Focus keeps the resting error role. */
@@ -252,6 +267,10 @@
   .gui-text-field-container {
   border-color: var(--md-sys-color-on-error-container);
 }
+:host([data-error]:not([data-disabled]):not([data-focused]):hover)
+  .gui-text-field-trailing {
+  color: var(--md-sys-color-on-error-container);
+}
 
 /* --- Supporting text + counter row --- */
 .gui-text-field-supporting {
@@ -274,18 +293,34 @@
   display: none;
 }
 
-/* --- Multiline (textarea grows naturally) --- */
+/* --- Multiline (textarea grows naturally) ---
+   The spec has no multiline measurements, so we use a stable reserved-band
+   model: the textarea always reserves a top band, the resting label overlays
+   the first text line (placeholder), and the floated label rises into the band
+   above the text. This keeps single-line behaviour untouched and stops the
+   floated label from overlapping (outlined) or escaping above (filled) the
+   textarea content. `transform: none` is set explicitly so the single-line
+   filled -150% float and outlined -50% notch translate do not leak in. */
 :host([data-multiline]) .gui-text-field-container {
   align-items: flex-start;
   height: auto;
 }
+/* Rest: the label overlays the first text line as a placeholder. */
 :host([data-multiline]) .gui-text-field-label {
   top: 8px;
   transform: none;
 }
+/* Float: the label rises to the top and the textarea reserves a 16px band
+   below it, so the floated label never overlaps the content. Reserving the band
+   only while floated keeps the resting field compact. */
 :host([data-multiline][data-populated]) .gui-text-field-label,
 :host([data-multiline][data-focused]) .gui-text-field-label {
   top: 0;
+  transform: none;
+}
+:host([data-multiline][data-populated]) .gui-text-field-middle ::ng-deep textarea,
+:host([data-multiline][data-focused]) .gui-text-field-middle ::ng-deep textarea {
+  padding-top: 16px;
 }
 
 /* --- Disabled (M3 disabled treatment via on-surface at reduced opacity) --- */
@@ -298,6 +333,13 @@
 :host([data-disabled]) .gui-text-field-prefix,
 :host([data-disabled]) .gui-text-field-suffix,
 :host([data-disabled]) .gui-text-field-supporting {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
+}
+/* Disabled input text + placeholder fall to on-surface @ 38% like the rest. */
+:host([data-disabled]) .gui-text-field-middle ::ng-deep input,
+:host([data-disabled]) .gui-text-field-middle ::ng-deep textarea,
+:host([data-disabled]) .gui-text-field-middle ::ng-deep input::placeholder,
+:host([data-disabled]) .gui-text-field-middle ::ng-deep textarea::placeholder {
   color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 62%);
 }
 :host([data-disabled][data-variant='filled']) .gui-text-field-container {
