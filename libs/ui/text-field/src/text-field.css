@@ -318,6 +318,12 @@
 :host([data-multiline]) .gui-text-field-middle ::ng-deep textarea {
   margin-top: 16px;
 }
+/* Outlined floats the label onto the top BORDER (notch), so it never sits in the
+   reserved band the way filled does — shrink the band to start the text closer to
+   the top. Filled still needs the full 16px to hold the floated label inside. */
+:host([data-multiline][data-variant='outlined']) .gui-text-field-middle ::ng-deep textarea {
+  margin-top: 4px;
+}
 /* Rest: the label overlays the first (padded) text line as a placeholder. */
 :host([data-multiline]) .gui-text-field-label {
   top: 16px;
