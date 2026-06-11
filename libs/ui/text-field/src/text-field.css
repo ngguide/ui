@@ -313,8 +313,10 @@
   align-items: flex-start;
   height: auto;
 }
+/* `margin-top` (not padding-top) so the textarea BOX starts below the band: its
+   scroll area can't slide content up under the floated label. */
 :host([data-multiline]) .gui-text-field-middle ::ng-deep textarea {
-  padding-top: 16px;
+  margin-top: 16px;
 }
 /* Rest: the label overlays the first (padded) text line as a placeholder. */
 :host([data-multiline]) .gui-text-field-label {
