@@ -323,11 +323,20 @@
   top: 16px;
   transform: none;
 }
-/* Float: the label rises into the always-reserved band above the text. */
+/* Float: the label rises into the always-reserved band above the text. Filled
+   keeps it inside the band; outlined lifts it onto the top BORDER (notch). */
 :host([data-multiline][data-populated]) .gui-text-field-label,
 :host([data-multiline][data-focused]) .gui-text-field-label {
   top: 0;
   transform: none;
+}
+/* Outlined multiline: notch the top outline like single-line outlined — lift the
+   label from the middle's top up onto the border (the 9px = 8px padding + 1px
+   border that sit between the outline and the middle). translateY(-50%) self-
+   centres it on the line first. */
+:host([data-multiline][data-variant='outlined'][data-populated]) .gui-text-field-label,
+:host([data-multiline][data-variant='outlined'][data-focused]) .gui-text-field-label {
+  transform: translateY(calc(-50% - 9px));
 }
 
 /* --- Disabled (M3 disabled treatment via on-surface at reduced opacity) --- */
