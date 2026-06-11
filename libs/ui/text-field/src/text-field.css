@@ -301,32 +301,31 @@
 
 /* --- Multiline (textarea grows naturally) ---
    The spec has no multiline measurements, so we use a stable reserved-band
-   model: the textarea always reserves a top band, the resting label overlays
-   the first text line (placeholder), and the floated label rises into the band
-   above the text. This keeps single-line behaviour untouched and stops the
-   floated label from overlapping (outlined) or escaping above (filled) the
-   textarea content. `transform: none` is set explicitly so the single-line
-   filled -150% float and outlined -50% notch translate do not leak in. */
+   model: the textarea ALWAYS reserves a 16px top band, the resting label
+   overlays the first (padded) text line as a placeholder, and the floated label
+   rises into that band above the text. Reserving the band at all times means
+   focus does NOT change the field height or shift the text — no jump. This keeps
+   single-line behaviour untouched and stops the floated label from overlapping
+   (outlined) or escaping above (filled) the textarea content. `transform: none`
+   is set explicitly so the single-line filled -150% float and the outlined notch
+   translate do not leak in. */
 :host([data-multiline]) .gui-text-field-container {
   align-items: flex-start;
   height: auto;
 }
-/* Rest: the label overlays the first text line as a placeholder. */
+:host([data-multiline]) .gui-text-field-middle ::ng-deep textarea {
+  padding-top: 16px;
+}
+/* Rest: the label overlays the first (padded) text line as a placeholder. */
 :host([data-multiline]) .gui-text-field-label {
-  top: 8px;
+  top: 16px;
   transform: none;
 }
-/* Float: the label rises to the top and the textarea reserves a 16px band
-   below it, so the floated label never overlaps the content. Reserving the band
-   only while floated keeps the resting field compact. */
+/* Float: the label rises into the always-reserved band above the text. */
 :host([data-multiline][data-populated]) .gui-text-field-label,
 :host([data-multiline][data-focused]) .gui-text-field-label {
   top: 0;
   transform: none;
-}
-:host([data-multiline][data-populated]) .gui-text-field-middle ::ng-deep textarea,
-:host([data-multiline][data-focused]) .gui-text-field-middle ::ng-deep textarea {
-  padding-top: 16px;
 }
 
 /* --- Disabled (M3 disabled treatment via on-surface at reduced opacity) --- */
