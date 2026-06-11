@@ -5,6 +5,8 @@ import {
   Component,
   computed,
   contentChild,
+  ElementRef,
+  inject,
   input,
 } from '@angular/core';
 import {
@@ -53,6 +55,11 @@ export class TextFieldComponent {
   protected readonly input = contentChild.required(TextFieldInputDirective);
   protected readonly leading = contentChild(TextFieldLeadingDirective);
   protected readonly trailing = contentChild(TextFieldTrailingDirective);
+
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef)
+    .nativeElement;
+  /** Last backdrop colour pushed into the notch var, to skip redundant writes. */
+  private detectedBackdrop = '';
 
   /** Stable ids for the label/supporting/counter elements (aria refs). */
   protected readonly uid = nextId++;
@@ -131,6 +138,39 @@ export class TextFieldComponent {
         el.hasAttribute('aria-label') || el.hasAttribute('aria-labelledby');
       if (this.label() && !hasOwnName) {
         el.setAttribute('aria-labelledby', this.labelId);
+      }
+    });
+
+    // The outlined floating label "notches" the outline with an opaque fill, so
+    // that fill must match the surface the field is placed on or it shows as a
+    // mismatched rectangle. Auto-detect the actual backdrop and expose it as
+    // `--gui-tf-detected-backdrop` (a fallback the CSS uses *below* an explicit
+    // `--gui-text-field-container-background` override, so consumers can still
+    // pin it). Runs after render — styles are clean, so the reads are cheap —
+    // and re-runs on focus/populate (its signal deps) to follow theme changes.
+    afterRenderEffect(() => {
+      this.input().focused();
+      this.input().empty();
+      if (this.variant() !== 'outlined') {
+        return;
+      }
+      let node = this.host.parentElement;
+      let backdrop = '';
+      while (node) {
+        const color = getComputedStyle(node).backgroundColor;
+        if (color && color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent') {
+          backdrop = color;
+          break;
+        }
+        node = node.parentElement;
+      }
+      if (backdrop !== this.detectedBackdrop) {
+        this.detectedBackdrop = backdrop;
+        if (backdrop) {
+          this.host.style.setProperty('--gui-tf-detected-backdrop', backdrop);
+        } else {
+          this.host.style.removeProperty('--gui-tf-detected-backdrop');
+        }
       }
     });
   }

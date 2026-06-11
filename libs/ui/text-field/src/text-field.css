@@ -10,12 +10,6 @@
   width: 256px;
   box-sizing: border-box;
   font: var(--md-sys-typescale-body-large, 400 16px / 24px sans-serif);
-
-  /* Backdrop the outlined-variant label notch is filled with so it cleanly
-     breaks the outline. Defaults to the M3 surface; override this custom
-     property to the field's actual backdrop (e.g. a surface-container) when the
-     field is not placed directly on `surface`. */
-  --gui-text-field-container-background: var(--md-sys-color-surface, #fff);
 }
 
 .gui-text-field-container {
@@ -212,13 +206,18 @@
 }
 
 /* Outlined label sits on the outline (notch), with 4px horizontal padding and
-   an opaque background so it cuts through the border. */
+   an opaque background so it cuts through the border. The fill resolves to: an
+   explicit consumer override, else the backdrop auto-detected at runtime (so the
+   notch matches whatever surface the field is placed on), else the M3 surface. */
 :host([data-variant='outlined'][data-populated]) .gui-text-field-label,
 :host([data-variant='outlined'][data-focused]) .gui-text-field-label {
   top: 0;
   transform: translateY(-50%);
   padding-inline: 4px;
-  background-color: var(--gui-text-field-container-background);
+  background-color: var(
+    --gui-text-field-container-background,
+    var(--gui-tf-detected-backdrop, var(--md-sys-color-surface, #fff))
+  );
 }
 
 /* --- Error state --- */
