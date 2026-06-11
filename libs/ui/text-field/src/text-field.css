@@ -211,8 +211,11 @@
    notch matches whatever surface the field is placed on), else the M3 surface. */
 :host([data-variant='outlined'][data-populated]) .gui-text-field-label,
 :host([data-variant='outlined'][data-focused]) .gui-text-field-label {
-  top: 0;
-  transform: translateY(-50%);
+  top: 50%;
+  /* Lift the floated label from the field centre up onto the top outline (half
+     the 56dp container) so it notches the border ABOVE the input text instead of
+     overlapping it. Single translateY keeps the resting->float transition clean. */
+  transform: translateY(calc(-50% - 28px));
   padding-inline: 4px;
   background-color: var(
     --gui-text-field-container-background,
