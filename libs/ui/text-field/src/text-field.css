@@ -193,11 +193,11 @@
   border-radius: var(--md-sys-shape-corner-extra-small, 4px);
 }
 :host([data-variant='outlined'][data-focused]) .gui-text-field-container {
-  /* M3: focused outlined container outline is 3dp (current focus.outline.width). */
-  border-width: 3px;
+  /* M3: focused outlined outline is 3dp (current focus.outline.width). Draw the
+     extra 2dp as an inset box-shadow over the unchanged 1px border so the field
+     does NOT resize or shift on focus (box-shadow is outside the layout box). */
   border-color: var(--md-sys-color-primary);
-  /* Compensate the +2px (1dp→3dp) growth per side so the layout doesn't shift. */
-  margin: -2px;
+  box-shadow: inset 0 0 0 2px var(--md-sys-color-primary);
 }
 
 /* Hover (outlined): outline darkens to on-surface (M3 hovered states).
@@ -231,6 +231,10 @@
 }
 :host([data-error][data-variant='outlined']) .gui-text-field-container {
   border-color: var(--md-sys-color-error);
+}
+/* Error + focused: recolor the 3dp focus shadow to the error role. */
+:host([data-error][data-variant='outlined'][data-focused]) .gui-text-field-container {
+  box-shadow: inset 0 0 0 2px var(--md-sys-color-error);
 }
 :host([data-error]) .gui-text-field-supporting-text {
   color: var(--md-sys-color-error);
