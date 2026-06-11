@@ -60,6 +60,23 @@ export class TextFieldComponent {
   protected readonly supportingId = `gui-tf-supporting-${this.uid}`;
   protected readonly counterId = `gui-tf-counter-${this.uid}`;
 
+  /**
+   * Click-to-focus: clicking anywhere in the field body (label, prefix/suffix,
+   * padding) focuses the input — the native `<label>` behaviour the projected
+   * input can't provide on its own. Clicks on interactive leading/trailing
+   * content (e.g. an icon button) are left alone, as is a click on the input.
+   */
+  protected onContainerClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (
+      target === this.input().el ||
+      target.closest('[guiTextFieldLeading], [guiTextFieldTrailing]')
+    ) {
+      return;
+    }
+    this.input().el.focus();
+  }
+
   protected readonly counter = computed(() => {
     const max = this.maxLength();
     if (max == null) {
@@ -80,8 +97,16 @@ export class TextFieldComponent {
       if (this.counter()) {
         ids.push(this.counterId);
       }
-      if (ids.length) {
-        el.setAttribute('aria-describedby', ids.join(' '));
+      // Merge our description ids with any the consumer already wired, instead
+      // of clobbering theirs. Our own ids are stable, so filtering them out of
+      // the current value recovers exactly the consumer-supplied tokens.
+      const ours = new Set([this.supportingId, this.counterId]);
+      const theirs = (el.getAttribute('aria-describedby') ?? '')
+        .split(/\s+/)
+        .filter((token) => token && !ours.has(token));
+      const describedBy = [...theirs, ...ids];
+      if (describedBy.length) {
+        el.setAttribute('aria-describedby', describedBy.join(' '));
       } else {
         el.removeAttribute('aria-describedby');
       }
@@ -90,6 +115,14 @@ export class TextFieldComponent {
         el.setAttribute('aria-required', 'true');
       } else {
         el.removeAttribute('aria-required');
+      }
+
+      // When a max length is configured, enforce it natively too (the counter
+      // alone is advisory). Only set it — never remove, so a consumer's own
+      // maxlength survives when our input is unset.
+      const max = this.maxLength();
+      if (max != null) {
+        el.setAttribute('maxlength', String(max));
       }
 
       // The floating label names the input — unless the consumer supplied

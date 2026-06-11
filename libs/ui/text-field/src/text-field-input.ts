@@ -1,4 +1,5 @@
 import {
+  afterEveryRender,
   computed,
   Directive,
   ElementRef,
@@ -31,6 +32,17 @@ export class TextFieldInputDirective {
   readonly focused = signal(false);
   readonly empty = signal(true);
   readonly multiline = computed(() => this.el.tagName === 'TEXTAREA');
+
+  constructor() {
+    // Keep `empty` in sync with the actual native value even when it changes
+    // WITHOUT firing an `input` event: an initial/pre-filled value, or a
+    // programmatic form write (ngModel / reactive-forms patch). Without this a
+    // pre-filled field renders with its label un-floated, overlapping the value.
+    // `afterEveryRender` runs after every change-detection pass, so a form
+    // patch (which schedules CD) re-syncs the populated state; the signal's
+    // equality check makes the steady-state read a no-op.
+    afterEveryRender(() => this.empty.set(!this.el.value));
+  }
 
   /** Current value length, used by the wrapper's character counter. */
   valueLength(): number {

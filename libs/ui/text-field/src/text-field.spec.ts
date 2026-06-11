@@ -101,4 +101,48 @@ describe('TextFieldComponent', () => {
 
     expect(root.getAttribute('data-variant')).toBe('outlined');
   });
+
+  it('floats the label for a pre-filled value without an input event', () => {
+    const f = TestBed.createComponent(HostComponent);
+    f.componentInstance.val.set('preset');
+    f.detectChanges(); // writes [value] + runs the afterEveryRender sync
+    f.detectChanges(); // host binding reflects the now-populated state
+    const r = f.nativeElement.querySelector('gui-text-field') as HTMLElement;
+    expect(r.getAttribute('data-populated')).toBe('');
+  });
+
+  it('enforces the native maxlength when maxLength is set', () => {
+    expect(input.getAttribute('maxlength')).toBe('10');
+  });
+
+  it('focuses the input when the field body is clicked', () => {
+    const container = root.querySelector(
+      '.gui-text-field-container',
+    ) as HTMLElement;
+    container.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(document.activeElement).toBe(input);
+  });
+});
+
+@Component({
+  template: `<gui-text-field [supportingText]="'Help text'">
+    <input guiTextFieldInput aria-describedby="consumer-desc" />
+  </gui-text-field>`,
+  imports: [TextFieldComponent, TextFieldInputDirective],
+})
+class DescribedByHostComponent {}
+
+describe('TextFieldComponent aria-describedby', () => {
+  it('preserves a consumer-supplied aria-describedby alongside its own', () => {
+    const fixture = TestBed.createComponent(DescribedByHostComponent);
+    fixture.detectChanges();
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
+    const tokens = (input.getAttribute('aria-describedby') ?? '').split(/\s+/);
+    expect(tokens).toContain('consumer-desc');
+    expect(tokens.some((t) => t.startsWith('gui-tf-supporting-'))).toBe(true);
+  });
 });

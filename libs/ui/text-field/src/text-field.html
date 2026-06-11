@@ -1,4 +1,8 @@
-<div class="gui-text-field-container">
+<!-- The field body forwards pointer clicks to the input (native label-style
+     focus convenience). Keyboard users operate the focusable input directly, so
+     no key handler or extra tab stop belongs on this container. -->
+<!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+<div class="gui-text-field-container" (click)="onContainerClick($event)">
   <span class="gui-text-field-leading">
     <ng-content select="[guiTextFieldLeading]" />
   </span>
