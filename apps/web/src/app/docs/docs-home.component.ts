@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CodePanelComponent } from './code-panel.component';
 import { DOC_CATEGORIES } from './component-registry';
 
 /**
@@ -11,7 +12,7 @@ import { DOC_CATEGORIES } from './component-registry';
 @Component({
   selector: 'app-docs-home',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, CodePanelComponent],
   template: `
     <section class="home-hero">
       <p class="home-eyebrow">Angular · Material Design 3</p>
@@ -38,6 +39,55 @@ import { DOC_CATEGORIES } from './component-registry';
           GitHub ↗
         </a>
       </div>
+    </section>
+
+    <section class="start" aria-label="Get started">
+      <h2 class="start-title">Get started</h2>
+      <ol class="start-steps">
+        <li class="start-step">
+          <div class="start-step-head">
+            <span class="start-num">1</span>
+            <h3 class="start-step-title">Install</h3>
+          </div>
+          <p class="start-desc">Add the package to an Angular 21+ app.</p>
+          <app-code [code]="codeInstall" language="bash" />
+        </li>
+        <li class="start-step">
+          <div class="start-step-head">
+            <span class="start-num">2</span>
+            <h3 class="start-step-title">Set the theme</h3>
+          </div>
+          <p class="start-desc">
+            One brand color generates the whole M3 token set — every
+            <code>--md-sys-*</code> role, light and dark.
+            <code>mode: 'auto'</code> follows the OS. This is all the theming the
+            components need.
+          </p>
+          <app-code [code]="codeTheme" language="ts" />
+        </li>
+        <li class="start-step">
+          <div class="start-step-head">
+            <span class="start-num">3</span>
+            <h3 class="start-step-title">Use a component</h3>
+          </div>
+          <p class="start-desc">
+            Each component is its own entry point — import only what you use.
+          </p>
+          <app-code [code]="codeUse" language="ts" />
+        </li>
+      </ol>
+      <p class="start-note">
+        Icons use the
+        <a
+          href="https://fonts.google.com/icons"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Material Symbols</a
+        >
+        font — load it once in your global styles. Need to re-theme at runtime
+        (brand switch, dark toggle)? Inject <code>M3ThemeService</code> and call
+        <code>setTheme()</code>.
+      </p>
     </section>
 
     <section class="home-grid" aria-label="Component categories">
@@ -67,4 +117,33 @@ export class DocsHomeComponent {
     (sum, category) => sum + category.components.length,
     0,
   );
+
+  protected readonly codeInstall = `
+npm install @ngguide/ui`;
+
+  protected readonly codeTheme = `
+// app.config.ts
+import { provideM3Theme } from '@ngguide/ui/theme';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    // One brand seed -> the full M3 dynamic-color token set.
+    provideM3Theme({
+      sourceColor: '#6750A4',   // your brand color
+      variant: 'tonal-spot',
+      contrast: 'standard',
+      mode: 'auto',             // 'light' | 'dark' | 'auto'
+    }),
+  ],
+};`;
+
+  protected readonly codeUse = `
+import { ButtonComponent } from '@ngguide/ui/button';
+
+@Component({
+  selector: 'app-root',
+  imports: [ButtonComponent],
+  template: \`<button gui-button variant="filled">Get started</button>\`,
+})
+export class AppComponent {}`;
 }
