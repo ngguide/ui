@@ -43,8 +43,15 @@
       var(--md-sys-motion-easing-standard);
 }
 
+/* All projected content (optional leading/trailing icon + the text) lands in
+   this single span, so the icon→label gap and vertical centering must live HERE
+   — the host's flex gap/align only sees this one child, not the icon and text
+   inside it. inline-flex keeps the button shrink-to-fit; gap inherits the
+   per-size value set on the host. */
 .gui-button-label {
-  display: inline;
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
 }
 
 /* Leading-vs-selected icon swap for a toggle button. Projected content carries

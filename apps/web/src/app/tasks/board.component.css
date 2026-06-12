@@ -86,7 +86,13 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 12px;
+  /* The primary-action region bleeds to the card's inline edges so its state
+     layer covers the full width (incl. rounded corners) instead of leaving an
+     unhighlighted 16px band on each side — gui-card adds padding-inline: 16px,
+     which would otherwise inset the region. The inline padding is restored to
+     16 + 12 = 28px so the text keeps its position. */
+  margin-inline: -16px;
+  padding: 12px 28px;
   cursor: pointer;
 }
 
