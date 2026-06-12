@@ -20,6 +20,9 @@ const serverRoutes: ServerRoute[] = [
   { path: 'shop/orders/:id', renderMode: RenderMode.Server },
   { path: 'shop/products/:id', renderMode: RenderMode.Server },
   { path: 'shop/customers/:id', renderMode: RenderMode.Server },
+  // Docs-site component pages are keyed by a `:slug` param; render per request
+  // (same policy as the other parameterized detail routes above).
+  { path: 'ui/components/:slug', renderMode: RenderMode.Server },
   { path: '**', renderMode: RenderMode.Prerender },
 ];
 

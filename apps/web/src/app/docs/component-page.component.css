@@ -1,0 +1,116 @@
+:host {
+  display: block;
+}
+/* The lazily-projected demo carries its own `app-demo-component` header (used on
+   the multi-component gallery pages). Here the page already renders a richer
+   header from the registry, so suppress the demo's to avoid a duplicate title. */
+:host ::ng-deep app-demo-component .demo-component-head {
+  display: none;
+}
+.cp {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 2.75rem) clamp(1rem, 4vw, 2.5rem) 4rem;
+}
+
+.cp-head {
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #c8c5d0);
+}
+.cp-eyebrow {
+  margin: 0;
+  color: var(--md-sys-color-primary, #6750a4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+.cp-name {
+  margin: 0.25rem 0 0;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  font-family: var(--md-sys-typescale-display-small-font, 'Roboto', sans-serif);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.1;
+  font-weight: 400;
+}
+.cp-blurb {
+  margin: 0.5rem 0 0;
+  color: var(--md-sys-color-on-surface-variant, #49454e);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.cp-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.cp-entry {
+  font-family: 'Roboto Mono', ui-monospace, monospace;
+  font-size: 0.8125rem;
+  color: var(--md-sys-color-on-surface-variant, #49454e);
+  background: var(--md-sys-color-surface-container-high, #ece6f0);
+  border-radius: var(--md-sys-shape-corner-small, 8px);
+  padding: 0.1875rem 0.625rem;
+}
+.cp-link {
+  color: var(--md-sys-color-primary, #6750a4);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+.cp-link:hover {
+  text-decoration: underline;
+}
+.cp-loading {
+  color: var(--md-sys-color-on-surface-variant, #49454e);
+  font-size: 0.875rem;
+}
+
+.cp-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--md-sys-color-outline-variant, #c8c5d0);
+}
+.cp-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--md-sys-shape-corner-large, 16px);
+  border: 1px solid var(--md-sys-color-outline-variant, #c8c5d0);
+  text-decoration: none;
+  min-width: 9rem;
+}
+.cp-nav-link:hover {
+  background: var(--md-sys-color-surface-container-low, #f7f2fa);
+}
+.cp-nav-next {
+  text-align: right;
+  align-items: flex-end;
+}
+.cp-nav-dir {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-primary, #6750a4);
+}
+.cp-nav-name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.cp-missing {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant, #49454e);
+}
+.cp-missing a {
+  color: var(--md-sys-color-primary, #6750a4);
+}

@@ -31,6 +31,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="Linear and circular — the two M3 progress variants"
+        [code]="codeVariants"
       >
         <app-demo-specimen label="linear · determinate" class="fill">
           <gui-linear-progress [value]="0.6" label="Loading page" />
@@ -50,6 +51,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="Determinate value progression and indeterminate (loading) — value 0..1, null ⇒ indeterminate"
+        [code]="codeStates"
       >
         <app-demo-specimen label="0%" class="fill">
           <gui-linear-progress [value]="0" label="0 percent" />
@@ -93,6 +95,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Sizes"
         hint="Track thickness — 4dp M3 baseline plus variable (Expressive) thicker tracks"
+        [code]="codeSizes"
       >
         <app-demo-specimen label="linear · 4dp (default)" class="fill">
           <gui-linear-progress [value]="0.6" label="4 dp track" />
@@ -130,6 +133,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Shapes"
         hint="Flat (default) and the M3 Expressive wavy active indicator"
+        [code]="codeShapes"
       >
         <app-demo-specimen label="linear · flat" class="fill">
           <gui-linear-progress [value]="0.6" shape="flat" label="Flat" />
@@ -163,6 +167,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Wave tuning"
         hint="Amplitude (peak height) and wavelength (peak spacing) shape the wavy indicator"
+        [code]="codeWaveTuning"
       >
         <app-demo-specimen label="linear · amp 2 / wl 60" class="fill">
           <gui-linear-progress
@@ -204,4 +209,31 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
     </app-demo-component>
   `,
 })
-export class ProgressDemo {}
+export class ProgressDemo {
+  protected readonly codeVariants = `
+<gui-linear-progress [value]="0.6" label="Loading page" />
+<gui-linear-progress [value]="null" label="Loading page" />
+<gui-circular-progress [value]="0.6" label="Loading page" />
+<gui-circular-progress [value]="null" label="Loading page" />`;
+
+  protected readonly codeStates = `
+<gui-linear-progress [value]="0.25" label="25 percent" />
+<gui-linear-progress [value]="null" label="Loading" />`;
+
+  protected readonly codeSizes = `
+<gui-linear-progress [value]="0.6" [thickness]="8" label="8 dp track" />
+<gui-circular-progress [value]="0.6" [thickness]="6" label="6 dp stroke" />`;
+
+  protected readonly codeShapes = `
+<gui-linear-progress [value]="0.6" shape="wavy" label="Wavy" />
+<gui-circular-progress [value]="0.6" shape="wavy" label="Wavy" />`;
+
+  protected readonly codeWaveTuning = `
+<gui-linear-progress
+  [value]="0.6"
+  shape="wavy"
+  [amplitude]="5"
+  [wavelength]="24"
+  label="High amplitude"
+/>`;
+}

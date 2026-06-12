@@ -3,7 +3,9 @@ import {
   Component,
   computed,
   input,
+  signal,
 } from '@angular/core';
+import { CodePanelComponent } from '../docs/code-panel.component';
 
 /**
  * Presentational chrome for the component vitrine (`/gallery`). Three nesting
@@ -31,13 +33,22 @@ import {
       @if (entry()) {
         <code class="demo-component-entry">{{ entry() }}</code>
       }
+      @if (specHref()) {
+        <a
+          class="demo-component-doc"
+          [href]="specHref()"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Spec ↗</a
+        >
+      }
       @if (docHref()) {
         <a
           class="demo-component-doc"
           [href]="docHref()"
           target="_blank"
           rel="noopener noreferrer"
-          >spec ↗</a
+          >M3 ↗</a
         >
       }
     </header>
@@ -90,8 +101,10 @@ export class DemoComponentComponent {
   readonly name = input.required<string>();
   /** Library entry point, e.g. `@ngguide/ui/button`. */
   readonly entry = input('');
-  /** Optional link to the M3 spec reference doc. */
+  /** Optional link to the canonical Material Design 3 source page. */
   readonly docHref = input('');
+  /** Optional link to the in-repo strict-M3 spec doc. */
+  readonly specHref = input('');
 
   /** Stable in-page anchor id derived from the name (no RNG/clock). */
   protected readonly anchor = computed(
@@ -107,6 +120,7 @@ export class DemoComponentComponent {
 @Component({
   selector: 'app-demo-block',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CodePanelComponent],
   template: `
     <div class="demo-block-head">
       <h3 class="demo-block-heading">{{ heading() }}</h3>
@@ -117,6 +131,22 @@ export class DemoComponentComponent {
     <div class="demo-block-canvas" [class.demo-block-canvas--column]="column()">
       <ng-content />
     </div>
+    @if (code()) {
+      <div class="demo-block-code">
+        <button
+          type="button"
+          class="demo-block-code-toggle"
+          [attr.aria-expanded]="showCode()"
+          (click)="showCode.set(!showCode())"
+        >
+          <span class="demo-block-code-icon">{{ showCode() ? '⌄' : '›' }}</span>
+          {{ showCode() ? 'Hide code' : 'Show code' }}
+        </button>
+        @if (showCode()) {
+          <app-code [code]="code()" [language]="codeLang()" />
+        }
+      </div>
+    }
   `,
   styles: `
     :host {
@@ -154,6 +184,30 @@ export class DemoComponentComponent {
       flex-direction: column;
       align-items: stretch;
     }
+    .demo-block-code {
+      margin-top: 0.5rem;
+    }
+    .demo-block-code-toggle {
+      appearance: none;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.25rem 0.5rem 0.25rem 0;
+      font-family: 'Roboto Mono', ui-monospace, monospace;
+      font-size: 0.75rem;
+      color: var(--md-sys-color-primary, #6750a4);
+    }
+    .demo-block-code-icon {
+      display: inline-block;
+      width: 0.75rem;
+      text-align: center;
+    }
+    .demo-block-code app-code {
+      margin-top: 0.25rem;
+    }
   `,
 })
 export class DemoBlockComponent {
@@ -163,6 +217,12 @@ export class DemoBlockComponent {
   readonly hint = input('');
   /** Stack specimens vertically (full-width controls, lists, text fields). */
   readonly column = input(false);
+  /** Optional clean usage snippet shown in a collapsible code panel. */
+  readonly code = input('');
+  /** Language for the code panel highlighter/label. */
+  readonly codeLang = input<'html' | 'ts'>('html');
+  /** Whether the code panel is expanded. */
+  protected readonly showCode = signal(false);
 }
 
 /**

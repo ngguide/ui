@@ -55,6 +55,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="Baseline (square corners, legacy) vs vertical (M3 Expressive, rounded). Click a trigger to open."
+        [code]="codeVariants"
       >
         <app-demo-specimen label="baseline">
           <button gui-button variant="outlined" [cdkMenuTriggerFor]="baselineM">
@@ -91,6 +92,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Color styles"
         hint="Standard (surface-based) vs vibrant (tertiary-based, Expressive). Vibrant makes the selected item stand out."
+        [code]="codeColorStyles"
       >
         <app-demo-specimen label="standard">
           <button
@@ -134,6 +136,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Layouts"
         hint="Standard (flat list) vs grouped (extra spacing between sections, Expressive)."
+        [code]="codeLayouts"
       >
         <app-demo-specimen label="standard">
           <button
@@ -183,6 +186,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Triggers"
         hint="A menu can open from any control — here a button and an icon button."
+        [code]="codeTriggers"
       >
         <app-demo-specimen label="button">
           <button gui-button variant="filled" [cdkMenuTriggerFor]="btnTriggerM">
@@ -224,6 +228,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Item states"
         hint="Enabled, selected (checkmark + shape/color morph), selectable-unselected, and disabled. Hover/focus/press live in the open panel."
+        [code]="codeItemStates"
       >
         <app-demo-specimen label="enabled · selected · disabled">
           <button gui-button variant="outlined" [cdkMenuTriggerFor]="statesM">
@@ -252,6 +257,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Anatomy & slots"
         hint="Leading icon, label, supporting text, trailing text (shortcut), badge, trailing icon, and divider."
+        [code]="codeAnatomy"
       >
         <app-demo-specimen label="leading + trailing icon">
           <button gui-button variant="tonal" [cdkMenuTriggerFor]="iconsM">
@@ -366,6 +372,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Submenus"
         hint="An item carrying a nested cdkMenuTriggerFor reveals a cascading submenu (M3 'active' state)."
+        [code]="codeSubmenus"
       >
         <app-demo-specimen label="cascading submenu">
           <button gui-button variant="filled" [cdkMenuTriggerFor]="rootM">
@@ -397,4 +404,129 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
     </app-demo-component>
   `,
 })
-export class MenuDemo {}
+export class MenuDemo {
+  protected readonly codeVariants = `
+<button gui-button variant="outlined" [cdkMenuTriggerFor]="menu">
+  Vertical
+  <gui-icon class="sym" guiIcon>arrow_drop_down</gui-icon>
+</button>
+<ng-template #menu>
+  <div gui-menu variant="vertical" cdkMenu>
+    <button gui-menu-item>Cut</button>
+    <button gui-menu-item>Copy</button>
+    <button gui-menu-item>Paste</button>
+  </div>
+</ng-template>`;
+
+  protected readonly codeColorStyles = `
+<button gui-button variant="tonal" [cdkMenuTriggerFor]="menu">
+  Vibrant
+  <gui-icon class="sym" guiIcon>arrow_drop_down</gui-icon>
+</button>
+<ng-template #menu>
+  <div gui-menu variant="vertical" color="vibrant" cdkMenu>
+    <button gui-menu-item [selected]="true">Relevance</button>
+    <button gui-menu-item>Date</button>
+    <button gui-menu-item>Rating</button>
+  </div>
+</ng-template>`;
+
+  protected readonly codeLayouts = `
+<button gui-button variant="outlined" [cdkMenuTriggerFor]="menu">
+  Grouped
+  <gui-icon class="sym" guiIcon>arrow_drop_down</gui-icon>
+</button>
+<ng-template #menu>
+  <div gui-menu variant="vertical" layout="grouped" cdkMenu>
+    <gui-menu-section label="Account">
+      <button gui-menu-item>Profile</button>
+      <button gui-menu-item>Settings</button>
+    </gui-menu-section>
+    <gui-menu-section label="More">
+      <button gui-menu-item>Help</button>
+      <button gui-menu-item>Sign out</button>
+    </gui-menu-section>
+  </div>
+</ng-template>`;
+
+  protected readonly codeTriggers = `
+<button gui-icon-button variant="standard" aria-label="More options" [cdkMenuTriggerFor]="menu">
+  <gui-icon class="sym">more_vert</gui-icon>
+</button>
+<ng-template #menu>
+  <div gui-menu variant="vertical" cdkMenu>
+    <button gui-menu-item>Edit</button>
+    <button gui-menu-item>Duplicate</button>
+    <button gui-menu-item>Delete</button>
+  </div>
+</ng-template>`;
+
+  protected readonly codeItemStates = `
+<button gui-button variant="outlined" [cdkMenuTriggerFor]="menu">
+  View
+  <gui-icon class="sym" guiIcon>arrow_drop_down</gui-icon>
+</button>
+<ng-template #menu>
+  <div gui-menu variant="vertical" cdkMenu>
+    <button gui-menu-item [selected]="true">List view</button>
+    <button gui-menu-item [guiMenuItemSelectable]="true">Grid view</button>
+    <button gui-menu-item>Gallery view</button>
+    <button gui-menu-item [disabled]="true">
+      <gui-icon class="sym" guiMenuItemLeading>lock</gui-icon>
+      Locked view
+    </button>
+  </div>
+</ng-template>`;
+
+  protected readonly codeAnatomy = `
+<button gui-button variant="tonal" [cdkMenuTriggerFor]="menu">
+  Edit
+  <gui-icon class="sym" guiIcon>arrow_drop_down</gui-icon>
+</button>
+<ng-template #menu>
+  <div gui-menu variant="vertical" cdkMenu>
+    <button gui-menu-item>
+      <gui-icon class="sym" guiMenuItemLeading>content_cut</gui-icon>
+      Cut
+      <span guiMenuItemTrailingText>⌘X</span>
+    </button>
+    <button gui-menu-item>
+      <gui-icon class="sym" guiMenuItemLeading>inbox</gui-icon>
+      Primary
+      <span guiMenuItemBadge>12</span>
+    </button>
+    <gui-menu-divider />
+    <button gui-menu-item>
+      <gui-icon class="sym" guiMenuItemLeading>person</gui-icon>
+      Jane Doe
+      <span guiMenuItemSupporting>jane@example.com</span>
+    </button>
+  </div>
+</ng-template>`;
+
+  protected readonly codeSubmenus = `
+<button gui-button variant="filled" [cdkMenuTriggerFor]="root">
+  Share
+  <gui-icon class="sym" guiIcon>arrow_drop_down</gui-icon>
+</button>
+<ng-template #root>
+  <div gui-menu variant="vertical" cdkMenu>
+    <button gui-menu-item>
+      <gui-icon class="sym" guiMenuItemLeading>link</gui-icon>
+      Copy link
+    </button>
+    <button gui-menu-item [cdkMenuTriggerFor]="sub">
+      <gui-icon class="sym" guiMenuItemLeading>send</gui-icon>
+      Send to
+      <gui-icon class="sym" guiMenuItemTrailing>arrow_right</gui-icon>
+    </button>
+  </div>
+</ng-template>
+<ng-template #sub>
+  <div gui-menu variant="vertical" cdkMenu>
+    <button gui-menu-item>Email</button>
+    <button gui-menu-item>Messages</button>
+    <button gui-menu-item>Drive</button>
+  </div>
+</ng-template>`;
+}

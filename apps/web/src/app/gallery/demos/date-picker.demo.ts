@@ -58,6 +58,7 @@ import { DEMO_TODAY } from '../../core/demo-date';
         heading="Variants"
         hint="Docked (calendar popover), modal (calendar dialog), modal input (text-entry dialog). Click the calendar icon."
         [column]="true"
+        [code]="codeVariants"
       >
         <app-demo-specimen label="docked" class="fill">
           <gui-date-picker
@@ -89,6 +90,7 @@ import { DEMO_TODAY } from '../../core/demo-date';
         heading="States"
         hint="Empty, prefilled, and disabled (trigger inert, panel won't open)."
         [column]="true"
+        [code]="codeStates"
       >
         <app-demo-specimen label="empty (default)" class="fill">
           <gui-date-picker variant="docked" label="Empty" [(date)]="empty" />
@@ -127,6 +129,7 @@ import { DEMO_TODAY } from '../../core/demo-date';
         heading="Bounds & filtering"
         hint="min/max clamp the grid; dateFilter disables weekends. Out-of-range cells are non-selectable."
         [column]="true"
+        [code]="codeBounds"
       >
         <app-demo-specimen label="min / max (this month only)" class="fill">
           <gui-date-picker
@@ -153,6 +156,7 @@ import { DEMO_TODAY } from '../../core/demo-date';
         heading="Anatomy & locale"
         hint="label (a11y) · dateFormatHint (helper text) · locale (weekday order + formatting)."
         [column]="true"
+        [code]="codeAnatomy"
       >
         <app-demo-specimen label="custom hint (YYYY-MM-DD)" class="fill">
           <gui-date-picker
@@ -179,6 +183,7 @@ import { DEMO_TODAY } from '../../core/demo-date';
         heading="Date range"
         hint="gui-date-range-picker — modal (calendar) and modal-input (paired fields). Pick start then end in the dialog."
         [column]="true"
+        [code]="codeRange"
       >
         <app-demo-specimen label="range · modal" class="fill">
           <gui-date-range-picker
@@ -218,6 +223,7 @@ import { DEMO_TODAY } from '../../core/demo-date';
       <app-demo-block
         heading="Calendar grid"
         hint="gui-calendar — the bare M3 grid. Header menus flip to year selection; arrows/PageUp/Down/Home/End navigate. Today is ringed; out-of-bounds days are inert."
+        [code]="codeCalendar"
       >
         <app-demo-specimen label="day & year selection">
           <gui-calendar
@@ -302,4 +308,55 @@ export class DatePickerDemo {
   protected onCalendarPick(date: Date): void {
     this.calSelected.set(date);
   }
+
+  protected readonly codeVariants = `
+<gui-date-picker variant="docked" label="Docked date" [(date)]="docked" />
+<gui-date-picker variant="modal" label="Modal date" [(date)]="modal" />
+<gui-date-picker variant="modal-input" label="Modal date input" [(date)]="value" />`;
+
+  protected readonly codeStates = `
+<gui-date-picker variant="docked" label="Selected" [(date)]="value" />
+<gui-date-picker variant="docked" label="Disabled" [date]="value()" [disabled]="true" />`;
+
+  protected readonly codeBounds = `
+<gui-date-picker
+  variant="docked"
+  label="Within bounds"
+  [min]="minDate"
+  [max]="maxDate"
+  [(date)]="value"
+/>
+<gui-date-picker
+  variant="docked"
+  label="Weekdays only"
+  [dateFilter]="weekdaysOnly"
+  [(date)]="weekday"
+/>`;
+
+  protected readonly codeAnatomy = `
+<gui-date-picker
+  variant="docked"
+  label="Event date"
+  dateFormatHint="YYYY-MM-DD"
+  [(date)]="value"
+/>
+<gui-date-picker
+  variant="docked"
+  label="Reservation date"
+  locale="en-GB"
+  dateFormatHint="DD/MM/YYYY"
+  [(date)]="localized"
+/>`;
+
+  protected readonly codeRange = `
+<gui-date-range-picker variant="modal" label="Trip dates" [(range)]="range" />
+<gui-date-range-picker variant="modal-input" label="Stay dates" [(range)]="range" />`;
+
+  protected readonly codeCalendar = `
+<gui-calendar
+  [(activeMonth)]="calMonth"
+  [selected]="calSelected()"
+  [today]="today"
+  (dateSelected)="onCalendarPick($event)"
+/>`;
 }

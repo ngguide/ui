@@ -41,6 +41,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Configurations"
         hint="The five M3 layouts. Click to show the live snackbar at the bottom."
+        [code]="codeConfigurations"
+        [codeLang]="'ts'"
       >
         <app-demo-specimen label="single line">
           <button
@@ -104,6 +106,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Anatomy"
         hint="Supporting text, optional action, and the optional trailing close icon."
+        [code]="codeAnatomy"
+        [codeLang]="'ts'"
       >
         <app-demo-specimen label="text only">
           <button
@@ -147,6 +151,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Dismiss behaviour"
         hint="Dismissive (auto-dismiss timer) vs. non-dismissive (persists until acted on)."
+        [code]="codeDismissBehaviour"
+        [codeLang]="'ts'"
       >
         <app-demo-specimen label="auto-dismiss 5s">
           <button
@@ -199,6 +205,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Positioning"
         hint="aboveFab lifts the snackbar above a bottom-anchored FAB."
+        [code]="codePositioning"
+        [codeLang]="'ts'"
       >
         <app-demo-specimen label="default (bottom)">
           <button
@@ -240,6 +248,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Queue & control"
         hint="One at a time, FIFO queue; dismissAll() clears the current + queued."
+        [code]="codeQueueControl"
+        [codeLang]="'ts'"
       >
         <app-demo-specimen label="enqueue three">
           <button
@@ -373,4 +383,33 @@ export class SnackbarDemo {
   protected dismissAll(): void {
     this.snackbar.dismissAll();
   }
+
+  protected readonly codeConfigurations = `
+private readonly snackbar = inject(GuiSnackbar);
+
+// single line
+this.snackbar.open('Photo archived');
+// single line + action
+this.snackbar.open({ message: 'Photo archived', action: 'Undo' });`;
+
+  protected readonly codeAnatomy = `
+this.snackbar.open({ message: 'Settings updated', showClose: true });
+this.snackbar.open({ message: 'Message deleted', action: 'Undo', showClose: true });`;
+
+  protected readonly codeDismissBehaviour = `
+// no action + omitted duration => M3 default 5000ms auto-dismiss
+this.snackbar.open({ message: 'Saved' });
+// action set + duration omitted => persists until acted on
+this.snackbar.open({ message: 'No internet connection', action: 'Retry' });`;
+
+  protected readonly codePositioning = `
+this.snackbar.open({ message: 'Lifted above the FAB', aboveFab: true });
+this.snackbar.open({ message: 'Custom offset', aboveFab: '120px' });`;
+
+  protected readonly codeQueueControl = `
+// one shows at a time; further opens queue (FIFO)
+this.snackbar.open({ message: 'First in queue', duration: 1500 });
+this.snackbar.open({ message: 'Second in queue', duration: 1500 });
+// close the current one and clear the queue
+this.snackbar.dismissAll();`;
 }

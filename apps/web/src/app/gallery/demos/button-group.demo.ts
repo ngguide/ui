@@ -40,6 +40,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="Standard (spaced) and connected (shared-edge) arrangements"
+        [code]="codeVariants"
       >
         <app-demo-specimen label="standard">
           <gui-button-group>
@@ -63,6 +64,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Sizes — standard"
         hint="size = xs | sm | md | lg | xl · inner padding adapts per size (48dp target)"
         [column]="true"
+        [code]="codeSizesStandard"
       >
         @for (s of sizes; track s) {
           <app-demo-specimen [label]="'size=' + s">
@@ -80,6 +82,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Sizes — connected"
         hint="Connected uses 2dp padding at every size; per-size inner corners"
         [column]="true"
+        [code]="codeSizesConnected"
       >
         @for (s of sizes; track s) {
           <app-demo-specimen [label]="'size=' + s">
@@ -97,6 +100,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Shapes — connected"
         hint="shape = round (full outer caps) | square (per-size outer corners)"
         [column]="true"
+        [code]="codeShapes"
       >
         @for (s of sizes; track s) {
           <app-demo-specimen [label]="'round · ' + s">
@@ -121,6 +125,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Color configurations"
         hint="Groups have no color of their own — child buttons supply filled / tonal / outlined / elevated"
         [column]="true"
+        [code]="codeColors"
       >
         <app-demo-specimen label="filled">
           <gui-button-group connected>
@@ -157,6 +162,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Common layouts"
         hint="Mix label buttons and icon buttons (M3 anatomy)"
         [column]="true"
+        [code]="codeLayouts"
       >
         <app-demo-specimen label="label buttons">
           <gui-button-group connected>
@@ -220,6 +226,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Single-select"
         hint="selection=single → role=radiogroup · toggle children carry the selected shape morph"
         [column]="true"
+        [code]="codeSingleSelect"
       >
         <app-demo-specimen label="connected · single">
           <gui-button-group connected selection="single">
@@ -297,6 +304,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Multi-select"
         hint="selection=multi → aria-multiselectable=true · each toggle button is independent"
         [column]="true"
+        [code]="codeMultiSelect"
       >
         <app-demo-specimen label="connected · multi">
           <gui-button-group connected selection="multi">
@@ -353,6 +361,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="States"
         hint="Selected, disabled child, and a fully disabled group (state lives on the children)"
         [column]="true"
+        [code]="codeStates"
       >
         <app-demo-specimen label="selected">
           <gui-button-group connected selection="single">
@@ -406,4 +415,85 @@ export class ButtonGroupDemo {
   protected readonly mute = signal(false);
   protected readonly star = signal(true);
   protected readonly bookmark = signal(false);
+
+  protected readonly codeVariants = `
+<gui-button-group>
+  <button gui-button variant="outlined" size="md">One</button>
+  <button gui-button variant="outlined" size="md">Two</button>
+</gui-button-group>
+<gui-button-group connected>
+  <button gui-button variant="outlined" size="md">One</button>
+  <button gui-button variant="outlined" size="md">Two</button>
+</gui-button-group>`;
+
+  protected readonly codeSizesStandard = `
+<gui-button-group size="md">
+  <button gui-button variant="tonal" size="md">Reply</button>
+  <button gui-button variant="tonal" size="md">Forward</button>
+  <button gui-button variant="tonal" size="md">Archive</button>
+</gui-button-group>`;
+
+  protected readonly codeSizesConnected = `
+<gui-button-group connected size="md">
+  <button gui-button variant="outlined" size="md">Day</button>
+  <button gui-button variant="outlined" size="md">Week</button>
+  <button gui-button variant="outlined" size="md">Month</button>
+</gui-button-group>`;
+
+  protected readonly codeShapes = `
+<gui-button-group connected shape="round" size="md">
+  <button gui-button variant="tonal" size="md">A</button>
+  <button gui-button variant="tonal" size="md">B</button>
+</gui-button-group>
+<gui-button-group connected shape="square" size="md">
+  <button gui-button variant="tonal" size="md">A</button>
+  <button gui-button variant="tonal" size="md">B</button>
+</gui-button-group>`;
+
+  protected readonly codeColors = `
+<gui-button-group connected>
+  <button gui-button variant="filled" size="md">Bold</button>
+  <button gui-button variant="filled" size="md">Italic</button>
+  <button gui-button variant="filled" size="md">Underline</button>
+</gui-button-group>`;
+
+  protected readonly codeLayouts = `
+<gui-button-group connected>
+  <button gui-button variant="tonal" size="md">
+    <gui-icon guiIcon class="sym">edit</gui-icon>
+    Edit
+  </button>
+  <button gui-icon-button variant="tonal" size="md" label="Favorite">
+    <gui-icon class="sym">favorite</gui-icon>
+  </button>
+</gui-button-group>`;
+
+  protected readonly codeSingleSelect = `
+<gui-button-group connected selection="single">
+  <button gui-button toggle variant="tonal" size="md"
+    [selected]="view() === 'list'" (click)="view.set('list')">
+    List
+  </button>
+  <button gui-button toggle variant="tonal" size="md"
+    [selected]="view() === 'grid'" (click)="view.set('grid')">
+    Grid
+  </button>
+</gui-button-group>`;
+
+  protected readonly codeMultiSelect = `
+<gui-button-group connected selection="multi">
+  <button gui-button toggle variant="tonal" size="md" [(selected)]="bold">
+    Bold
+  </button>
+  <button gui-button toggle variant="tonal" size="md" [(selected)]="italic">
+    Italic
+  </button>
+</gui-button-group>`;
+
+  protected readonly codeStates = `
+<gui-button-group connected>
+  <button gui-button variant="outlined" size="md">Enabled</button>
+  <button gui-button variant="outlined" size="md" disabled>Disabled</button>
+  <button gui-button variant="outlined" size="md">Enabled</button>
+</gui-button-group>`;
 }

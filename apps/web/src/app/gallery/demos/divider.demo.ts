@@ -35,6 +35,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Orientation"
         hint="M3 has two configurations: a full-width horizontal rule and a vertical rule."
         [column]="true"
+        [code]="codeOrientation"
       >
         <app-demo-specimen label="horizontal (default)" class="fill">
           <div class="stack">
@@ -59,6 +60,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Inset (horizontal)"
         hint="none = full-bleed, inset = 16dp leading margin, middle-inset = 16dp both edges."
         [column]="true"
+        [code]="codeInsetHorizontal"
       >
         <app-demo-specimen label="none (full-width)" class="fill">
           <div class="stack">
@@ -87,6 +89,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Inset (vertical)"
         hint="The same inset values apply to the block (top / both) edges of a vertical rule."
+        [code]="codeInsetVertical"
       >
         <app-demo-specimen label="none">
           <div class="hrow tall">
@@ -116,6 +119,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="In a list"
         hint="Dividers group list items; the inset variant aligns the rule with the leading icon's text."
         [column]="true"
+        [code]="codeInList"
       >
         <app-demo-specimen label="inset rule between list rows" class="fill">
           <ul class="list">
@@ -158,6 +162,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Accessibility"
         hint="Non-interactive and decorative — exposed as role=separator with aria-orientation."
+        [code]="codeAccessibility"
       >
         <app-demo-specimen label='role="separator"' class="fill">
           <div class="stack">
@@ -207,4 +212,35 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
     }
   `,
 })
-export class DividerDemo {}
+export class DividerDemo {
+  protected readonly codeOrientation = `
+<gui-divider orientation="horizontal" />
+
+<gui-divider orientation="vertical" />`;
+
+  protected readonly codeInsetHorizontal = `
+<gui-divider inset="none" />
+<gui-divider inset="inset" />
+<gui-divider inset="middle-inset" />`;
+
+  protected readonly codeInsetVertical = `
+<gui-divider orientation="vertical" inset="none" />
+<gui-divider orientation="vertical" inset="inset" />
+<gui-divider orientation="vertical" inset="middle-inset" />`;
+
+  protected readonly codeInList = `
+<ul class="list">
+  <li class="list-item">
+    <gui-icon class="sym">inbox</gui-icon>
+    <span>Inbox</span>
+  </li>
+  <gui-divider inset="inset" />
+  <li class="list-item">
+    <gui-icon class="sym">send</gui-icon>
+    <span>Sent</span>
+  </li>
+</ul>`;
+
+  protected readonly codeAccessibility = `
+<gui-divider />`;
+}

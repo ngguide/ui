@@ -41,6 +41,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="Three M3 color configurations: elevated (surface-container-low + level 1), filled (surface-container-highest), outlined (surface + outline-variant border)"
+        [code]="codeVariants"
       >
         <app-demo-specimen label="elevated (default)">
           <gui-card variant="elevated" class="card">
@@ -66,6 +67,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Shape"
         hint="M3 cards use a single corner: medium (12dp). No size or shape scale is defined in the spec."
+        [code]="codeShape"
       >
         <app-demo-specimen label="medium · 12dp">
           <gui-card variant="elevated" class="card">
@@ -85,6 +87,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Anatomy"
         hint="Cards hold arbitrary content — headline, supporting text, icon, and actions"
+        [code]="codeAnatomy"
       >
         <app-demo-specimen label="header + text + actions">
           <gui-card variant="elevated" class="card">
@@ -119,6 +122,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Clickable (whole surface)"
         hint="[guiCardClickable] — the entire surface is one control with state layer, ripple, focus ring, Enter/Space activation, and hover elevation. Interact with them."
+        [code]="codeClickable"
       >
         <app-demo-specimen label="elevated · {{ clickCount() }} activations">
           <gui-card
@@ -157,6 +161,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Primary action + buttons"
         hint="[guiCardPrimaryAction] — the headline/media region is one tap target, with action buttons OUTSIDE it so they stay independently focusable (no stacked interactions)."
+        [code]="codePrimaryAction"
       >
         <app-demo-specimen label="region: {{ primaryCount() }} taps">
           <gui-card variant="elevated" class="card">
@@ -200,6 +205,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="Enabled vs disabled (0.38 opacity + pointer-events suppressed) across every variant. Disabled clickable cards drop their tab stop and activation."
+        [code]="codeStates"
       >
         <app-demo-specimen label="elevated · enabled">
           <gui-card variant="elevated" guiCardClickable class="card">
@@ -330,4 +336,56 @@ export class CardDemo {
   protected onPrimary(): void {
     this.primaryCount.update((n) => n + 1);
   }
+
+  protected readonly codeVariants = `
+<gui-card variant="elevated">
+  <h4>Elevated</h4>
+  <p>Surface container low with elevation level 1.</p>
+</gui-card>
+<gui-card variant="filled">…</gui-card>
+<gui-card variant="outlined">…</gui-card>`;
+
+  protected readonly codeShape = `
+<gui-card variant="elevated">
+  <h4>Medium corner</h4>
+  <p>All variants share the medium (12dp) radius.</p>
+</gui-card>`;
+
+  protected readonly codeAnatomy = `
+<gui-card variant="elevated">
+  <div class="card-header">
+    <gui-icon class="sym">photo_camera</gui-icon>
+    <div>
+      <h4>Headline</h4>
+      <p>Subhead</p>
+    </div>
+  </div>
+  <p>Supporting text grouped with related actions inside one surface.</p>
+  <div class="card-actions">
+    <button gui-button variant="text" size="sm">Cancel</button>
+    <button gui-button variant="filled" size="sm">Confirm</button>
+  </div>
+</gui-card>`;
+
+  protected readonly codeClickable = `
+<gui-card variant="elevated" guiCardClickable (cardActivate)="onActivate()">
+  <h4>Tap me</h4>
+  <p>role=button, keyboard-activatable, ripples on press.</p>
+</gui-card>`;
+
+  protected readonly codePrimaryAction = `
+<gui-card variant="elevated">
+  <div guiCardPrimaryAction (primaryAction)="onPrimary()">
+    <h4>Article title</h4>
+    <p>This region is the primary tap target (role=button).</p>
+  </div>
+  <div class="card-actions">
+    <button gui-button variant="text" size="sm">Share</button>
+    <button gui-button variant="text" size="sm">Save</button>
+  </div>
+</gui-card>`;
+
+  protected readonly codeStates = `
+<gui-card variant="elevated" guiCardClickable>Enabled</gui-card>
+<gui-card variant="elevated" guiCardClickable disabled>Disabled</gui-card>`;
 }

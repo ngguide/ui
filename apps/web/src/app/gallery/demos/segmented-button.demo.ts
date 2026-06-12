@@ -39,6 +39,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="Single-select behaves like a radio group; multi-select like checkboxes"
+        [code]="codeVariants"
       >
         <app-demo-specimen label="single-select">
           <gui-segmented-buttons [(value)]="single">
@@ -63,6 +64,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Anatomy"
         hint="Label text, optional leading icon, and the optional selected check icon"
+        [code]="codeAnatomy"
       >
         <app-demo-specimen label="label only">
           <gui-segmented-buttons [(value)]="anatomyLabel">
@@ -117,6 +119,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Sizes (density)"
         hint="Each density step removes 4dp from the 40dp height"
+        [code]="codeSizes"
       >
         <app-demo-specimen label="density 0 · 40dp">
           <gui-segmented-buttons [density]="0" [(value)]="density0">
@@ -156,6 +159,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Shape"
         hint="Fully-rounded pill — outer corners are corner-full, interior dividers are shared 1px lines"
+        [code]="codeShape"
       >
         <app-demo-specimen label="2 segments">
           <gui-segmented-buttons [(value)]="shape2">
@@ -180,6 +184,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="Unselected, selected, disabled segment, and a fully disabled group"
+        [code]="codeStates"
       >
         <app-demo-specimen label="unselected">
           <gui-segmented-buttons [(value)]="stateUnselected">
@@ -254,4 +259,49 @@ export class SegmentedButtonDemo {
     'b',
   );
   protected readonly stateAllDisabled = signal<string | string[] | null>('a');
+
+  protected readonly codeVariants = `
+<gui-segmented-buttons [(value)]="single">
+  <button gui-segmented-button value="day">Day</button>
+  <button gui-segmented-button value="week">Week</button>
+  <button gui-segmented-button value="month">Month</button>
+</gui-segmented-buttons>
+
+<gui-segmented-buttons multiple [(value)]="multi">
+  <button gui-segmented-button value="b">Bold</button>
+  <button gui-segmented-button value="i">Italic</button>
+  <button gui-segmented-button value="u">Underline</button>
+</gui-segmented-buttons>`;
+
+  protected readonly codeAnatomy = `
+<gui-segmented-buttons [(value)]="view">
+  <button gui-segmented-button value="list">
+    <gui-icon guiIcon class="sym">view_list</gui-icon>
+    List
+  </button>
+  <button gui-segmented-button value="grid">
+    <gui-icon guiIcon class="sym">grid_view</gui-icon>
+    Grid
+  </button>
+</gui-segmented-buttons>`;
+
+  protected readonly codeSizes = `
+<gui-segmented-buttons [density]="-1" [(value)]="size">
+  <button gui-segmented-button value="s">S</button>
+  <button gui-segmented-button value="m">M</button>
+  <button gui-segmented-button value="l">L</button>
+</gui-segmented-buttons>`;
+
+  protected readonly codeShape = `
+<gui-segmented-buttons [(value)]="power">
+  <button gui-segmented-button value="on">On</button>
+  <button gui-segmented-button value="off">Off</button>
+</gui-segmented-buttons>`;
+
+  protected readonly codeStates = `
+<gui-segmented-buttons [(value)]="state">
+  <button gui-segmented-button value="a">Enabled</button>
+  <button gui-segmented-button value="b" disabled>Disabled</button>
+  <button gui-segmented-button value="c">Enabled</button>
+</gui-segmented-buttons>`;
 }

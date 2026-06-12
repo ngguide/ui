@@ -31,6 +31,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="M3 has two: a 6dp small dot (no value) and a 16dp large numeric badge."
+        [code]="codeVariants"
       >
         <app-demo-specimen label="small (dot)">
           <span guiBadge>
@@ -52,6 +53,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Content"
         hint="Numeric count, label string, and the four-character M3 limit (incl. a +)."
+        [code]="codeContent"
       >
         <app-demo-specimen label="one digit">
           <span [guiBadge]="1">
@@ -87,6 +89,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Max cap"
         hint="guiBadgeMax sets the threshold; over it the badge shows {max}+ (default 999)."
+        [code]="codeMaxCap"
       >
         <app-demo-specimen label="max 9 → 9+">
           <span [guiBadge]="15" [guiBadgeMax]="9">
@@ -115,6 +118,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="guiBadgeHidden force-hides the badge graphic without removing the directive."
+        [code]="codeStates"
       >
         <app-demo-specimen label="dot shown">
           <span guiBadge>
@@ -150,6 +154,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Interactive"
         hint="Mark-as-read hides the badge; the bump button increments the count."
+        [code]="codeInteractive"
       >
         <app-demo-specimen label="unread toggle">
           <span guiBadge [guiBadgeHidden]="read()">
@@ -176,6 +181,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="On non-clipping hosts"
         hint="Applied directly to any non-clipping element (icon, avatar, text)."
+        [code]="codeNonClipping"
       >
         <app-demo-specimen label="on an icon">
           <gui-icon class="sym" guiBadge>account_circle</gui-icon>
@@ -192,4 +198,55 @@ export class BadgeDemo {
   protected readonly read = signal(false);
   /** Live count for the bump specimen (deterministic seed, no clock/RNG). */
   protected readonly count = signal(2);
+
+  protected readonly codeVariants = `
+<span guiBadge>
+  <button gui-icon-button label="Notifications">
+    <gui-icon class="sym">notifications</gui-icon>
+  </button>
+</span>
+
+<span [guiBadge]="3">
+  <button gui-icon-button label="Mail">
+    <gui-icon class="sym">mail</gui-icon>
+  </button>
+</span>`;
+
+  protected readonly codeContent = `
+<span [guiBadge]="42">
+  <button gui-icon-button label="Chat">
+    <gui-icon class="sym">chat</gui-icon>
+  </button>
+</span>
+
+<span guiBadge="new">
+  <button gui-icon-button label="Updates">
+    <gui-icon class="sym">campaign</gui-icon>
+  </button>
+</span>`;
+
+  protected readonly codeMaxCap = `
+<span [guiBadge]="15" [guiBadgeMax]="9">
+  <button gui-icon-button label="Alerts">
+    <gui-icon class="sym">notifications_active</gui-icon>
+  </button>
+</span>`;
+
+  protected readonly codeStates = `
+<span [guiBadge]="6" [guiBadgeHidden]="true">
+  <button gui-icon-button label="Cart">
+    <gui-icon class="sym">shopping_cart</gui-icon>
+  </button>
+</span>`;
+
+  protected readonly codeInteractive = `
+<span guiBadge [guiBadgeHidden]="read()">
+  <button gui-icon-button toggle label="Mark read" (click)="read.set(!read())">
+    <gui-icon class="sym">notifications</gui-icon>
+  </button>
+</span>`;
+
+  protected readonly codeNonClipping = `
+<gui-icon class="sym" guiBadge>account_circle</gui-icon>
+<span [guiBadge]="8" style="padding-inline-end: 0.25rem;">Updates</span>`;
 }

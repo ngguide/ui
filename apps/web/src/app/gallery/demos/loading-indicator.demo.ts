@@ -37,6 +37,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="The two M3 containment configurations"
+        [code]="codeVariants"
       >
         <app-demo-specimen label="default">
           <gui-loading-indicator variant="default" />
@@ -49,6 +50,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Color roles"
         hint="Default uses primary; contained uses primary-container + on-primary-container"
+        [code]="codeColorRoles"
       >
         <app-demo-specimen label="default · primary">
           <gui-loading-indicator variant="default" />
@@ -61,6 +63,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Size"
         hint="Fixed 48dp overall size with a 38dp shape container (M3 measurements)"
+        [code]="codeSize"
       >
         <app-demo-specimen label="48dp · default">
           <gui-loading-indicator variant="default" />
@@ -73,6 +76,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="Indeterminate, always-busy (role=progressbar, aria-busy, no aria-valuenow). Under prefers-reduced-motion the morph/spin rest at a static shape while the surface stays visible and busy (OS-driven — no input to toggle)."
+        [code]="codeStates"
       >
         <app-demo-specimen label="indeterminate · default">
           <gui-loading-indicator variant="default" />
@@ -85,6 +89,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Accessible label"
         hint="label sets the progress-bar aria-label; defaults to 'Loading'"
+        [code]="codeAccessibleLabel"
       >
         <app-demo-specimen label="default 'Loading'">
           <gui-loading-indicator variant="default" />
@@ -102,4 +107,21 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
     </app-demo-component>
   `,
 })
-export class LoadingIndicatorDemo {}
+export class LoadingIndicatorDemo {
+  protected readonly codeVariants = `
+<gui-loading-indicator variant="default" />
+<gui-loading-indicator variant="contained" />`;
+
+  protected readonly codeColorRoles = `
+<gui-loading-indicator variant="default" />
+<gui-loading-indicator variant="contained" />`;
+
+  protected readonly codeSize = `
+<gui-loading-indicator variant="default" />`;
+
+  protected readonly codeStates = `
+<gui-loading-indicator variant="default" />`;
+
+  protected readonly codeAccessibleLabel = `
+<gui-loading-indicator variant="default" label="Loading news" />`;
+}

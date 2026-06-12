@@ -7,6 +7,11 @@ import { Route } from '@angular/router';
  */
 export const appRoutes: Route[] = [
   {
+    // Standalone M3-style documentation site, outside the demo-app shell.
+    path: 'ui',
+    loadChildren: () => import('./docs/docs.routes').then((m) => m.docsRoutes),
+  },
+  {
     path: '',
     loadComponent: () =>
       import('./shell/shell.component').then((m) => m.ShellComponent),

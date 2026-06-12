@@ -60,6 +60,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="Standard (no scrim) and modal (scrim + focus trap). Click to open."
+        [code]="codeVariants"
       >
         <app-demo-specimen label="standard">
           <button gui-button variant="filled" (click)="standardOpen.set(true)">
@@ -83,6 +84,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Drag handle"
         hint="Optional 32×4dp handle (focusable, cycles heights). Toggle showDragHandle."
+        [code]="codeDragHandle"
       >
         <app-demo-specimen label="with handle (default)">
           <button gui-button variant="outlined" (click)="handleOpen.set(true)">
@@ -117,6 +119,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Sizes"
         hint="Variable height via preset heights. Focus the handle, press Space/Enter to cycle."
+        [code]="codeSizes"
       >
         <app-demo-specimen label="single height (50dvh)">
           <button
@@ -155,6 +158,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="Default close (drag / Esc / scrim) vs. disableClose (action only)."
+        [codeLang]="'ts'"
+        [code]="codeStates"
       >
         <app-demo-specimen label="dismissible (default)">
           <button gui-button variant="filled" (click)="openModal()">
@@ -340,4 +345,31 @@ export class BottomSheetDemo {
     this.modalRef?.close();
     this.modalRef = null;
   }
+
+  protected readonly codeVariants = `
+<!-- Standard (non-modal): fixed, bottom-anchored, no scrim -->
+<gui-bottom-sheet [(open)]="open">
+  <div>Standard bottom sheet content</div>
+</gui-bottom-sheet>`;
+
+  protected readonly codeDragHandle = `
+<gui-bottom-sheet [(open)]="open">…</gui-bottom-sheet>
+<gui-bottom-sheet [(open)]="open" [showDragHandle]="false">…</gui-bottom-sheet>`;
+
+  protected readonly codeSizes = `
+<!-- The handle cycles through these preset viewport fractions -->
+<gui-bottom-sheet [(open)]="open" [heights]="[0.5]">…</gui-bottom-sheet>
+<gui-bottom-sheet [(open)]="open" [heights]="[0.5, 0.9]">…</gui-bottom-sheet>`;
+
+  protected readonly codeStates = `
+private readonly bottomSheet = inject(GuiBottomSheet);
+
+// Dismissible (default): Esc / scrim / drag close it
+this.bottomSheet.open(this.sheetTpl(), { ariaLabel: 'Sheet' });
+
+// disableClose: closed only by its own action button
+this.bottomSheet.open(this.sheetTpl(), {
+  ariaLabel: 'Sheet',
+  disableClose: true,
+});`;
 }

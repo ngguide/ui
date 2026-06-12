@@ -74,6 +74,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="Basic (centered, 28dp corner) and full-screen (0dp corner). Click to open."
+        [code]="codeVariants"
       >
         <app-demo-specimen label="basic">
           <button gui-button variant="filled" [guiDialogTrigger]="basicTpl">
@@ -98,6 +99,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Alignment"
         hint="With icon ⇒ center-aligned; without icon ⇒ start-aligned."
+        [code]="codeAlignment"
       >
         <app-demo-specimen label="with icon (center)">
           <button gui-button variant="filled" [guiDialogTrigger]="basicTpl">
@@ -116,6 +118,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Anatomy"
         hint="Icon · headline · content · divider · actions slots."
+        [code]="codeAnatomy"
       >
         <app-demo-specimen label="full anatomy">
           <button gui-button variant="tonal" [guiDialogTrigger]="anatomyTpl">
@@ -134,6 +137,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="Scrollable body, persistent (no Escape/scrim close), constrained width, interactive."
+        [code]="codeStates"
+        [codeLang]="'ts'"
       >
         <app-demo-specimen label="scrollable">
           <button gui-button variant="outlined" [guiDialogTrigger]="scrollTpl">
@@ -386,4 +391,62 @@ export class DialogDemo {
   protected openNarrow(): void {
     this.dialog.open(this.basicTpl(), { maxWidth: '320px' });
   }
+
+  protected readonly codeVariants = `
+<!-- declarative: bind an inline template to a trigger button -->
+<button gui-button variant="filled" [guiDialogTrigger]="basicTpl">
+  Basic dialog
+</button>
+
+<ng-template #basicTpl let-ref="dialogRef">
+  <gui-dialog-icon><gui-icon class="sym">delete</gui-icon></gui-dialog-icon>
+  <gui-dialog-headline>Reset settings?</gui-dialog-headline>
+  <gui-dialog-content>This will restore all settings.</gui-dialog-content>
+  <gui-dialog-actions>
+    <button gui-button variant="text" (click)="ref.close()">Cancel</button>
+    <button gui-button variant="text" (click)="ref.close('confirm')">Reset</button>
+  </gui-dialog-actions>
+</ng-template>`;
+
+  protected readonly codeAlignment = `
+<!-- icon present ⇒ centered; omit the icon slot ⇒ start-aligned -->
+<ng-template #noIconTpl let-ref="dialogRef">
+  <gui-dialog-headline>Discard draft?</gui-dialog-headline>
+  <gui-dialog-content>Your changes haven't been saved.</gui-dialog-content>
+  <gui-dialog-actions>
+    <button gui-button variant="text" (click)="ref.close()">Keep editing</button>
+    <button gui-button variant="text" (click)="ref.close('discard')">Discard</button>
+  </gui-dialog-actions>
+</ng-template>`;
+
+  protected readonly codeAnatomy = `
+<ng-template #anatomyTpl let-ref="dialogRef">
+  <gui-dialog-icon><gui-icon class="sym">favorite</gui-icon></gui-dialog-icon>
+  <gui-dialog-headline>Add to favorites</gui-dialog-headline>
+  <gui-dialog-content>This item will appear in your favorites list.</gui-dialog-content>
+  <gui-dialog-divider />
+  <gui-dialog-actions>
+    <button gui-button variant="text" (click)="ref.close()">Cancel</button>
+    <button gui-button variant="text" (click)="ref.close('add')">Add</button>
+  </gui-dialog-actions>
+</ng-template>`;
+
+  protected readonly codeStates = `
+private readonly dialog = inject(GuiDialog);
+private readonly tpl = viewChild.required<TemplateRef<unknown>>('tpl');
+
+// persistent: Escape and scrim-click do not dismiss
+openPersistent() {
+  this.dialog.open(this.tpl(), { disableClose: true });
+}
+
+// constrained width
+openNarrow() {
+  this.dialog.open(this.tpl(), { maxWidth: '320px' });
+}
+
+// full-screen form
+openFullScreen() {
+  this.dialog.open(this.tpl(), { fullScreen: 'always' });
+}`;
 }

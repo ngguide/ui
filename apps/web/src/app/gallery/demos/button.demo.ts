@@ -24,7 +24,11 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       docHref="https://m3.material.io/components/buttons"
     >
       <!-- ===== Variants (color configurations) ===== -->
-      <app-demo-block heading="Variants" hint="Five M3 color configurations">
+      <app-demo-block
+        heading="Variants"
+        hint="Five M3 color configurations"
+        [code]="codeVariants"
+      >
         <app-demo-specimen label="elevated">
           <button gui-button variant="elevated">Elevated</button>
         </app-demo-specimen>
@@ -46,6 +50,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Sizes"
         hint="xs · sm (default) · md · lg · xl — M3 Expressive scale"
+        [code]="codeSizes"
       >
         <app-demo-specimen label="xs">
           <button gui-button variant="filled" size="xs">Extra small</button>
@@ -68,6 +73,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Shapes"
         hint="round (default) and square; the corner radius is size-specific"
+        [code]="codeShapes"
       >
         <app-demo-specimen label="round">
           <button gui-button variant="filled" shape="round">Round</button>
@@ -91,6 +97,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Leading icon"
         hint="Optional icon projected into the [guiIcon] slot, 20dp baseline"
+        [code]="codeIcon"
       >
         <app-demo-specimen label="elevated">
           <button gui-button variant="elevated">
@@ -134,6 +141,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Toggle"
         hint="Two-way selected state; resting shape morphs round⇄square. Text style has no toggle (M3)."
+        [code]="codeToggle"
       >
         <app-demo-specimen label="elevated · {{ tElevated() ? 'on' : 'off' }}">
           <button gui-button variant="elevated" toggle [(selected)]="tElevated">
@@ -195,6 +203,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="Enabled and disabled across every variant (hover/focus/pressed are live — interact)"
+        [code]="codeStates"
       >
         <app-demo-specimen label="elevated · enabled">
           <button gui-button variant="elevated">Enabled</button>
@@ -232,6 +241,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Link button"
         hint="Same component on an <a> host; a linkless anchor gets role=button + keyboard activation"
+        [code]="codeLink"
       >
         <app-demo-specimen label="a · href">
           <a gui-button variant="filled" href="#c-button">Link</a>
@@ -254,4 +264,43 @@ export class ButtonDemo {
   protected readonly tOutlined = signal(false);
   protected readonly tRound = signal(false);
   protected readonly tSquare = signal(true);
+
+  protected readonly codeVariants = `
+<button gui-button variant="elevated">Elevated</button>
+<button gui-button variant="filled">Filled</button>
+<button gui-button variant="tonal">Tonal</button>
+<button gui-button variant="outlined">Outlined</button>
+<button gui-button variant="text">Text</button>`;
+
+  protected readonly codeSizes = `
+<button gui-button variant="filled" size="xs">Extra small</button>
+<button gui-button variant="filled" size="sm">Small</button>
+<button gui-button variant="filled" size="md">Medium</button>
+<button gui-button variant="filled" size="lg">Large</button>
+<button gui-button variant="filled" size="xl">Extra large</button>`;
+
+  protected readonly codeShapes = `
+<button gui-button variant="filled" shape="round">Round</button>
+<button gui-button variant="filled" shape="square">Square</button>`;
+
+  protected readonly codeIcon = `
+<button gui-button variant="filled">
+  <gui-icon guiIcon class="sym">send</gui-icon>
+  Send
+</button>`;
+
+  protected readonly codeToggle = `
+<button gui-button variant="filled" toggle [(selected)]="saved">
+  <gui-icon guiIcon class="sym">bookmark_border</gui-icon>
+  <gui-icon guiSelectedIcon class="sym">bookmark</gui-icon>
+  Save
+</button>`;
+
+  protected readonly codeStates = `
+<button gui-button variant="filled">Enabled</button>
+<button gui-button variant="filled" disabled>Disabled</button>`;
+
+  protected readonly codeLink = `
+<a gui-button variant="filled" href="#anchor">Link</a>
+<a gui-button variant="outlined">Action</a>`;
 }
