@@ -3,8 +3,22 @@
   padding: 8px;
   background: var(--md-sys-color-surface-container-high);
   color: var(--md-sys-color-on-surface);
-  border-radius: 16px;
+  border-radius: var(--md-sys-shape-corner-extra-large, 28px);
   width: max-content;
+}
+
+/* Visually-hidden live region: announces the month/year to screen readers when
+   navigation flips months (WAI-ARIA APG aria-live=polite). */
+.gui-calendar-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* Header: Month/Year menu buttons + previous/next navigation icon buttons. */
@@ -140,6 +154,12 @@
   height: 40px;
   border-radius: 50%;
   --gui-state-layer-shape: 50%;
+}
+
+/* Today's number is tinted primary (M3) — the 1dp ring is added below. Placed
+   before the outside/disabled rules so those muted states still win. */
+.gui-calendar-cell[data-today] {
+  color: var(--md-sys-color-primary);
 }
 
 .gui-calendar-cell[data-outside] {

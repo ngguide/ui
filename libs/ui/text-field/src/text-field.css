@@ -48,6 +48,16 @@
   display: none;
 }
 
+/* A projected interactive control (icon-button, 48dp target) must not stretch
+   the single-line row past 56dp — 48dp fits within 56dp with M3's 4dp breathing
+   room. Negative block margin lets it ride the container's 8px padding instead
+   of adding to it, so the field stays 56dp and the floated label keeps seating
+   on the outline. Multiline keeps top-aligned icons (no negative margin). */
+:host(:not([data-multiline])) .gui-text-field-leading,
+:host(:not([data-multiline])) .gui-text-field-trailing {
+  margin-block: -8px;
+}
+
 .gui-text-field-middle {
   position: relative;
   display: flex;
