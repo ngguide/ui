@@ -306,11 +306,14 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      /* The region bleeds to the card's inline edges so its state layer
-         covers the full width, matching M3 "Variant B". */
-      margin-inline: -16px;
-      padding-inline: 16px;
-      padding-block: 0.5rem;
+      /* The region bleeds to the card's top AND inline edges so its state layer
+         covers the whole upper area — rounded corners included — instead of a
+         band floating inset from the edges. Cancels the card's 1rem top padding
+         and 16px inline padding, then restores the same spacing inside so the
+         text keeps its position. Only the action row below stays outside the
+         region (M3 "Variant B"). */
+      margin: -1rem -16px 0;
+      padding: 1rem 16px 0.5rem;
     }
   `,
 })
