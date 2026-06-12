@@ -4,12 +4,12 @@
     [value]="view()"
     (valueChange)="onView($event)"
   >
-    <button gui-segmented-button value="board">
-      <gui-icon class="sym">view_kanban</gui-icon>
+    <button gui-segmented-button value="board" showSelectedIcon="false">
+      <gui-icon guiIcon class="sym">view_kanban</gui-icon>
       Board
     </button>
-    <button gui-segmented-button value="list">
-      <gui-icon class="sym">view_list</gui-icon>
+    <button gui-segmented-button value="list" showSelectedIcon="false">
+      <gui-icon guiIcon class="sym">view_list</gui-icon>
       List
     </button>
   </gui-segmented-buttons>

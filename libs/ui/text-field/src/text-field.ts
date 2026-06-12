@@ -39,6 +39,7 @@ let nextId = 0;
     '[attr.data-multiline]': 'input().multiline() ? "" : null',
     '[attr.data-has-leading]': 'leading() ? "" : null',
     '[attr.data-has-trailing]': 'trailing() ? "" : null',
+    '[attr.data-has-label]': 'label() ? "" : null',
   },
 })
 export class TextFieldComponent {

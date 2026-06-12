@@ -95,6 +95,19 @@
 .gui-text-field-suffix {
   flex: 0 0 auto;
   color: var(--md-sys-color-on-surface-variant);
+  transition: opacity var(--md-sys-motion-duration-short2, 100ms)
+    var(--md-sys-motion-easing-standard, ease);
+}
+
+/* M3: prefix/suffix appear only once the label has floated (focus or populated)
+   — while the label rests on the input line it would otherwise collide with the
+   prefix. Kept in flow (opacity, not display) so revealing them doesn't shift
+   the input. With no label there is nothing to overlap, so they always show. */
+:host([data-has-label]:not([data-populated]):not([data-focused]))
+  .gui-text-field-prefix,
+:host([data-has-label]:not([data-populated]):not([data-focused]))
+  .gui-text-field-suffix {
+  opacity: 0;
 }
 
 /* --- Floating label --- */

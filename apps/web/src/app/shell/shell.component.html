@@ -16,11 +16,13 @@
     <span class="shell-app-subtitle">{{ activeSection()?.label ?? activeApp().subtitle }}</span>
   </div>
 
-  <gui-text-field class="shell-search" variant="outlined" label="Search">
+  <gui-text-field class="shell-search" variant="outlined">
     <gui-icon class="sym" guiTextFieldLeading>search</gui-icon>
     <input
       guiTextFieldInput
       type="search"
+      placeholder="Search"
+      aria-label="Search"
       [ngModel]="query()"
       (ngModelChange)="query.set($event)"
     />
