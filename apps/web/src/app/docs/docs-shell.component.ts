@@ -12,6 +12,7 @@ import { GuiTooltip } from '@ngguide/ui/tooltip';
 import { MenuDirective, MenuItemComponent } from '@ngguide/ui/menu';
 
 import { ThemeController } from '../shell/theme-controller';
+import { AppSwitcherComponent } from '../shell/app-switcher.component';
 import { DOC_CATEGORIES } from './component-registry';
 
 /**
@@ -39,6 +40,7 @@ import { DOC_CATEGORIES } from './component-registry';
     GuiTooltip,
     MenuDirective,
     MenuItemComponent,
+    AppSwitcherComponent,
   ],
   template: `
     <header class="docs-bar">
@@ -46,6 +48,7 @@ import { DOC_CATEGORIES } from './component-registry';
         <span class="docs-brand-mark">M3</span>
         <span class="docs-brand-name">ngguide&nbsp;UI</span>
       </a>
+      <app-switcher class="docs-switcher" />
       <span class="docs-bar-spacer"></span>
 
       <button

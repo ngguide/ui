@@ -16,7 +16,7 @@ export interface NavItem {
 }
 
 export interface DemoApp {
-  id: 'admin' | 'tasks' | 'shop' | 'gallery';
+  id: 'admin' | 'tasks' | 'shop';
   label: string;
   subtitle: string;
   /** Material Symbols ligature name. */
@@ -60,22 +60,6 @@ export const DEMO_APPS: readonly DemoApp[] = [
       { label: 'Orders', icon: 'receipt_long', path: '/shop/orders' },
       { label: 'Products', icon: 'inventory_2', path: '/shop/products' },
       { label: 'Customers', icon: 'people', path: '/shop/customers' },
-    ],
-  },
-  {
-    id: 'gallery',
-    label: 'Gallery',
-    subtitle: 'Component showcase',
-    icon: 'widgets',
-    basePath: '/gallery',
-    nav: [
-      // Terse single-word rail labels — the 88px M3 nav rail can't wrap a long
-      // word like "Communication"; the full category name is the page title.
-      { label: 'Actions', icon: 'touch_app', path: '/gallery/actions' },
-      { label: 'Comms', icon: 'notifications_active', path: '/gallery/communication' },
-      { label: 'Layout', icon: 'dashboard', path: '/gallery/containment' },
-      { label: 'Selection', icon: 'check_box', path: '/gallery/selection' },
-      { label: 'Inputs', icon: 'edit_note', path: '/gallery/text-inputs' },
     ],
   },
 ];

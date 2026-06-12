@@ -43,6 +43,7 @@ import {
 import { DEMO_APPS } from './nav';
 import { ThemeController } from './theme-controller';
 import { NavRailItemComponent } from './nav-rail-item.component';
+import { AppSwitcherComponent } from './app-switcher.component';
 
 /**
  * Persistent demo chrome: a top app bar (app switcher · search · theme · brand ·
@@ -74,6 +75,7 @@ import { NavRailItemComponent } from './nav-rail-item.component';
     TextFieldInputDirective,
     TextFieldLeadingDirective,
     NavRailItemComponent,
+    AppSwitcherComponent,
   ],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.css',
@@ -97,10 +99,6 @@ export class ShellComponent {
 
   protected readonly activeApp = computed(
     () => this.apps.find((a) => this.url().startsWith(a.basePath)) ?? this.apps[0],
-  );
-
-  protected readonly activeSection = computed(() =>
-    this.activeApp().nav.find((n) => this.url().startsWith(n.path)),
   );
 
   /** Decorative global search bound to a signal (per-screen search is local). */

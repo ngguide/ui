@@ -42,6 +42,10 @@
   font-size: 1.125rem;
   font-weight: 500;
 }
+.docs-switcher {
+  margin-left: clamp(0.5rem, 2vw, 1.5rem);
+  min-width: 0;
+}
 .docs-bar-spacer {
   flex: 1;
 }
