@@ -72,6 +72,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="The two M3 side-sheet variants. Click to slide the live sheet in from the end edge."
+        [code]="codeVariants"
       >
         <app-demo-specimen label="standard (inline)">
           <button
@@ -102,6 +103,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Docking"
         hint="Docked (flush, inner corners) vs detached (16dp float, all corners rounded)."
+        [code]="codeDocking"
       >
         <app-demo-specimen label="docked">
           <button
@@ -132,6 +134,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Modal navigation"
         hint="Optional leading back-icon button for in-sheet navigation (16dp start padding)."
+        [code]="codeModalNavigation"
       >
         <app-demo-specimen label="with back icon">
           <button
@@ -151,6 +154,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Anatomy"
         hint="Header + close, optional dividers, scrollable content, start-aligned bottom actions."
+        [code]="codeAnatomy"
       >
         <app-demo-specimen label="full anatomy">
           <button
@@ -421,4 +425,55 @@ export class SideSheetDemo {
       ariaLabel: 'Modal side sheet with navigation',
     });
   }
+
+  protected readonly codeVariants = `
+<!-- Standard (inline, non-modal): coexists with the page -->
+<gui-side-sheet variant="standard" [(open)]="open" ariaLabel="Side sheet">
+  <gui-side-sheet-header>
+    Title
+    <button guiSideSheetClose gui-icon-button variant="standard" label="Close" (click)="open.set(false)">
+      <gui-icon class="sym">close</gui-icon>
+    </button>
+  </gui-side-sheet-header>
+  <gui-side-sheet-content>
+    <p>Content goes here.</p>
+  </gui-side-sheet-content>
+</gui-side-sheet>`;
+
+  protected readonly codeDocking = `
+<!-- Docked: flush to the inline-end edge -->
+<gui-side-sheet variant="standard" [(open)]="open">…</gui-side-sheet>
+
+<!-- Detached: floated 16dp, all corners rounded -->
+<gui-side-sheet variant="standard" detached [(open)]="open">…</gui-side-sheet>`;
+
+  protected readonly codeModalNavigation = `
+<gui-side-sheet-header>
+  <button guiSideSheetBack gui-icon-button variant="standard" label="Back" (click)="ref.close()">
+    <gui-icon class="sym">arrow_back</gui-icon>
+  </button>
+  Edit profile
+  <button guiSideSheetClose gui-icon-button variant="standard" label="Close" (click)="ref.close()">
+    <gui-icon class="sym">close</gui-icon>
+  </button>
+</gui-side-sheet-header>`;
+
+  protected readonly codeAnatomy = `
+<gui-side-sheet variant="standard" [(open)]="open" ariaLabel="Filters">
+  <gui-side-sheet-header>
+    Filters
+    <button guiSideSheetClose gui-icon-button variant="standard" label="Close" (click)="open.set(false)">
+      <gui-icon class="sym">close</gui-icon>
+    </button>
+  </gui-side-sheet-header>
+  <gui-side-sheet-divider />
+  <gui-side-sheet-content>
+    <p>Scrollable content region.</p>
+  </gui-side-sheet-content>
+  <gui-side-sheet-divider />
+  <gui-side-sheet-actions>
+    <button gui-button variant="filled" (click)="open.set(false)">Apply</button>
+    <button gui-button variant="text" (click)="open.set(false)">Reset</button>
+  </gui-side-sheet-actions>
+</gui-side-sheet>`;
 }

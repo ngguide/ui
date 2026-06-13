@@ -54,6 +54,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Variants"
         hint="Standard, centered and range — the three M3 slider variants"
         [column]="true"
+        [code]="codeVariants"
       >
         <app-demo-specimen label="standard" class="fill">
           <gui-slider [(value)]="standard" aria-label="Standard slider" />
@@ -72,6 +73,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Sizes"
         hint="XS, S, M, L, XL — track height and corner shape scale per size"
         [column]="true"
+        [code]="codeSizes"
       >
         <app-demo-specimen label="xs (16dp / 8dp)" class="fill">
           <gui-slider size="xs" [(value)]="sizeXs" aria-label="Extra small slider" />
@@ -94,6 +96,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Orientation"
         hint="Horizontal (default) and vertical layout (M3 Expressive)"
+        [code]="codeOrientation"
       >
         <app-demo-specimen label="horizontal">
           <div style="inline-size: 14rem">
@@ -120,6 +123,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Stops"
         hint="Stop indicators at every step — the M3 stops configuration"
         [column]="true"
+        [code]="codeStops"
       >
         <app-demo-specimen label="continuous (no stops)" class="fill">
           <gui-slider [(value)]="continuous" aria-label="Continuous slider" />
@@ -147,6 +151,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Value indicator"
         hint="Optional label container — drag or focus a thumb to reveal it"
         [column]="true"
+        [code]="codeValueIndicator"
       >
         <app-demo-specimen label="value indicator (standard)" class="fill">
           <gui-slider
@@ -170,6 +175,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Inset icon"
         hint="Optional leading icon, standard slider only (M3 sizes M, L, XL)"
         [column]="true"
+        [code]="codeInsetIcon"
       >
         <app-demo-specimen label="md + inset icon" class="fill">
           <gui-slider size="md" [(value)]="iconMd" aria-label="Volume">
@@ -194,6 +200,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="States"
         hint="Enabled vs. disabled (hover / focus / pressed are interaction-driven)"
         [column]="true"
+        [code]="codeStates"
       >
         <app-demo-specimen label="enabled" class="fill">
           <gui-slider [(value)]="enabled" aria-label="Enabled slider" />
@@ -216,6 +223,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Reactive form"
         hint="Bound to a FormControl via ControlValueAccessor"
         [column]="true"
+        [code]="codeReactiveForm"
       >
         <app-demo-specimen label="FormControl (drag me)" class="fill">
           <gui-slider [formControl]="volume" aria-label="Volume" />
@@ -230,6 +238,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Custom domain (ngModel)"
         hint="min/max/step define the domain; ngModel writes the value back"
         [column]="true"
+        [code]="codeCustomDomain"
       >
         <app-demo-specimen label="0–10, step 1, stops (ngModel)" class="fill">
           <gui-slider
@@ -287,4 +296,39 @@ export class SliderDemo {
 
   // ngModel custom domain.
   protected rating = 7;
+
+  protected readonly codeVariants = `
+<gui-slider [(value)]="standard" aria-label="Standard slider" />
+<gui-slider centered [(value)]="centered" aria-label="Centered slider" />
+<gui-slider range [(value)]="rangeValue" aria-label="Range slider" />`;
+
+  protected readonly codeSizes = `
+<gui-slider size="xs" [(value)]="value" aria-label="Extra small slider" />
+<gui-slider size="md" [(value)]="value" aria-label="Medium slider" />
+<gui-slider size="xl" [(value)]="value" aria-label="Extra large slider" />`;
+
+  protected readonly codeOrientation = `
+<gui-slider orientation="horizontal" [(value)]="value" aria-label="Horizontal slider" />
+<gui-slider orientation="vertical" [(value)]="value" aria-label="Vertical slider" />`;
+
+  protected readonly codeStops = `
+<gui-slider stops [step]="10" [(value)]="stepped" aria-label="Stepped slider" />`;
+
+  protected readonly codeValueIndicator = `
+<gui-slider valueIndicator [(value)]="value" aria-label="Slider with value indicator" />`;
+
+  protected readonly codeInsetIcon = `
+<gui-slider size="md" [(value)]="value" aria-label="Volume">
+  <gui-icon gui-slider-icon class="sym">volume_up</gui-icon>
+</gui-slider>`;
+
+  protected readonly codeStates = `
+<gui-slider [(value)]="enabled" aria-label="Enabled slider" />
+<gui-slider disabled [value]="40" aria-label="Disabled slider" />`;
+
+  protected readonly codeReactiveForm = `
+<gui-slider [formControl]="volume" aria-label="Volume" />`;
+
+  protected readonly codeCustomDomain = `
+<gui-slider stops [min]="0" [max]="10" [step]="1" [(ngModel)]="rating" aria-label="Rating" />`;
 }

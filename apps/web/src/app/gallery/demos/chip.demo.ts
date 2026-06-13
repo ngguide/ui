@@ -35,6 +35,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="Four M3 families — assist, filter, input, suggestion"
+        [code]="codeVariants"
       >
         <app-demo-specimen label="assist">
           <gui-chip-set>
@@ -80,6 +81,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Leading icon"
         hint="Optional 18dp leading icon in the [guiChipLeading] slot"
+        [code]="codeLeadingIcon"
       >
         <app-demo-specimen label="assist + icon">
           <gui-chip-set>
@@ -115,6 +117,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Avatar (input)"
         hint="Input chip 24dp leading avatar via [guiChipAvatar]"
+        [code]="codeAvatar"
       >
         <app-demo-specimen label="avatar + remove">
           <gui-chip-set>
@@ -139,6 +142,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Selection (filter)"
         hint="Single keeps one; multiple toggles independently; selected shows the M3 check"
+        [code]="codeSelection"
       >
         <app-demo-specimen label="single-select" class="fill">
           <gui-chip-set select="single" [(value)]="single">
@@ -163,6 +167,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Elevation"
         hint="Optional level-1 elevated container (no stroke) per variant"
+        [code]="codeElevation"
       >
         <app-demo-specimen label="assist · flat">
           <gui-chip-set>
@@ -200,6 +205,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Removable (input)"
         hint="Trailing remove button emits remove — try removing a chip"
+        [code]="codeRemovable"
       >
         <app-demo-specimen label="live removable set" class="fill">
           <gui-chip-set>
@@ -224,6 +230,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="Enabled, selected, disabled chip, disabled + selected, fully disabled set"
+        [code]="codeStates"
       >
         <app-demo-specimen label="enabled">
           <gui-chip-set>
@@ -308,4 +315,66 @@ export class ChipDemo {
     // Single-chip removable specimens demonstrate the trailing icon without
     // mutating state, so the chip stays visible for inspection.
   }
+
+  protected readonly codeVariants = `
+<gui-chip-set>
+  <gui-chip type="assist" value="lights" label="Turn on lights">
+    <gui-icon guiChipLeading class="sym">lightbulb</gui-icon>
+    Turn on lights
+  </gui-chip>
+</gui-chip-set>
+<gui-chip-set select="single" [(value)]="filter">
+  <gui-chip type="filter" value="recent" label="Recent">Recent</gui-chip>
+</gui-chip-set>`;
+
+  protected readonly codeLeadingIcon = `
+<gui-chip-set>
+  <gui-chip type="assist" value="event" label="Add to calendar">
+    <gui-icon guiChipLeading class="sym">event</gui-icon>
+    Add to calendar
+  </gui-chip>
+</gui-chip-set>`;
+
+  protected readonly codeAvatar = `
+<gui-chip-set>
+  <gui-chip type="input" value="ada" label="Ada Lovelace" removable (remove)="remove()">
+    <span guiChipAvatar class="avatar">AL</span>
+    Ada Lovelace
+    <gui-icon guiChipRemove class="sym">close</gui-icon>
+  </gui-chip>
+</gui-chip-set>`;
+
+  protected readonly codeSelection = `
+<gui-chip-set select="single" [(value)]="single">
+  <gui-chip type="filter" value="all" label="All">All</gui-chip>
+  <gui-chip type="filter" value="unread" label="Unread">Unread</gui-chip>
+  <gui-chip type="filter" value="flagged" label="Flagged">Flagged</gui-chip>
+</gui-chip-set>`;
+
+  protected readonly codeElevation = `
+<gui-chip-set>
+  <gui-chip type="assist" value="raised" label="Elevated" elevated>
+    Elevated
+  </gui-chip>
+</gui-chip-set>`;
+
+  protected readonly codeRemovable = `
+<gui-chip-set>
+  @for (tag of tags(); track tag) {
+    <gui-chip type="input" [value]="tag" [label]="tag" removable (remove)="removeTag(tag)">
+      {{ tag }}
+      <gui-icon guiChipRemove class="sym">close</gui-icon>
+    </gui-chip>
+  }
+</gui-chip-set>`;
+
+  protected readonly codeStates = `
+<gui-chip-set select="single" [(value)]="selected">
+  <gui-chip type="filter" value="on" label="Selected">Selected</gui-chip>
+</gui-chip-set>
+<gui-chip-set>
+  <gui-chip type="assist" value="off" label="Disabled" disabled>
+    Disabled
+  </gui-chip>
+</gui-chip-set>`;
 }

@@ -68,6 +68,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Variants"
         hint="The two M3 variants — filled and outlined — empty and populated"
         [column]="true"
+        [code]="codeVariants"
       >
         <app-demo-specimen label="filled (empty)" class="fill">
           <gui-text-field label="Label">
@@ -97,6 +98,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Size"
         hint="A single M3 size — 56dp container height (target size) for both variants"
         [column]="true"
+        [code]="codeSize"
       >
         <app-demo-specimen label="filled · 56dp" class="fill">
           <gui-text-field label="Name">
@@ -116,6 +118,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Shape"
         hint="A single M3 corner — extra-small (4dp) container for both variants"
         [column]="true"
+        [code]="codeShape"
       >
         <app-demo-specimen label="filled · 4dp top corners" class="fill">
           <gui-text-field label="Label">
@@ -135,6 +138,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="States"
         hint="M3 states — enabled, focused/hovered (interact live) and disabled"
         [column]="true"
+        [code]="codeStates"
       >
         <app-demo-specimen label="enabled (empty)" class="fill">
           <gui-text-field label="Label">
@@ -179,6 +183,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Error"
         hint="M3 error treatment — error role + error text below the field"
         [column]="true"
+        [code]="codeError"
       >
         <app-demo-specimen label="filled error (empty)" class="fill">
           <gui-text-field
@@ -225,6 +230,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Required"
         hint="A required field shows an asterisk after the label (M3)"
         [column]="true"
+        [code]="codeRequired"
       >
         <app-demo-specimen label="filled · required" class="fill">
           <gui-text-field label="Full name" required>
@@ -243,6 +249,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Leading icon"
         hint="Optional leading (start) icon via [guiTextFieldLeading]"
         [column]="true"
+        [code]="codeLeadingIcon"
       >
         <app-demo-specimen label="filled" class="fill">
           <gui-text-field label="Search">
@@ -263,6 +270,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Trailing icon"
         hint="Optional trailing (end) icon via [guiTextFieldTrailing]"
         [column]="true"
+        [code]="codeTrailingIcon"
       >
         <app-demo-specimen label="filled" class="fill">
           <gui-text-field label="Password">
@@ -283,6 +291,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Leading + trailing icons"
         hint="Both icon slots populated at once (M3 configuration)"
         [column]="true"
+        [code]="codeBothIcons"
       >
         <app-demo-specimen label="filled" class="fill">
           <gui-text-field label="Search">
@@ -305,6 +314,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Prefix & suffix"
         hint="Leading prefix and trailing suffix symbols (M3 configuration)"
         [column]="true"
+        [code]="codeAffix"
       >
         <app-demo-specimen label="prefix" class="fill">
           <gui-text-field label="Amount" prefix="$">
@@ -328,6 +338,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Supporting text & counter"
         hint="Optional supporting text and a maxLength character counter (M3)"
         [column]="true"
+        [code]="codeSupporting"
       >
         <app-demo-specimen label="supporting text" class="fill">
           <gui-text-field
@@ -354,6 +365,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Multi-line"
         hint="A textarea projected as the input renders the M3 multi-line field"
         [column]="true"
+        [code]="codeMultiline"
       >
         <app-demo-specimen label="filled · textarea" class="fill">
           <gui-text-field label="Description">
@@ -374,6 +386,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Reactive form"
         hint="The native input keeps its own FormControl (the wrapper is presentational)"
         [column]="true"
+        [code]="codeReactive"
+        codeLang="ts"
       >
         <app-demo-specimen label="type here" class="fill">
           <gui-text-field label="Your name" supportingText="Bound to a FormControl">
@@ -446,4 +460,84 @@ export class TextFieldDemo {
       }
     });
   }
+
+  protected readonly codeVariants = `
+<gui-text-field label="Label">
+  <input guiTextFieldInput [(ngModel)]="value" />
+</gui-text-field>
+
+<gui-text-field variant="outlined" label="Label">
+  <input guiTextFieldInput [(ngModel)]="value" />
+</gui-text-field>`;
+
+  protected readonly codeSize = `
+<gui-text-field label="Name">
+  <input guiTextFieldInput [(ngModel)]="name" />
+</gui-text-field>`;
+
+  protected readonly codeShape = `
+<gui-text-field label="Label">
+  <input guiTextFieldInput [(ngModel)]="value" />
+</gui-text-field>`;
+
+  protected readonly codeStates = `
+<gui-text-field label="Label">
+  <input guiTextFieldInput disabled [(ngModel)]="value" />
+</gui-text-field>`;
+
+  protected readonly codeError = `
+<gui-text-field label="Email" error errorText="Enter a valid email">
+  <input guiTextFieldInput [(ngModel)]="email" />
+</gui-text-field>`;
+
+  protected readonly codeRequired = `
+<gui-text-field label="Full name" required>
+  <input guiTextFieldInput [(ngModel)]="name" />
+</gui-text-field>`;
+
+  protected readonly codeLeadingIcon = `
+<gui-text-field label="Search">
+  <gui-icon guiTextFieldLeading class="sym">search</gui-icon>
+  <input guiTextFieldInput [(ngModel)]="query" />
+</gui-text-field>`;
+
+  protected readonly codeTrailingIcon = `
+<gui-text-field label="Password">
+  <input guiTextFieldInput [(ngModel)]="password" />
+  <gui-icon guiTextFieldTrailing class="sym">visibility</gui-icon>
+</gui-text-field>`;
+
+  protected readonly codeBothIcons = `
+<gui-text-field label="Search">
+  <gui-icon guiTextFieldLeading class="sym">search</gui-icon>
+  <input guiTextFieldInput [(ngModel)]="query" />
+  <gui-icon guiTextFieldTrailing class="sym">close</gui-icon>
+</gui-text-field>`;
+
+  protected readonly codeAffix = `
+<gui-text-field label="Username" prefix="@" suffix=".dev">
+  <input guiTextFieldInput [(ngModel)]="handle" />
+</gui-text-field>`;
+
+  protected readonly codeSupporting = `
+<gui-text-field
+  variant="outlined"
+  label="Bio"
+  supportingText="Keep it short"
+  [maxLength]="40"
+>
+  <input guiTextFieldInput [(ngModel)]="bio" />
+</gui-text-field>`;
+
+  protected readonly codeMultiline = `
+<gui-text-field label="Description">
+  <textarea guiTextFieldInput rows="3" [(ngModel)]="description"></textarea>
+</gui-text-field>`;
+
+  protected readonly codeReactive = `
+name = new FormControl('');
+// template:
+// <gui-text-field label="Your name">
+//   <input guiTextFieldInput [formControl]="name" />
+// </gui-text-field>`;
 }

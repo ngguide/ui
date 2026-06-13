@@ -6,12 +6,18 @@ import { Route } from '@angular/router';
  * in their own groups (D / E).
  */
 export const appRoutes: Route[] = [
+  // The M3 documentation site is the index: `/` lands on the component reference.
+  { path: '', pathMatch: 'full', redirectTo: 'ui' },
+  {
+    // Standalone M3-style documentation site, outside the demo-app shell.
+    path: 'ui',
+    loadChildren: () => import('./docs/docs.routes').then((m) => m.docsRoutes),
+  },
   {
     path: '',
     loadComponent: () =>
       import('./shell/shell.component').then((m) => m.ShellComponent),
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'admin' },
       {
         path: 'admin',
         loadChildren: () =>
@@ -26,11 +32,6 @@ export const appRoutes: Route[] = [
         path: 'shop',
         loadChildren: () =>
           import('./shop/shop.routes').then((m) => m.shopRoutes),
-      },
-      {
-        path: 'gallery',
-        loadChildren: () =>
-          import('./gallery/gallery.routes').then((m) => m.galleryRoutes),
       },
     ],
   },

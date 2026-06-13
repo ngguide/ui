@@ -44,6 +44,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="The three M3 selection states — unselected, selected, indeterminate"
+        [code]="codeStates"
       >
         <app-demo-specimen label="unselected">
           <gui-checkbox [(checked)]="unselected">Option</gui-checkbox>
@@ -60,6 +61,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Disabled"
         hint="The M3 disabled treatment across all three states"
+        [code]="codeDisabled"
       >
         <app-demo-specimen label="unselected">
           <gui-checkbox disabled>Option</gui-checkbox>
@@ -76,6 +78,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Error"
         hint="M3 error states for unselected, selected and indeterminate"
+        [code]="codeError"
       >
         <app-demo-specimen label="unselected">
           <gui-checkbox error [(checked)]="errorUnselected">
@@ -96,6 +99,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Label"
         hint="The adjacent text label is optional and toggles the box (M3)"
+        [code]="codeLabel"
       >
         <app-demo-specimen label="with label">
           <gui-checkbox [(checked)]="labelled">Subscribe to updates</gui-checkbox>
@@ -110,6 +114,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Reactive form"
         hint="Bound to a FormControl via ControlValueAccessor"
         [column]="true"
+        [code]="codeReactiveForm"
       >
         <app-demo-specimen label="FormControl (toggle me)" class="fill">
           <gui-checkbox [formControl]="agree">I agree</gui-checkbox>
@@ -124,6 +129,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Group (parent / children)"
         hint="Parent goes indeterminate when only some children are checked (M3)"
         [column]="true"
+        [code]="codeGroup"
       >
         <app-demo-specimen label="parent" class="fill">
           <gui-checkbox
@@ -179,4 +185,34 @@ export class CheckboxDemo {
       c.value = checked === true;
     }
   }
+
+  protected readonly codeStates = `
+<gui-checkbox [(checked)]="selected">Option</gui-checkbox>
+<gui-checkbox indeterminate>Option</gui-checkbox>`;
+
+  protected readonly codeDisabled = `
+<gui-checkbox disabled>Option</gui-checkbox>
+<gui-checkbox disabled checked>Option</gui-checkbox>
+<gui-checkbox disabled indeterminate>Option</gui-checkbox>`;
+
+  protected readonly codeError = `
+<gui-checkbox error [(checked)]="accepted">Accept terms</gui-checkbox>
+<gui-checkbox error indeterminate>Accept terms</gui-checkbox>`;
+
+  protected readonly codeLabel = `
+<gui-checkbox [(checked)]="subscribed">Subscribe to updates</gui-checkbox>
+<gui-checkbox [(checked)]="bare" />`;
+
+  protected readonly codeReactiveForm = `
+<gui-checkbox [formControl]="agree">I agree</gui-checkbox>`;
+
+  protected readonly codeGroup = `
+<gui-checkbox
+  [checked]="allChecked()"
+  [indeterminate]="someChecked()"
+  (checkedChange)="toggleAll($event)"
+>
+  Select all
+</gui-checkbox>
+<gui-checkbox [(ngModel)]="child.value">{{ child.label }}</gui-checkbox>`;
 }

@@ -41,6 +41,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="Four M3 color styles — elevated, filled, tonal, outlined"
+        [code]="codeVariants"
       >
         @for (v of variants; track v) {
           <app-demo-specimen [label]="v">
@@ -62,6 +63,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Sizes"
         hint="Five M3 sizes — xs, sm, md, lg, xl (filled)"
+        [code]="codeSizes"
       >
         @for (s of sizes; track s) {
           <app-demo-specimen [label]="s">
@@ -86,6 +88,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Shapes"
         hint="Inner-corner radius scales with size — xs/sm/md 4dp, lg 8dp, xl 12dp"
+        [code]="codeShapes"
       >
         @for (s of sizes; track s) {
           <app-demo-specimen [label]="s + ' inner corner'">
@@ -110,6 +113,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="Unselected vs persistent selected trailing state (color is unchanged — only a state layer + centered icon). Open the trailing menu to see the open morph + icon spin."
+        [code]="codeStates"
       >
         @for (v of variants; track v) {
           <app-demo-specimen [label]="v + ' · unselected'">
@@ -147,6 +151,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Anatomy"
         hint="Leading button = primary action (icon + label); trailing button = menu trigger. Click the leading half or open the menu."
+        [code]="codeAnatomy"
       >
         <app-demo-specimen label="icon + label">
           <gui-split-button
@@ -201,4 +206,81 @@ export class SplitButtonDemo {
 
   /** Most recent leading-action emission, surfaced so the wiring is observable. */
   protected readonly lastAction = signal('');
+
+  protected readonly codeVariants = `
+<gui-split-button variant="filled" (action)="onSave()">
+  <span guiLeading>Save</span>
+  <gui-icon class="sym" guiTrailingIcon>keyboard_arrow_down</gui-icon>
+  <ng-template>
+    <div gui-menu cdkMenu>
+      <button gui-menu-item>Save as…</button>
+      <button gui-menu-item>Save all</button>
+      <button gui-menu-item>Save a copy</button>
+    </div>
+  </ng-template>
+</gui-split-button>`;
+
+  protected readonly codeSizes = `
+<gui-split-button variant="filled" size="md" (action)="onWatch()">
+  <span guiLeading>Watch</span>
+  <gui-icon class="sym" guiTrailingIcon>keyboard_arrow_down</gui-icon>
+  <ng-template>
+    <div gui-menu cdkMenu>
+      <button gui-menu-item>Watch later</button>
+      <button gui-menu-item>Add to queue</button>
+    </div>
+  </ng-template>
+</gui-split-button>`;
+
+  protected readonly codeShapes = `
+<gui-split-button variant="tonal" size="lg" (action)="onEdit()">
+  <span guiLeading>Edit</span>
+  <gui-icon class="sym" guiTrailingIcon>keyboard_arrow_down</gui-icon>
+  <ng-template>
+    <div gui-menu cdkMenu>
+      <button gui-menu-item>Rename</button>
+      <button gui-menu-item>Duplicate</button>
+    </div>
+  </ng-template>
+</gui-split-button>`;
+
+  protected readonly codeStates = `
+<gui-split-button
+  variant="filled"
+  selected
+  triggerLabel="More share options"
+  (action)="onShare()"
+>
+  <span guiLeading>Share</span>
+  <gui-icon class="sym" guiTrailingIcon>keyboard_arrow_down</gui-icon>
+  <ng-template>
+    <div gui-menu cdkMenu>
+      <button gui-menu-item>Copy link</button>
+      <button gui-menu-item>Embed</button>
+    </div>
+  </ng-template>
+</gui-split-button>`;
+
+  protected readonly codeAnatomy = `
+<gui-split-button
+  variant="elevated"
+  size="md"
+  triggerLabel="More edit options"
+  (action)="onEdit()"
+>
+  <span guiLeading><gui-icon class="sym">edit</gui-icon>&nbsp;Edit</span>
+  <gui-icon class="sym" guiTrailingIcon>keyboard_arrow_down</gui-icon>
+  <ng-template>
+    <div gui-menu cdkMenu>
+      <button gui-menu-item>
+        <gui-icon class="sym" guiMenuItemLeading>content_cut</gui-icon>
+        Cut
+      </button>
+      <button gui-menu-item>
+        <gui-icon class="sym" guiMenuItemLeading>content_copy</gui-icon>
+        Copy
+      </button>
+    </div>
+  </ng-template>
+</gui-split-button>`;
 }

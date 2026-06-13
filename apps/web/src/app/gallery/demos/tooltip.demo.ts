@@ -52,6 +52,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="Two M3 variants — plain (short non-interactive label) and rich (persistent, with subhead + actions). Hover or focus each trigger."
+        [code]="codeVariants"
       >
         <app-demo-specimen label="plain">
           <button gui-icon-button variant="standard" label="Add" guiTooltip="Add to library">
@@ -76,6 +77,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Positions"
         hint="Four placements — above (default), below, before, after — with a sensible fallback when space is tight"
+        [code]="codePositions"
       >
         <app-demo-specimen label="above">
           <button gui-icon-button variant="tonal" label="Above" guiTooltip="Above" position="above">
@@ -103,6 +105,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Trigger hosts"
         hint="The plain-tooltip directive attaches to any element — icon buttons, buttons, links"
+        [code]="codeTriggerHosts"
       >
         <app-demo-specimen label="icon button">
           <button gui-icon-button variant="filled" label="Favorite" guiTooltip="Add to favorites">
@@ -126,6 +129,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Timing"
         hint="showDelay (default 500ms) and hideDelay (default 0ms) tune how quickly the label appears / dismisses"
+        [code]="codeTiming"
       >
         <app-demo-specimen label="instant (showDelay 0)">
           <button gui-icon-button variant="standard" label="Instant" guiTooltip="Shows immediately" [showDelay]="0">
@@ -148,6 +152,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="Enabled opens on hover/focus; disabled suppresses the tooltip entirely"
+        [code]="codeStates"
       >
         <app-demo-specimen label="enabled">
           <button gui-icon-button variant="filled" label="Edit" guiTooltip="Edit item">
@@ -168,6 +173,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Rich tooltip configurations"
         hint="The five M3 content layouts — subhead, body, and up to two text buttons. Hover each trigger to open."
         [column]="true"
+        [code]="codeRichConfigurations"
       >
         <app-demo-specimen class="fill" label="subhead + body + two buttons">
           <gui-rich-tooltip #richTwo>
@@ -236,6 +242,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Rich tooltip positions"
         hint="The rich-tooltip trigger accepts the same four placements (default below)"
+        [code]="codeRichPositions"
       >
         <app-demo-specimen label="above">
           <gui-rich-tooltip #richAbove>
@@ -277,4 +284,71 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
     </app-demo-component>
   `,
 })
-export class TooltipDemo {}
+export class TooltipDemo {
+  protected readonly codeVariants = `
+<!-- plain -->
+<button gui-icon-button variant="standard" label="Add" guiTooltip="Add to library">
+  <gui-icon class="sym">add</gui-icon>
+</button>
+
+<!-- rich -->
+<gui-rich-tooltip #rich>
+  <span guiRichTooltipSubhead>Encrypted storage</span>
+  Your files are encrypted at rest and in transit.
+  <div guiRichTooltipActions>
+    <button gui-button variant="text">Learn more</button>
+  </div>
+</gui-rich-tooltip>
+<button gui-button variant="tonal" [guiRichTooltipTrigger]="rich">Details</button>`;
+
+  protected readonly codePositions = `
+<button gui-icon-button variant="tonal" label="Above" guiTooltip="Above" position="above">
+  <gui-icon class="sym">arrow_upward</gui-icon>
+</button>
+<button gui-icon-button variant="tonal" label="Before" guiTooltip="Before" position="before">
+  <gui-icon class="sym">arrow_back</gui-icon>
+</button>`;
+
+  protected readonly codeTriggerHosts = `
+<button gui-icon-button variant="filled" label="Favorite" guiTooltip="Add to favorites">
+  <gui-icon class="sym">favorite</gui-icon>
+</button>
+<button gui-button variant="outlined" guiTooltip="Share this item">Share</button>
+<a gui-button variant="text" href="#docs" guiTooltip="Open documentation">Docs</a>`;
+
+  protected readonly codeTiming = `
+<button gui-icon-button variant="standard" label="Instant" guiTooltip="Shows immediately" [showDelay]="0">
+  <gui-icon class="sym">bolt</gui-icon>
+</button>
+<button gui-icon-button variant="standard" label="Linger" guiTooltip="Stays after the cursor leaves" [hideDelay]="1000">
+  <gui-icon class="sym">timer</gui-icon>
+</button>`;
+
+  protected readonly codeStates = `
+<button gui-icon-button variant="filled" label="Edit" guiTooltip="Edit item">
+  <gui-icon class="sym">edit</gui-icon>
+</button>
+<button gui-icon-button variant="filled" label="Edit" guiTooltip="Edit item" disabled>
+  <gui-icon class="sym">edit</gui-icon>
+</button>`;
+
+  protected readonly codeRichConfigurations = `
+<gui-rich-tooltip #rich>
+  <span guiRichTooltipSubhead>Cloud backup</span>
+  Keep a synced copy of your photos across all devices.
+  <div guiRichTooltipActions>
+    <button gui-button variant="text">Dismiss</button>
+    <button gui-button variant="text">Turn on</button>
+  </div>
+</gui-rich-tooltip>
+<button gui-button variant="tonal" [guiRichTooltipTrigger]="rich">Two buttons</button>`;
+
+  protected readonly codeRichPositions = `
+<gui-rich-tooltip #rich>
+  <span guiRichTooltipSubhead>Above</span>
+  Opens above the trigger.
+</gui-rich-tooltip>
+<button gui-button variant="outlined" [guiRichTooltipTrigger]="rich" position="above">
+  Above
+</button>`;
+}

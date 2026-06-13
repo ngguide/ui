@@ -21,7 +21,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       docHref="https://m3.material.io/components/floating-action-button"
     >
       <!-- FAB sizes — M3 Expressive recommended set (the 40dp small FAB was dropped). -->
-      <app-demo-block heading="Sizes" hint="M3 Expressive recommended FAB scale: sm = FAB 56 · md = Medium 80 · lg = Large 96">
+      <app-demo-block heading="Sizes" hint="M3 Expressive recommended FAB scale: sm = FAB 56 · md = Medium 80 · lg = Large 96" [code]="codeSizes">
         <app-demo-specimen label="sm (FAB · 56)">
           <button gui-fab size="sm" aria-label="Add">
             <gui-icon class="sym">add</gui-icon>
@@ -40,7 +40,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       </app-demo-block>
 
       <!-- Color styles — six legible container/tone mappings. -->
-      <app-demo-block heading="Color styles" hint="Three tonal containers + three tone colors (primary/secondary/tertiary)">
+      <app-demo-block heading="Color styles" hint="Three tonal containers + three tone colors (primary/secondary/tertiary)" [code]="codeColors">
         <app-demo-specimen label="primary-container">
           <button gui-fab color="primary-container" aria-label="Edit">
             <gui-icon class="sym">edit</gui-icon>
@@ -74,7 +74,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       </app-demo-block>
 
       <!-- States — enabled vs disabled, plus the anchor-rendered FAB. -->
-      <app-demo-block heading="States" hint="Hover / focus / pressed are live state-layer interactions">
+      <app-demo-block heading="States" hint="Hover / focus / pressed are live state-layer interactions" [code]="codeStates">
         <app-demo-specimen label="enabled">
           <button gui-fab aria-label="Favorite">
             <gui-icon class="sym">favorite</gui-icon>
@@ -98,7 +98,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       </app-demo-block>
 
       <!-- Extended FAB — sizes (sm/md/lg; the deprecated baseline was dropped). -->
-      <app-demo-block heading="Extended FAB · sizes" hint="Small 56 (default · title-medium) · Medium 80 · Large 96 (title-large)">
+      <app-demo-block heading="Extended FAB · sizes" hint="Small 56 (default · title-medium) · Medium 80 · Large 96 (title-large)" [code]="codeExtendedSizes">
         <app-demo-specimen label="sm (Small · 56)">
           <button gui-extended-fab size="sm">
             <gui-icon guiIcon class="sym">add</gui-icon>
@@ -120,7 +120,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       </app-demo-block>
 
       <!-- Extended FAB — color styles. -->
-      <app-demo-block heading="Extended FAB · color styles">
+      <app-demo-block heading="Extended FAB · color styles" [code]="codeExtendedColors">
         <app-demo-specimen label="primary-container">
           <button gui-extended-fab color="primary-container">
             <gui-icon guiIcon class="sym">edit</gui-icon>
@@ -160,7 +160,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       </app-demo-block>
 
       <!-- Extended FAB — expanded vs collapsed, with/without icon, disabled. -->
-      <app-demo-block heading="Extended FAB · states" hint="expanded toggles the label; collapses to a square FAB footprint">
+      <app-demo-block heading="Extended FAB · states" hint="expanded toggles the label; collapses to a square FAB footprint" [code]="codeExtendedStates">
         <app-demo-specimen label="expanded">
           <button gui-extended-fab [expanded]="true">
             <gui-icon guiIcon class="sym">navigation</gui-icon>
@@ -192,4 +192,64 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
     </app-demo-component>
   `,
 })
-export class FabDemo {}
+export class FabDemo {
+  protected readonly codeSizes = `
+<button gui-fab size="sm" aria-label="Add">
+  <gui-icon class="sym">add</gui-icon>
+</button>
+<button gui-fab size="md" aria-label="Add">
+  <gui-icon class="sym">add</gui-icon>
+</button>
+<button gui-fab size="lg" aria-label="Add">
+  <gui-icon class="sym">add</gui-icon>
+</button>`;
+
+  protected readonly codeColors = `
+<button gui-fab color="primary-container" aria-label="Edit">
+  <gui-icon class="sym">edit</gui-icon>
+</button>
+<button gui-fab color="tertiary" aria-label="Edit">
+  <gui-icon class="sym">edit</gui-icon>
+</button>`;
+
+  protected readonly codeStates = `
+<button gui-fab aria-label="Favorite">
+  <gui-icon class="sym">favorite</gui-icon>
+</button>
+<button gui-fab disabled aria-label="Favorite">
+  <gui-icon class="sym">favorite</gui-icon>
+</button>
+<a gui-fab href="#anchor" aria-label="Favorite">
+  <gui-icon class="sym">favorite</gui-icon>
+</a>`;
+
+  protected readonly codeExtendedSizes = `
+<button gui-extended-fab size="sm">
+  <gui-icon guiIcon class="sym">add</gui-icon>
+  Compose
+</button>
+<button gui-extended-fab size="lg">
+  <gui-icon guiIcon class="sym">add</gui-icon>
+  Compose
+</button>`;
+
+  protected readonly codeExtendedColors = `
+<button gui-extended-fab color="primary-container">
+  <gui-icon guiIcon class="sym">edit</gui-icon>
+  Edit
+</button>
+<button gui-extended-fab color="tertiary">
+  <gui-icon guiIcon class="sym">edit</gui-icon>
+  Edit
+</button>`;
+
+  protected readonly codeExtendedStates = `
+<button gui-extended-fab [expanded]="true">
+  <gui-icon guiIcon class="sym">navigation</gui-icon>
+  Navigate
+</button>
+<button gui-extended-fab [expanded]="false" aria-label="Navigate">
+  <gui-icon guiIcon class="sym">navigation</gui-icon>
+  Navigate
+</button>`;
+}

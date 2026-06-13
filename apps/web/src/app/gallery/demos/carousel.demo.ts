@@ -49,6 +49,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Layouts"
         hint="The six M3 layouts — scroll horizontally; items morph between keylines"
         [column]="true"
+        [code]="codeLayouts"
       >
         <app-demo-specimen label="multi-browse" class="fill">
           <gui-carousel
@@ -149,6 +150,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Alignment"
         hint="start-aligned vs center-aligned (hero layout)"
         [column]="true"
+        [code]="codeAlignment"
       >
         <app-demo-specimen label="hero · start" class="fill">
           <gui-carousel
@@ -190,6 +192,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Sizes"
         hint="preferredLargeWidth tunes the focal item; the engine derives medium/small widths"
         [column]="true"
+        [code]="codeSizes"
       >
         <app-demo-specimen label="preferredLargeWidth 120" class="fill">
           <gui-carousel
@@ -262,6 +265,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Shape"
         hint="Items use the M3 28dp extra-large corner; pressing morphs the shape"
         [column]="true"
+        [code]="codeShape"
       >
         <app-demo-specimen label="extra-large corner (28dp)" class="fill">
           <gui-carousel
@@ -287,6 +291,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="States"
         hint="Enabled (hover/focus/press) and disabled (focusable but inert)"
         [column]="true"
+        [code]="codeStates"
       >
         <app-demo-specimen label="enabled · with label + leading icon" class="fill">
           <gui-carousel
@@ -331,6 +336,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Activation"
         hint="Items emit the activated output on click / Space / Enter"
         [column]="true"
+        [code]="codeActivation"
       >
         <app-demo-specimen label="last activated" class="fill">
           <p class="activation-readout">
@@ -352,6 +358,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Show all (accessibility)"
         hint="M3 recommends a 'Show all' control below the carousel to view every item without horizontal scrolling"
         [column]="true"
+        [code]="codeShowAll"
       >
         <app-demo-specimen label="carousel + Show all" class="fill">
           <gui-carousel
@@ -476,4 +483,75 @@ export class CarouselDemo {
     const known = this.items.find((i) => raw.includes(i.label))?.label;
     this.lastActivated.set(known ?? raw.trim() ?? 'item');
   }
+
+  protected readonly codeLayouts = `
+<gui-carousel layout="multi-browse" (activated)="onActivate($event)">
+  @for (item of items; track item.id) {
+    <gui-carousel-item>
+      <span class="tile" [style.background]="item.color"></span>
+      <span class="caption">{{ item.label }}</span>
+    </gui-carousel-item>
+  }
+</gui-carousel>`;
+
+  protected readonly codeAlignment = `
+<gui-carousel layout="hero" alignment="center">
+  @for (item of items; track item.id) {
+    <gui-carousel-item>
+      <span class="tile" [style.background]="item.color"></span>
+      <span class="caption">{{ item.label }}</span>
+    </gui-carousel-item>
+  }
+</gui-carousel>`;
+
+  protected readonly codeSizes = `
+<gui-carousel layout="multi-browse" [preferredLargeWidth]="260" [itemSpacing]="24">
+  @for (item of items; track item.id) {
+    <gui-carousel-item>
+      <span class="tile" [style.background]="item.color"></span>
+    </gui-carousel-item>
+  }
+</gui-carousel>`;
+
+  protected readonly codeShape = `
+<gui-carousel layout="multi-browse">
+  @for (item of items; track item.id) {
+    <gui-carousel-item>
+      <span class="tile" [style.background]="item.color"></span>
+    </gui-carousel-item>
+  }
+</gui-carousel>`;
+
+  protected readonly codeStates = `
+<gui-carousel layout="multi-browse" (activated)="onActivate($event)">
+  @for (item of items; track item.id; let i = $index) {
+    <gui-carousel-item [disabled]="i === 1">
+      <span class="tile" [style.background]="item.color">
+        <gui-icon class="sym tile-icon">image</gui-icon>
+      </span>
+      <span class="caption">{{ item.label }}</span>
+    </gui-carousel-item>
+  }
+</gui-carousel>`;
+
+  protected readonly codeActivation = `
+<gui-carousel layout="multi-browse" (activated)="onActivate($event)">
+  @for (item of items; track item.id) {
+    <gui-carousel-item>
+      <span class="tile" [style.background]="item.color"></span>
+    </gui-carousel-item>
+  }
+</gui-carousel>`;
+
+  protected readonly codeShowAll = `
+<gui-carousel layout="multi-browse" (activated)="onActivate($event)">
+  @for (item of items; track item.id) {
+    <gui-carousel-item>
+      <span class="tile" [style.background]="item.color"></span>
+    </gui-carousel-item>
+  }
+</gui-carousel>
+<button gui-button variant="text" size="sm" (click)="toggleShowAll()">
+  {{ showAll() ? 'Hide all' : 'Show all' }}
+</button>`;
 }

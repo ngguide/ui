@@ -35,6 +35,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Variants (mode)"
         hint="action = role=list, rows host their own controls; listbox = role=listbox with roving focus and selection"
         [column]="true"
+        [code]="codeVariants"
       >
         <app-demo-specimen class="fill" label="action (role=list)">
           <gui-list aria-label="Inbox">
@@ -75,6 +76,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Sizes (lines)"
         hint="lines = 1 / 2 / 3 → 56 / 72 / 88dp; 3-line rows top-align their elements"
         [column]="true"
+        [code]="codeSizes"
       >
         <app-demo-specimen class="fill" label="1 line · 56dp">
           <gui-list aria-label="One-line list">
@@ -114,6 +116,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Anatomy (slots)"
         hint="[guiListItemOverline] · [guiListItemLeading] · default headline · [guiListItemSupporting] · [guiListItemTrailing]"
         [column]="true"
+        [code]="codeAnatomy"
       >
         <app-demo-specimen class="fill" label="text only">
           <gui-list aria-label="Text-only list">
@@ -176,6 +179,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Action rows with controls"
         hint="action mode rows hosting native selection controls in the leading / trailing slots"
         [column]="true"
+        [code]="codeActionRows"
       >
         <app-demo-specimen class="fill" label="trailing switch">
           <gui-list aria-label="Settings">
@@ -245,6 +249,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Dividers"
         hint="divider = 'full' (100%) or 'inset' (16dp start / 24dp end); null = no rule"
         [column]="true"
+        [code]="codeDividers"
       >
         <app-demo-specimen class="fill" label="full dividers">
           <gui-list aria-label="Full divider list">
@@ -277,6 +282,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="States"
         hint="enabled · selected (primary-container + checkmark cue) · disabled (dimmed, stays discoverable)"
         [column]="true"
+        [code]="codeStates"
       >
         <app-demo-specimen class="fill" label="listbox · enabled / selected / disabled">
           <gui-list mode="listbox" aria-label="Choose a label">
@@ -337,4 +343,69 @@ export class ListDemo {
   protected readonly notifications = signal(true);
   protected readonly taskDone = signal(false);
   protected readonly plan = signal<'free' | 'pro'>('pro');
+
+  protected readonly codeVariants = `
+<gui-list mode="listbox" aria-label="Choose one fruit">
+  <gui-list-item selectable selectionIndicator>Apple</gui-list-item>
+  <gui-list-item selectable selectionIndicator [selected]="true">Banana</gui-list-item>
+  <gui-list-item selectable selectionIndicator>Cherry</gui-list-item>
+</gui-list>`;
+
+  protected readonly codeSizes = `
+<gui-list aria-label="Two-line list">
+  <gui-list-item [lines]="2">
+    <gui-icon guiListItemLeading class="sym">mail</gui-icon>
+    Headline
+    <span guiListItemSupporting>Supporting text on a second line</span>
+  </gui-list-item>
+</gui-list>`;
+
+  protected readonly codeAnatomy = `
+<gui-list aria-label="Leading icon list">
+  <gui-list-item [lines]="2">
+    <gui-icon guiListItemLeading class="sym">folder</gui-icon>
+    Documents
+    <span guiListItemSupporting>14 items</span>
+    <span guiListItemTrailing>2:30 PM</span>
+  </gui-list-item>
+</gui-list>`;
+
+  protected readonly codeActionRows = `
+<gui-list aria-label="Settings">
+  <gui-list-item>
+    <gui-icon guiListItemLeading class="sym">notifications</gui-icon>
+    Notifications
+    <input
+      guiListItemTrailing
+      type="checkbox"
+      role="switch"
+      [checked]="notifications()"
+      (change)="notifications.set($any($event.target).checked)"
+      aria-label="Notifications"
+    />
+  </gui-list-item>
+</gui-list>`;
+
+  protected readonly codeDividers = `
+<gui-list aria-label="Inset divider list">
+  <gui-list-item divider="inset">
+    <gui-icon guiListItemLeading class="sym">inbox</gui-icon>
+    Primary
+  </gui-list-item>
+  <gui-list-item divider="inset">
+    <gui-icon guiListItemLeading class="sym">drafts</gui-icon>
+    Drafts
+  </gui-list-item>
+  <gui-list-item>
+    <gui-icon guiListItemLeading class="sym">send</gui-icon>
+    Sent (no divider)
+  </gui-list-item>
+</gui-list>`;
+
+  protected readonly codeStates = `
+<gui-list mode="listbox" aria-label="Choose a label">
+  <gui-list-item selectable selectionIndicator>Enabled</gui-list-item>
+  <gui-list-item selectable selectionIndicator [selected]="true">Selected</gui-list-item>
+  <gui-list-item selectable selectionIndicator disabled>Disabled</gui-list-item>
+</gui-list>`;
 }

@@ -55,6 +55,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Variants"
         hint="The two M3 variants — dial (clock face) and input (spinbutton fields). Open a trigger to see the modal."
         [column]="true"
+        [code]="codeVariants"
       >
         <app-demo-specimen label="dial" class="fill">
           <gui-time-picker variant="dial" label="Start time" [(time)]="dial" />
@@ -69,6 +70,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Orientation"
         hint="Dial layout — vertical (mobile default) and horizontal"
         [column]="true"
+        [code]="codeOrientation"
       >
         <app-demo-specimen label="vertical" class="fill">
           <gui-time-picker
@@ -102,6 +104,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Hour format"
         hint="12-hour shows an AM/PM period selector; 24-hour uses a two-ring dial / 0–23 fields"
         [column]="true"
+        [code]="codeHourFormat"
       >
         <app-demo-specimen label="dial · 12h" class="fill">
           <gui-time-picker
@@ -142,6 +145,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Locale"
         hint="When hour12 is null the format derives from locale — en-US → 12h, en-GB → 24h"
         [column]="true"
+        [code]="codeLocale"
       >
         <app-demo-specimen label="en-US (12h default)" class="fill">
           <gui-time-picker locale="en-US" label="US time" [(time)]="localeUs" />
@@ -156,6 +160,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="States"
         hint="Enabled and disabled — the M3 hover/focus/pressed states live on the live trigger and dialog"
         [column]="true"
+        [code]="codeStates"
       >
         <app-demo-specimen label="enabled (seeded 09:41)" class="fill">
           <gui-time-picker label="Enabled" [(time)]="enabled" />
@@ -173,6 +178,8 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Reactive form"
         hint="Bound to a FormControl via ControlValueAccessor — pick a time and watch the value"
         [column]="true"
+        [code]="codeReactive"
+        codeLang="ts"
       >
         <app-demo-specimen label="FormControl (open + pick)" class="fill">
           <gui-time-picker variant="dial" label="Reminder" [formControl]="form" />
@@ -187,6 +194,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Template form (ngModel)"
         hint="Two-way [(ngModel)] binding"
         [column]="true"
+        [code]="codeNgModel"
       >
         <app-demo-specimen label="ngModel (open + pick)" class="fill">
           <gui-time-picker
@@ -205,6 +213,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Clock dial"
         hint="gui-clock-dial — the standalone M3 clock-face engine; drag a handle or use arrow keys"
         [column]="true"
+        [code]="codeClockDial"
       >
         <app-demo-specimen label="hours · 12h" class="fill">
           <gui-clock-dial mode="hours" [hour12]="true" [(value)]="dialHours12" />
@@ -220,6 +229,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Icon"
         hint="The trailing trigger icon (Material Symbols schedule)"
+        [code]="codeIcon"
       >
         <app-demo-specimen label="schedule">
           <gui-icon class="sym">schedule</gui-icon>
@@ -281,4 +291,44 @@ export class TimePickerDemo {
     const mm = String(value.minutes).padStart(2, '0');
     return `${hh}:${mm}`;
   }
+
+  protected readonly codeVariants = `
+<gui-time-picker variant="dial" label="Start time" [(time)]="start" />
+<gui-time-picker variant="input" label="End time" [(time)]="end" />`;
+
+  protected readonly codeOrientation = `
+<gui-time-picker
+  variant="dial"
+  orientation="horizontal"
+  label="Horizontal dial"
+  [(time)]="time"
+/>`;
+
+  protected readonly codeHourFormat = `
+<gui-time-picker variant="dial" [hour12]="false" label="24-hour" [(time)]="time" />
+<gui-time-picker variant="input" [hour12]="true" label="12-hour" [(time)]="time" />`;
+
+  protected readonly codeLocale = `
+<gui-time-picker locale="en-US" label="US time" [(time)]="time" />
+<gui-time-picker locale="en-GB" label="UK time" [(time)]="time" />`;
+
+  protected readonly codeStates = `
+<gui-time-picker label="Enabled" [(time)]="time" />
+<gui-time-picker label="Disabled" [time]="time()" disabled />`;
+
+  protected readonly codeReactive = `
+form = new FormControl<GuiTime | null>({ hours: 6, minutes: 30 });
+// template:
+// <gui-time-picker variant="dial" label="Reminder" [formControl]="form" />`;
+
+  protected readonly codeNgModel = `
+<gui-time-picker variant="input" label="Alarm" [(ngModel)]="model" />`;
+
+  protected readonly codeClockDial = `
+<gui-clock-dial mode="hours" [hour12]="true" [(value)]="value" />
+<gui-clock-dial mode="hours" [hour12]="false" [(value)]="value" />
+<gui-clock-dial mode="minutes" [(value)]="value" />`;
+
+  protected readonly codeIcon = `
+<gui-icon class="sym">schedule</gui-icon>`;
 }

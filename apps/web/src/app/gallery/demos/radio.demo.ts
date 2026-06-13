@@ -53,6 +53,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Selection"
         hint="The two M3 selection states — unselected and selected"
+        [code]="codeSelection"
       >
         <app-demo-specimen label="unselected">
           <gui-radio-group [(value)]="single" aria-label="Selection state">
@@ -73,6 +74,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="States (interactive)"
         hint="Hover, focus (Tab in, arrow between), and press to see the M3 state layers"
         [column]="true"
+        [code]="codeStates"
       >
         <app-demo-specimen label="pick a size" class="fill">
           <gui-radio-group [(value)]="size" aria-label="T-shirt size">
@@ -91,6 +93,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Disabled"
         hint="The M3 disabled treatment, per-radio and for the whole group"
+        [code]="codeDisabled"
       >
         <app-demo-specimen label="unselected">
           <gui-radio-group value="x" aria-label="Disabled unselected">
@@ -115,6 +118,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Mixed enabled / disabled"
         hint="A single disabled option inside an operable group"
         [column]="true"
+        [code]="codeMixed"
       >
         <app-demo-specimen label="delivery (express is unavailable)" class="fill">
           <gui-radio-group [(value)]="delivery" aria-label="Delivery method">
@@ -131,6 +135,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Opt-out / clear selection"
         hint="M3: a selected group can't be unselected without an explicit opt-out"
         [column]="true"
+        [code]="codeOptOut"
       >
         <app-demo-specimen label="dedicated 'Not applicable' option" class="fill">
           <gui-radio-group [(value)]="contact" aria-label="Preferred contact">
@@ -149,6 +154,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Reactive form"
         hint="The group is bound to a FormControl via ControlValueAccessor"
         [column]="true"
+        [code]="codeReactiveForm"
       >
         <app-demo-specimen label="FormControl (pick one)" class="fill">
           <gui-radio-group [formControl]="plan" aria-label="Subscription plan">
@@ -167,6 +173,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="ngModel"
         hint="Two-way binding through [(ngModel)] on the group"
         [column]="true"
+        [code]="codeNgModel"
       >
         <app-demo-specimen label="theme" class="fill">
           <gui-radio-group [(ngModel)]="theme" aria-label="Theme">
@@ -200,4 +207,56 @@ export class RadioDemo {
 
   // ngModel specimen — a plain mutable field so [(ngModel)] writes back.
   protected theme: string | null = 'system';
+
+  protected readonly codeSelection = `
+<gui-radio-group [(value)]="choice" aria-label="Selection state">
+  <gui-radio value="a">Option</gui-radio>
+</gui-radio-group>`;
+
+  protected readonly codeStates = `
+<gui-radio-group [(value)]="size" aria-label="T-shirt size">
+  <gui-radio value="s">Small</gui-radio>
+  <gui-radio value="m">Medium</gui-radio>
+  <gui-radio value="l">Large</gui-radio>
+</gui-radio-group>`;
+
+  protected readonly codeDisabled = `
+<!-- Disable a single option -->
+<gui-radio-group value="a" aria-label="Disabled selected">
+  <gui-radio value="a" disabled>Option</gui-radio>
+</gui-radio-group>
+
+<!-- Disable the whole group -->
+<gui-radio-group value="b" disabled aria-label="Disabled group">
+  <gui-radio value="a">First</gui-radio>
+  <gui-radio value="b">Second</gui-radio>
+</gui-radio-group>`;
+
+  protected readonly codeMixed = `
+<gui-radio-group [(value)]="delivery" aria-label="Delivery method">
+  <gui-radio value="standard">Standard</gui-radio>
+  <gui-radio value="express" disabled>Express (unavailable)</gui-radio>
+  <gui-radio value="pickup">Pickup</gui-radio>
+</gui-radio-group>`;
+
+  protected readonly codeOptOut = `
+<gui-radio-group [(value)]="contact" aria-label="Preferred contact">
+  <gui-radio value="email">Email</gui-radio>
+  <gui-radio value="phone">Phone</gui-radio>
+  <gui-radio value="none">Not applicable</gui-radio>
+</gui-radio-group>`;
+
+  protected readonly codeReactiveForm = `
+<gui-radio-group [formControl]="plan" aria-label="Subscription plan">
+  <gui-radio value="free">Free</gui-radio>
+  <gui-radio value="pro">Pro</gui-radio>
+  <gui-radio value="team">Team</gui-radio>
+</gui-radio-group>`;
+
+  protected readonly codeNgModel = `
+<gui-radio-group [(ngModel)]="theme" aria-label="Theme">
+  <gui-radio value="light">Light</gui-radio>
+  <gui-radio value="dark">Dark</gui-radio>
+  <gui-radio value="system">System</gui-radio>
+</gui-radio-group>`;
 }

@@ -1,20 +1,6 @@
 <!-- Top app bar -->
 <header class="shell-bar">
-  <button
-    gui-icon-button
-    variant="standard"
-    class="shell-app-trigger"
-    [cdkMenuTriggerFor]="appSwitcher"
-    aria-label="Switch application"
-    guiTooltip="Switch application"
-  >
-    <gui-icon class="sym">{{ activeApp().icon }}</gui-icon>
-  </button>
-
-  <div class="shell-titles">
-    <span class="shell-app-title">{{ activeApp().label }}</span>
-    <span class="shell-app-subtitle">{{ activeSection()?.label ?? activeApp().subtitle }}</span>
-  </div>
+  <app-switcher class="shell-switcher" />
 
   <gui-text-field class="shell-search" variant="outlined">
     <gui-icon class="sym" guiTextFieldLeading>search</gui-icon>
@@ -114,18 +100,6 @@
 </nav>
 
 <!-- Overlay menus -->
-<ng-template #appSwitcher>
-  <div gui-menu cdkMenu>
-    @for (app of apps; track app.id) {
-      <button gui-menu-item [routerLink]="app.basePath">
-        <gui-icon class="sym" guiMenuItemLeading>{{ app.icon }}</gui-icon>
-        {{ app.label }}
-        <span guiMenuItemTrailing>{{ app.subtitle }}</span>
-      </button>
-    }
-  </div>
-</ng-template>
-
 <ng-template #seedMenu>
   <div gui-menu cdkMenu>
     @for (s of theme.seeds; track s.value) {

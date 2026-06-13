@@ -49,6 +49,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="The two M3 selection states — off (unselected) and on (selected)"
+        [code]="codeStates"
       >
         <app-demo-specimen label="off">
           <gui-switch [(checked)]="off">Wi-Fi</gui-switch>
@@ -62,6 +63,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Icon configurations"
         hint="M3: without icons · icon on selected · icons on selected and unselected"
+        [code]="codeIconConfigurations"
       >
         <app-demo-specimen label="without icons">
           <gui-switch [(checked)]="iconNone">Bluetooth</gui-switch>
@@ -85,6 +87,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Label"
         hint="The adjacent text label is optional (uses the on-surface color role)"
+        [code]="codeLabel"
       >
         <app-demo-specimen label="with label">
           <gui-switch [(checked)]="labelled">Airplane mode</gui-switch>
@@ -99,6 +102,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Interaction"
         hint="Hover, focus (Tab) and press are live — the handle grows and a 40dp state layer appears"
+        [code]="codeInteraction"
       >
         <app-demo-specimen label="off (interact)">
           <gui-switch [(checked)]="interactOff">Notifications</gui-switch>
@@ -112,6 +116,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Disabled"
         hint="The M3 disabled treatment for off and on"
+        [code]="codeDisabled"
       >
         <app-demo-specimen label="off · disabled">
           <gui-switch disabled>Sync</gui-switch>
@@ -132,6 +137,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Reactive form"
         hint="Bound to a FormControl via ControlValueAccessor"
         [column]="true"
+        [code]="codeReactiveForm"
       >
         <app-demo-specimen label="FormControl (toggle me)" class="fill">
           <gui-switch [formControl]="darkMode">Dark mode</gui-switch>
@@ -146,6 +152,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
         heading="Settings list (ngModel)"
         hint="Switches are the best way to let people adjust independent settings (M3)"
         [column]="true"
+        [code]="codeSettingsList"
       >
         @for (setting of settings; track setting.label) {
           <app-demo-specimen [label]="setting.label" class="fill">
@@ -183,4 +190,33 @@ export class SwitchDemo {
     { label: 'Compact density', value: false },
     { label: 'Auto-update', value: true },
   ];
+
+  protected readonly codeStates = `
+<gui-switch [(checked)]="wifi">Wi-Fi</gui-switch>`;
+
+  protected readonly codeIconConfigurations = `
+<gui-switch [(checked)]="bluetooth">
+  Bluetooth
+  <gui-icon class="sym" guiSwitchIcon>close</gui-icon>
+  <gui-icon class="sym" guiSwitchSelectedIcon>check</gui-icon>
+</gui-switch>`;
+
+  protected readonly codeLabel = `
+<gui-switch [(checked)]="airplane">Airplane mode</gui-switch>
+<gui-switch [(checked)]="bare" aria-label="Airplane mode" />`;
+
+  protected readonly codeInteraction = `
+<gui-switch [(checked)]="notifications">Notifications</gui-switch>`;
+
+  protected readonly codeDisabled = `
+<gui-switch disabled>Sync</gui-switch>
+<gui-switch disabled checked>Sync</gui-switch>`;
+
+  protected readonly codeReactiveForm = `
+<gui-switch [formControl]="darkMode">Dark mode</gui-switch>`;
+
+  protected readonly codeSettingsList = `
+@for (setting of settings; track setting.label) {
+  <gui-switch [(ngModel)]="setting.value">{{ setting.label }}</gui-switch>
+}`;
 }

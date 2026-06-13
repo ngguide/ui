@@ -23,31 +23,9 @@
   border-bottom: 1px solid var(--md-sys-color-outline-variant);
 }
 
-.shell-titles {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.shell-switcher {
   min-width: 0;
-  line-height: 1.1;
-}
-
-.shell-app-title {
-  font-family: var(--md-sys-typescale-title-medium-font);
-  font-size: var(--md-sys-typescale-title-medium-size);
-  font-weight: var(--md-sys-typescale-title-medium-weight);
-  letter-spacing: var(--md-sys-typescale-title-medium-tracking);
-  color: var(--md-sys-color-on-surface);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shell-app-subtitle {
-  font-size: var(--md-sys-typescale-body-small-size);
-  color: var(--md-sys-color-on-surface-variant);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex: 0 1 auto;
 }
 
 .shell-search {

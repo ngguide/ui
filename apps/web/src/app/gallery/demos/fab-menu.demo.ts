@@ -43,6 +43,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Color sets"
         hint="Three M3 sets — tonal close button + vibrant items. Click a FAB to open."
+        [code]="codeColorSets"
       >
         @for (color of colors; track color) {
           <app-demo-specimen [label]="color">
@@ -75,6 +76,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Anatomy"
         hint="Close button + up to six menu items, each with a leading icon and label."
+        [code]="codeAnatomy"
       >
         <app-demo-specimen label="six items">
           <gui-fab-menu color="primary" ariaLabel="Create">
@@ -131,6 +133,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Item states"
         hint="Enabled (default), selected (checkmark cue), and disabled menu items."
+        [code]="codeItemStates"
       >
         <app-demo-specimen label="selected + disabled">
           <gui-fab-menu color="tertiary" ariaLabel="View options">
@@ -158,6 +161,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Scrolling"
         hint="Long menus scroll within the panel; the close button stays unobstructed."
+        [code]="codeScrolling"
       >
         <app-demo-specimen label="scrollable">
           <gui-fab-menu color="primary" ariaLabel="Apply label">
@@ -202,4 +206,68 @@ export class FabMenuDemo {
     'Travel',
     'Work',
   ];
+
+  protected readonly codeColorSets = `
+<gui-fab-menu color="primary" ariaLabel="Compose">
+  <gui-icon guiFabIcon class="sym">edit</gui-icon>
+  <ng-template>
+    <gui-fab-menu-list color="primary">
+      <button gui-fab-menu-item>
+        <gui-icon guiMenuItemLeading class="sym">share</gui-icon>
+        Share
+      </button>
+      <button gui-fab-menu-item>
+        <gui-icon guiMenuItemLeading class="sym">link</gui-icon>
+        Add link
+      </button>
+    </gui-fab-menu-list>
+  </ng-template>
+</gui-fab-menu>`;
+
+  protected readonly codeAnatomy = `
+<gui-fab-menu color="primary" ariaLabel="Create">
+  <gui-icon guiFabIcon class="sym">add</gui-icon>
+  <ng-template>
+    <gui-fab-menu-list color="primary">
+      <button gui-fab-menu-item>
+        <gui-icon guiMenuItemLeading class="sym">add_photo_alternate</gui-icon>
+        Photo
+      </button>
+      <button gui-fab-menu-item>
+        <gui-icon guiMenuItemLeading class="sym">videocam</gui-icon>
+        Video
+      </button>
+    </gui-fab-menu-list>
+  </ng-template>
+</gui-fab-menu>`;
+
+  protected readonly codeItemStates = `
+<gui-fab-menu color="tertiary" ariaLabel="View options">
+  <gui-icon guiFabIcon class="sym">tune</gui-icon>
+  <ng-template>
+    <gui-fab-menu-list color="tertiary">
+      <button gui-fab-menu-item [selected]="true">List view</button>
+      <button gui-fab-menu-item [guiMenuItemSelectable]="true">Grid view</button>
+      <button gui-fab-menu-item [disabled]="true">
+        <gui-icon guiMenuItemLeading class="sym">lock</gui-icon>
+        Archived
+      </button>
+    </gui-fab-menu-list>
+  </ng-template>
+</gui-fab-menu>`;
+
+  protected readonly codeScrolling = `
+<gui-fab-menu color="primary" ariaLabel="Apply label">
+  <gui-icon guiFabIcon class="sym">label</gui-icon>
+  <ng-template>
+    <gui-fab-menu-list color="primary" style="--gui-fab-menu-max-height: 220px">
+      @for (label of labels; track label) {
+        <button gui-fab-menu-item>
+          <gui-icon guiMenuItemLeading class="sym">label</gui-icon>
+          {{ label }}
+        </button>
+      }
+    </gui-fab-menu-list>
+  </ng-template>
+</gui-fab-menu>`;
 }

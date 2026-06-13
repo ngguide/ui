@@ -28,6 +28,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Variants"
         hint="Four color configurations — standard, filled, tonal, outlined"
+        [code]="codeVariants"
       >
         <app-demo-specimen label="standard">
           <button gui-icon-button variant="standard" label="Add">
@@ -55,6 +56,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Sizes"
         hint="Five sizes — extra small, small (default), medium, large, extra large"
+        [code]="codeSizes"
       >
         <app-demo-specimen label="xs">
           <button gui-icon-button variant="filled" size="xs" label="Edit">
@@ -87,6 +89,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Shapes"
         hint="Round (default) and square resting container shapes — size md for legibility"
+        [code]="codeShapes"
       >
         <app-demo-specimen label="round">
           <button
@@ -116,6 +119,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Widths"
         hint="Three widths — narrow, default, wide (size md)"
+        [code]="codeWidths"
       >
         <app-demo-specimen label="narrow">
           <button
@@ -156,6 +160,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="States"
         hint="Enabled and disabled per variant — hover / focus / pressed state layers render live"
+        [code]="codeStates"
       >
         <app-demo-specimen label="standard · enabled">
           <button gui-icon-button variant="standard" label="Favorite">
@@ -206,6 +211,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Toggle (selection)"
         hint="Click to toggle — outlined glyph unselected, filled glyph selected; round morphs to square when selected"
+        [code]="codeToggle"
       >
         <app-demo-specimen label="standard · toggle">
           <button gui-icon-button variant="standard" toggle label="Favorite">
@@ -238,6 +244,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Toggle states"
         hint="Pre-selected (resting selected colors + square morph) and disabled toggle"
+        [code]="codeToggleStates"
       >
         <app-demo-specimen label="filled · unselected">
           <button gui-icon-button variant="filled" toggle label="Bookmark">
@@ -289,6 +296,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Square toggle morph"
         hint="Square resting shape inverts to round when selected (M3 shape morph)"
+        [code]="codeSquareToggle"
       >
         <app-demo-specimen label="square · unselected">
           <button
@@ -324,6 +332,7 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       <app-demo-block
         heading="Link host"
         hint="<a gui-icon-button> renders identically; linkless anchors get a synthetic button role"
+        [code]="codeLink"
       >
         <app-demo-specimen label="a · href">
           <a gui-icon-button variant="filled" href="#c-icon-button" label="Open">
@@ -339,4 +348,76 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
     </app-demo-component>
   `,
 })
-export class IconButtonDemo {}
+export class IconButtonDemo {
+  protected readonly codeVariants = `
+<button gui-icon-button variant="standard" label="Add">
+  <gui-icon class="sym">add</gui-icon>
+</button>
+<button gui-icon-button variant="filled" label="Add">
+  <gui-icon class="sym">add</gui-icon>
+</button>
+<button gui-icon-button variant="tonal" label="Add">
+  <gui-icon class="sym">add</gui-icon>
+</button>
+<button gui-icon-button variant="outlined" label="Add">
+  <gui-icon class="sym">add</gui-icon>
+</button>`;
+
+  protected readonly codeSizes = `
+<button gui-icon-button variant="filled" size="xs" label="Edit">
+  <gui-icon class="sym">edit</gui-icon>
+</button>
+<button gui-icon-button variant="filled" size="lg" label="Edit">
+  <gui-icon class="sym">edit</gui-icon>
+</button>`;
+
+  protected readonly codeShapes = `
+<button gui-icon-button variant="tonal" size="md" shape="round" label="Star">
+  <gui-icon class="sym">star</gui-icon>
+</button>
+<button gui-icon-button variant="tonal" size="md" shape="square" label="Star">
+  <gui-icon class="sym">star</gui-icon>
+</button>`;
+
+  protected readonly codeWidths = `
+<button gui-icon-button variant="outlined" size="md" width="narrow" label="Search">
+  <gui-icon class="sym">search</gui-icon>
+</button>
+<button gui-icon-button variant="outlined" size="md" width="wide" label="Search">
+  <gui-icon class="sym">search</gui-icon>
+</button>`;
+
+  protected readonly codeStates = `
+<button gui-icon-button variant="filled" label="Favorite">
+  <gui-icon class="sym">favorite</gui-icon>
+</button>
+<button gui-icon-button variant="filled" disabled label="Favorite">
+  <gui-icon class="sym">favorite</gui-icon>
+</button>`;
+
+  protected readonly codeToggle = `
+<button gui-icon-button variant="filled" toggle label="Favorite">
+  <gui-icon class="sym">favorite_border</gui-icon>
+  <gui-icon class="sym" guiSelectedIcon>favorite</gui-icon>
+</button>`;
+
+  protected readonly codeToggleStates = `
+<button gui-icon-button variant="filled" toggle [selected]="true" label="Bookmark">
+  <gui-icon class="sym">bookmark_border</gui-icon>
+  <gui-icon class="sym" guiSelectedIcon>bookmark</gui-icon>
+</button>`;
+
+  protected readonly codeSquareToggle = `
+<button gui-icon-button variant="tonal" size="md" shape="square" toggle label="Star">
+  <gui-icon class="sym">star_border</gui-icon>
+  <gui-icon class="sym" guiSelectedIcon>star</gui-icon>
+</button>`;
+
+  protected readonly codeLink = `
+<a gui-icon-button variant="filled" href="#anchor" label="Open">
+  <gui-icon class="sym">open_in_new</gui-icon>
+</a>
+<a gui-icon-button variant="outlined" label="Share">
+  <gui-icon class="sym">share</gui-icon>
+</a>`;
+}
