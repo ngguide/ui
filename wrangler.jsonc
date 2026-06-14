@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ngguide-ui",
+  "compatibility_date": "2025-01-01",
+  "account_id": "53683e9c95b74c0aae7b4b9821b8c53f",
+  // Static-assets-only Worker (no `main`) hosting the prerendered Angular build.
+  // Prerendered routes (/ui, /admin/*, /shop/*, /tasks/*) resolve to their own
+  // index.html; everything else (/ui/components/:slug, demo detail routes) falls
+  // through to the client-render shell (index.html) and hydrates on the client.
+  "assets": {
+    "directory": "dist/apps/web/browser",
+    "not_found_handling": "single-page-application"
+  },
+  // Custom domain — wrangler attaches it and creates the DNS record in the
+  // ng.guide zone (same account) on deploy.
+  "routes": [{ "pattern": "ui.ng.guide", "custom_domain": true }]
+}
