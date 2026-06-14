@@ -2,7 +2,9 @@
   "name": "@ngguide/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "deploy:cf": "pnpm exec nx build web --configuration=production && cp dist/apps/web/browser/index.csr.html dist/apps/web/browser/index.html && npx wrangler deploy"
+  },
   "private": true,
   "packageManager": "pnpm@10.33.4",
   "dependencies": {
