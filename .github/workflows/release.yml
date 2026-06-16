@@ -1,15 +1,16 @@
 name: Publish
 
 # The version commit + tag are created locally by the maintainer (`nx release`) and
-# pushed. This workflow only builds and publishes when a v* tag arrives, so it never
-# writes to the repository — `contents` stays read-only.
+# pushed. This workflow builds, publishes to npm and cuts a GitHub Release when a v*
+# tag arrives. It never pushes commits/tags back — `contents: write` is only used to
+# create the Release object.
 on:
   push:
     tags:
       - 'v*'
 
 permissions:
-  contents: read
+  contents: write # create the GitHub Release (does not push to branches)
   id-token: write # npm provenance
 
 concurrency:
@@ -55,3 +56,37 @@ jobs:
           VERSION="$VERSION" node -e "const fs=require('fs');const f='dist/libs/ui/package.json';const p=JSON.parse(fs.readFileSync(f,'utf8'));p.version=process.env.VERSION;fs.writeFileSync(f,JSON.stringify(p,null,2)+'\n')"
 
           pnpm exec nx release publish
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          VERSION="${REF_NAME#v}"
+
+          # Pull the section for this version out of the changelog; fall back to
+          # GitHub's auto-generated notes if it isn't found.
+          NOTES_FILE="$(mktemp)"
+          awk -v v="$VERSION" '
+            $0 ~ ("^## " v "([ (]|$)") { p = 1; next }
+            p && /^## / { exit }
+            p { print }
+          ' libs/ui/CHANGELOG.md > "$NOTES_FILE"
+
+          EXISTS=0
+          gh release view "$REF_NAME" >/dev/null 2>&1 && EXISTS=1
+
+          if [ -s "$NOTES_FILE" ]; then
+            if [ "$EXISTS" = 1 ]; then
+              gh release edit "$REF_NAME" --title "$REF_NAME" --notes-file "$NOTES_FILE"
+            else
+              gh release create "$REF_NAME" --title "$REF_NAME" --verify-tag --notes-file "$NOTES_FILE"
+            fi
+          else
+            # changelog section not found — let GitHub generate notes (create only)
+            if [ "$EXISTS" = 1 ]; then
+              echo "Release $REF_NAME already exists and no changelog section found; leaving notes unchanged."
+            else
+              gh release create "$REF_NAME" --title "$REF_NAME" --verify-tag --generate-notes
+            fi
+          fi
