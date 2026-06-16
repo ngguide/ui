@@ -301,6 +301,21 @@ export const DOC_CATEGORIES: readonly DocCategory[] = [
       },
     ],
   },
+  {
+    id: 'foundations',
+    title: 'Foundations',
+    blurb: 'Primitives the rest of the kit is built on.',
+    components: [
+      {
+        slug: 'icon',
+        name: 'Icon',
+        entry: '@ngguide/ui/icon',
+        blurb: 'A Material Symbols ligature icon, sized via a token.',
+        m3: 'https://m3.material.io/styles/icons/overview',
+        load: () => import('../gallery/demos/icon.demo').then((m) => m.IconDemo),
+      },
+    ],
+  },
 ];
 
 /** Flat slug → {category, component} lookup for route resolution. */
