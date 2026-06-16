@@ -107,8 +107,15 @@
     }
   },
   "release": {
+    "projects": ["ui"],
+    "releaseTagPattern": "v{version}",
     "version": {
-      "preVersionCommand": "pnpm exec nx run-many -t build"
+      "conventionalCommits": true,
+      "preVersionCommand": "pnpm exec nx build ui"
+    },
+    "changelog": {
+      "projectChangelogs": true,
+      "workspaceChangelog": false
     }
   },
   "analytics": false
