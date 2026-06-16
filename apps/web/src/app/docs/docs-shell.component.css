@@ -52,6 +52,16 @@
 .docs-dark {
   margin: 0 0.25rem;
 }
+/* Hamburger toggles the drawer; only shown on compact viewports. */
+.docs-menu-btn {
+  display: none;
+  margin-right: 0.25rem;
+}
+
+/* Scrim behind the drawer (compact only). */
+.docs-scrim {
+  display: none;
+}
 
 /* ---- Body: sidebar + content ---- */
 .docs-body {
@@ -66,6 +76,8 @@
   align-self: start;
   height: calc(100dvh - 64px);
   overflow-y: auto;
+  /* Keep wheel/touch scrolling inside the sidebar — don't chain to the page. */
+  overscroll-behavior: contain;
   padding: 1rem 0.75rem 2rem;
   border-right: 1px solid var(--md-sys-color-outline-variant, #c8c5d0);
   background: var(--md-sys-color-surface, #fef7ff);
@@ -121,22 +133,55 @@
   border: 1px solid var(--md-sys-color-outline-variant, #c8c5d0);
 }
 
-/* ---- Compact: collapse the sidebar to a scrollable top strip ---- */
+/* ---- Compact: sidebar becomes an off-canvas navigation drawer ---- */
 @media (max-width: 880px) {
+  .docs-menu-btn {
+    display: inline-flex;
+  }
   .docs-body {
     grid-template-columns: 1fr;
   }
+
+  /* The drawer slides in from the left, below the sticky top bar. */
   .docs-sidebar {
-    position: static;
-    height: auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    border-right: none;
-    border-bottom: 1px solid var(--md-sys-color-outline-variant, #c8c5d0);
+    position: fixed;
+    top: 64px;
+    left: 0;
+    bottom: 0;
+    z-index: 20;
+    width: min(82vw, 300px);
+    /* Bound the drawer to the viewport so it scrolls internally instead of
+       letting the gesture fall through to the page behind it. */
+    height: calc(100dvh - 64px);
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: var(--md-sys-elevation-2, 0 2px 6px 2px rgba(0, 0, 0, 0.15));
   }
-  .docs-side-group {
-    width: 100%;
-    margin: 0.5rem 0 0;
+  .docs-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .docs-scrim {
+    display: block;
+    position: fixed;
+    inset: 64px 0 0 0;
+    z-index: 19;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    /* Swallow touch gestures so dragging on the backdrop can't scroll the page. */
+    touch-action: none;
+    transition: opacity 0.25s ease;
+  }
+  .docs-scrim.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-sidebar,
+  .docs-scrim {
+    transition: none;
   }
 }

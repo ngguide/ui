@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import {
   RouterLink,
   RouterLinkActive,
@@ -44,6 +49,19 @@ import { DOC_CATEGORIES } from './component-registry';
   ],
   template: `
     <header class="docs-bar">
+      <button
+        gui-icon-button
+        variant="standard"
+        class="docs-menu-btn"
+        type="button"
+        aria-label="Open navigation"
+        aria-controls="docs-sidebar"
+        [attr.aria-expanded]="drawerOpen()"
+        (click)="drawerOpen.set(!drawerOpen())"
+      >
+        <gui-icon class="sym">{{ drawerOpen() ? 'close' : 'menu' }}</gui-icon>
+      </button>
+
       <a class="docs-brand" routerLink="/ui">
         <span class="docs-brand-mark">M3</span>
         <span class="docs-brand-name">ngguide&nbsp;UI</span>
@@ -86,12 +104,25 @@ import { DOC_CATEGORIES } from './component-registry';
     </header>
 
     <div class="docs-body">
-      <nav class="docs-sidebar" aria-label="Components">
+      <div
+        class="docs-scrim"
+        [class.is-open]="drawerOpen()"
+        (click)="closeDrawer()"
+        aria-hidden="true"
+      ></div>
+
+      <nav
+        class="docs-sidebar"
+        id="docs-sidebar"
+        aria-label="Components"
+        [class.is-open]="drawerOpen()"
+      >
         <a
           class="docs-side-home"
           routerLink="/ui"
           routerLinkActive="is-active"
           [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeDrawer()"
         >
           <gui-icon class="sym">home</gui-icon>
           Overview
@@ -103,6 +134,7 @@ import { DOC_CATEGORIES } from './component-registry';
               class="docs-side-link"
               [routerLink]="['/ui/components', component.slug]"
               routerLinkActive="is-active"
+              (click)="closeDrawer()"
             >
               {{ component.name }}
             </a>
@@ -130,9 +162,16 @@ import { DOC_CATEGORIES } from './component-registry';
     </ng-template>
   `,
   styleUrl: './docs-shell.component.css',
-  host: { class: 'app-docs-shell' },
+  host: { class: 'app-docs-shell', '(keydown.escape)': 'closeDrawer()' },
 })
 export class DocsShellComponent {
   protected readonly theme = inject(ThemeController);
   protected readonly categories = DOC_CATEGORIES;
+
+  /** Compact-viewport navigation drawer open state (no effect ≥ 881px). */
+  protected readonly drawerOpen = signal(false);
+
+  protected closeDrawer(): void {
+    this.drawerOpen.set(false);
+  }
 }
