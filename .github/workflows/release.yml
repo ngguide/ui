@@ -1,0 +1,57 @@
+name: Publish
+
+# The version commit + tag are created locally by the maintainer (`nx release`) and
+# pushed. This workflow only builds and publishes when a v* tag arrives, so it never
+# writes to the repository — `contents` stays read-only.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write # npm provenance
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # tags are needed by the git-tag version resolver
+
+      - uses: pnpm/action-setup@v4 # picks up pnpm version from package.json "packageManager"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build & publish
+        env:
+          NX_NO_CLOUD: 'true'
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          # v0.1.0 -> 0.1.0
+          VERSION="${REF_NAME#v}"
+          if ! printf '%s' "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
+            echo "::error::Tag '$REF_NAME' is not a valid semver version"
+            exit 1
+          fi
+
+          pnpm exec nx build ui
+
+          # The source package.json intentionally stays at 0.0.1 (version lives in git tags),
+          # so stamp the tag's version onto the built manifest before publishing.
+          VERSION="$VERSION" node -e "const fs=require('fs');const f='dist/libs/ui/package.json';const p=JSON.parse(fs.readFileSync(f,'utf8'));p.version=process.env.VERSION;fs.writeFileSync(f,JSON.stringify(p,null,2)+'\n')"
+
+          pnpm exec nx release publish
