@@ -11,6 +11,9 @@
     "@material/material-color-utilities": "^0.4.0"
   },
   "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     "./styles/theme.css": {
       "style": "./styles/theme.css",
