@@ -15,6 +15,7 @@ import {
   signal,
 } from '@angular/core';
 import { GuiOverlayHandle, GuiPickerOverlay } from '@ngguide/ui/overlay';
+import { takeUntil } from 'rxjs';
 
 export type GuiTooltipPosition = 'above' | 'below' | 'before' | 'after';
 
@@ -79,8 +80,11 @@ export class GuiTooltipPanel {
 
 /**
  * M3 plain tooltip — a short, non-interactive label shown on hover / focus /
- * long-press. Sets `aria-describedby` on the trigger while visible (APG); Escape
- * hides it without moving focus off the trigger.
+ * long-press. Sets `aria-describedby` on the trigger while visible (APG). Escape
+ * dismisses it from anywhere — even when it was opened by hover and focus sits
+ * elsewhere (WCAG 2.2 SC 1.4.13, Dismissible) — without moving focus. The listener
+ * lives on the overlay (document-scoped via the CDK keyboard dispatcher), not the
+ * host, so the key reaches it regardless of where focus is.
  */
 @Directive({
   selector: '[guiTooltip]',
@@ -92,7 +96,6 @@ export class GuiTooltipPanel {
     '(focusout)': 'hide()',
     '(pointerdown)': 'onPointerDown()',
     '(pointerup)': 'cancelLongPress()',
-    '(keydown.escape)': 'hide()',
   },
 })
 export class GuiTooltip implements OnDestroy {
@@ -186,11 +189,23 @@ export class GuiTooltip implements OnDestroy {
       ],
     });
     const portal = new ComponentPortal(GuiTooltipPanel, null, injector);
-    this.handle = this.overlay.openConnected(portal, {
+    const handle = this.overlay.openConnected(portal, {
       origin: this.host.nativeElement,
       positions: tooltipPositions(this.position()),
       panelClass: 'gui-tooltip-pane',
     });
+    this.handle = handle;
+    // Escape must dismiss the tooltip even when it was hover-opened and focus is
+    // elsewhere (WCAG 1.4.13). The CDK keyboard dispatcher routes document-level
+    // keydowns to the top overlay, so listen here rather than on the host.
+    handle.ref
+      .keydownEvents()
+      .pipe(takeUntil(handle.closed))
+      .subscribe((event) => {
+        if (event.key === 'Escape') {
+          this.close();
+        }
+      });
     this.visible.set(true);
   }
 

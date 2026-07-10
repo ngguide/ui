@@ -13,6 +13,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { GuiOverlayHandle, GuiPickerOverlay } from '@ngguide/ui/overlay';
+import { takeUntil } from 'rxjs';
 import { GuiTooltipPosition, tooltipPositions } from './tooltip';
 
 let nextRichId = 0;
@@ -58,8 +59,9 @@ export class GuiRichTooltip {
 /**
  * Opens a {@link GuiRichTooltip} connected to its host. Persistent: stays open
  * while the pointer is over the trigger OR the panel, closing only after a short
- * grace delay once the pointer is over neither. Escape or a click inside the
- * panel (e.g. an action) closes it. Sets `aria-describedby` while open.
+ * grace delay once the pointer is over neither. Escape — from anywhere, per WCAG
+ * 2.2 SC 1.4.13 (Dismissible) — or a click inside the panel (e.g. an action)
+ * closes it. Sets `aria-describedby` while open.
  */
 @Directive({
   selector: '[guiRichTooltipTrigger]',
@@ -69,7 +71,6 @@ export class GuiRichTooltip {
     '(pointerleave)': 'onTriggerLeave()',
     '(focusin)': 'onTriggerEnter()',
     '(focusout)': 'onTriggerLeave()',
-    '(keydown.escape)': 'close()',
   },
 })
 export class GuiRichTooltipTrigger {
@@ -119,15 +120,27 @@ export class GuiRichTooltipTrigger {
       return;
     }
     const positions: ConnectedPosition[] = tooltipPositions(this.position());
-    this.handle = this.overlay.openConnected(this.panel().createPortal(), {
+    const handle = this.overlay.openConnected(this.panel().createPortal(), {
       origin: this.host.nativeElement,
       positions,
       panelClass: 'gui-rich-tooltip-pane',
     });
-    const el = this.handle.ref.overlayElement;
+    this.handle = handle;
+    const el = handle.ref.overlayElement;
     el.addEventListener('pointerenter', this.panelEnter);
     el.addEventListener('pointerleave', this.panelLeave);
     el.addEventListener('click', this.panelClick);
+    // Escape must close the tooltip even when focus is outside the trigger (e.g.
+    // hover-opened, or focus moved into the panel) — WCAG 1.4.13. The CDK keyboard
+    // dispatcher routes document-level keydowns to the top overlay.
+    handle.ref
+      .keydownEvents()
+      .pipe(takeUntil(handle.closed))
+      .subscribe((event) => {
+        if (event.key === 'Escape') {
+          this.close();
+        }
+      });
     this.open.set(true);
   }
 
