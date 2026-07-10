@@ -155,6 +155,21 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
             </p>
           </gui-card>
         </app-demo-specimen>
+        <app-demo-specimen label="link (&lt;a href&gt;) · {{ linkCount() }} activations">
+          <a
+            guiCardClickable
+            id="card-link-demo"
+            href="#card-link-demo"
+            (cardActivate)="onLink()"
+            class="card card-link"
+          >
+            <h4 class="card-title">Open article</h4>
+            <p class="card-text">
+              A real link card: keeps its link role, and Enter activates it
+              exactly once while the browser performs the native navigation.
+            </p>
+          </a>
+        </app-demo-specimen>
       </app-demo-block>
 
       <!-- ===== Actionable: primary-action region (Variant B) ===== -->
@@ -308,6 +323,23 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
       justify-content: flex-end;
       margin-top: 0.25rem;
     }
+    .card-link {
+      /* A whole-surface actionable card built on an <a> element. GuiCard's
+         surface styling is :host-scoped to the gui-card element, so an anchor
+         card recreates the outlined-variant look locally and resets the
+         anchor's default link styling. The state layer / ripple / focus ring
+         still come from [guiCardClickable]. */
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      padding-inline: 16px;
+      border-radius: var(--md-sys-shape-corner-medium);
+      background-color: var(--md-sys-color-surface);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      color: var(--md-sys-color-on-surface);
+      text-decoration: none;
+      cursor: pointer;
+    }
     .card-primary {
       display: flex;
       flex-direction: column;
@@ -328,6 +360,8 @@ export class CardDemo {
   protected readonly clickCount = signal(0);
   /** Primary-action region activations (Variant B) — from `primaryAction`. */
   protected readonly primaryCount = signal(0);
+  /** Link-role whole-surface activations — from an `<a href>` clickable card. */
+  protected readonly linkCount = signal(0);
 
   protected onActivate(): void {
     this.clickCount.update((n) => n + 1);
@@ -335,6 +369,10 @@ export class CardDemo {
 
   protected onPrimary(): void {
     this.primaryCount.update((n) => n + 1);
+  }
+
+  protected onLink(): void {
+    this.linkCount.update((n) => n + 1);
   }
 
   protected readonly codeVariants = `
@@ -371,7 +409,14 @@ export class CardDemo {
 <gui-card variant="elevated" guiCardClickable (cardActivate)="onActivate()">
   <h4>Tap me</h4>
   <p>role=button, keyboard-activatable, ripples on press.</p>
-</gui-card>`;
+</gui-card>
+
+<!-- Link-role card: put [guiCardClickable] on an <a href>. It keeps the
+     link role (no role=button) and Enter triggers native navigation. -->
+<a guiCardClickable href="/article" (cardActivate)="onLink()">
+  <h4>Open article</h4>
+  <p>Activates once on Enter; the browser navigates natively.</p>
+</a>`;
 
   protected readonly codePrimaryAction = `
 <gui-card variant="elevated">

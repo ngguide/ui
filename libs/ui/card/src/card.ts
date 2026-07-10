@@ -85,16 +85,21 @@ export class GuiCardClickable {
       return;
     }
     if (event.type === 'keydown') {
-      // Stop Space scrolling the page / Enter activating twice — but let a real
-      // link (`<a href>`) perform its native Enter navigation instead of
-      // cancelling it (Req 2.1: a link-role card must stay keyboard-navigable).
+      // A real link (`<a href>`) natively turns Enter into a follow-on click,
+      // which re-enters this handler through the (click) binding. Emitting on
+      // the keydown as well would fire cardActivate twice (issue #39), so for
+      // that one case defer entirely to the native click: don't preventDefault
+      // (keep the link's keyboard navigation, Req 2.1) and don't emit here.
       const isLinkEnter =
         this.isAnchor &&
         this.el.hasAttribute('href') &&
         (event as KeyboardEvent).key === 'Enter';
-      if (!isLinkEnter) {
-        event.preventDefault();
+      if (isLinkEnter) {
+        return;
       }
+      // Otherwise no native click is synthesised: stop Space scrolling the page
+      // and drive activation from the key.
+      event.preventDefault();
     }
     this.cardActivate.emit(event);
   }
