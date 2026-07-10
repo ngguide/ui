@@ -124,7 +124,7 @@ describe('GuiCardClickable', () => {
     expect(event.defaultPrevented).toBe(true);
   });
 
-  it('keeps native Enter navigation on an <a href> card and still emits (Req 2.1)', () => {
+  it('keeps native Enter navigation on an <a href> card and emits exactly once (Req 2.1, #39)', () => {
     const fixture = TestBed.createComponent(AnchorClickableHost);
     fixture.detectChanges();
     const el = fixture.debugElement.query(By.directive(GuiCardClickable))
@@ -133,11 +133,17 @@ describe('GuiCardClickable', () => {
     // An anchor keeps its native link role, not role=button.
     expect(el.getAttribute('role')).toBeNull();
 
-    const event = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true });
-    el.dispatchEvent(event);
+    // Reproduce the real browser sequence: Enter fires a keydown and then,
+    // because the directive leaves the link's default action intact, the
+    // browser synthesises a follow-on click. jsdom does not do this on its own,
+    // so dispatch both to prove activation fires only once across the pair.
+    const keydown = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true });
+    el.dispatchEvent(keydown);
     // The directive must NOT cancel the link's native Enter navigation...
-    expect(event.defaultPrevented).toBe(false);
-    // ...while still emitting its activation event.
+    expect(keydown.defaultPrevented).toBe(false);
+    el.dispatchEvent(new MouseEvent('click', { cancelable: true }));
+
+    // ...while emitting activation exactly once across the whole sequence (#39).
     expect(fixture.componentInstance.count).toBe(1);
   });
 });
