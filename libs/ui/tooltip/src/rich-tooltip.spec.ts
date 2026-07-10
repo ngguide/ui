@@ -75,19 +75,28 @@ describe('GuiRichTooltip', () => {
     expect(describedBy).toBe(panel()?.id);
   });
 
-  it('closes on Escape', () => {
+  it('closes on Escape even when focus is outside the trigger', () => {
+    // Open by hover with focus parked on another control: a host-scoped Escape
+    // listener would never see the key, so this guards the document-scoped path.
+    const outside = document.createElement('button');
+    document.body.appendChild(outside);
+    outside.focus();
+
     trigger().dispatchEvent(new Event('pointerenter'));
     fixture.detectChanges();
     flush();
     expect(panel()).not.toBeNull();
+    expect(document.activeElement).toBe(outside);
 
-    trigger().dispatchEvent(
+    outside.dispatchEvent(
       new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
     );
     fixture.detectChanges();
 
     expect(panel()).toBeNull();
     expect(trigger().getAttribute('aria-describedby')).toBeNull();
+
+    outside.remove();
   });
 
   it('closes when the panel is clicked (e.g. an action)', () => {

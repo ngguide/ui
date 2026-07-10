@@ -68,10 +68,37 @@ describe('GuiTooltip', () => {
     expect(trigger().getAttribute('aria-describedby')).toBeNull();
   });
 
-  it('Escape hides the tooltip and keeps focus on the trigger', () => {
+  it('Escape dismisses a hover-opened tooltip while focus is elsewhere', () => {
+    fixture.detectChanges();
+    // Focus a control that is NOT the trigger, then open the tooltip by hover:
+    // focus never lands on the trigger, so a host-scoped Escape listener can't fire.
+    const outside = document.createElement('button');
+    document.body.appendChild(outside);
+    outside.focus();
+
+    trigger().dispatchEvent(new Event('pointerenter'));
+    fixture.detectChanges();
+    flush();
+    expect(panel()).not.toBeNull();
+    expect(document.activeElement).toBe(outside);
+
+    outside.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+    );
+    fixture.detectChanges();
+
+    expect(panel()).toBeNull();
+    expect(trigger().getAttribute('aria-describedby')).toBeNull();
+    // Dismissal must not move focus (WCAG 1.4.13).
+    expect(document.activeElement).toBe(outside);
+
+    outside.remove();
+  });
+
+  it('Escape hides a focus-opened tooltip and keeps focus on the trigger', () => {
     fixture.detectChanges();
     trigger().focus();
-    trigger().dispatchEvent(new Event('pointerenter'));
+    trigger().dispatchEvent(new Event('focusin'));
     fixture.detectChanges();
     flush();
     expect(panel()).not.toBeNull();
