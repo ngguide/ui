@@ -49,7 +49,7 @@ pnpm exec nx g @nx/angular:library-secondary-entry-point --library=ui --name=<na
 The app is **zoneless** (`provideZonelessChangeDetection()` in `apps/web/src/app/app.config.ts`; no `zone.js` polyfill). Tests run on Angular's **first-party Vitest builder** via the `@nx/angular:unit-test` executor (Vitest 4) — **AnalogJS has been removed**. Consequences:
 - No `vite.config.*`, no `test-setup.ts` — the builder auto-initializes `TestBed`, sets `globals: true` + `jsdom`, and is zoneless automatically (since the build has no zone.js polyfill).
 - The native runner has **no `passWithNoTests`** — a project with zero specs fails. Every project with a `test` target must have at least one spec.
-- For the `ui` library, specs in secondary entry points live **outside** `sourceRoot` (`libs/ui/src`), so they are not auto-discovered. They are listed explicitly in the `include` option of the `ui` `test` target in `libs/ui/project.json` — add new spec files there.
+- The builder's `include` globs are resolved relative to `sourceRoot`, not `projectRoot`, and an explicit `include` **replaces** the `**/*.spec.ts` default rather than extending it. For the `ui` library, specs in secondary entry points live outside `sourceRoot` (`libs/ui/src`), so the `test` target in `libs/ui/project.json` needs both `**/*.spec.ts` (inside `src`) and `../**/*.spec.ts` (everything else under `libs/ui`) — a parent-relative glob never matches files inside the cwd. New specs are picked up automatically.
 
 ### Build executors
 `web` uses the canonical `@angular/build:*` executors (application/dev-server/extract-i18n); `ui` uses `@nx/angular:package`. Module boundaries are enforced by `@nx/enforce-module-boundaries` (eslint).
