@@ -22,8 +22,7 @@
     "**/*.test.js",
     "**/*.spec.js",
     "**/*.test.jsx",
-    "**/*.spec.jsx",
-    "test-setup.ts"
+    "**/*.spec.jsx"
   ],
   "include": ["**/*.ts"]
 }
