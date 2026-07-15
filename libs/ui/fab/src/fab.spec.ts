@@ -24,6 +24,12 @@ class AnchorHostComponent {
   disabled = false;
 }
 
+@Component({
+  imports: [FabComponent],
+  template: `<a gui-fab href="/test">FAB</a>`,
+})
+class LinkHostComponent {}
+
 describe('FabComponent', () => {
   it('should create', () => {
     const fixture = TestBed.createComponent(FabComponent);
@@ -86,5 +92,13 @@ describe('FabComponent', () => {
     const el: HTMLElement = fixture.nativeElement.querySelector('a');
     expect(el.getAttribute('aria-disabled')).toBe('true');
     expect(el.hasAttribute('disabled')).toBe(false);
+  });
+
+  it('removes the browser underline from link hosts', () => {
+    const fixture = TestBed.createComponent(LinkHostComponent);
+    fixture.detectChanges();
+
+    const el: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(getComputedStyle(el).textDecoration).toBe('none');
   });
 });
