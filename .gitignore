@@ -54,3 +54,5 @@ vitest.config.*.timestamp*
 .nx/self-healing
 
 dogfood-output
+
+.nx/migrate-runs

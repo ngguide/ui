@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Angular UI Kit — a Material-Design-inspired component library built from scratch (not a wrapper around Angular Material), developed in public for the [ng.guide](https://ng.guide/ui-kit) course. Nx monorepo on **Angular 21 / Nx 22**, package manager is **pnpm**.
+Angular UI Kit — a Material-Design-inspired component library built from scratch (not a wrapper around Angular Material), developed in public for the [ng.guide](https://ng.guide/ui-kit) course. Nx monorepo on **Angular 22 / Nx 23**, package manager is **pnpm**.
 
 ## Commands
 
@@ -42,12 +42,13 @@ pnpm exec nx g @nx/angular:library-secondary-entry-point --library=ui --name=<na
 ### Component conventions (see `libs/ui/button/src/button.ts`)
 - Standalone, `ChangeDetectionStrategy.OnPush`, signal inputs (`input()`, `input(false, { transform: booleanAttribute })`).
 - Attribute selectors (e.g. `button[gui-button], a[gui-button]`) — these require the `// eslint-disable-next-line @angular-eslint/component-selector` comment.
-- Variants/sizes are driven onto the host via the `host` property (`[attr.data-variant]`, `[attr.data-size]`, ...) and styled from the component CSS using those attributes. Members referenced in host bindings must be at least `protected` (Angular 21 disallows `private` here).
+- Variants/sizes are driven onto the host via the `host` property (`[attr.data-variant]`, `[attr.data-size]`, ...) and styled from the component CSS using those attributes. Members referenced in host bindings must be at least `protected` (Angular 22 disallows `private` here).
 - The shared `GuiSize` union lives in `@ngguide/ui` and is imported by each component.
 
 ### Zoneless + native Vitest testing
 The app is **zoneless** (`provideZonelessChangeDetection()` in `apps/web/src/app/app.config.ts`; no `zone.js` polyfill). Tests run on Angular's **first-party Vitest builder** via the `@nx/angular:unit-test` executor (Vitest 4) — **AnalogJS has been removed**. Consequences:
-- No `vite.config.*`, no `test-setup.ts` — the builder auto-initializes `TestBed`, sets `globals: true` + `jsdom`, and is zoneless automatically (since the build has no zone.js polyfill).
+- No `test-setup.ts` — the builder auto-initializes `TestBed` and sets `globals: true` + `jsdom`. (Each project does keep a `vitest.config.ts` wired through `runnerConfig`, which only *adds* options on top of that.)
+- **Zoneless is not automatic — it has to be forced.** Since Angular 22 the unit-test builder resolves its zone strategy from the build target's `polyfills`: if that list is `undefined` it loads `zone.js` + `zone.js/testing` anyway (`getZoneTestingStrategy` in `@angular/build/src/builders/unit-test/runners/vitest/build-options.js`). Only an explicitly *defined* list without `zone.js` yields a zoneless `TestBed`. So `apps/web` sets `"polyfills": []` on its `build` target, and `libs/ui` — whose real build is ng-packagr, which has no `polyfills` option — carries a `test-build` target (`@angular/build:application`, `polyfills: []`) that exists purely as the `buildTarget` of its `test` target. Drop either and `NgZone` comes back, which silently breaks specs that assert on `afterNextRender`/`afterRenderEffect` timing or on microtask ordering.
 - The native runner has **no `passWithNoTests`** — a project with zero specs fails. Every project with a `test` target must have at least one spec.
 - The builder's `include` globs are resolved relative to `sourceRoot`, not `projectRoot`, and an explicit `include` **replaces** the `**/*.spec.ts` default rather than extending it. For the `ui` library, specs in secondary entry points live outside `sourceRoot` (`libs/ui/src`), so the `test` target in `libs/ui/project.json` needs both `**/*.spec.ts` (inside `src`) and `../**/*.spec.ts` (everything else under `libs/ui`) — a parent-relative glob never matches files inside the cwd. New specs are picked up automatically.
 

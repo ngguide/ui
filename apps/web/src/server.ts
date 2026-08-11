@@ -12,6 +12,9 @@ const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = join(serverDistFolder, '../browser');
 
 const app = express();
+// No `trustProxyHeaders`: this server only backs local dev and the prerender
+// pass — the deployed site is the static CSR bundle (see `deploy:cf`) — so it
+// keeps Angular 22's default of ignoring `x-forwarded-*` from the caller.
 const angularApp = new AngularNodeAppEngine();
 
 /** Serve static browser assets. */

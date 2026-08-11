@@ -108,7 +108,6 @@
   },
   "release": {
     "projects": ["ui"],
-    "releaseTagPattern": "v{version}",
     "version": {
       "conventionalCommits": true,
       "preVersionCommand": "pnpm exec nx build ui"
@@ -116,6 +115,9 @@
     "changelog": {
       "projectChangelogs": true,
       "workspaceChangelog": false
+    },
+    "releaseTag": {
+      "pattern": "v{version}"
     }
   },
   "analytics": false

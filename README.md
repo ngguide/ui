@@ -90,10 +90,10 @@ These are genuine Material 3 components not yet built. They have no entry point 
 
 ## 🛠 Tech Stack
 
-- **Angular 21** (standalone components, `ChangeDetectionStrategy.OnPush`)
+- **Angular 22** (standalone components, `ChangeDetectionStrategy.OnPush`)
 - **Signals-based** state and inputs
 - **Zoneless** change detection (no `zone.js`)
-- **Nx 22** monorepo, **pnpm** package manager
+- **Nx 23** monorepo, **pnpm** package manager
 - **ng-packagr** (APF-compatible) for the publishable library, via the `@nx/angular:package` executor
 - **Vitest** (Angular's first-party Vitest builder, jsdom, zoneless) for testing
 - **Custom Angular docs site** hosted at [ui.ng.guide](https://ui.ng.guide) for live examples + code
