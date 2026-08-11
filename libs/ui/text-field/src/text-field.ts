@@ -1,7 +1,6 @@
 import {
   afterRenderEffect,
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   contentChild,
@@ -29,7 +28,6 @@ let nextId = 0;
   exportAs: 'guiTextField',
   templateUrl: './text-field.html',
   styleUrl: './text-field.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[attr.data-variant]': 'variant()',
     '[attr.data-focused]': 'input().focused() ? "" : null',

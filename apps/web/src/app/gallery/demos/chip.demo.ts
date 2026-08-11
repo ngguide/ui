@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ChipComponent, ChipSetComponent } from '@ngguide/ui/chip';
 import { IconComponent } from '@ngguide/ui/icon';
 import { GALLERY_DEMO_UI } from '../demo-block.component';
@@ -22,7 +22,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  */
 @Component({
   selector: 'app-demo-chip',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...GALLERY_DEMO_UI, ChipSetComponent, ChipComponent, IconComponent],
   template: `
     <app-demo-component

@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   input,
@@ -25,7 +24,6 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
  */
 @Component({
   selector: 'gui-circular-progress',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'gui-circular-progress',
     role: 'progressbar',

@@ -1,4 +1,4 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Service, signal, inject } from '@angular/core';
 import type { M3ThemeConfig, M3Contrast, M3ResolvedRoles } from './types';
 import { generateScheme, type GeneratedScheme } from './engine';
 import { buildCss } from './css-builder';
@@ -10,7 +10,7 @@ import { validateConfig } from './validate';
  * scheme, serializes it to CSS, and applies it via {@link M3StyleApplier}. The
  * same instance is reused at bootstrap (`init`) and at runtime (`setTheme`).
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class M3ThemeService {
   private readonly applier = inject(M3StyleApplier);
   private readonly _config = signal<M3ThemeConfig | null>(null);

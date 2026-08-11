@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   contentChild,
   effect,
@@ -83,7 +82,6 @@ const noopScroll = (overlay: Overlay) => () => overlay.scrollStrategies.noop();
     { provide: MENU_SCROLL_STRATEGY, useFactory: noopScroll, deps: [Overlay] },
   ],
   exportAs: 'guiSplitButton',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SplitButtonComponent {
   /** M3 split-button color style — Elevated, Filled, Tonal, or Outlined (no `text`). */

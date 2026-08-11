@@ -39,7 +39,8 @@
       "options": {
         "tsConfig": "libs/ui/tsconfig.spec.json",
         "runnerConfig": "libs/ui/vitest.config.ts",
-        "include": ["**/*.spec.ts", "../**/*.spec.ts"]
+        "include": ["**/*.spec.ts", "../**/*.spec.ts"],
+        "buildTarget": "ui:test-build"
       }
     },
     "lint": {
@@ -49,6 +50,13 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "jiti libs/ui/tooling/generate-color-tokens.mts"
+      }
+    },
+    "test-build": {
+      "executor": "@angular/build:application",
+      "options": {
+        "tsConfig": "libs/ui/tsconfig.spec.json",
+        "polyfills": []
       }
     }
   }

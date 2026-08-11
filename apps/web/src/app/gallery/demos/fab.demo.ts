@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { ExtendedFabComponent, FabComponent } from '@ngguide/ui/fab';
 import { IconComponent } from '@ngguide/ui/icon';
 
@@ -12,7 +12,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  */
 @Component({
   selector: 'app-demo-fab',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...GALLERY_DEMO_UI, FabComponent, ExtendedFabComponent, IconComponent],
   template: `
     <app-demo-component

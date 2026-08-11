@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 /**
  * M3 dialog anatomy slot components. Compose them inside the content passed to
@@ -11,7 +11,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 /** Optional leading icon, centered above the headline (24dp, secondary). */
 @Component({
   selector: 'gui-dialog-icon',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: { class: 'gui-dialog-icon' },
   styles: [
@@ -33,7 +32,6 @@ export class GuiDialogIcon {}
 /** Dialog headline, exposed as a level-2 heading (Req 7.1, 14). */
 @Component({
   selector: 'gui-dialog-headline',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: { class: 'gui-dialog-headline', role: 'heading', 'aria-level': '2' },
   styles: [
@@ -56,7 +54,6 @@ export class GuiDialogHeadline {}
 /** Scrollable supporting content region (body-medium). */
 @Component({
   selector: 'gui-dialog-content',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: { class: 'gui-dialog-content' },
   styles: [
@@ -85,7 +82,6 @@ export class GuiDialogContent {}
  */
 @Component({
   selector: 'gui-dialog-divider',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: '',
   host: { class: 'gui-dialog-divider', role: 'separator' },
   styles: [
@@ -105,7 +101,6 @@ export class GuiDialogDivider {}
 /** End-aligned action buttons region (up to three text buttons, Req 7.1). */
 @Component({
   selector: 'gui-dialog-actions',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: { class: 'gui-dialog-actions' },
   styles: [
@@ -130,7 +125,6 @@ export class GuiDialogActions {}
  */
 @Component({
   selector: 'gui-dialog-fullscreen-header',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <span class="gui-dialog-fs-leading"
       ><ng-content select="[guiDialogClose]"
@@ -190,7 +184,6 @@ export class GuiDialogFullscreenHeader {}
  */
 @Component({
   selector: 'gui-dialog-fullscreen-actions',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: { class: 'gui-dialog-fullscreen-actions' },
   styles: [

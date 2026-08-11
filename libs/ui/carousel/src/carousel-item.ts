@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   ElementRef,
@@ -37,7 +36,6 @@ import { GUI_CAROUSEL } from './carousel-context';
  */
 @Component({
   selector: 'gui-carousel-item',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<span class="gui-carousel-item-content"><ng-content /></span>`,
   styleUrl: './carousel-item.css',
   hostDirectives: [

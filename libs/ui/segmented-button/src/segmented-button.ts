@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -50,7 +49,6 @@ import { SegmentedButtonGroupComponent } from './segmented-button-group';
     '(click)': 'onActivate()',
   },
   exportAs: 'guiSegmentedButton',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SegmentedButtonComponent {
   value = input.required<string>();

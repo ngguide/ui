@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -52,7 +51,6 @@ let nextId = 0;
   host: {
     '[class.gui-disabled]': 'isDisabled()',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RadioComponent {
   readonly value = input.required<string>();

@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -49,7 +48,6 @@ const MAX_AVATARS = 2;
  */
 @Component({
   selector: 'app-tasks-board',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgTemplateOutlet,
     CdkMenu,

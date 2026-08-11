@@ -1,6 +1,5 @@
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
-  ChangeDetectionStrategy,
   Component,
   TemplateRef,
   ViewContainerRef,
@@ -59,7 +58,6 @@ type Period = 'AM' | 'PM';
     '[attr.data-layout]': 'layout()',
     '[attr.data-hour12]': 'effectiveHour12()',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimePickerComponent {
   protected readonly control = inject(GuiFormControl<GuiTime>);

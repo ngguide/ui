@@ -1,6 +1,5 @@
 import { NgComponentOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   Type,
   computed,
@@ -27,7 +26,6 @@ import {
  */
 @Component({
   selector: 'app-component-page',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgComponentOutlet, RouterLink],
   template: `
     @if (lookup(); as l) {

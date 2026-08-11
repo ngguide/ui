@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { GuiFormControl } from '@ngguide/ui/forms';
 import {
   GuiFocusRingDirective,
@@ -78,7 +78,6 @@ let nextId = 0;
     '[class.gui-disabled]': 'control.effectiveDisabled()',
     '[attr.data-checked]': 'control.value() === true ? "" : null',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SwitchComponent {
   /**

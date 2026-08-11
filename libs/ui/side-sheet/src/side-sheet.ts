@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   inject,
   input,
@@ -19,7 +18,6 @@ import { GuiReducedMotion } from '@ngguide/ui/interaction';
  */
 @Component({
   selector: 'gui-side-sheet-header',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <span class="gui-side-sheet-back"
       ><ng-content select="[guiSideSheetBack]"
@@ -77,7 +75,6 @@ export class GuiSideSheetHeader {}
  */
 @Component({
   selector: 'gui-side-sheet-divider',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: ``,
   host: { class: 'gui-side-sheet-divider', role: 'separator' },
   styles: [
@@ -103,7 +100,6 @@ export class GuiSideSheetDivider {}
  */
 @Component({
   selector: 'gui-side-sheet-content',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: { class: 'gui-side-sheet-content' },
   styles: [
@@ -124,7 +120,6 @@ export class GuiSideSheetContent {}
 /** Start-aligned action buttons region pinned to the sheet bottom (Req 10.4). */
 @Component({
   selector: 'gui-side-sheet-actions',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   host: { class: 'gui-side-sheet-actions' },
   styles: [
@@ -157,7 +152,6 @@ export class GuiSideSheetActions {}
  */
 @Component({
   selector: 'gui-side-sheet',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<div class="gui-side-sheet-surface"><ng-content /></div>`,
   styleUrl: './side-sheet.css',
   host: {

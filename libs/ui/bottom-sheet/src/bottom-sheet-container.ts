@@ -33,7 +33,11 @@ export interface GuiBottomSheetContainerConfig extends DialogConfig {
  */
 @Component({
   selector: 'gui-bottom-sheet-container',
-  changeDetection: ChangeDetectionStrategy.Default,
+  // The host reflects plain (non-signal) CDK state — `_config` and the
+  // `_ariaLabelledByQueue` the portal fills in after attach — which OnPush
+  // would never re-check, so this container keeps eager change detection.
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CdkPortalOutlet, CdkDrag, CdkDragHandle],
   template: `
     <div

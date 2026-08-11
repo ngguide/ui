@@ -26,7 +26,8 @@
           }
         ],
         "styles": ["apps/web/src/styles.css"],
-        "scripts": []
+        "scripts": [],
+        "polyfills": []
       },
       "configurations": {
         "production": {

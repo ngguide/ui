@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   booleanAttribute,
   contentChildren,
@@ -30,7 +29,6 @@ import { SegmentedButtonComponent } from './segmented-button';
     '[style.--gui-comp-segmented-button-density]': 'density()',
   },
   exportAs: 'guiSegmentedButtons',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SegmentedButtonGroupComponent {
   multiple = input(false, { transform: booleanAttribute });

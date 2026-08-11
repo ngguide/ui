@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   Directive,
   ElementRef,
@@ -27,7 +26,6 @@ export type GuiCardVariant = 'elevated' | 'filled' | 'outlined';
  */
 @Component({
   selector: 'gui-card',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   styleUrl: './card.css',
   host: {

@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -37,7 +36,6 @@ const GUI_BOTTOM_SHEET_DEFAULT_HEIGHTS = [0.5, 0.9] as const;
  */
 @Component({
   selector: 'gui-bottom-sheet',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CdkDrag, CdkDragHandle],
   template: `
     <div

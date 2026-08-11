@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -52,7 +51,6 @@ import { AdminStore, RoleFilter, UserSort } from './admin.store';
  */
 @Component({
   selector: 'app-users',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     RouterLink,

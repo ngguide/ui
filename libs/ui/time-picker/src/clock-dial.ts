@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   computed,
@@ -47,7 +46,6 @@ interface DialNumber {
     '(keydown)': 'onKeyDown($event)',
     tabindex: '0',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClockDialComponent {
   private readonly reducedMotion = inject(GuiReducedMotion);

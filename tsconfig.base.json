@@ -52,7 +52,12 @@
       "@ngguide/ui/theme": ["libs/ui/theme/src/index.ts"],
       "@ngguide/ui/tooltip": ["libs/ui/tooltip/src/index.ts"],
       "@ngguide/ui/time-picker": ["libs/ui/time-picker/src/index.ts"]
-    }
+    },
+    "strict": false,
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0"
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   input,
   ViewEncapsulation,
@@ -97,7 +96,6 @@ import {
     GuiFocusRingDirective,
   ],
   exportAs: 'guiMenuItem, guiFabMenuItem',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuItemComponent {
   /**

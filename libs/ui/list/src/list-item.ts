@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   computed,
@@ -41,7 +40,6 @@ import { GUI_LIST, GuiListMode } from './list-context';
  */
 @Component({
   selector: 'gui-list-item',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <span class="gui-list-item-leading"><ng-content select="[guiListItemLeading]" /></span>
     <span class="gui-list-item-body">

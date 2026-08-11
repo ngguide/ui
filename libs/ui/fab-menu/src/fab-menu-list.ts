@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CdkMenu } from '@angular/cdk/menu';
 
 /**
@@ -37,7 +37,6 @@ export type GuiFabMenuColor = 'primary' | 'secondary' | 'tertiary';
   host: {
     '[attr.data-color]': 'color()',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FabMenuListComponent {
   /** The FAB-menu color set, shared (as a contrasting pair) by the close button

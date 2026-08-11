@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { IconComponent } from '@ngguide/ui/icon';
 import { GuiList, GuiListItem } from '@ngguide/ui/list';
 import { GALLERY_DEMO_UI } from '../demo-block.component';
@@ -22,7 +22,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  */
 @Component({
   selector: 'app-demo-list',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...GALLERY_DEMO_UI, GuiList, GuiListItem, IconComponent],
   template: `
     <app-demo-component

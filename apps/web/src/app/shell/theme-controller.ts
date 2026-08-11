@@ -1,5 +1,5 @@
 import {
-  Injectable,
+  Service,
   PLATFORM_ID,
   computed,
   inject,
@@ -17,7 +17,7 @@ import { BASE_THEME, BRAND_SEEDS, DEFAULT_SEED } from '../core/theme-config';
  * Every change funnels through `M3ThemeService.setTheme`, which updates a single
  * managed `<style data-m3-dynamic>` — SSR-safe, no unstyled flash (R7.4).
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class ThemeController {
   private readonly theme = inject(M3ThemeService);
 

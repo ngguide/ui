@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   input,
@@ -13,7 +12,6 @@ import {
  */
 @Component({
   selector: 'app-sparkline',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <svg
       class="spark"

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ButtonGroupComponent } from '@ngguide/ui/button-group';
 import { ButtonComponent } from '@ngguide/ui/button';
 import { IconButtonComponent } from '@ngguide/ui/icon-button';
@@ -22,7 +22,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  */
 @Component({
   selector: 'app-demo-button-group',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ...GALLERY_DEMO_UI,
     ButtonGroupComponent,

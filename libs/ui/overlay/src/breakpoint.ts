@@ -1,4 +1,4 @@
-import { Injectable, Signal, inject, signal } from '@angular/core';
+import { Service, Signal, inject, signal } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 
 /**
@@ -13,7 +13,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
  * `change` listener keeps the signal live when the viewport crosses the
  * breakpoint at runtime. Mirrors `GuiReducedMotion`.
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GuiBreakpoint {
   private readonly mql = inject(MediaMatcher).matchMedia(
     '(max-width: 599.98px)',

@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -43,7 +42,6 @@ interface TaskFormValue {
  */
 @Component({
   selector: 'app-task-form',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     ButtonComponent,

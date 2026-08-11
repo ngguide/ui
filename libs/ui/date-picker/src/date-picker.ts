@@ -1,6 +1,5 @@
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   TemplateRef,
@@ -58,7 +57,6 @@ export type GuiDatePickerVariant = 'docked' | 'modal' | 'modal-input';
       outputs: ['valueChange: dateChange'],
     },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DatePickerComponent {
   protected readonly control = inject(GuiFormControl<Date>);

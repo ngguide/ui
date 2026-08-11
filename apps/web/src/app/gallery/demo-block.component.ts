@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   input,
@@ -26,7 +25,6 @@ import { CodePanelComponent } from '../docs/code-panel.component';
  */
 @Component({
   selector: 'app-demo-component',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header class="demo-component-head">
       <h2 [id]="anchor()" class="demo-component-name">{{ name() }}</h2>
@@ -119,7 +117,6 @@ export class DemoComponentComponent {
  */
 @Component({
   selector: 'app-demo-block',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CodePanelComponent],
   template: `
     <div class="demo-block-head">
@@ -231,7 +228,6 @@ export class DemoBlockComponent {
  */
 @Component({
   selector: 'app-demo-specimen',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="demo-specimen-stage">
       <ng-content />

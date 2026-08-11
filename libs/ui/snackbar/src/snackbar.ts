@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ButtonComponent } from '@ngguide/ui/button';
 import { IconButtonComponent } from '@ngguide/ui/icon-button';
 import { IconComponent } from '@ngguide/ui/icon';
@@ -16,7 +16,6 @@ import {
  */
 @Component({
   selector: 'gui-snackbar',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ButtonComponent, IconButtonComponent, IconComponent],
   host: {
     class: 'gui-snackbar',

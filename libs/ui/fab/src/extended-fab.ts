@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   inject,
@@ -32,7 +31,6 @@ import { GuiFabColor, GuiFabSize } from './fab';
     '[class.gui-disabled]': 'disabled()',
   },
   exportAs: 'guiExtendedFab',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExtendedFabComponent {
   color = input<GuiFabColor>('primary-container');

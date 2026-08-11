@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   input,
 } from '@angular/core';
@@ -34,7 +33,6 @@ export type GuiButtonGroupSelection = 'none' | 'single' | 'multi';
     '[attr.data-shape]': 'shape()',
   },
   exportAs: 'guiButtonGroup',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonGroupComponent {
   /** Connected (shared edges) vs standard (spaced) arrangement. */

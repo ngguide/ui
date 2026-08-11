@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   contentChild,
@@ -135,7 +134,6 @@ const FAB_MENU_POSITIONS: ConnectedPosition[] = [
     { provide: MENU_SCROLL_STRATEGY, useFactory: noopScroll, deps: [Overlay] },
   ],
   exportAs: 'guiFabMenu',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FabMenuComponent {
   /** The FAB-menu color set, shared by the close button (FAB) and the items. */

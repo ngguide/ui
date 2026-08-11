@@ -1,4 +1,4 @@
-import { Injectable, TemplateRef, inject } from '@angular/core';
+import { Service, TemplateRef, inject } from '@angular/core';
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import {
@@ -17,7 +17,7 @@ import { GuiSideSheetContainer } from './side-sheet-container';
  * result. For a non-modal side sheet that coexists with the page, use the
  * standard `<gui-side-sheet variant="standard">` surface instead (Req 10.3).
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GuiSideSheet {
   private readonly cdkDialog = inject(Dialog);
   private readonly overlay = inject(Overlay);

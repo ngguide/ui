@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CodePanelComponent } from './code-panel.component';
 import { DOC_CATEGORIES } from './component-registry';
@@ -11,7 +11,6 @@ import { DOC_CATEGORIES } from './component-registry';
  */
 @Component({
   selector: 'app-docs-home',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, CodePanelComponent],
   template: `
     <section class="home-hero">

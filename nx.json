@@ -108,14 +108,17 @@
   },
   "release": {
     "projects": ["ui"],
-    "releaseTagPattern": "v{version}",
     "version": {
       "conventionalCommits": true,
-      "preVersionCommand": "pnpm exec nx build ui"
+      "preVersionCommand": "pnpm exec nx build ui",
+      "adjustSemverBumpsForZeroMajorVersion": false
     },
     "changelog": {
       "projectChangelogs": true,
       "workspaceChangelog": false
+    },
+    "releaseTag": {
+      "pattern": "v{version}"
     }
   },
   "analytics": false

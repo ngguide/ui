@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   input,
@@ -18,7 +17,6 @@ import {
  */
 @Component({
   selector: 'app-code',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="code-bar">
       <span class="code-lang">{{ language() }}</span>

@@ -23,9 +23,14 @@ describe('ShellComponent', () => {
     const fixture = TestBed.createComponent(ShellComponent);
     fixture.detectChanges();
     const el = fixture.nativeElement as HTMLElement;
-    expect(el.querySelector('.shell-app-title')?.textContent).toContain('Console');
-    // Console exposes three rail destinations.
+    // A URL matching no demo app falls back to the first one — Console, which
+    // exposes three rail destinations.
     expect(el.querySelectorAll('a[appNavItem]').length).toBe(3);
+    // The switcher trigger resolves separately and falls back to the docs
+    // destination, so it reads "Components" rather than the rail's app.
+    expect(el.querySelector('.appsw-trigger-label')?.textContent).toContain(
+      'Components',
+    );
   });
 
   it('delegates the dark toggle to the ThemeController', () => {

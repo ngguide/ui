@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { ButtonComponent } from '@ngguide/ui/button';
@@ -17,7 +17,6 @@ import { ShopStore } from './shop.store';
  */
 @Component({
   selector: 'app-customers',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
     ButtonComponent,

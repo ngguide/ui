@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { GuiDivider } from '@ngguide/ui/divider';
 import { IconComponent } from '@ngguide/ui/icon';
 import { GALLERY_DEMO_UI } from '../demo-block.component';
@@ -22,7 +22,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  */
 @Component({
   selector: 'app-demo-divider',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...GALLERY_DEMO_UI, GuiDivider, IconComponent],
   template: `
     <app-demo-component

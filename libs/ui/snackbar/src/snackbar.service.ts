@@ -1,6 +1,6 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable, Injector, inject, signal } from '@angular/core';
+import { Service, Injector, inject, signal } from '@angular/core';
 import { GuiOverlayHandle, GuiPickerOverlay } from '@ngguide/ui/overlay';
 import { Observable, Subject } from 'rxjs';
 import {
@@ -81,7 +81,7 @@ interface ActiveSnackbar {
  * pauses the timer while hovered/focused. Pressing `Esc` while the snackbar holds
  * focus dismisses it; `Alt+G` moves focus to an actionable snackbar's action.
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GuiSnackbar {
   private readonly overlay = inject(GuiPickerOverlay);
   private readonly announcer = inject(LiveAnnouncer);

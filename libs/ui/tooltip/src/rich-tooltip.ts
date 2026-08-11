@@ -1,7 +1,6 @@
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
-  ChangeDetectionStrategy,
   Component,
   Directive,
   ElementRef,
@@ -26,7 +25,6 @@ let nextRichId = 0;
  */
 @Component({
   selector: 'gui-rich-tooltip',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template>
       <div class="gui-rich-tooltip" role="tooltip" [id]="id">

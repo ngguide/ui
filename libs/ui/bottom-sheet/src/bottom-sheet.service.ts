@@ -1,4 +1,4 @@
-import { Injectable, TemplateRef, inject } from '@angular/core';
+import { Service, TemplateRef, inject } from '@angular/core';
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import {
@@ -19,7 +19,7 @@ import { GuiBottomSheetContainer } from './bottom-sheet-container';
  * non-modal sheet that coexists with the page, use the standard
  * `<gui-bottom-sheet variant="standard">` surface instead (Req 9.2).
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GuiBottomSheet {
   private readonly cdkDialog = inject(Dialog);
   private readonly overlay = inject(Overlay);

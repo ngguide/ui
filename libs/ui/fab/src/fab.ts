@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   inject,
@@ -44,7 +43,6 @@ export type GuiFabColor =
     '[class.gui-disabled]': 'disabled()',
   },
   exportAs: 'guiFab',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FabComponent {
   color = input<GuiFabColor>('primary-container');

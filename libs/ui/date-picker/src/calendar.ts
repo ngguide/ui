@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   computed,
@@ -58,7 +57,6 @@ const YEAR_PAGE_SIZE = 24;
     IconComponent,
     GuiTooltip,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'role': 'group',
     '[attr.aria-label]': 'monthYearLabel()',

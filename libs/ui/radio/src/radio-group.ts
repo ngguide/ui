@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
   input,
@@ -29,7 +28,6 @@ let nextId = 0;
     '[attr.aria-label]': 'ariaLabel() || null',
     '[attr.aria-labelledby]': 'ariaLabelledby() || null',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RadioGroupComponent {
   /**

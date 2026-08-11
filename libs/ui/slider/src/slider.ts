@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   booleanAttribute,
@@ -81,7 +80,6 @@ const HANDLE_INSET_PX = 2;
     '[attr.data-orientation]': 'orientation()',
     '[class.gui-disabled]': 'control.effectiveDisabled()',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SliderComponent {
   readonly control = inject(GuiFormControl<number | [number, number]>);

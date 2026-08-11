@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -30,7 +29,6 @@ interface SwitchDest {
  */
 @Component({
   selector: 'app-switcher',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CdkMenuTrigger,
     CdkMenu,

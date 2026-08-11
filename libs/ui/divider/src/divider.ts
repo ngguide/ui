@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   input,
 } from '@angular/core';
@@ -16,7 +15,6 @@ export type GuiDividerInset = 'none' | 'inset' | 'middle-inset';
  */
 @Component({
   selector: 'gui-divider',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: '',
   styleUrl: './divider.css',
   host: {

@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   computed,
   ElementRef,
@@ -102,7 +101,6 @@ export type GuiChipType = 'assist' | 'filter' | 'input' | 'suggestion';
     '(keydown.backspace)': 'maybeRemove($event)',
     '(blur)': 'control.markTouched()',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipComponent {
   readonly type = input<GuiChipType>('assist');

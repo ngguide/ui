@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   afterNextRender,
@@ -54,7 +53,6 @@ import { AppSwitcherComponent } from './app-switcher.component';
  */
 @Component({
   selector: 'app-shell',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterOutlet,
     RouterLink,
