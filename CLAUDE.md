@@ -46,6 +46,9 @@ pnpm exec nx g @nx/angular:library-secondary-entry-point --library=ui --name=<na
 - Variants/sizes are driven onto the host via the `host` property (`[attr.data-variant]`, `[attr.data-size]`, ...) and styled from the component CSS using those attributes. Members referenced in host bindings must be at least `protected` (Angular 22 disallows `private` here).
 - The shared `GuiSize` union lives in `@ngguide/ui` and is imported by each component.
 
+### Form components and Signal Forms
+Value-bearing components (checkbox, switch, radio group, slider, chip set, the pickers) take `GuiFormControl` from `@ngguide/ui/forms` as a **host directive**, aliasing its `value`/`disabled` inputs to component-facing names. That directive provides `NG_VALUE_ACCESSOR`, which is what makes one component serve template-driven, reactive **and** Signal Forms at once: `FormField.ɵngControlCreate` picks a control value accessor ahead of the native `FormValueControl` contract, which in turn comes ahead of a plain form element. Dropping the CVA to adopt the native contract would therefore trade away the older two form APIs, not add to them — `libs/ui/forms/src/signal-forms-interop.spec.ts` pins the interop so that trade cannot happen by accident.
+
 ### Zoneless + native Vitest testing
 The app is **zoneless** (`provideZonelessChangeDetection()` in `apps/web/src/app/app.config.ts`; no `zone.js` polyfill). Tests run on Angular's **first-party Vitest builder** via the `@nx/angular:unit-test` executor (Vitest 4) — **AnalogJS has been removed**. Consequences:
 - No `test-setup.ts` — the builder auto-initializes `TestBed` and sets `globals: true` + `jsdom`. (Each project does keep a `vitest.config.ts` wired through `runnerConfig`, which only *adds* options on top of that.)
