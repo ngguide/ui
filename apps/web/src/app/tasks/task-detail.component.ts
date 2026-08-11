@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -34,7 +33,6 @@ import { TaskFormComponent } from './task-form.component';
  */
 @Component({
   selector: 'app-task-detail',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ButtonComponent,
     ChipComponent,

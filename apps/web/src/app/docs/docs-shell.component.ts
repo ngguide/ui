@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
   signal,
@@ -32,7 +31,6 @@ import { DOC_CATEGORIES } from './component-registry';
  */
 @Component({
   selector: 'app-docs-shell',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterOutlet,
     RouterLink,

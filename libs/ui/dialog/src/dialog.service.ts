@@ -1,4 +1,4 @@
-import { Injectable, TemplateRef, inject } from '@angular/core';
+import { Service, TemplateRef, inject } from '@angular/core';
 import { ComponentType } from '@angular/cdk/overlay';
 import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 import {
@@ -20,7 +20,7 @@ const DEFAULT_MAX_WIDTH = 'min(560px, calc(100% - 48px))';
  * (the CDK `Dialog.open` template overload). Full-screen selection (Req 8) is
  * resolved against {@link GuiBreakpoint}.
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GuiDialog {
   private readonly cdkDialog = inject(Dialog);
   private readonly breakpoint = inject(GuiBreakpoint);

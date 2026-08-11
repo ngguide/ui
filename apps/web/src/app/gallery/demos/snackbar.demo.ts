@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ButtonComponent } from '@ngguide/ui/button';
 import { IconComponent } from '@ngguide/ui/icon';
 import { GuiSnackbar } from '@ngguide/ui/snackbar';
@@ -25,7 +25,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  */
 @Component({
   selector: 'app-demo-snackbar',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...GALLERY_DEMO_UI, ButtonComponent, IconComponent],
   template: `
     <app-demo-component

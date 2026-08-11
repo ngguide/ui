@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -33,7 +32,6 @@ import { AdminStore } from './admin.store';
  */
 @Component({
   selector: 'app-user-detail',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
     ButtonComponent,

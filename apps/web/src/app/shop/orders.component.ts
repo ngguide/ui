@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   effect,
   inject,
@@ -45,7 +44,6 @@ const STATUSES: readonly OrderStatus[] = ['pending', 'paid', 'shipped', 'refunde
  */
 @Component({
   selector: 'app-orders',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     RouterLink,

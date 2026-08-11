@@ -6,7 +6,7 @@ import {
   STANDARD_DROPDOWN_BELOW_POSITIONS,
 } from '@angular/cdk/overlay';
 import { Portal, TemplatePortal } from '@angular/cdk/portal';
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 export interface GuiDockedConfig {
@@ -41,7 +41,7 @@ export interface GuiOverlayHandle {
   close(): void;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GuiPickerOverlay {
   private readonly overlay = inject(Overlay);
   private readonly focusTrapFactory = inject(ConfigurableFocusTrapFactory);

@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
   signal,
@@ -48,7 +47,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  */
 @Component({
   selector: 'app-demo-side-sheet',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ...GALLERY_DEMO_UI,
     GuiSideSheetSurface,

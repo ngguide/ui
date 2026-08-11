@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   inject,
   input,
@@ -72,7 +71,6 @@ let nextId = 0;
     '[attr.data-error]': 'error() ? "" : null',
     '[class.gui-disabled]': 'control.effectiveDisabled()',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxComponent {
   readonly indeterminate = input(false, { transform: booleanAttribute });

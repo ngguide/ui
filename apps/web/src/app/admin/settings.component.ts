@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { GuiSize } from '@ngguide/ui';
 import { ButtonComponent } from '@ngguide/ui/button';
@@ -23,7 +23,6 @@ import { GuiRichTooltip, GuiRichTooltipTrigger } from '@ngguide/ui/tooltip';
  */
 @Component({
   selector: 'app-settings',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ButtonComponent,
     IconButtonComponent,

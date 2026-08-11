@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 /** An M3 divider between menu items. Exposes `role="separator"`. */
 @Component({
@@ -6,6 +6,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   template: '',
   host: { 'role': 'separator', 'class': 'gui-menu-divider' },
   exportAs: 'guiMenuDivider',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuDividerComponent {}

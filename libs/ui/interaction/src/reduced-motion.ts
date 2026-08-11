@@ -1,4 +1,4 @@
-import { Injectable, Signal, inject, signal } from '@angular/core';
+import { Service, Signal, inject, signal } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 
 /**
@@ -9,7 +9,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
  * normally after hydration. The `change` listener keeps the signal live when the
  * OS setting flips at runtime (Req 5.3).
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GuiReducedMotion {
   private readonly mql = inject(MediaMatcher).matchMedia(
     '(prefers-reduced-motion: reduce)',

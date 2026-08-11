@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -23,7 +22,6 @@ import { IconComponent } from '@ngguide/ui/icon';
  */
 @Component({
   selector: 'app-tracker',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterOutlet,
     SegmentedButtonGroupComponent,

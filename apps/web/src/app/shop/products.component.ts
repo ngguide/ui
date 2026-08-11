@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -53,7 +52,6 @@ const CAROUSEL_LAYOUTS: readonly GuiCarouselLayout[] = [
  */
 @Component({
   selector: 'app-products',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     RouterLink,

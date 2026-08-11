@@ -1,6 +1,5 @@
 import {
   afterNextRender,
-  ChangeDetectionStrategy,
   Component,
   contentChildren,
   DestroyRef,
@@ -50,7 +49,6 @@ export type GuiChipSelect = 'none' | 'single' | 'multiple';
     'role': 'grid',
     '(keydown)': 'onKeydown($event)',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipSetComponent {
   readonly control = inject(GuiFormControl<string | string[] | null>);

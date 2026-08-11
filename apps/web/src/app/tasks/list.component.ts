@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
 } from '@angular/core';
@@ -41,7 +40,6 @@ import {
  */
 @Component({
   selector: 'app-tasks-list',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     ButtonComponent,

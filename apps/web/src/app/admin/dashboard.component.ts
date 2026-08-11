@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GuiCard } from '@ngguide/ui/card';
 import { GuiDivider } from '@ngguide/ui/divider';
@@ -35,7 +35,6 @@ type Range = '7d' | '30d' | '90d';
  */
 @Component({
   selector: 'app-dashboard',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
     GuiCard,

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CdkMenu } from '@angular/cdk/menu';
 import { SplitButtonComponent } from '@ngguide/ui/split-button';
 import { MenuDirective, MenuItemComponent } from '@ngguide/ui/menu';
@@ -23,7 +23,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  */
 @Component({
   selector: 'app-demo-split-button',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ...GALLERY_DEMO_UI,
     SplitButtonComponent,

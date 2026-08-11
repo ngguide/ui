@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   TemplateRef,
   inject,
@@ -40,7 +39,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  */
 @Component({
   selector: 'app-demo-bottom-sheet',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ...GALLERY_DEMO_UI,
     GuiBottomSheetSurface,

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { GuiBadge } from '@ngguide/ui/badge';
 import { IconButtonComponent } from '@ngguide/ui/icon-button';
 import { IconComponent } from '@ngguide/ui/icon';
@@ -19,7 +19,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  */
 @Component({
   selector: 'app-demo-badge',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [...GALLERY_DEMO_UI, GuiBadge, IconButtonComponent, IconComponent],
   template: `
     <app-demo-component

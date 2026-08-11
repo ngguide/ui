@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
   DatePickerComponent,
   DateRangePickerComponent,
@@ -40,7 +40,6 @@ import { DEMO_TODAY } from '../../core/demo-date';
  */
 @Component({
   selector: 'app-demo-date-picker',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ...GALLERY_DEMO_UI,
     DatePickerComponent,

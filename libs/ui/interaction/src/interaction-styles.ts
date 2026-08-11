@@ -1,4 +1,4 @@
-import { Injectable, RendererFactory2, inject, DOCUMENT } from '@angular/core';
+import { Service, RendererFactory2, inject, DOCUMENT } from '@angular/core';
 import { INTERACTION_CSS } from './interaction.css';
 
 /**
@@ -10,7 +10,7 @@ import { INTERACTION_CSS } from './interaction.css';
  * element rather than duplicating it (Req 7.4). Degrades silently when there is
  * no document head (Req 7.3).
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class GuiInteractionStyles {
   private readonly doc = inject(DOCUMENT);
   private readonly renderer = inject(RendererFactory2).createRenderer(null, null);

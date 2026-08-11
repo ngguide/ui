@@ -40,7 +40,8 @@ pnpm exec nx g @nx/angular:library-secondary-entry-point --library=ui --name=<na
 `apps/web` is the demo/host application — a playground that imports the entry points to exercise components; it is not published.
 
 ### Component conventions (see `libs/ui/button/src/button.ts`)
-- Standalone, `ChangeDetectionStrategy.OnPush`, signal inputs (`input()`, `input(false, { transform: booleanAttribute })`).
+- Standalone, signal inputs (`input()`, `input(false, { transform: booleanAttribute })`). **Do not write `changeDetection` at all** — OnPush is the Angular 22 default, and `angular-eslint`'s `prefer-on-push-component-change-detection` rejects opting out. The three portal containers that need `ChangeDetectionStrategy.Eager` (their hosts bind plain CDK state) carry a scoped `eslint-disable` plus a rationale; match that shape if a component ever genuinely needs it.
+- Root-provided services use `@Service()` (Angular 22), not `@Injectable({ providedIn: 'root' })`. Services that are provided by hand — e.g. the route-scoped stores in `apps/web` — stay on plain `@Injectable()`.
 - Attribute selectors (e.g. `button[gui-button], a[gui-button]`) — these require the `// eslint-disable-next-line @angular-eslint/component-selector` comment.
 - Variants/sizes are driven onto the host via the `host` property (`[attr.data-variant]`, `[attr.data-size]`, ...) and styled from the component CSS using those attributes. Members referenced in host bindings must be at least `protected` (Angular 22 disallows `private` here).
 - The shared `GuiSize` union lives in `@ngguide/ui` and is imported by each component.

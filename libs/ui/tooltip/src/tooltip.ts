@@ -1,7 +1,6 @@
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import {
-  ChangeDetectionStrategy,
   Component,
   Directive,
   ElementRef,
@@ -64,7 +63,6 @@ export function tooltipPositions(
 /** The plain-tooltip panel rendered into the overlay (non-interactive). */
 @Component({
   selector: 'gui-tooltip-panel',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'gui-tooltip',
     role: 'tooltip',

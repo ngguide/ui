@@ -1,4 +1,4 @@
-import { Injectable, RendererFactory2, inject, DOCUMENT } from '@angular/core';
+import { Service, RendererFactory2, inject, DOCUMENT } from '@angular/core';
 
 /**
  * Applies dynamic-color CSS by maintaining a single `<style>` element at the
@@ -9,7 +9,7 @@ import { Injectable, RendererFactory2, inject, DOCUMENT } from '@angular/core';
  * imported baseline lets equal-specificity `:root` rules win (Req 6.5); the
  * element is reused, so re-applying replaces its text (Req 6.3).
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class M3StyleApplier {
   private readonly doc = inject(DOCUMENT);
   private readonly renderer = inject(RendererFactory2).createRenderer(null, null);

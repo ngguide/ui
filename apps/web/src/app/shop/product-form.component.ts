@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -59,7 +58,6 @@ function nonNegativeNumber(control: AbstractControl): ValidationErrors | null {
  */
 @Component({
   selector: 'app-product-form',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     RouterLink,

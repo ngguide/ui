@@ -1,6 +1,5 @@
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
-  ChangeDetectionStrategy,
   Component,
   TemplateRef,
   ViewContainerRef,
@@ -57,7 +56,6 @@ export type GuiDateRangePickerVariant = 'modal' | 'modal-input';
       outputs: ['valueChange: rangeChange'],
     },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DateRangePickerComponent {
   protected readonly control = inject(GuiFormControl<GuiDateRange>);

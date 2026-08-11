@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -118,7 +117,6 @@ const MORPH_KEY_SPLINES = SHAPE_PATHS.map(() => '0.4 0 0.2 1').join(';');
  */
 @Component({
   selector: 'gui-loading-indicator',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'gui-loading-indicator',
     role: 'progressbar',

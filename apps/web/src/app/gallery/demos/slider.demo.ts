@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconComponent } from '@ngguide/ui/icon';
 import { SliderComponent } from '@ngguide/ui/slider';
@@ -35,7 +35,6 @@ import { GALLERY_DEMO_UI } from '../demo-block.component';
  */
 @Component({
   selector: 'app-demo-slider',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ...GALLERY_DEMO_UI,
     SliderComponent,

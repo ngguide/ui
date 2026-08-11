@@ -1,6 +1,5 @@
 import {
   afterNextRender,
-  ChangeDetectionStrategy,
   Component,
   computed,
   contentChildren,
@@ -54,7 +53,6 @@ const MORPH_LAYOUTS: ReadonlySet<GuiCarouselLayout> = new Set([
  */
 @Component({
   selector: 'gui-carousel',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="gui-carousel-viewport" #viewport (scroll)="onScroll()">
       <div class="gui-carousel-extent" [style.width.px]="extent() || null">

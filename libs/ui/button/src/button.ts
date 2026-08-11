@@ -1,6 +1,5 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   inject,
@@ -61,7 +60,6 @@ export type GuiButtonShape = 'round' | 'square';
     '(keydown)': 'onKeydown($event)',
   },
   exportAs: 'guiButton',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent {
   variant = input<GuiButtonVariant>('filled');

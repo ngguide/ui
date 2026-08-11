@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   inject,
@@ -27,7 +26,6 @@ import { ShopStore } from './shop.store';
  */
 @Component({
   selector: 'app-order-detail',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, ButtonComponent, IconComponent, GuiCard, GuiDivider, ChipComponent, ChipSetComponent],
   templateUrl: './order-detail.component.html',
   styleUrl: './order-detail.component.css',

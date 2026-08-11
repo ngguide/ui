@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CdkMenuGroup } from '@angular/cdk/menu';
 
 /**
@@ -30,7 +30,6 @@ import { CdkMenuGroup } from '@angular/cdk/menu';
     <ng-content />`,
   host: { 'class': 'gui-menu-section' },
   hostDirectives: [CdkMenuGroup],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuSectionComponent {
   /** Optional section label, rendered above the items as M3 section-label-text. */

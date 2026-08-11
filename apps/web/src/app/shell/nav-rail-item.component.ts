@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   inject,
@@ -23,7 +22,6 @@ import {
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'a[appNavItem]',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [
     GuiStateLayerDirective,
     GuiRippleDirective,

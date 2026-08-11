@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   input,
@@ -25,7 +24,6 @@ export type GuiProgressShape = 'flat' | 'wavy';
  */
 @Component({
   selector: 'gui-linear-progress',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'gui-linear-progress',
     role: 'progressbar',

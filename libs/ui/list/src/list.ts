@@ -1,7 +1,6 @@
 import {
   afterNextRender,
   booleanAttribute,
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   contentChildren,
@@ -32,7 +31,6 @@ import { GuiListItem } from './list-item';
  */
 @Component({
   selector: 'gui-list',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-content />`,
   styleUrl: './list.css',
   host: {
