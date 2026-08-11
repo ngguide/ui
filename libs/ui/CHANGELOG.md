@@ -1,3 +1,31 @@
+# 1.0.0 (2026-08-11)
+
+### 🚀 Features
+
+- ⚠️  **ui:** upgrade the workspace to Angular 22 ([#57](https://github.com/ngguide/ui/pull/57), [#42](https://github.com/ngguide/ui/issues/42))
+
+### 🩹 Fixes
+
+- **ui:** stop <a href> clickable card emitting cardActivate twice on Enter ([#41](https://github.com/ngguide/ui/pull/41), [#39](https://github.com/ngguide/ui/issues/39))
+- **ui:** dismiss hover-opened tooltips with Escape (WCAG 1.4.13) ([#40](https://github.com/ngguide/ui/pull/40), [#38](https://github.com/ngguide/ui/issues/38))
+- **ui:** discover specs by glob in the ui test target ([#37](https://github.com/ngguide/ui/pull/37))
+
+### ⚠️  Breaking Changes
+
+- **ui:** upgrade the workspace to Angular 22 ([#57](https://github.com/ngguide/ui/pull/57))
+
+  `@ngguide/ui` now requires Angular 22. The peer ranges for `@angular/core`,
+  `@angular/cdk` and `@angular/forms` moved from `^21` to `^22`, so the package
+  no longer installs into an Angular 21 workspace.
+
+  To upgrade, migrate your own workspace first — `nx migrate latest` or
+  `ng update @angular/core@22 @angular/cli@22` — then take this release. Angular
+  22 also requires TypeScript 6.0.
+
+### ❤️ Thank You
+
+- Igor Katsuba @IKatsuba
+
 ## 0.1.0 (2026-06-16)
 
 ### 🚀 Features
