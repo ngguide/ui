@@ -110,7 +110,8 @@
     "projects": ["ui"],
     "version": {
       "conventionalCommits": true,
-      "preVersionCommand": "pnpm exec nx build ui"
+      "preVersionCommand": "pnpm exec nx build ui",
+      "adjustSemverBumpsForZeroMajorVersion": false
     },
     "changelog": {
       "projectChangelogs": true,
