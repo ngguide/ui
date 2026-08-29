@@ -12,6 +12,7 @@
   box-sizing: border-box;
   cursor: pointer;
   border: none;
+  text-decoration: none;
   position: relative;
   overflow: hidden;
   color: var(--md-sys-color-primary);

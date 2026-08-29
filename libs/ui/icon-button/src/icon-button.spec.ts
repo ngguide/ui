@@ -52,6 +52,12 @@ class AnchorHostComponent {
   selected = signal(false);
 }
 
+@Component({
+  template: `<a gui-icon-button href="/test">☆</a>`,
+  imports: [IconButtonComponent],
+})
+class LinkHostComponent {}
+
 describe('IconButtonComponent', () => {
   let fixture: ComponentFixture<IconButtonHostComponent>;
   let host: IconButtonHostComponent;
@@ -211,5 +217,15 @@ describe('IconButtonComponent', () => {
     anchorFixture.detectChanges();
 
     expect(anchorHost.selected()).toBe(false);
+  });
+
+  it('removes the browser underline from link hosts', () => {
+    const anchorFixture = TestBed.createComponent(LinkHostComponent);
+    anchorFixture.detectChanges();
+
+    const anchor = anchorFixture.nativeElement.querySelector(
+      'a',
+    ) as HTMLAnchorElement;
+    expect(getComputedStyle(anchor).textDecoration).toBe('none');
   });
 });

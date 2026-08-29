@@ -31,6 +31,12 @@ class AnchorHostComponent {
   disabled = signal(false);
 }
 
+@Component({
+  template: `<a gui-extended-fab href="/test">Compose</a>`,
+  imports: [ExtendedFabComponent],
+})
+class LinkHostComponent {}
+
 describe('ExtendedFabComponent', () => {
   let fixture: ComponentFixture<ExtendedFabHostComponent>;
   let host: ExtendedFabHostComponent;
@@ -96,5 +102,15 @@ describe('ExtendedFabComponent', () => {
 
     expect(anchor.getAttribute('aria-disabled')).toBe('true');
     expect(anchor.hasAttribute('disabled')).toBe(false);
+  });
+
+  it('removes the browser underline from link hosts', () => {
+    const anchorFixture = TestBed.createComponent(LinkHostComponent);
+    anchorFixture.detectChanges();
+
+    const anchor = anchorFixture.nativeElement.querySelector(
+      'a',
+    ) as HTMLAnchorElement;
+    expect(getComputedStyle(anchor).textDecoration).toBe('none');
   });
 });
